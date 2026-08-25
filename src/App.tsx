@@ -21,7 +21,7 @@ import {
   Flame,
 } from "lucide-react";
 
-import { TOPPER_BOOKS, TOPPERS_PROFILES } from "./data/toppersData";
+import { TOPPER_BOOKS, TOPPERS_PROFILES, TOPPER_ROUTINES } from "./data/toppersData";
 import { DEFAULT_SYLLABUS, DEFAULT_STUDY_PLAN } from "./data/syllabusData";
 import {
   DEFAULT_REVISION_QUEUE,
@@ -123,7 +123,7 @@ export default function App() {
 
   const [topperRoutines, setTopperRoutines] = useState<TopperRoutine[]>(() => {
     const saved = localStorage.getItem("upsc_topper_routines_v1");
-    return saved ? JSON.parse(saved) : require("./data/toppersData").TOPPER_ROUTINES;
+    return saved ? JSON.parse(saved) : TOPPER_ROUTINES;
   });
 
   const [syllabus, setSyllabus] = useState<SyllabusTopic[]>(() => {

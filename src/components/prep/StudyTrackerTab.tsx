@@ -1,5 +1,8 @@
 import React, { useState, useMemo, useRef } from "react";
 import html2canvas from "html2canvas";
+import { Share } from '@capacitor/share';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Capacitor } from '@capacitor/core';
 import {
   StudySessionLog,
   FocusTimerConfig,
@@ -221,11 +224,31 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
         }
       });
       const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
-      const link = document.createElement("a");
-      link.download = `upsc_study_history_${new Date().getTime()}.jpg`;
-      link.href = dataUrl;
-      link.click();
-      setExportFeedback("Photo downloaded successfully!");
+      
+      if (Capacitor.isNativePlatform()) {
+        const fileName = `upsc_study_history_${new Date().getTime()}.jpg`;
+        const base64Data = dataUrl.split(",")[1];
+        
+        const savedFile = await Filesystem.writeFile({
+          path: fileName,
+          data: base64Data,
+          directory: Directory.Cache
+        });
+
+        await Share.share({
+          title: 'My Study History',
+          text: 'Here is my latest study progress!',
+          url: savedFile.uri,
+          dialogTitle: 'Share Study History'
+        });
+        setExportFeedback("Photo shared successfully!");
+      } else {
+        const link = document.createElement("a");
+        link.download = `upsc_study_history_${new Date().getTime()}.jpg`;
+        link.href = dataUrl;
+        link.click();
+        setExportFeedback("Photo downloaded successfully!");
+      }
       setTimeout(() => setExportFeedback(null), 4000);
     } catch (err) {
       console.error("Failed to generate image", err);

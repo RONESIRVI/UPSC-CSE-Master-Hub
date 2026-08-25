@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Flame, Clock, Target, CalendarDays, CheckCircle2 } from "lucide-react";
+import { ScreenPinning } from "../../plugins";
 
 interface CommandCenterProps {
   studyStreak: number;
@@ -19,6 +20,23 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
   const studyMins = Math.floor(totalStudyTime / 60);
   const studyHours = Math.floor(studyMins / 60);
   const remainingMins = studyMins % 60;
+
+  const [isPinned, setIsPinned] = useState(false);
+
+  const togglePin = async () => {
+    try {
+      if (isPinned) {
+        await ScreenPinning.stopPinning();
+        setIsPinned(false);
+      } else {
+        await ScreenPinning.startPinning();
+        setIsPinned(true);
+      }
+    } catch (e) {
+      console.error(e);
+      alert("Native screen pinning is only supported on Android devices.");
+    }
+  };
 
   const dailyGoalMins = dailyGoalHours * 60;
   const progressPercent =
@@ -64,13 +82,17 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
               / {dailyGoalHours}h
             </div>
             
-            <div className="mt-4">
+            <div className="mt-4 flex gap-2">
               <button
-                onClick={() => alert("Screen Pinning Instructions:\n\n1. Open Android Settings > Security > Advanced > App Pinning.\n2. Turn it ON.\n3. Open Recent Apps screen.\n4. Tap this app's icon and select 'Pin'.\n5. To unpin, hold Back and Overview buttons together.")}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-500/30 hover:bg-indigo-500/50 text-indigo-100 text-[10px] font-bold border border-indigo-400/30 transition shadow-sm"
+                onClick={togglePin}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold border transition shadow-sm ${
+                  isPinned 
+                  ? "bg-rose-500/30 hover:bg-rose-500/50 text-rose-100 border-rose-400/30" 
+                  : "bg-indigo-500/30 hover:bg-indigo-500/50 text-indigo-100 border-indigo-400/30"
+                }`}
               >
                 <CheckCircle2 className="w-3.5 h-3.5" />
-                <span>Enable Screen Pinning 🔒</span>
+                <span>{isPinned ? "Unpin Screen 🔓" : "Pin App 🔒"}</span>
               </button>
             </div>
           </div>

@@ -139,14 +139,40 @@ export const TopperFormModal: React.FC<TopperFormModalProps> = ({
               />
             </div>
 
-            <div>
-              <label className="text-xs font-bold text-slate-600 uppercase block mb-1">General Strategy (GS1)</label>
-              <textarea
-                rows={3}
-                value={formData.gsStrategy?.gs1}
-                onChange={(e) => setFormData({ ...formData, gsStrategy: { ...formData.gsStrategy!, gs1: e.target.value } })}
-                className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Subject / Paper</label>
+                <input
+                  type="text"
+                  list="topper-subject-options"
+                  placeholder="e.g., GS Paper 1, History, or Custom Plan"
+                  value={formData.optionalStrategy || ""}
+                  onChange={(e) => setFormData({ ...formData, optionalStrategy: e.target.value })}
+                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <datalist id="topper-subject-options">
+                  <option value="GS Paper 1" />
+                  <option value="GS Paper 2" />
+                  <option value="GS Paper 3" />
+                  <option value="GS Paper 4" />
+                  <option value="General Hindi" />
+                  <option value="General English" />
+                  <option value="Optional Subject" />
+                  <option value="Interview Preparation" />
+                  <option value="Daily Routine" />
+                </datalist>
+              </div>
+              
+              <div>
+                <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Strategy / Notes</label>
+                <textarea
+                  rows={3}
+                  placeholder="Write the strategy for the selected subject..."
+                  value={formData.gsStrategy?.gs1 || ""}
+                  onChange={(e) => setFormData({ ...formData, gsStrategy: { ...formData.gsStrategy!, gs1: e.target.value } })}
+                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
             </div>
             
             <div>

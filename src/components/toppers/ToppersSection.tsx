@@ -26,6 +26,8 @@ interface ToppersSectionProps {
   onAdoptRoutine: (routine: TopperRoutine) => void;
   toppers: TopperProfile[];
   setToppers: React.Dispatch<React.SetStateAction<TopperProfile[]>>;
+  routines?: import("../../types").TopperRoutine[];
+  setRoutines?: React.Dispatch<React.SetStateAction<import("../../types").TopperRoutine[]>>;
   audioNotes: import("../../types").AudioNote[];
   setAudioNotes: React.Dispatch<React.SetStateAction<import("../../types").AudioNote[]>>;
 }
@@ -38,6 +40,8 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
   onAdoptRoutine,
   toppers,
   setToppers,
+  routines,
+  setRoutines,
   audioNotes,
   setAudioNotes,
 }) => {
@@ -248,15 +252,17 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
       </div>
 
       {/* Subtab Contents */}
-      {activeSubTab === "strategy" && <TopperStrategyTab toppers={toppers} setToppers={setToppers} />}
-      {activeSubTab === "books" && (
-        <TopperBooksTab books={books} onToggleBookStatus={onToggleBookStatus} />
-      )}
-      {activeSubTab === "routine" && (
-        <TopperRoutineTab onAdoptRoutine={onAdoptRoutine} />
-      )}
-      {activeSubTab === "notes" && <TopperNotesTab />}
-      {activeSubTab === "interviews" && <TopperInterviewsTab audioNotes={audioNotes} setAudioNotes={setAudioNotes} />}
+      <div className="pt-2">
+        {activeSubTab === "strategy" && <TopperStrategyTab toppers={toppers} setToppers={setToppers} />}
+        {activeSubTab === "books" && (
+          <TopperBooksTab books={books} onToggleBookStatus={onToggleBookStatus} />
+        )}
+        {activeSubTab === "routine" && (
+          <TopperRoutineTab onAdoptRoutine={onAdoptRoutine} routines={routines} setRoutines={setRoutines} />
+        )}
+        {activeSubTab === "notes" && <TopperNotesTab />}
+        {activeSubTab === "interviews" && <TopperInterviewsTab audioNotes={audioNotes} setAudioNotes={setAudioNotes} />}
+      </div>
     </div>
   );
 };

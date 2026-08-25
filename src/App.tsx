@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { AppIcon } from "./components/AppIcon";
+import { LocalNotifications } from '@capacitor/local-notifications';
+import { Capacitor } from '@capacitor/core';
 import { Navbar } from "./components/Navbar";
 import { GlobalSearchModal } from "./components/GlobalSearchModal";
 import { HomeSection } from "./components/home/HomeSection";
@@ -66,9 +69,24 @@ const DEFAULT_TIMER_CONFIG: FocusTimerConfig = {
 export default function App() {
   // Request Notification Permissions on Mount
   useEffect(() => {
-    if ("Notification" in window && Notification.permission === "default") {
-      Notification.requestPermission();
-    }
+    const requestPermissions = async () => {
+      try {
+        if (Capacitor.isNativePlatform()) {
+          // Request Native Permissions
+          await LocalNotifications.requestPermissions();
+          
+          // Request Microphone permission for audio recorder if possible, although WebRTC getUserMedia usually prompts when called.
+        } else {
+          // Web Fallback
+          if ("Notification" in window && Notification.permission !== "granted") {
+            await Notification.requestPermission();
+          }
+        }
+      } catch (e) {
+        console.warn("Could not request permissions on startup", e);
+      }
+    };
+    requestPermissions();
   }, []);
 
   // Navigation State
@@ -99,8 +117,13 @@ export default function App() {
   });
 
   const [toppers, setToppers] = useState<TopperProfile[]>(() => {
-    const saved = localStorage.getItem("upsc_toppers");
+    const saved = localStorage.getItem("upsc_toppers_v1");
     return saved ? JSON.parse(saved) : TOPPERS_PROFILES;
+  });
+
+  const [topperRoutines, setTopperRoutines] = useState<TopperRoutine[]>(() => {
+    const saved = localStorage.getItem("upsc_topper_routines_v1");
+    return saved ? JSON.parse(saved) : require("./data/toppersData").TOPPER_ROUTINES;
   });
 
   const [syllabus, setSyllabus] = useState<SyllabusTopic[]>(() => {
@@ -244,6 +267,14 @@ export default function App() {
     }, 3500);
     return () => clearTimeout(splashTimer);
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("upsc_toppers_v1", JSON.stringify(toppers));
+  }, [toppers]);
+
+  useEffect(() => {
+    localStorage.setItem("upsc_topper_routines_v1", JSON.stringify(topperRoutines));
+  }, [topperRoutines]);
 
   useEffect(() => {
     localStorage.setItem("upsc_books", JSON.stringify(books));
@@ -581,8 +612,20 @@ export default function App() {
   };
 
   const handleAdoptRoutine = (routine: TopperRoutine) => {
-    setActiveTab("prep");
-    setPrepSubTab("tracker");
+    // Convert TopperRoutine schedule to DailyTasks
+    const newTasks: DailyTask[] = routine.schedule.map((item, idx) => ({
+      id: `adopted-task-${Date.now()}-${idx}`,
+      title: item.activity,
+      completed: false,
+      type: item.category.toLowerCase().includes("break") || item.category.toLowerCase().includes("sleep") 
+            ? "revision" // Fallback type, not perfect but works for UI
+            : "study",
+      timeSlot: item.time,
+      subject: item.category,
+    }));
+    
+    setDailyTasks(newTasks);
+    setActiveTab("home"); // Navigate home where daily tasks are visible
   };
 
   const handleGlobalNavigate = (tab: MainTab, subTab?: string) => {
@@ -661,6 +704,8 @@ export default function App() {
                     onAdoptRoutine={handleAdoptRoutine}
                     toppers={toppers}
                     setToppers={setToppers}
+                    routines={topperRoutines}
+                    setRoutines={setTopperRoutines}
                     audioNotes={audioNotes}
                     setAudioNotes={setAudioNotes}
                   />

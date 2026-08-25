@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { TOPPER_ROUTINES } from "../../data/toppersData";
 import { TopperRoutine } from "../../types";
+import { TopperRoutineEditorModal } from "./TopperRoutineEditorModal";
 import {
   Clock,
   Sun,
@@ -12,24 +13,38 @@ import {
   ArrowRight,
   Flame,
   Zap,
+  Edit2
 } from "lucide-react";
 
 interface TopperRoutineTabProps {
   onAdoptRoutine: (routine: TopperRoutine) => void;
+  routines?: TopperRoutine[];
+  setRoutines?: React.Dispatch<React.SetStateAction<TopperRoutine[]>>;
 }
 
 export const TopperRoutineTab: React.FC<TopperRoutineTabProps> = ({
   onAdoptRoutine,
+  routines = TOPPER_ROUTINES,
+  setRoutines,
 }) => {
   const [selectedRoutine, setSelectedRoutine] = useState<TopperRoutine>(
-    TOPPER_ROUTINES[0]
+    routines[0] || TOPPER_ROUTINES[0]
   );
   const [adoptedAlert, setAdoptedAlert] = useState<boolean>(false);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
 
   const handleAdopt = () => {
     onAdoptRoutine(selectedRoutine);
     setAdoptedAlert(true);
     setTimeout(() => setAdoptedAlert(false), 3500);
+  };
+
+  const handleSaveRoutine = (updatedRoutine: TopperRoutine) => {
+    if (setRoutines) {
+      setRoutines(prev => prev.map(r => r.id === updatedRoutine.id ? updatedRoutine : r));
+    }
+    setSelectedRoutine(updatedRoutine);
+    setIsEditorOpen(false);
   };
 
   const getCategoryBadge = (cat: string) => {
@@ -79,14 +94,14 @@ export const TopperRoutineTab: React.FC<TopperRoutineTabProps> = ({
             <select
               value={selectedRoutine.id}
               onChange={(e) => {
-                const found = TOPPER_ROUTINES.find(
+                const found = routines.find(
                   (r) => r.id === e.target.value
                 );
                 if (found) setSelectedRoutine(found);
               }}
               className="bg-transparent text-slate-900 text-xs font-bold outline-none cursor-pointer"
             >
-              {TOPPER_ROUTINES.map((r) => (
+              {routines.map((r) => (
                 <option
                   key={r.id}
                   value={r.id}
@@ -96,6 +111,11 @@ export const TopperRoutineTab: React.FC<TopperRoutineTabProps> = ({
                 </option>
               ))}
             </select>
+            {setRoutines && (
+              <button onClick={() => setIsEditorOpen(true)} className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition" title="Edit Schedule">
+                <Edit2 className="w-4 h-4" />
+              </button>
+            )}
           </div>
         </div>
 
@@ -227,6 +247,15 @@ export const TopperRoutineTab: React.FC<TopperRoutineTabProps> = ({
           </ul>
         </div>
       </div>
+      {/* Editor Modal */}
+      {isEditorOpen && (
+        <TopperRoutineEditorModal
+          isOpen={isEditorOpen}
+          onClose={() => setIsEditorOpen(false)}
+          editingRoutine={selectedRoutine}
+          onSave={handleSaveRoutine}
+        />
+      )}
     </div>
   );
 };

@@ -131,12 +131,43 @@ const SyllabusForm: React.FC<{ initialData: SyllabusTopic, onSave: (data: Syllab
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div>
-          <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Paper</label>
-          <input type="text" value={formData.paper} onChange={e => handleChange('paper', e.target.value)} className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500" />
+          <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Paper (RAS)</label>
+          <select 
+            value={formData.paper} 
+            onChange={e => handleChange('paper', e.target.value)} 
+            className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="Prelims (सामान्य ज्ञान और सामान्य विज्ञान)">प्रारंभिक (सामान्य ज्ञान और सामान्य विज्ञान)</option>
+            <option value="Paper I (सामान्य अध्ययन- I)">मुख्य Paper I (सामान्य अध्ययन- I)</option>
+            <option value="Paper II (सामान्य अध्ययन- II)">मुख्य Paper II (सामान्य अध्ययन- II)</option>
+            <option value="Paper III (सामान्य अध्ययन- III)">मुख्य Paper III (सामान्य अध्ययन- III)</option>
+            <option value="Paper IV (सामान्य हिंदी एवं सामान्य अंग्रेजी)">मुख्य Paper IV (सामान्य हिंदी एवं सामान्य अंग्रेजी)</option>
+            <option value="Interview (साक्षात्कार)">Interview (साक्षात्कार)</option>
+          </select>
         </div>
         <div>
           <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Subject</label>
-          <input type="text" value={formData.subject} onChange={e => handleChange('subject', e.target.value)} className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500" />
+          <input 
+            type="text" 
+            list="subject-options"
+            value={formData.subject} 
+            onChange={e => handleChange('subject', e.target.value)} 
+            placeholder="Type or select a subject..."
+            className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500" 
+          />
+          <datalist id="subject-options">
+            <option value="History, Art & Culture" />
+            <option value="Economy" />
+            <option value="Sociology, Management & Accounting" />
+            <option value="Ethics" />
+            <option value="Science & Technology" />
+            <option value="Earth Science (Geography)" />
+            <option value="Polity & IR" />
+            <option value="Public Administration" />
+            <option value="Sports & Yoga, Behavior, Law" />
+            <option value="General Hindi" />
+            <option value="General English" />
+          </datalist>
         </div>
         <div>
           <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Module</label>

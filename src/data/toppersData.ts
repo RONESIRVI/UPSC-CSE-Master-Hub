@@ -120,6 +120,36 @@ export const TOPPERS_PROFILES: TopperProfile[] = [
       "Revise high-weightage static subjects before touching new current affairs.",
       "Maintain physical discipline through daily running and meditation."
     ]
+  },
+  {
+    id: "kanishak-kataria",
+    name: "Kanishak Kataria",
+    rank: 1,
+    year: 2018,
+    optional: "Mathematics",
+    attempt: 1,
+    background: "B.Tech IIT Bombay (Computer Science & Engineering)",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80",
+    quote: "Objectivity is the key to UPSC Mains. Write what is asked, not what you know. Keep sentences short, data-backed, and use flowcharts whenever possible to save time.",
+    keyStrategy: "Scored massively in Mathematics Optional (361/500). Prepared digitally using Evernote and OneNote, categorizing notes strictly by the UPSC syllabus keywords. Focused completely on high return on investment subjects like Ethics, Essay, and Optional.",
+    gsStrategy: {
+      gs1: "Relied entirely on standard books. For Geography, practiced rapid map drawing for every location-based concept.",
+      gs2: "Used sub-headings aggressively. Quoted specific Articles, Constitutional Amendments, and Supreme Court judgements in every answer.",
+      gs3: "Treated GS3 like a technical paper. Filled answers with facts, figures, NITI Aayog data points, and block diagrams.",
+      gs4: "Prepared a personal list of core values and associated them with real-life administrative examples. Kept case studies structured and purely logical."
+    },
+    essayStrategy: "Brainstormed for 25 minutes before starting. Focused on logical flow, transitions between paragraphs, and maintaining a balanced, optimistic tone throughout.",
+    optionalStrategy: "Mathematics demands absolute rigor. Solved 15-20 years of PYQs. Made formula sheets for quick revision and practiced under strict time constraints to avoid calculation errors.",
+    prelimsStrategy: "Did not over-read. Limited sources but revised them 5-6 times. Solved around 50 mock tests to develop the intuition for intelligent guessing and elimination.",
+    csatStrategy: "Being from a math background, relied on natural aptitude but still practiced a few PYQs to stay in touch with the UPSC question phrasing.",
+    interviewScore: 179,
+    mainsScore: 942,
+    goldenRules: [
+      "Digital notes are easier to update, organize, and revise quickly.",
+      "Mathematics optional requires solving problems with pen and paper, not just reading solutions.",
+      "Focus intensely on your Optional, Essay, and Ethics—these create the rank difference.",
+      "Do not try to read everything; stick to the syllabus boundaries strictly."
+    ]
   }
 ];
 

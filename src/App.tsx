@@ -6,6 +6,7 @@ import { ToppersSection } from "./components/toppers/ToppersSection";
 import { PrepSection } from "./components/prep/PrepSection";
 import { AnalyticsSection } from "./components/analytics/AnalyticsSection";
 import { AIMentorModal } from "./components/ai/AIMentorModal";
+import { SplashScreen } from "./components/SplashScreen";
 import { Trophy, BookOpen, BarChart3, Sparkles, Search, Flame } from "lucide-react";
 
 import { TOPPER_BOOKS } from "./data/toppersData";
@@ -51,6 +52,9 @@ export default function App() {
   const [topperSubTab, setTopperSubTab] = useState<TopperSubTab>("strategy");
   const [prepSubTab, setPrepSubTab] = useState<PrepSubTab>("syllabus");
   const [analyticsSubTab, setAnalyticsSubTab] = useState<AnalyticsSubTab>("progress");
+  
+  // Splash Screen State
+  const [showSplash, setShowSplash] = useState<boolean>(true);
 
   // Core Data States with LocalStorage Hydration
   const [books, setBooks] = useState<BookItem[]>(() => {
@@ -130,6 +134,14 @@ export default function App() {
   const [aiModalTopic, setAiModalTopic] = useState<string>("");
 
   // Sync to LocalStorage
+  useEffect(() => {
+    // Hide splash screen after 3 seconds
+    const splashTimer = setTimeout(() => {
+      setShowSplash(false);
+    }, 3500);
+    return () => clearTimeout(splashTimer);
+  }, []);
+
   useEffect(() => {
     localStorage.setItem("upsc_books", JSON.stringify(books));
   }, [books]);
@@ -452,9 +464,14 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased selection:bg-indigo-500 selection:text-white flex flex-col justify-between" style={{ backgroundColor: "#f8fafc" }}>
-      
-      {/* Main Top Navigation Header */}
+    <>
+      <AnimatePresence>
+        {showSplash && <SplashScreen />}
+      </AnimatePresence>
+
+      <div className="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased selection:bg-indigo-500 selection:text-white flex flex-col justify-between" style={{ backgroundColor: "#f8fafc" }}>
+        
+        {/* Main Top Navigation Header */}
       <div>
         <Navbar
           activeTab={activeTab}
@@ -644,5 +661,6 @@ export default function App() {
       </footer>
 
     </div>
+    </>
   );
 }

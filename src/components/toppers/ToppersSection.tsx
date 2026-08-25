@@ -26,6 +26,8 @@ interface ToppersSectionProps {
   onAdoptRoutine: (routine: TopperRoutine) => void;
   toppers: TopperProfile[];
   setToppers: React.Dispatch<React.SetStateAction<TopperProfile[]>>;
+  audioNotes: import("../../types").AudioNote[];
+  setAudioNotes: React.Dispatch<React.SetStateAction<import("../../types").AudioNote[]>>;
 }
 
 export const ToppersSection: React.FC<ToppersSectionProps> = ({
@@ -36,6 +38,8 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
   onAdoptRoutine,
   toppers,
   setToppers,
+  audioNotes,
+  setAudioNotes,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -252,7 +256,7 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
         <TopperRoutineTab onAdoptRoutine={onAdoptRoutine} />
       )}
       {activeSubTab === "notes" && <TopperNotesTab />}
-      {activeSubTab === "interviews" && <TopperInterviewsTab />}
+      {activeSubTab === "interviews" && <TopperInterviewsTab audioNotes={audioNotes} setAudioNotes={setAudioNotes} />}
     </div>
   );
 };

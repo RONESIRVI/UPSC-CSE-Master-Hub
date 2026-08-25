@@ -28,12 +28,15 @@ import {
   Layers,
   Plus,
   Lightbulb,
+  Edit2,
 } from "lucide-react";
+import { SyllabusEditorModal } from "./SyllabusEditorModal";
 
 interface PrepSectionProps {
   activeSubTab: PrepSubTab;
   setActiveSubTab: (subTab: PrepSubTab) => void;
   syllabus: SyllabusTopic[];
+  setSyllabus?: React.Dispatch<React.SetStateAction<SyllabusTopic[]>>;
   onUpdateTopicStatus: (
     topicId: string,
     nextStatus: SyllabusTopic["status"]
@@ -82,6 +85,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
   activeSubTab,
   setActiveSubTab,
   syllabus,
+  setSyllabus,
   onUpdateTopicStatus,
   onOpenTopicAI,
   onAddTopic,
@@ -124,6 +128,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
   const [showQuickLogModal, setShowQuickLogModal] = useState<boolean>(false);
   const [showQuickThoughtsModal, setShowQuickThoughtsModal] =
     useState<boolean>(false);
+  const [isSyllabusEditorOpen, setIsSyllabusEditorOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const subTabOptions: {
@@ -188,7 +193,6 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
     subTabOptions.find((t) => t.key === activeSubTab) || subTabOptions[0];
   const CurrentIcon = currentOption.icon;
 
-  // Close dropdown on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -204,17 +208,14 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Top Navigation & Dropdown Bar */}
       <div className="bg-white p-3 rounded-2xl border-2 border-slate-200 shadow-sm space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          {/* Main Dropdown Selector (Active on all screens with rich popover) */}
           <div className="relative flex-1 max-w-md" ref={dropdownRef}>
             <label className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1 flex items-center gap-1.5">
               <Layers className="w-3 h-3 text-indigo-600" />
               <span>Select Prep Module Dropdown:</span>
             </label>
 
-            {/* Custom Interactive Dropdown Button */}
             <button
               id="prep-module-dropdown-button"
               type="button"
@@ -247,36 +248,14 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
               />
             </button>
 
-            {/* Native Mobile Fallback Select (Hidden visually, accessible for screen readers & quick selection) */}
-            <select
-              id="prep-module-native-select"
-              aria-label="Select UPSC Prep Module"
-              value={activeSubTab}
-              onChange={(e) => setActiveSubTab(e.target.value as PrepSubTab)}
-              className="sr-only"
-            >
-              {subTabOptions.map((opt) => (
-                <option key={opt.key} value={opt.key}>
-                  {opt.label} ({opt.badge})
-                </option>
-              ))}
-            </select>
-
-            {/* Dropdown Popover Menu */}
             {dropdownOpen && (
               <div className="absolute top-full left-0 right-0 mt-2 z-50 bg-white rounded-2xl border-2 border-slate-200 shadow-2xl p-2 space-y-1 animate-in fade-in slide-in-from-top-2 duration-150">
-                <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100">
-                  UPSC Preparation Modules ({subTabOptions.length})
-                </div>
-
                 {subTabOptions.map((option) => {
                   const Icon = option.icon;
                   const isSelected = activeSubTab === option.key;
-
                   return (
                     <button
                       key={option.key}
-                      id={`dropdown-opt-${option.key}`}
                       onClick={() => {
                         setActiveSubTab(option.key);
                         setDropdownOpen(false);
@@ -288,29 +267,15 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
                       }`}
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div
-                          className={`p-2 rounded-lg border ${option.color} shrink-0 shadow-2xs`}
-                        >
+                        <div className={`p-2 rounded-lg border ${option.color} shrink-0 shadow-2xs`}>
                           <Icon className="w-4 h-4" />
                         </div>
                         <div className="min-w-0">
                           <div className="text-xs font-bold truncate flex items-center gap-2">
                             <span>{option.label}</span>
-                            <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-100 text-slate-600 font-semibold border border-slate-200">
-                              {option.badge}
-                            </span>
-                          </div>
-                          <div className="text-[11px] text-slate-500 font-normal truncate">
-                            {option.description}
                           </div>
                         </div>
                       </div>
-
-                      {isSelected && (
-                        <div className="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-2xs">
-                          <Check className="w-3 h-3 stroke-[3]" />
-                        </div>
-                      )}
                     </button>
                   );
                 })}
@@ -318,36 +283,30 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
             )}
           </div>
 
-          {/* Quick Direct Stats & Action Shortcuts */}
           <div className="flex items-center gap-2 shrink-0">
-            {/* Quick Jot Thoughts Shortcut Button */}
             <button
               id="prep-header-quick-jot-btn"
               type="button"
               onClick={() => setShowQuickThoughtsModal(true)}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-xs font-bold transition shadow-2xs cursor-pointer hover:border-amber-300"
-              title="Jot down a fleeting thought or study doubt without navigating away"
+              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-xs font-bold transition shadow-2xs cursor-pointer"
             >
               <Lightbulb className="w-4 h-4 text-amber-600 shrink-0" />
-              <span className="hidden sm:inline">Jot Thought / Doubt</span>
-              <span className="sm:hidden">Jot Note</span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded bg-amber-200/80 text-amber-900 font-mono font-extrabold">
-                MD
-              </span>
+              <span className="hidden sm:inline">Jot Thought</span>
             </button>
 
-            <div className="bg-slate-50 px-3 py-2 rounded-xl border border-slate-200 text-xs shadow-2xs hidden md:flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-slate-600 font-medium">Active Module:</span>
-              <span className="font-extrabold text-indigo-700">
-                {currentOption.label}
-              </span>
-            </div>
+            {activeSubTab === "syllabus" && setSyllabus && (
+              <button
+                onClick={() => setIsSyllabusEditorOpen(true)}
+                className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-bold text-xs transition border border-indigo-200 shadow-sm"
+              >
+                <Edit2 className="w-4 h-4" />
+                <span>Edit</span>
+              </button>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Subtab Content Panels */}
       {activeSubTab === "syllabus" && (
         <SyllabusTab
           syllabus={syllabus}
@@ -417,9 +376,16 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
         />
       )}
 
-      {/* Floating Action Buttons (FAB) for Instant Actions */}
+      {setSyllabus && (
+        <SyllabusEditorModal
+          isOpen={isSyllabusEditorOpen}
+          onClose={() => setIsSyllabusEditorOpen(false)}
+          syllabus={syllabus}
+          setSyllabus={setSyllabus}
+        />
+      )}
+
       <div className="fixed bottom-20 lg:bottom-6 right-4 sm:right-6 z-40 flex items-center gap-2 sm:gap-2.5 animate-in slide-in-from-bottom-5 duration-300">
-        {/* FAB 1: Jot Fleeting Thought / Doubt */}
         <button
           id="fab-quick-thought-btn"
           type="button"

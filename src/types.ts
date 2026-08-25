@@ -46,6 +46,15 @@ export interface TopperProfile {
   goldenRules: string[];
 }
 
+export interface AudioNote {
+  id: string;
+  audioUrl: string; // Base64 data URL for persistence
+  subject: string;
+  topic: string;
+  timestamp: string; // ISO date string
+  durationSecs: number;
+}
+
 export interface BookItem {
   id: string;
   title: string;

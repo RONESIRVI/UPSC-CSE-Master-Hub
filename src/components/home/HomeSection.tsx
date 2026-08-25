@@ -15,7 +15,8 @@ import { SmartAlerts } from "./SmartAlerts";
 import { SmartRecommendationCard } from "./SmartRecommendation";
 import { PreparationHealthScore } from "./PreparationHealth";
 import { PersonalizedPlan } from "./PersonalizedPlan";
-import { Play, Book, Target } from "lucide-react";
+import { AudioRecorderModal } from "./AudioRecorderModal";
+import { Play, Target, Mic } from "lucide-react";
 
 interface HomeSectionProps {
   setActiveTab: (tab: MainTab) => void;
@@ -38,6 +39,7 @@ interface HomeSectionProps {
     topic: string;
     taskType: "study" | "revision" | "pyq" | "notes" | "answer_writing";
   }>>;
+  onSaveAudioNote: (note: any) => void;
 }
 
 export const HomeSection: React.FC<HomeSectionProps> = ({
@@ -52,7 +54,9 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
   revisionQueue,
   currentStudySession,
   setCurrentStudySession,
+  onSaveAudioNote,
 }) => {
+  const [isAudioModalOpen, setIsAudioModalOpen] = React.useState(false);
   // Calculate total study time today
   const totalStudyTimeToday = useMemo(() => {
     const today = new Date().toISOString().split("T")[0];
@@ -212,13 +216,22 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
               </div>
             </div>
 
-            <button
-              onClick={() => setActiveTab("prep")}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black uppercase tracking-wider text-xs shadow-md shadow-indigo-500/30 transition-all active:scale-95 ml-auto"
-            >
-              <Play className="w-4 h-4 fill-white" />
-              <span>Launch Focus Tracker</span>
-            </button>
+            <div className="flex flex-col sm:flex-row items-center gap-3 ml-auto w-full sm:w-auto">
+              <button
+                onClick={() => setIsAudioModalOpen(true)}
+                className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-600 font-bold uppercase tracking-wider text-xs transition-all active:scale-95"
+              >
+                <Mic className="w-4 h-4" />
+                <span>Audio Note</span>
+              </button>
+              <button
+                onClick={() => setActiveTab("prep")}
+                className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black uppercase tracking-wider text-xs shadow-md shadow-indigo-500/30 transition-all active:scale-95"
+              >
+                <Play className="w-4 h-4 fill-white" />
+                <span>Launch Tracker</span>
+              </button>
+            </div>
           </div>
 
           <PreparationHealthScore health={healthScore} />
@@ -233,6 +246,12 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
           />
         </div>
       </div>
+
+      <AudioRecorderModal
+        isOpen={isAudioModalOpen}
+        onClose={() => setIsAudioModalOpen(false)}
+        onSave={onSaveAudioNote}
+      />
     </div>
   );
 };

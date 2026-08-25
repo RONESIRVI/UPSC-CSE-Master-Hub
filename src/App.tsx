@@ -46,6 +46,7 @@ import {
   DailyTask,
   PreparationHealth,
   TopperProfile,
+  AudioNote,
 } from "./types";
 import { playTimerChime } from "./utils/audioAlert";
 import { triggerTimerEndNotification } from "./utils/browserNotifications";
@@ -214,6 +215,11 @@ export default function App() {
     const saved = localStorage.getItem("upsc_timer_config");
     return saved ? JSON.parse(saved) : DEFAULT_TIMER_CONFIG;
   });
+
+  const [audioNotes, setAudioNotes] = useState<AudioNote[]>(() => {
+    const saved = localStorage.getItem("ras_audio_notes");
+    return saved ? JSON.parse(saved) : [];
+  });
   const [timerPhase, setTimerPhase] = useState<TimerPhase>("focus");
   const [currentCycle, setCurrentCycle] = useState<number>(1);
   const [timerRunning, setTimerRunning] = useState<boolean>(false);
@@ -259,6 +265,7 @@ export default function App() {
       "upsc_timer_config",
       JSON.stringify(timerConfig)
     );
+    localStorage.setItem("ras_audio_notes", JSON.stringify(audioNotes));
   }, [
     books,
     toppers,
@@ -270,6 +277,7 @@ export default function App() {
     pyqs,
     weakAreas,
     timerConfig,
+    audioNotes,
   ]);
 
   // Timer Tick Engine with Smart Interval Automation & Sounds
@@ -634,6 +642,12 @@ export default function App() {
                     studyPlanPhases={studyPlanPhases}
                     currentStudySession={currentStudySession}
                     setCurrentStudySession={setCurrentStudySession}
+                    onSaveAudioNote={(note) => {
+                      setAudioNotes(prev => [note, ...prev]);
+                      // Auto switch to toppers interview tab to show the saved note
+                      setActiveTab("toppers");
+                      setTopperSubTab("interviews");
+                    }}
                   />
                 )}
 
@@ -647,6 +661,8 @@ export default function App() {
                     onAdoptRoutine={handleAdoptRoutine}
                     toppers={toppers}
                     setToppers={setToppers}
+                    audioNotes={audioNotes}
+                    setAudioNotes={setAudioNotes}
                   />
                 )}
 
@@ -656,6 +672,7 @@ export default function App() {
                     activeSubTab={prepSubTab}
                     setActiveSubTab={setPrepSubTab}
                     syllabus={syllabus}
+                    setSyllabus={setSyllabus}
                     onUpdateTopicStatus={handleUpdateTopicStatus}
                     onOpenTopicAI={handleOpenTopicAI}
                     onAddTopic={handleAddTopic}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TOPPER_INTERVIEWS } from "../../data/toppersData";
-import { InterviewTranscript } from "../../types";
+import { InterviewTranscript, AudioNote } from "../../types";
 import {
   Users,
   MessageSquare,
@@ -10,9 +10,18 @@ import {
   HelpCircle,
   Clock,
   Briefcase,
+  Mic,
+  Trash2,
+  Play,
+  CalendarDays,
 } from "lucide-react";
 
-export const TopperInterviewsTab: React.FC = () => {
+interface TopperInterviewsTabProps {
+  audioNotes?: AudioNote[];
+  setAudioNotes?: React.Dispatch<React.SetStateAction<AudioNote[]>>;
+}
+
+export const TopperInterviewsTab: React.FC<TopperInterviewsTabProps> = ({ audioNotes = [], setAudioNotes }) => {
   const [selectedTranscript, setSelectedTranscript] =
     useState<InterviewTranscript>(TOPPER_INTERVIEWS[0]);
   const [activeDafCategory, setActiveDafCategory] = useState<string>("All");
@@ -67,6 +76,41 @@ export const TopperInterviewsTab: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Audio Notes Section */}
+      {audioNotes && audioNotes.length > 0 && (
+        <div className="bg-white border-2 border-rose-100 rounded-2xl p-6 shadow-sm space-y-4">
+          <div className="flex items-center gap-2">
+            <Mic className="w-5 h-5 text-rose-500" />
+            <h3 className="text-lg font-bold text-slate-800">My Recorded Notes</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {audioNotes.map((note) => (
+              <div key={note.id} className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col gap-3">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h4 className="font-bold text-slate-800 text-sm">{note.subject}</h4>
+                    <p className="text-xs text-slate-500 font-medium line-clamp-1">{note.topic}</p>
+                  </div>
+                  <button
+                    onClick={() => setAudioNotes?.(prev => prev.filter(n => n.id !== note.id))}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                <audio src={note.audioUrl} controls className="w-full h-8" />
+                <div className="flex items-center gap-2 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                  <CalendarDays className="w-3 h-3" />
+                  {new Date(note.timestamp).toLocaleDateString()}
+                  <span>•</span>
+                  {Math.floor(note.durationSecs / 60)}:{(note.durationSecs % 60).toString().padStart(2, "0")}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Transcript Showcase Bento Card */}
       <div className="bg-white border-2 border-slate-200 rounded-2xl p-6 shadow-sm space-y-6">

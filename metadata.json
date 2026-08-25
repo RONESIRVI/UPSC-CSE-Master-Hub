@@ -1,0 +1,7 @@
+{
+  "name": "UPSC CSE Master Hub",
+  "description": "Comprehensive UPSC CSE preparation app featuring Toppers' strategies, books, routines, notes and interviews, interactive syllabus & study tracker, spaced revision, PYQs, and deep performance gap analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

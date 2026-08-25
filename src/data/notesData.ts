@@ -1,0 +1,90 @@
+import { QuickRevisionNote } from "../types";
+
+export const DEFAULT_QUICK_REVISION_NOTES: QuickRevisionNote[] = [
+  {
+    id: "note-polity-writs",
+    topicId: "p1-polity-const",
+    topicTitle: "Fundamental Rights (Art 12-35) & Writs",
+    paper: "Prelims GS1",
+    subject: "Indian Polity & Governance",
+    bulletPoints: [
+      "Habeas Corpus: 'To have the body'. Issued against both public authorities & private individuals.",
+      "Mandamus: 'We Command'. Issued to public official to perform duty; NOT against private individual or President/Governor.",
+      "Prohibition: Issued by higher court to lower court/tribunal to prevent exceeding jurisdiction (Inactivity).",
+      "Certiorari: 'To be certified'. Curative as well as preventive. Issued to quash order of lower tribunal (acts with lack/excess of jurisdiction).",
+      "Quo-Warranto: 'By what authority?'. Challenges legality of claim of a person to a public office. Can be sought by ANY interested person, not only aggrieved.",
+      "Article 32 is itself a Fundamental Right (Dr. Ambedkar: 'Heart & Soul'). Article 226 is a constitutional right with broader territorial and legal scope."
+    ],
+    tags: ["Writs", "Article 32", "High Yield", "Prelims Fact"],
+    importance: "🔥 High Yield",
+    updatedAt: "2025-05-10"
+  },
+  {
+    id: "note-env-meas",
+    topicId: "p1-env-biodiv",
+    topicTitle: "Multilateral Environmental Agreements (MEAs)",
+    paper: "Mains GS3",
+    subject: "Environment & Ecology",
+    bulletPoints: [
+      "Ramsar Convention (1971): Wetland conservation; Montreux Record lists Ramsar sites with ecological changes (Keoladeo & Loktak in India).",
+      "CBD Protocols: Cartagena (Biosafety & Living Modified Organisms - 2000), Nagoya (Access & Benefit Sharing - 2010), Kunming-Montreal 30x30 targets.",
+      "Chemical Conventions Triple: Basel (Hazardous wastes transboundary movement), Rotterdam (Prior Informed Consent for hazardous chemicals/pesticides), Stockholm (Persistent Organic Pollutants - Dirty Dozen).",
+      "Minamata Convention (2013): Regulates mercury usage, emissions, and dental amalgam phase-down.",
+      "CITES (1975): Appendices I (Endangered), II (Regulated trade), III (National request)."
+    ],
+    tags: ["MEAs", "Biodiversity", "Protocols", "GS3"],
+    importance: "🔥 High Yield",
+    updatedAt: "2025-05-12"
+  },
+  {
+    id: "note-econ-monetary",
+    topicId: "p1-econ-monetary",
+    topicTitle: "RBI Monetary Policy Instruments & Transmission",
+    paper: "Prelims GS1",
+    subject: "Indian Economy",
+    bulletPoints: [
+      "MPC (Monetary Policy Committee): 6 members (3 RBI + 3 GoI nominees). Governor has casting vote. Mandate: 4% +/- 2% CPI inflation target (Flexible Inflation Targeting).",
+      "SDF (Standing Deposit Facility): Non-collateralized liquidity absorption floor rate (introduced in 2022 to replace fixed Reverse Repo).",
+      "MSF (Marginal Standing Facility): Emergency penal lending rate above Repo against SLR securities.",
+      "CRR (Cash Reserve Ratio): Kept with RBI as cash (earns zero interest). SLR (Statutory Liquidity Ratio): Kept with banks in gold/cash/approved G-Secs.",
+      "Open Market Operations (OMO): Buying G-Secs injects liquidity; Selling G-Secs absorbs liquidity."
+    ],
+    tags: ["RBI", "MPC", "Liquidity", "Prelims Fact"],
+    importance: "⭐ Important",
+    updatedAt: "2025-05-14"
+  },
+  {
+    id: "note-ethics-framework",
+    topicId: "m4-ethics-admin",
+    topicTitle: "Administrative Ethics & 2nd ARC Framework",
+    paper: "Mains GS4",
+    subject: "Ethics & Integrity",
+    bulletPoints: [
+      "Nolan Committee 7 Principles of Public Life: Selflessness, Integrity, Objectivity, Accountability, Openness, Honesty, Leadership (Mnemonic: SIOAOHL).",
+      "2nd ARC 4th Report (Ethics in Governance): Recommended Code of Ethics for Ministers, Civil Service Code, Independent Ombudsman (Lokpal), Protection to Whistleblowers.",
+      "John Rawls: 'Veil of Ignorance' & Maximin Principle (justice as fairness; maximize outcome for least advantaged).",
+      "Deontology (Kant - Categorical Imperative: Duty for duty's sake) vs Consequentialism (Bentham/Mill - Utilitarianism: Greatest good for greatest number).",
+      "Key Indian Values: Satya (Truth), Nishkama Karma (Selfless duty - Gita), Sarvodaya (Universal upliftment - Gandhi), Compassion (Buddha)."
+    ],
+    tags: ["Nolan Principles", "2nd ARC", "Thinkers", "Mains GS4"],
+    importance: "🔥 High Yield",
+    updatedAt: "2025-05-15"
+  },
+  {
+    id: "note-polity-governor",
+    topicId: "p1-polity-system",
+    topicTitle: "Governor Discretionary Powers & Landmark Rulings",
+    paper: "Mains GS2",
+    subject: "Indian Polity & Governance",
+    bulletPoints: [
+      "Constitutional Discretion (Art 163): Reservation of bills for President (Art 200), Recommendation of President's Rule (Art 356), Sixth Schedule administration.",
+      "Situational Discretion: Appointment of CM when no party has clear majority; Dismissal of ministry unable to prove majority on floor.",
+      "S.R. Bommai Case (1994): Secularism is basic structure; Floor test is mandatory before Art 356 imposition; Presidential proclamation subject to judicial review.",
+      "Nabam Rebia (2016) & Shamsher Singh (1974): Governor is bound by Council of Ministers aid and advice unless exercising express discretionary constitutional power.",
+      "Sarkaria & Punchhi Commission recommendations on Governor appointment: 5-year tenure security, eminent non-active politician, consultation with CM."
+    ],
+    tags: ["Governor", "Federalism", "Case Laws", "GS2"],
+    importance: "🔥 High Yield",
+    updatedAt: "2025-05-16"
+  }
+];

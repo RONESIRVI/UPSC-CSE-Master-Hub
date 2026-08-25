@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { TOPPERS_PROFILES } from "../../data/toppersData";
 import { TopperProfile } from "../../types";
+import { TopperFormModal } from "./TopperFormModal";
 import {
   Trophy,
   BookOpen,
@@ -11,12 +11,24 @@ import {
   Flame,
   GraduationCap,
   Filter,
+  Plus,
+  Edit2,
 } from "lucide-react";
 
-export const TopperStrategyTab: React.FC = () => {
+interface TopperStrategyTabProps {
+  toppers: TopperProfile[];
+  setToppers: React.Dispatch<React.SetStateAction<TopperProfile[]>>;
+}
+
+export const TopperStrategyTab: React.FC<TopperStrategyTabProps> = ({
+  toppers,
+  setToppers,
+}) => {
   const [selectedTopper, setSelectedTopper] = useState<TopperProfile>(
-    TOPPERS_PROFILES[0]
+    toppers[0]
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingTopper, setEditingTopper] = useState<TopperProfile | undefined>();
   const [activeStrategyPaper, setActiveStrategyPaper] = useState<
     "gs1" | "gs2" | "gs3" | "gs4" | "essay" | "optional" | "prelims" | "csat"
   >("gs1");
@@ -24,13 +36,22 @@ export const TopperStrategyTab: React.FC = () => {
 
   const optionals = [
     "All",
-    ...Array.from(new Set(TOPPERS_PROFILES.map((t) => t.optional))),
+    ...Array.from(new Set(toppers.map((t) => t.optional))),
   ];
 
-  const filteredToppers = TOPPERS_PROFILES.filter((t) => {
+  const filteredToppers = toppers.filter((t) => {
     if (optionalFilter === "All") return true;
     return t.optional === optionalFilter;
   });
+
+  const handleSaveTopper = (savedTopper: TopperProfile) => {
+    if (editingTopper) {
+      setToppers(prev => prev.map(t => t.id === savedTopper.id ? savedTopper : t));
+      if (selectedTopper.id === savedTopper.id) setSelectedTopper(savedTopper);
+    } else {
+      setToppers(prev => [savedTopper, ...prev]);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -71,6 +92,16 @@ export const TopperStrategyTab: React.FC = () => {
               </option>
             ))}
           </select>
+          <button
+            onClick={() => {
+              setEditingTopper(undefined);
+              setIsModalOpen(true);
+            }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm transition ml-2"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>Add Topper</span>
+          </button>
         </div>
       </div>
 
@@ -136,6 +167,19 @@ export const TopperStrategyTab: React.FC = () => {
                         </div>
                       )}
                     </div>
+                  )}
+                  {isSelected && (
+                     <button
+                       onClick={(e) => {
+                         e.stopPropagation();
+                         setEditingTopper(topper);
+                         setIsModalOpen(true);
+                       }}
+                       className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition self-start ml-2"
+                       title="Edit Topper"
+                     >
+                       <Edit2 className="w-4 h-4" />
+                     </button>
                   )}
                 </div>
               </div>
@@ -315,6 +359,13 @@ export const TopperStrategyTab: React.FC = () => {
           );
         })}
       </div>
+
+      <TopperFormModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSaveTopper}
+        editingTopper={editingTopper}
+      />
     </div>
   );
 };

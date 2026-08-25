@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
+import html2canvas from "html2canvas";
 import {
   StudySessionLog,
   FocusTimerConfig,
@@ -34,6 +35,7 @@ import {
   Search,
   CheckCheck,
   Lightbulb,
+  Image as ImageIcon,
 } from "lucide-react";
 import { TimerConfigModal, PRESET_CONFIGS } from "./TimerConfigModal";
 import { QuickStudyLogModal } from "./QuickStudyLogModal";
@@ -60,6 +62,11 @@ interface StudyTrackerTabProps {
   onSetTimerPhase?: (phase: TimerPhase) => void;
   syllabus?: SyllabusTopic[];
   onOpenAIMentorWithPrompt?: (prompt: string) => void;
+  currentStudySession?: {
+    subject: string;
+    topic: string;
+    taskType: "study" | "revision" | "pyq" | "notes" | "answer_writing";
+  };
 }
 
 export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
@@ -90,13 +97,13 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
   onSetTimerPhase,
   syllabus = [],
   onOpenAIMentorWithPrompt,
+  currentStudySession = {
+    subject: "Indian Polity",
+    topic: "",
+    taskType: "study",
+  },
 }) => {
-  const [activeSubject, setActiveSubject] = useState("Indian Polity");
   const [activePaper, setActivePaper] = useState("Prelims GS1");
-  const [topicInput, setTopicInput] = useState("");
-  const [taskType, setTaskType] = useState<
-    "study" | "revision" | "pyq" | "notes" | "answer_writing"
-  >("study");
   const [focusRating, setFocusRating] = useState<1 | 2 | 3 | 4 | 5>(5);
   const [sessionNotes, setSessionNotes] = useState("");
   const [showQuickLogModal, setShowQuickLogModal] = useState<boolean>(false);
@@ -112,6 +119,8 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
   const [historySubjectFilter, setHistorySubjectFilter] =
     useState<string>("all");
   const [historySearchQuery, setHistorySearchQuery] = useState<string>("");
+
+  const historyListRef = useRef<HTMLDivElement>(null);
 
   // Today's total logged minutes
   const todayStr = new Date().toISOString().split("T")[0];
@@ -197,6 +206,32 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
     }
   };
 
+  const handleDownloadPhoto = async () => {
+    if (!historyListRef.current) return;
+    try {
+      setExportFeedback("Generating image...");
+      const canvas = await html2canvas(historyListRef.current, {
+        scale: 2,
+        backgroundColor: "#ffffff",
+        onclone: (document) => {
+          const header = document.querySelector('.print-header') as HTMLElement;
+          if (header) header.style.display = 'block';
+        }
+      });
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+      const link = document.createElement("a");
+      link.download = `upsc_study_history_${new Date().getTime()}.jpg`;
+      link.href = dataUrl;
+      link.click();
+      setExportFeedback("Photo downloaded successfully!");
+      setTimeout(() => setExportFeedback(null), 4000);
+    } catch (err) {
+      console.error("Failed to generate image", err);
+      setExportFeedback("Failed to generate image.");
+      setTimeout(() => setExportFeedback(null), 4000);
+    }
+  };
+
   // Determine current phase duration in seconds
   const isContinuous = timerConfig.mode === "stopwatch_continuous";
   const currentTargetMinutes =
@@ -244,21 +279,19 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
     const newLog: StudySessionLog = {
       id: `log-${Date.now()}`,
       date: todayStr,
-      subject: activeSubject,
+      subject: currentStudySession.subject || "General Study",
       paper: activePaper,
       durationMinutes: durationMins,
       topicCovered:
-        topicInput.trim() ||
+        currentStudySession.topic.trim() ||
         `Focus Session (${timerConfig.mode.replace("_", " ").toUpperCase()})`,
-      taskType: taskType,
+      taskType: currentStudySession.taskType,
       qualityRating: focusRating,
       notes: sessionNotes.trim(),
     };
     onAddSessionLog(newLog);
     onResetTimer();
-    setTopicInput("");
     setSessionNotes("");
-    setTaskType("study");
   };
 
   const handleQuickPresetSelect = (mode: TimerMode) => {
@@ -545,71 +578,17 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
           </div>
 
           {/* Quick Subject & Topic Selection for this Focus Session */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-            <div>
-              <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">
-                Subject Focus
-              </label>
-              <select
-                value={activeSubject}
-                onChange={(e) => setActiveSubject(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3.5 py-2.5 outline-none font-bold focus:ring-2 focus:ring-indigo-500 cursor-pointer"
-              >
-                <option value="Indian Polity">
-                  Indian Polity (Laxmikanth)
-                </option>
-                <option value="Modern Indian History">
-                  Modern Indian History (Spectrum)
-                </option>
-                <option value="Indian Economy">
-                  Indian Economy (Mrunal/Singhania)
-                </option>
-                <option value="Environment & Ecology">
-                  Environment & Ecology (PMF/Shankar)
-                </option>
-                <option value="Physical & Indian Geography">
-                  Geography (NCERT/GC Leong)
-                </option>
-                <option value="CSAT Paper II">CSAT Quant & Reasoning</option>
-                <option value="Ethics (GS4)">Ethics, Case Studies (GS4)</option>
-                <option value="Optional Subject">Optional Subject</option>
-                <option value="Current Affairs">
-                  Newspaper & Editorial Analysis
-                </option>
-                <option value="Mains Answer Writing">
-                  Mains Answer Writing Practice
-                </option>
-              </select>
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex flex-col">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Current Focus Target</span>
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded bg-indigo-100 text-indigo-700 text-xs font-bold">{currentStudySession.subject || 'Select Subject on Home'}</span>
+                {currentStudySession.topic && <span className="text-sm font-bold text-slate-800">{currentStudySession.topic}</span>}
+              </div>
             </div>
-
-            <div>
-              <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">
-                What did you do?
-              </label>
-              <select
-                value={taskType}
-                onChange={(e) => setTaskType(e.target.value as any)}
-                className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3.5 py-2.5 outline-none font-bold focus:ring-2 focus:ring-indigo-500 cursor-pointer"
-              >
-                <option value="study">Study New Topic</option>
-                <option value="revision">Revision</option>
-                <option value="pyq">PYQ Practice</option>
-                <option value="notes">Note Making</option>
-                <option value="answer_writing">Answer Writing</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">
-                Topic Name
-              </label>
-              <input
-                type="text"
-                placeholder="e.g. Fundamental Rights"
-                value={topicInput}
-                onChange={(e) => setTopicInput(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3.5 py-2.5 outline-none font-medium focus:ring-2 focus:ring-indigo-500"
-              />
+            <div className="flex flex-col items-end">
+               <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Task Type</span>
+               <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-700 text-xs font-bold uppercase">{currentStudySession.taskType}</span>
             </div>
           </div>
 
@@ -808,6 +787,17 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
                   <span>Export All ({sessionLogs.length})</span>
                 </button>
               )}
+
+            <button
+              id="export-photo-btn"
+              onClick={handleDownloadPhoto}
+              disabled={filteredLogs.length === 0}
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Download currently filtered study logs as an image"
+            >
+              <ImageIcon className="w-4 h-4 text-blue-100 shrink-0" />
+              <span>Download Photo</span>
+            </button>
           </div>
         </div>
 
@@ -943,7 +933,13 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
             </button>
           </div>
         ) : (
-          <div className="space-y-2.5 max-h-[500px] overflow-y-auto pr-1">
+          <div ref={historyListRef} className="p-2 bg-white rounded-lg space-y-2.5 max-h-[500px] overflow-y-auto pr-1">
+            {/* Header for Image Export */}
+            <div className="hidden print-header p-2 bg-indigo-50 border-b border-indigo-100 mb-4 rounded-xl">
+               <h2 className="text-sm font-bold text-indigo-900">UPSC Study Session History</h2>
+               <p className="text-xs text-indigo-700">Generated on: {new Date().toLocaleString()}</p>
+            </div>
+
             {filteredLogs.map((log) => (
               <div
                 key={log.id}

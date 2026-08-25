@@ -15,6 +15,7 @@ import { SmartAlerts } from "./SmartAlerts";
 import { SmartRecommendationCard } from "./SmartRecommendation";
 import { PreparationHealthScore } from "./PreparationHealth";
 import { PersonalizedPlan } from "./PersonalizedPlan";
+import { Play, Book, Target } from "lucide-react";
 
 interface HomeSectionProps {
   setActiveTab: (tab: MainTab) => void;
@@ -27,6 +28,16 @@ interface HomeSectionProps {
   weakAreas: WeakAreaItem[];
   revisionQueue: RevisionItem[];
   studyPlanPhases: StudyPlanPhase[];
+  currentStudySession: {
+    subject: string;
+    topic: string;
+    taskType: "study" | "revision" | "pyq" | "notes" | "answer_writing";
+  };
+  setCurrentStudySession: React.Dispatch<React.SetStateAction<{
+    subject: string;
+    topic: string;
+    taskType: "study" | "revision" | "pyq" | "notes" | "answer_writing";
+  }>>;
 }
 
 export const HomeSection: React.FC<HomeSectionProps> = ({
@@ -39,6 +50,8 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
   studyStreak,
   weakAreas,
   revisionQueue,
+  currentStudySession,
+  setCurrentStudySession,
 }) => {
   // Calculate total study time today
   const totalStudyTimeToday = useMemo(() => {
@@ -149,6 +162,63 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
               criticalWeakAreas={criticalWeakAreas}
               weeklyGoalRemaining={weeklyGoalRemaining}
             />
+          </div>
+
+          {/* New Start Study Session Quick Form */}
+          <div className="bg-white border-2 border-indigo-100 rounded-2xl p-5 shadow-sm space-y-4">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="p-1.5 bg-indigo-100 rounded-lg text-indigo-600">
+                <Target className="w-4 h-4" />
+              </div>
+              <h3 className="font-bold text-slate-800 uppercase tracking-wider text-sm">Quick Start Study Session</h3>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+              <div>
+                <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">Subject / Paper</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Indian Polity"
+                  value={currentStudySession.subject}
+                  onChange={(e) => setCurrentStudySession(prev => ({ ...prev, subject: e.target.value }))}
+                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3.5 py-2.5 outline-none font-bold focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+
+              <div>
+                <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">What are you doing?</label>
+                <select
+                  value={currentStudySession.taskType}
+                  onChange={(e) => setCurrentStudySession(prev => ({ ...prev, taskType: e.target.value as any }))}
+                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3.5 py-2.5 outline-none font-bold focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                >
+                  <option value="study">Study New Topic</option>
+                  <option value="revision">Revision</option>
+                  <option value="pyq">PYQ Practice</option>
+                  <option value="notes">Note Making</option>
+                  <option value="answer_writing">Answer Writing</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">Topic Name</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Fundamental Rights"
+                  value={currentStudySession.topic}
+                  onChange={(e) => setCurrentStudySession(prev => ({ ...prev, topic: e.target.value }))}
+                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3.5 py-2.5 outline-none font-medium focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+            </div>
+
+            <button
+              onClick={() => setActiveTab("prep")}
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black uppercase tracking-wider text-xs shadow-md shadow-indigo-500/30 transition-all active:scale-95 ml-auto"
+            >
+              <Play className="w-4 h-4 fill-white" />
+              <span>Launch Focus Tracker</span>
+            </button>
           </div>
 
           <PreparationHealthScore health={healthScore} />

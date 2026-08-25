@@ -18,7 +18,7 @@ import {
   Flame,
 } from "lucide-react";
 
-import { TOPPER_BOOKS } from "./data/toppersData";
+import { TOPPER_BOOKS, TOPPERS_PROFILES } from "./data/toppersData";
 import { DEFAULT_SYLLABUS, DEFAULT_STUDY_PLAN } from "./data/syllabusData";
 import {
   DEFAULT_REVISION_QUEUE,
@@ -45,6 +45,7 @@ import {
   TimerMode,
   DailyTask,
   PreparationHealth,
+  TopperProfile,
 } from "./types";
 import { playTimerChime } from "./utils/audioAlert";
 import { triggerTimerEndNotification } from "./utils/browserNotifications";
@@ -72,10 +73,26 @@ export default function App() {
   // Splash Screen State
   const [showSplash, setShowSplash] = useState<boolean>(true);
 
+  // App Level Forms State (Lifted from Timer)
+  const [currentStudySession, setCurrentStudySession] = useState<{
+    subject: string;
+    topic: string;
+    taskType: "study" | "revision" | "pyq" | "notes" | "answer_writing";
+  }>({
+    subject: "Indian Polity",
+    topic: "",
+    taskType: "study",
+  });
+
   // Core Data States with LocalStorage Hydration
   const [books, setBooks] = useState<BookItem[]>(() => {
     const saved = localStorage.getItem("upsc_books");
     return saved ? JSON.parse(saved) : TOPPER_BOOKS;
+  });
+
+  const [toppers, setToppers] = useState<TopperProfile[]>(() => {
+    const saved = localStorage.getItem("upsc_toppers");
+    return saved ? JSON.parse(saved) : TOPPERS_PROFILES;
   });
 
   const [syllabus, setSyllabus] = useState<SyllabusTopic[]>(() => {
@@ -218,6 +235,10 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem("upsc_books", JSON.stringify(books));
   }, [books]);
+
+  useEffect(() => {
+    localStorage.setItem("upsc_toppers", JSON.stringify(toppers));
+  }, [toppers]);
 
   useEffect(() => {
     localStorage.setItem("upsc_syllabus", JSON.stringify(syllabus));
@@ -607,6 +628,8 @@ export default function App() {
                     weakAreas={weakAreas}
                     revisionQueue={revisionQueue}
                     studyPlanPhases={studyPlanPhases}
+                    currentStudySession={currentStudySession}
+                    setCurrentStudySession={setCurrentStudySession}
                   />
                 )}
 
@@ -618,6 +641,8 @@ export default function App() {
                     books={books}
                     onToggleBookStatus={handleToggleBookStatus}
                     onAdoptRoutine={handleAdoptRoutine}
+                    toppers={toppers}
+                    setToppers={setToppers}
                   />
                 )}
 
@@ -666,6 +691,7 @@ export default function App() {
                     onDeletePYQ={handleDeletePYQ}
                     onResetDefaultPYQs={handleResetDefaultPYQs}
                     onOpenAIEvaluator={handleOpenAIEvaluator}
+                    currentStudySession={currentStudySession}
                   />
                 )}
 

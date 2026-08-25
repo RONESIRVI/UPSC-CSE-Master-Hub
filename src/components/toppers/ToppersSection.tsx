@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { TopperSubTab, BookItem, TopperRoutine } from "../../types";
+import { TopperSubTab, BookItem, TopperRoutine, TopperProfile } from "../../types";
 import { TopperStrategyTab } from "./TopperStrategyTab";
 import { TopperBooksTab } from "./TopperBooksTab";
 import { TopperRoutineTab } from "./TopperRoutineTab";
@@ -24,6 +24,8 @@ interface ToppersSectionProps {
   books: BookItem[];
   onToggleBookStatus: (bookId: string) => void;
   onAdoptRoutine: (routine: TopperRoutine) => void;
+  toppers: TopperProfile[];
+  setToppers: React.Dispatch<React.SetStateAction<TopperProfile[]>>;
 }
 
 export const ToppersSection: React.FC<ToppersSectionProps> = ({
@@ -32,6 +34,8 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
   books,
   onToggleBookStatus,
   onAdoptRoutine,
+  toppers,
+  setToppers,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -240,7 +244,7 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
       </div>
 
       {/* Subtab Contents */}
-      {activeSubTab === "strategy" && <TopperStrategyTab />}
+      {activeSubTab === "strategy" && <TopperStrategyTab toppers={toppers} setToppers={setToppers} />}
       {activeSubTab === "books" && (
         <TopperBooksTab books={books} onToggleBookStatus={onToggleBookStatus} />
       )}

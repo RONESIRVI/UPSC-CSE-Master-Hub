@@ -1,6 +1,11 @@
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
-import { SyllabusTopic, StudySessionLog, MockTestLog, WeakAreaItem } from "../types";
+import {
+  SyllabusTopic,
+  StudySessionLog,
+  MockTestLog,
+  WeakAreaItem,
+} from "../types";
 import { GAP_ANALYSIS_METRICS } from "../data/analyticsDefaults";
 
 export interface AnalyticsExportOptions {
@@ -26,7 +31,8 @@ export async function exportAnalyticsDocument(
   }
 
   try {
-    if (onProgress) onProgress("Rendering visual heatmap & analytics telemetry...");
+    if (onProgress)
+      onProgress("Rendering visual heatmap & analytics telemetry...");
 
     // Generate high-resolution canvas with scale 2
     const canvas = await html2canvas(element, {
@@ -34,7 +40,7 @@ export async function exportAnalyticsDocument(
       useCORS: true,
       logging: false,
       backgroundColor: "#ffffff",
-      windowWidth: 1200
+      windowWidth: 1200,
     });
 
     const timestamp = new Date().toISOString().split("T")[0];
@@ -55,25 +61,43 @@ export async function exportAnalyticsDocument(
     if (options.format === "pdf") {
       if (onProgress) onProgress("Compiling PDF report pages...");
       const imgData = canvas.toDataURL("image/jpeg", 0.95);
-      
+
       const imgWidth = 210; // A4 width in mm
       const pageHeight = 297; // A4 height in mm
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      
+
       let heightLeft = imgHeight;
       let position = 0;
 
       const pdf = new jsPDF("p", "mm", "a4");
 
       // First Page
-      pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight, undefined, "FAST");
+      pdf.addImage(
+        imgData,
+        "JPEG",
+        0,
+        position,
+        imgWidth,
+        imgHeight,
+        undefined,
+        "FAST"
+      );
       heightLeft -= pageHeight;
 
       // Additional pages if content spans beyond 1 A4 page
       while (heightLeft > 0) {
         position = heightLeft - imgHeight;
         pdf.addPage();
-        pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight, undefined, "FAST");
+        pdf.addImage(
+          imgData,
+          "JPEG",
+          0,
+          position,
+          imgWidth,
+          imgHeight,
+          undefined,
+          "FAST"
+        );
         heightLeft -= pageHeight;
       }
 

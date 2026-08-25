@@ -1,12 +1,15 @@
 // Synthesized gentle bell/chime using Web Audio API (offline & self-contained)
 
-export function playTimerChime(type: "focus_end" | "break_end" | "click" = "focus_end") {
+export function playTimerChime(
+  type: "focus_end" | "break_end" | "click" = "focus_end"
+) {
   try {
-    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    const AudioContextClass =
+      window.AudioContext || (window as any).webkitAudioContext;
     if (!AudioContextClass) return;
 
     const ctx = new AudioContextClass();
-    
+
     // Ensure context is resumed (for user gesture policies)
     if (ctx.state === "suspended") {
       ctx.resume();
@@ -38,7 +41,10 @@ export function playTimerChime(type: "focus_end" | "break_end" | "click" = "focu
       osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.08);
 
       gain.gain.setValueAtTime(0.15 / (idx + 1), ctx.currentTime + idx * 0.08);
-      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+      gain.gain.exponentialRampToValueAtTime(
+        0.0001,
+        ctx.currentTime + duration
+      );
 
       osc.connect(gain);
       gain.connect(ctx.destination);

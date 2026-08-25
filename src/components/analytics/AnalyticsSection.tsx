@@ -1,22 +1,28 @@
 import React, { useState, useRef, useEffect } from "react";
-import { AnalyticsSubTab, SyllabusTopic, StudySessionLog, MockTestLog, WeakAreaItem } from "../../types";
+import {
+  AnalyticsSubTab,
+  SyllabusTopic,
+  StudySessionLog,
+  MockTestLog,
+  WeakAreaItem,
+} from "../../types";
 import { ProgressTab } from "./ProgressTab";
 import { PerformanceTab } from "./PerformanceTab";
 import { WeakAreasTab } from "./WeakAreasTab";
 import { GapAnalysisTab } from "./GapAnalysisTab";
 import { RankBenchmarkTab } from "./RankBenchmarkTab";
 import { AnalyticsExportModal } from "./AnalyticsExportModal";
-import { 
-  TrendingUp, 
-  BarChart2, 
-  AlertTriangle, 
-  Scale, 
+import {
+  TrendingUp,
+  BarChart2,
+  AlertTriangle,
+  Scale,
   Trophy,
   ChevronDown,
   Check,
   Layers,
   Award,
-  Download
+  Download,
 } from "lucide-react";
 
 interface AnalyticsSectionProps {
@@ -42,7 +48,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
   onAddMockLog,
   onDeleteMockLog,
   weakAreas,
-  onOpenExplainTopic
+  onOpenExplainTopic,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [showExportModal, setShowExportModal] = useState<boolean>(false);
@@ -59,26 +65,29 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
     {
       key: "progress",
       label: "Progress Dashboard",
-      description: "Real-time syllabus completion %, study streaks, and study logs export",
+      description:
+        "Real-time syllabus completion %, study streaks, and study logs export",
       icon: TrendingUp,
       badge: `${syllabus.length} Topics`,
-      color: "bg-emerald-50 text-emerald-600 border-emerald-200"
+      color: "bg-emerald-50 text-emerald-600 border-emerald-200",
     },
     {
       key: "performance",
       label: "Performance & Mocks",
-      description: "Mock test score tracker, negative marks analysis & accuracy trends",
+      description:
+        "Mock test score tracker, negative marks analysis & accuracy trends",
       icon: BarChart2,
       badge: `${mockLogs.length} Tests`,
-      color: "bg-blue-50 text-blue-600 border-blue-200"
+      color: "bg-blue-50 text-blue-600 border-blue-200",
     },
     {
       key: "weak-areas",
       label: "Weak Areas Heatmap",
-      description: "Identified high-negative topics & AI diagnostic recovery blueprints",
+      description:
+        "Identified high-negative topics & AI diagnostic recovery blueprints",
       icon: AlertTriangle,
       badge: `${weakAreas.length} Areas`,
-      color: "bg-rose-50 text-rose-600 border-rose-200"
+      color: "bg-rose-50 text-rose-600 border-rose-200",
     },
     {
       key: "gap-analysis",
@@ -86,25 +95,30 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
       description: "UPSC weightage vs actual study hours parity analysis",
       icon: Scale,
       badge: "Weightage vs Hours",
-      color: "bg-amber-50 text-amber-600 border-amber-200"
+      color: "bg-amber-50 text-amber-600 border-amber-200",
     },
     {
       key: "rank-benchmark",
       label: "Rank Benchmark & Cutoffs",
-      description: "Yearly Prelims & Mains UPSC official cutoffs and topper marks benchmark",
+      description:
+        "Yearly Prelims & Mains UPSC official cutoffs and topper marks benchmark",
       icon: Trophy,
       badge: "AIR 1 Cutoffs",
-      color: "bg-purple-50 text-purple-600 border-purple-200"
-    }
+      color: "bg-purple-50 text-purple-600 border-purple-200",
+    },
   ];
 
-  const currentOption = subTabOptions.find(t => t.key === activeSubTab) || subTabOptions[0];
+  const currentOption =
+    subTabOptions.find((t) => t.key === activeSubTab) || subTabOptions[0];
   const CurrentIcon = currentOption.icon;
 
   // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setDropdownOpen(false);
       }
     };
@@ -114,11 +128,9 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
 
   return (
     <div className="space-y-6">
-      
       {/* Top Navigation Bar with Interactive Dropdown Selector */}
       <div className="bg-white p-3.5 rounded-2xl border-2 border-slate-200 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          
           {/* Main Dropdown Selector */}
           <div className="relative flex-1 max-w-md" ref={dropdownRef}>
             <label className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1 flex items-center gap-1.5">
@@ -134,7 +146,9 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
               className="w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 border-2 border-slate-300 hover:border-indigo-500 text-slate-900 font-bold text-xs transition cursor-pointer shadow-2xs"
             >
               <div className="flex items-center gap-2.5 min-w-0">
-                <div className={`p-1.5 rounded-lg border ${currentOption.color} shrink-0`}>
+                <div
+                  className={`p-1.5 rounded-lg border ${currentOption.color} shrink-0`}
+                >
                   <CurrentIcon className="w-4 h-4" />
                 </div>
                 <div className="text-left truncate">
@@ -150,7 +164,11 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
                 </div>
               </div>
 
-              <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform shrink-0 ${dropdownOpen ? "rotate-180 text-indigo-600" : ""}`} />
+              <ChevronDown
+                className={`w-4 h-4 text-slate-500 transition-transform shrink-0 ${
+                  dropdownOpen ? "rotate-180 text-indigo-600" : ""
+                }`}
+              />
             </button>
 
             {/* Native Mobile Fallback Select (Accessible) */}
@@ -158,10 +176,12 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
               id="analytics-module-native-select"
               aria-label="Select Analytics View"
               value={activeSubTab}
-              onChange={(e) => setActiveSubTab(e.target.value as AnalyticsSubTab)}
+              onChange={(e) =>
+                setActiveSubTab(e.target.value as AnalyticsSubTab)
+              }
               className="sr-only"
             >
-              {subTabOptions.map(opt => (
+              {subTabOptions.map((opt) => (
                 <option key={opt.key} value={opt.key}>
                   {opt.label} ({opt.badge})
                 </option>
@@ -173,7 +193,9 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
               <div className="absolute top-full left-0 right-0 mt-2 z-50 bg-white rounded-2xl border-2 border-slate-200 shadow-2xl p-2 space-y-1 animate-in fade-in slide-in-from-top-2 duration-150">
                 <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100 flex items-center justify-between">
                   <span>Analytics Modules ({subTabOptions.length})</span>
-                  <span className="text-[9px] font-mono text-indigo-600 font-bold">Deep Telemetry</span>
+                  <span className="text-[9px] font-mono text-indigo-600 font-bold">
+                    Deep Telemetry
+                  </span>
                 </div>
 
                 {subTabOptions.map((option) => {
@@ -189,13 +211,15 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
                         setDropdownOpen(false);
                       }}
                       className={`w-full flex items-center justify-between gap-3 p-2.5 rounded-xl text-left transition cursor-pointer ${
-                        isSelected 
-                          ? "bg-indigo-50/80 border border-indigo-200 text-indigo-950 shadow-2xs font-bold" 
+                        isSelected
+                          ? "bg-indigo-50/80 border border-indigo-200 text-indigo-950 shadow-2xs font-bold"
                           : "hover:bg-slate-50 text-slate-700 hover:text-slate-900 border border-transparent"
                       }`}
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className={`p-2 rounded-lg border ${option.color} shrink-0 shadow-2xs`}>
+                        <div
+                          className={`p-2 rounded-lg border ${option.color} shrink-0 shadow-2xs`}
+                        >
                           <Icon className="w-4 h-4" />
                         </div>
                         <div className="min-w-0">
@@ -240,10 +264,11 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
             <div className="bg-slate-50 px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs shadow-2xs hidden lg:flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-slate-600 font-medium">Telemetry:</span>
-              <span className="font-extrabold text-indigo-700">{currentOption.label}</span>
+              <span className="font-extrabold text-indigo-700">
+                {currentOption.label}
+              </span>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -277,14 +302,10 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
       )}
 
       {activeSubTab === "gap-analysis" && (
-        <GapAnalysisTab 
-          onOpenExportReport={() => setShowExportModal(true)}
-        />
+        <GapAnalysisTab onOpenExportReport={() => setShowExportModal(true)} />
       )}
 
-      {activeSubTab === "rank-benchmark" && (
-        <RankBenchmarkTab />
-      )}
+      {activeSubTab === "rank-benchmark" && <RankBenchmarkTab />}
 
       {/* Analytics Export Modal */}
       <AnalyticsExportModal
@@ -296,7 +317,6 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
         mockLogs={mockLogs}
         weakAreas={weakAreas}
       />
-
     </div>
   );
 };

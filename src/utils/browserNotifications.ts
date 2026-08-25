@@ -1,9 +1,16 @@
 import { playTimerChime } from "./audioAlert";
 
-export type NotificationPermissionStatus = "granted" | "denied" | "default" | "unsupported";
+export type NotificationPermissionStatus =
+  | "granted"
+  | "denied"
+  | "default"
+  | "unsupported";
 
 let titleBlinkInterval: any = null;
-let originalDocumentTitle = typeof document !== "undefined" ? document.title : "UPSC AI Preparation Suite";
+let originalDocumentTitle =
+  typeof document !== "undefined"
+    ? document.title
+    : "UPSC AI Preparation Suite";
 
 /**
  * Checks if browser Native Notifications are supported
@@ -39,7 +46,7 @@ export async function requestNotificationPermission(): Promise<NotificationPermi
  */
 export function startTitleAlert(alertMessage: string) {
   if (typeof document === "undefined") return;
-  
+
   // Stop existing blinker
   stopTitleAlert();
 
@@ -87,16 +94,17 @@ export function triggerTimerEndNotification(options: {
   const { phase, cycle = 1, topic, playSound = true } = options;
 
   let title = "🎯 UPSC Focus Session Completed!";
-  let body = topic 
+  let body = topic
     ? `Great job! You've finished your focus block on "${topic}". Time for a well-deserved break.`
     : "Great discipline! Focus session finished. Take a rest to consolidate your memory.";
-  
+
   if (phase === "short_break") {
     title = "☕ Short Break Ended";
     body = `Cycle ${cycle} is starting! Ready to resume your UPSC study block?`;
   } else if (phase === "long_break") {
     title = "⚡ Long Rest Concluded";
-    body = "Your recharge window is complete. Ready to begin the next study sprint?";
+    body =
+      "Your recharge window is complete. Ready to begin the next study sprint?";
   }
 
   // 1. Play sound chime
@@ -106,7 +114,9 @@ export function triggerTimerEndNotification(options: {
 
   // 2. Alert tab title if document is hidden / not in focus
   if (typeof document !== "undefined" && document.hidden) {
-    startTitleAlert(phase === "focus" ? "FOCUS TIME COMPLETED!" : "BREAK TIME FINISHED!");
+    startTitleAlert(
+      phase === "focus" ? "FOCUS TIME COMPLETED!" : "BREAK TIME FINISHED!"
+    );
   }
 
   // 3. Dispatch Native Browser Notification
@@ -118,7 +128,7 @@ export function triggerTimerEndNotification(options: {
         badge: "/favicon.ico",
         tag: "upsc-study-timer",
         requireInteraction: true, // Remains on screen until clicked
-        silent: false
+        silent: false,
       });
 
       notification.onclick = () => {

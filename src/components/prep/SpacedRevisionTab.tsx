@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import { RevisionItem } from "../../types";
-import { 
-  RotateCcw, 
-  CheckCircle2, 
-  Sparkles, 
-  HelpCircle, 
-  Flame, 
-  Calendar, 
-  Clock, 
+import {
+  RotateCcw,
+  CheckCircle2,
+  Sparkles,
+  HelpCircle,
+  Flame,
+  Calendar,
+  Clock,
   Layers,
   ChevronRight,
   Eye,
   EyeOff,
   Plus,
   Trash2,
-  BookOpen
+  BookOpen,
 } from "lucide-react";
 
 interface SpacedRevisionTabProps {
@@ -30,11 +30,13 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
   onCompleteRevision,
   onAddRevisionItem,
   onDeleteRevisionItem,
-  onResetDefaultRevisionQueue
+  onResetDefaultRevisionQueue,
 }) => {
   const [activeCardIndex, setActiveCardIndex] = useState<number>(0);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
-  const [selectedItem, setSelectedItem] = useState<RevisionItem>(revisionQueue[0] || null);
+  const [selectedItem, setSelectedItem] = useState<RevisionItem>(
+    revisionQueue[0] || null
+  );
 
   // Modal for Add Custom Revision Item
   const [showAddModal, setShowAddModal] = useState(false);
@@ -47,12 +49,18 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
 
   const getIntervalLabel = (stage: number) => {
     switch (stage) {
-      case 1: return "Day 1 (Immediate Recall)";
-      case 2: return "Day 3 (Consolidation)";
-      case 3: return "Day 7 (Weekly Retention)";
-      case 4: return "Day 15 (Fortnightly Lock)";
-      case 5: return "Day 30 (Long-Term Mastery)";
-      default: return "Day 60+";
+      case 1:
+        return "Day 1 (Immediate Recall)";
+      case 2:
+        return "Day 3 (Consolidation)";
+      case 3:
+        return "Day 7 (Weekly Retention)";
+      case 4:
+        return "Day 15 (Fortnightly Lock)";
+      case 5:
+        return "Day 30 (Long-Term Mastery)";
+      default:
+        return "Day 60+";
     }
   };
 
@@ -62,7 +70,7 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
 
     const summaryPoints = formSummaryText
       .split("\n")
-      .map(s => s.trim())
+      .map((s) => s.trim())
       .filter(Boolean);
 
     const newItem: RevisionItem = {
@@ -75,13 +83,21 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
       intervalStage: 1,
       nextDueDate: new Date().toISOString().split("T")[0],
       isOverdue: false,
-      quickSummary: summaryPoints.length > 0 ? summaryPoints : ["Key concept reviewed for active recall."],
+      quickSummary:
+        summaryPoints.length > 0
+          ? summaryPoints
+          : ["Key concept reviewed for active recall."],
       flashcardQuestions: [
         {
-          q: formQuestion.trim() || `What are the core exam-oriented points of ${formTopicTitle}?`,
-          a: formAnswer.trim() || summaryPoints.join(" | ") || "Refer to standard study notes."
-        }
-      ]
+          q:
+            formQuestion.trim() ||
+            `What are the core exam-oriented points of ${formTopicTitle}?`,
+          a:
+            formAnswer.trim() ||
+            summaryPoints.join(" | ") ||
+            "Refer to standard study notes.",
+        },
+      ],
     };
 
     if (onAddRevisionItem) {
@@ -97,22 +113,26 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
 
   return (
     <div className="space-y-6">
-      
       {/* Top Banner Bento Card */}
       <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 sm:p-6 shadow-sm space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex flex-wrap items-center gap-2">
               <span className="px-3 py-1 rounded-full bg-teal-50 text-teal-700 text-xs font-bold border border-teal-100 flex items-center gap-1.5">
-                <RotateCcw className="w-3.5 h-3.5 text-teal-600" /> Ebbinghaus Forgetting Curve Solution
+                <RotateCcw className="w-3.5 h-3.5 text-teal-600" /> Ebbinghaus
+                Forgetting Curve Solution
               </span>
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">1-3-7-15-30 Day Spaced Cycles</span>
+              <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+                1-3-7-15-30 Day Spaced Cycles
+              </span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">
               Active Spaced Repetition Review Queue
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed mt-1">
-              Without active revision, 80% of UPSC information is forgotten within 48 hours. Review your scheduled flashcards and topic summaries to permanently anchor concepts into long-term memory.
+              Without active revision, 80% of UPSC information is forgotten
+              within 48 hours. Review your scheduled flashcards and topic
+              summaries to permanently anchor concepts into long-term memory.
             </p>
           </div>
 
@@ -142,8 +162,12 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
             )}
 
             <div className="bg-slate-50 px-3.5 py-2 rounded-xl border border-slate-200 text-center shadow-xs">
-              <div className="text-[10px] uppercase font-bold text-slate-500">Due Today</div>
-              <div className="text-base font-extrabold text-indigo-600 leading-tight">{revisionQueue.length} Topics</div>
+              <div className="text-[10px] uppercase font-bold text-slate-500">
+                Due Today
+              </div>
+              <div className="text-base font-extrabold text-indigo-600 leading-tight">
+                {revisionQueue.length} Topics
+              </div>
             </div>
           </div>
         </div>
@@ -154,7 +178,9 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
           <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto" />
           <h3 className="text-lg font-bold text-slate-900">All Caught Up!</h3>
           <p className="text-xs text-slate-500 max-w-md mx-auto font-medium">
-            You have no pending spaced revision tasks for today. Continue covering new syllabus topics or add your custom active recall flashcards.
+            You have no pending spaced revision tasks for today. Continue
+            covering new syllabus topics or add your custom active recall
+            flashcards.
           </p>
           <div className="flex items-center justify-center gap-2 pt-2">
             <button
@@ -175,14 +201,17 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
           {/* Left Column: Revision Items Queue */}
           <div className="space-y-3 lg:col-span-1">
             <div className="flex items-center justify-between">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600">Scheduled Queue</h3>
-              <span className="text-[11px] font-mono text-slate-400">{revisionQueue.length} total</span>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600">
+                Scheduled Queue
+              </h3>
+              <span className="text-[11px] font-mono text-slate-400">
+                {revisionQueue.length} total
+              </span>
             </div>
-            
+
             <div className="space-y-2.5 max-h-[600px] overflow-y-auto pr-1">
               {revisionQueue.map((item) => {
                 const isSelected = selectedItem?.id === item.id;
@@ -195,7 +224,7 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
                         : "bg-white border-slate-200 hover:border-slate-300"
                     }`}
                   >
-                    <div 
+                    <div
                       onClick={() => {
                         setSelectedItem(item);
                         setActiveCardIndex(0);
@@ -227,10 +256,14 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          if (confirm("Remove this card from revision queue?")) {
+                          if (
+                            confirm("Remove this card from revision queue?")
+                          ) {
                             onDeleteRevisionItem(item.id);
                             if (selectedItem?.id === item.id) {
-                              const remaining = revisionQueue.filter(r => r.id !== item.id);
+                              const remaining = revisionQueue.filter(
+                                (r) => r.id !== item.id
+                              );
                               setSelectedItem(remaining[0] || null);
                             }
                           }
@@ -251,7 +284,6 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
           {selectedItem && (
             <div className="lg:col-span-2 space-y-4">
               <div className="bg-white border-2 border-slate-200 rounded-3xl p-6 shadow-sm space-y-5">
-                
                 {/* Active Card Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
                   <div>
@@ -294,85 +326,95 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
                 </div>
 
                 {/* Flashcard Recall Interactive Box */}
-                {selectedItem.flashcardQuestions && selectedItem.flashcardQuestions.length > 0 && (
-                  <div className="bg-gradient-to-br from-indigo-50/50 to-white rounded-2xl p-5 border-2 border-indigo-100 space-y-4">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-bold text-indigo-900 flex items-center gap-1.5">
-                        <HelpCircle className="w-4 h-4 text-indigo-600" /> Active Recall Flashcard #{activeCardIndex + 1}
-                      </span>
-                      <span className="font-mono text-slate-500 font-semibold">
-                        Card {activeCardIndex + 1} of {selectedItem.flashcardQuestions.length}
-                      </span>
-                    </div>
+                {selectedItem.flashcardQuestions &&
+                  selectedItem.flashcardQuestions.length > 0 && (
+                    <div className="bg-gradient-to-br from-indigo-50/50 to-white rounded-2xl p-5 border-2 border-indigo-100 space-y-4">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-bold text-indigo-900 flex items-center gap-1.5">
+                          <HelpCircle className="w-4 h-4 text-indigo-600" />{" "}
+                          Active Recall Flashcard #{activeCardIndex + 1}
+                        </span>
+                        <span className="font-mono text-slate-500 font-semibold">
+                          Card {activeCardIndex + 1} of{" "}
+                          {selectedItem.flashcardQuestions.length}
+                        </span>
+                      </div>
 
-                    {/* Question Card */}
-                    <div className="bg-white p-4 rounded-xl border border-indigo-100 shadow-2xs space-y-2">
-                      <div className="text-[10px] uppercase font-bold text-slate-400">Question / Prompt</div>
-                      <p className="text-sm font-semibold text-slate-900 leading-relaxed">
-                        {selectedItem.flashcardQuestions[activeCardIndex]?.q}
-                      </p>
-                    </div>
-
-                    {/* Reveal Button / Answer Box */}
-                    {showAnswer ? (
-                      <div className="bg-emerald-50/70 p-4 rounded-xl border border-emerald-200 shadow-2xs space-y-2 animate-in fade-in duration-200">
-                        <div className="flex items-center justify-between">
-                          <div className="text-[10px] uppercase font-bold text-emerald-800">Model Key / Recall Answer</div>
-                          <button
-                            onClick={() => setShowAnswer(false)}
-                            className="text-emerald-700 hover:text-emerald-900 text-xs font-bold flex items-center gap-1 cursor-pointer"
-                          >
-                            <EyeOff className="w-3.5 h-3.5" />
-                            <span>Hide</span>
-                          </button>
+                      {/* Question Card */}
+                      <div className="bg-white p-4 rounded-xl border border-indigo-100 shadow-2xs space-y-2">
+                        <div className="text-[10px] uppercase font-bold text-slate-400">
+                          Question / Prompt
                         </div>
-                        <p className="text-xs text-slate-800 leading-relaxed font-medium">
-                          {selectedItem.flashcardQuestions[activeCardIndex]?.a}
+                        <p className="text-sm font-semibold text-slate-900 leading-relaxed">
+                          {selectedItem.flashcardQuestions[activeCardIndex]?.q}
                         </p>
                       </div>
-                    ) : (
-                      <button
-                        onClick={() => setShowAnswer(true)}
-                        className="w-full py-3 bg-white hover:bg-indigo-50 border-2 border-dashed border-indigo-200 rounded-xl text-xs font-bold text-indigo-600 flex items-center justify-center gap-2 transition cursor-pointer"
-                      >
-                        <Eye className="w-4 h-4" />
-                        <span>Click to Reveal Answer & Test Memory</span>
-                      </button>
-                    )}
 
-                    {/* Next / Prev Flashcard Navigation */}
-                    {selectedItem.flashcardQuestions.length > 1 && (
-                      <div className="flex items-center justify-between pt-2">
+                      {/* Reveal Button / Answer Box */}
+                      {showAnswer ? (
+                        <div className="bg-emerald-50/70 p-4 rounded-xl border border-emerald-200 shadow-2xs space-y-2 animate-in fade-in duration-200">
+                          <div className="flex items-center justify-between">
+                            <div className="text-[10px] uppercase font-bold text-emerald-800">
+                              Model Key / Recall Answer
+                            </div>
+                            <button
+                              onClick={() => setShowAnswer(false)}
+                              className="text-emerald-700 hover:text-emerald-900 text-xs font-bold flex items-center gap-1 cursor-pointer"
+                            >
+                              <EyeOff className="w-3.5 h-3.5" />
+                              <span>Hide</span>
+                            </button>
+                          </div>
+                          <p className="text-xs text-slate-800 leading-relaxed font-medium">
+                            {
+                              selectedItem.flashcardQuestions[activeCardIndex]
+                                ?.a
+                            }
+                          </p>
+                        </div>
+                      ) : (
                         <button
-                          disabled={activeCardIndex === 0}
-                          onClick={() => {
-                            setActiveCardIndex(prev => prev - 1);
-                            setShowAnswer(false);
-                          }}
-                          className="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-xs font-bold text-slate-700 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                          onClick={() => setShowAnswer(true)}
+                          className="w-full py-3 bg-white hover:bg-indigo-50 border-2 border-dashed border-indigo-200 rounded-xl text-xs font-bold text-indigo-600 flex items-center justify-center gap-2 transition cursor-pointer"
                         >
-                          ← Previous
+                          <Eye className="w-4 h-4" />
+                          <span>Click to Reveal Answer & Test Memory</span>
                         </button>
-                        <button
-                          disabled={activeCardIndex === selectedItem.flashcardQuestions.length - 1}
-                          onClick={() => {
-                            setActiveCardIndex(prev => prev + 1);
-                            setShowAnswer(false);
-                          }}
-                          className="px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
-                        >
-                          Next Card →
-                        </button>
-                      </div>
-                    )}
+                      )}
 
-                  </div>
-                )}
-
+                      {/* Next / Prev Flashcard Navigation */}
+                      {selectedItem.flashcardQuestions.length > 1 && (
+                        <div className="flex items-center justify-between pt-2">
+                          <button
+                            disabled={activeCardIndex === 0}
+                            onClick={() => {
+                              setActiveCardIndex((prev) => prev - 1);
+                              setShowAnswer(false);
+                            }}
+                            className="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-xs font-bold text-slate-700 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                          >
+                            ← Previous
+                          </button>
+                          <button
+                            disabled={
+                              activeCardIndex ===
+                              selectedItem.flashcardQuestions.length - 1
+                            }
+                            onClick={() => {
+                              setActiveCardIndex((prev) => prev + 1);
+                              setShowAnswer(false);
+                            }}
+                            className="px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-bold disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                          >
+                            Next Card →
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
               </div>
             </div>
           )}
-
         </div>
       )}
 
@@ -383,7 +425,9 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2">
                 <RotateCcw className="w-5 h-5 text-teal-600" />
-                <h3 className="text-base font-bold text-slate-900">Create Custom Revision Flashcard</h3>
+                <h3 className="text-base font-bold text-slate-900">
+                  Create Custom Revision Flashcard
+                </h3>
               </div>
               <button
                 onClick={() => setShowAddModal(false)}
@@ -395,7 +439,9 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
 
             <form onSubmit={handleCreateRevisionCard} className="space-y-3.5">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Topic Title *</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Topic Title *
+                </label>
                 <input
                   type="text"
                   required
@@ -408,7 +454,9 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Paper</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Paper
+                  </label>
                   <select
                     value={formPaper}
                     onChange={(e) => setFormPaper(e.target.value)}
@@ -426,7 +474,9 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Subject</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Subject
+                  </label>
                   <input
                     type="text"
                     placeholder="e.g. Indian Polity, Economy"
@@ -451,7 +501,9 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Active Recall Question</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Active Recall Question
+                </label>
                 <input
                   type="text"
                   placeholder="e.g. What constitutes the Basic Structure according to Supreme Court?"
@@ -462,7 +514,9 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Recall Answer / Key Points</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Recall Answer / Key Points
+                </label>
                 <textarea
                   rows={3}
                   placeholder="e.g. Supremacy of Constitution, Rule of law, Judicial review, Federalism, Free and fair elections, Secularism."
@@ -491,7 +545,6 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
           </div>
         </div>
       )}
-
     </div>
   );
 };

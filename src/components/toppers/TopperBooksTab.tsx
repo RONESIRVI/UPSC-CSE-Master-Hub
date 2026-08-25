@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { BookItem } from "../../types";
-import { 
-  BookOpen, 
-  CheckCircle2, 
-  Clock, 
-  Bookmark, 
-  Search, 
-  Star, 
+import {
+  BookOpen,
+  CheckCircle2,
+  Clock,
+  Bookmark,
+  Search,
+  Star,
   Sparkles,
   Layers,
-  ChevronDown
+  ChevronDown,
 } from "lucide-react";
 
 interface TopperBooksTabProps {
@@ -19,47 +19,65 @@ interface TopperBooksTabProps {
 
 export const TopperBooksTab: React.FC<TopperBooksTabProps> = ({
   books,
-  onToggleBookStatus
+  onToggleBookStatus,
 }) => {
   const [selectedPaper, setSelectedPaper] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [priorityFilter, setPriorityFilter] = useState<string>("All");
 
-  const papers = ["All", "Prelims GS1", "CSAT", "Mains GS1", "Mains GS2", "Mains GS3", "Mains GS4", "Essay", "Optional"];
+  const papers = [
+    "All",
+    "Prelims GS1",
+    "CSAT",
+    "Mains GS1",
+    "Mains GS2",
+    "Mains GS3",
+    "Mains GS4",
+    "Essay",
+    "Optional",
+  ];
 
-  const filteredBooks = books.filter(b => {
+  const filteredBooks = books.filter((b) => {
     if (selectedPaper !== "All" && b.paper !== selectedPaper) return false;
     if (priorityFilter !== "All" && b.priority !== priorityFilter) return false;
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
-      return b.title.toLowerCase().includes(q) || b.subject.toLowerCase().includes(q) || b.authorOrPublication.toLowerCase().includes(q);
+      return (
+        b.title.toLowerCase().includes(q) ||
+        b.subject.toLowerCase().includes(q) ||
+        b.authorOrPublication.toLowerCase().includes(q)
+      );
     }
     return true;
   });
 
-  const completedCount = books.filter(b => b.status === "completed").length;
-  const readingCount = books.filter(b => b.status === "reading").length;
+  const completedCount = books.filter((b) => b.status === "completed").length;
+  const readingCount = books.filter((b) => b.status === "reading").length;
   const totalCount = books.length;
   const progressPct = Math.round((completedCount / totalCount) * 100);
 
   return (
     <div className="space-y-6">
-      
       {/* Top Banner & Stats Bento Card */}
       <div className="bg-white border-2 border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
               <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-100 flex items-center gap-1.5">
-                <BookOpen className="w-3.5 h-3.5 text-indigo-600" /> Standard Topper Booklist
+                <BookOpen className="w-3.5 h-3.5 text-indigo-600" /> Standard
+                Topper Booklist
               </span>
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Strictly Consolidated (Zero Redundancy)</span>
+              <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+                Strictly Consolidated (Zero Redundancy)
+              </span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">
               Standard Books & High-Yield Reading Order
             </h2>
             <p className="text-sm text-slate-600 max-w-3xl leading-relaxed mt-1">
-              The non-negotiable standard reading list recommended uniformly by all UPSC toppers. Keep your sources strictly limited to these core texts and revise each book 5+ times.
+              The non-negotiable standard reading list recommended uniformly by
+              all UPSC toppers. Keep your sources strictly limited to these core
+              texts and revise each book 5+ times.
             </p>
           </div>
 
@@ -67,7 +85,9 @@ export const TopperBooksTab: React.FC<TopperBooksTabProps> = ({
           <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 shrink-0 min-w-[220px] shadow-sm">
             <div className="flex items-center justify-between text-xs font-bold text-slate-700 mb-1.5">
               <span>Booklist Progress</span>
-              <span className="text-indigo-600 font-extrabold">{progressPct}%</span>
+              <span className="text-indigo-600 font-extrabold">
+                {progressPct}%
+              </span>
             </div>
             <div className="w-full h-2.5 rounded-full bg-slate-200 overflow-hidden">
               <div
@@ -85,7 +105,6 @@ export const TopperBooksTab: React.FC<TopperBooksTabProps> = ({
 
         {/* Filters and Search Bar */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-4 border-t border-slate-100">
-          
           {/* Search Box */}
           <div className="relative flex-1 max-w-md">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -105,8 +124,10 @@ export const TopperBooksTab: React.FC<TopperBooksTabProps> = ({
               onChange={(e) => setSelectedPaper(e.target.value)}
               className="bg-white border border-slate-200 text-slate-800 text-xs rounded-xl px-3 py-2 outline-none font-bold focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-xs"
             >
-              {papers.map(p => (
-                <option key={p} value={p}>{p === "All" ? "All Papers" : p}</option>
+              {papers.map((p) => (
+                <option key={p} value={p}>
+                  {p === "All" ? "All Papers" : p}
+                </option>
               ))}
             </select>
 
@@ -121,7 +142,6 @@ export const TopperBooksTab: React.FC<TopperBooksTabProps> = ({
               <option value="Supplementary / Skim">Supplementary / Skim</option>
             </select>
           </div>
-
         </div>
       </div>
 
@@ -143,7 +163,6 @@ export const TopperBooksTab: React.FC<TopperBooksTabProps> = ({
               }`}
             >
               <div className="space-y-3">
-                
                 {/* Header with paper badge and priority */}
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex flex-wrap items-center gap-1.5">
@@ -155,19 +174,28 @@ export const TopperBooksTab: React.FC<TopperBooksTabProps> = ({
                     </span>
                   </div>
 
-                  <span className={`px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${
-                    book.priority === "Must Read / Core"
-                      ? "bg-rose-50 text-rose-700 border border-rose-200"
-                      : "bg-amber-50 text-amber-700 border border-amber-200"
-                  }`}>
+                  <span
+                    className={`px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${
+                      book.priority === "Must Read / Core"
+                        ? "bg-rose-50 text-rose-700 border border-rose-200"
+                        : "bg-amber-50 text-amber-700 border border-amber-200"
+                    }`}
+                  >
                     {book.priority}
                   </span>
                 </div>
 
                 {/* Title & Author */}
                 <div>
-                  <h3 className="text-base font-bold text-slate-900">{book.title}</h3>
-                  <p className="text-xs text-slate-500 font-medium mt-0.5">Author/Publisher: <span className="text-slate-800 font-semibold">{book.authorOrPublication}</span></p>
+                  <h3 className="text-base font-bold text-slate-900">
+                    {book.title}
+                  </h3>
+                  <p className="text-xs text-slate-500 font-medium mt-0.5">
+                    Author/Publisher:{" "}
+                    <span className="text-slate-800 font-semibold">
+                      {book.authorOrPublication}
+                    </span>
+                  </p>
                 </div>
 
                 {/* Recommended By */}
@@ -194,17 +222,31 @@ export const TopperBooksTab: React.FC<TopperBooksTabProps> = ({
 
                 {/* Topper Reading Tip Bento Box */}
                 <div className="text-xs text-slate-700 italic bg-amber-50/60 p-3 rounded-xl border border-amber-200/80">
-                  <span className="font-bold text-amber-800 not-italic">Topper Tip: </span>
+                  <span className="font-bold text-amber-800 not-italic">
+                    Topper Tip:{" "}
+                  </span>
                   {book.tipsForReading}
                 </div>
-
               </div>
 
               {/* Status Action Bar */}
               <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
                 <span className="text-xs font-semibold text-slate-500">
-                  Status: <span className={`font-bold ${isCompleted ? "text-emerald-600" : isReading ? "text-indigo-600" : "text-slate-500"}`}>
-                    {isCompleted ? "Completed" : isReading ? "Currently Reading" : "Not Started"}
+                  Status:{" "}
+                  <span
+                    className={`font-bold ${
+                      isCompleted
+                        ? "text-emerald-600"
+                        : isReading
+                        ? "text-indigo-600"
+                        : "text-slate-500"
+                    }`}
+                  >
+                    {isCompleted
+                      ? "Completed"
+                      : isReading
+                      ? "Currently Reading"
+                      : "Not Started"}
                   </span>
                 </span>
 
@@ -219,15 +261,19 @@ export const TopperBooksTab: React.FC<TopperBooksTabProps> = ({
                   }`}
                 >
                   <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>{isCompleted ? "Mark as Not Started" : isReading ? "Mark as Completed" : "Start Reading"}</span>
+                  <span>
+                    {isCompleted
+                      ? "Mark as Not Started"
+                      : isReading
+                      ? "Mark as Completed"
+                      : "Start Reading"}
+                  </span>
                 </button>
               </div>
-
             </div>
           );
         })}
       </div>
-
     </div>
   );
 };

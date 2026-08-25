@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { MainTab } from "../types";
-import { 
-  Trophy, 
-  BookOpen, 
-  BarChart3, 
-  Sparkles, 
-  Search, 
-  Flame, 
-  Clock, 
+import {
+  Home,
+  Trophy,
+  BookOpen,
+  BarChart3,
+  Sparkles,
+  Search,
+  Flame,
+  Clock,
   Calendar,
-  Compass
+  Compass,
 } from "lucide-react";
 
 interface NavbarProps {
@@ -31,7 +32,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   studyStreak,
   timerRunning,
   timerSeconds,
-  onToggleTimer
+  onToggleTimer,
 }) => {
   const [daysToPrelims, setDaysToPrelims] = useState<number>(0);
 
@@ -48,14 +49,18 @@ export const Navbar: React.FC<NavbarProps> = ({
     const hrs = Math.floor(totalSec / 3600);
     const mins = Math.floor((totalSec % 3600) / 60);
     const secs = totalSec % 60;
-    return `${hrs.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+    return `${hrs.toString().padStart(2, "0")}:${mins
+      .toString()
+      .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
   return (
-    <header id="main-header" className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 text-slate-900 shadow-xs safe-top">
+    <header
+      id="main-header"
+      className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 text-slate-900 shadow-xs safe-top"
+    >
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-15 sm:h-18">
-          
           {/* Brand Logo & Name */}
           <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
             <div className="w-9 h-9 sm:w-10 sm:h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-xs shrink-0">
@@ -78,6 +83,19 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Center Main Pillars Tabs (Bento Segmented Controller) */}
           <nav className="hidden lg:flex items-center gap-1.5 bg-slate-100/90 p-1.5 rounded-2xl border border-slate-200/80 shadow-inner">
+            <button
+              id="tab-btn-home"
+              onClick={() => setActiveTab("home")}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer ${
+                activeTab === "home"
+                  ? "bg-indigo-600 text-white shadow-sm"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
+              }`}
+            >
+              <Home className="w-3.5 h-3.5 shrink-0" />
+              <span>HOME</span>
+            </button>
+
             <button
               id="tab-btn-toppers"
               onClick={() => setActiveTab("toppers")}
@@ -120,11 +138,14 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Right Action Utilities */}
           <div className="flex items-center gap-1.5 sm:gap-2.5">
-            
             {/* Bento Countdown Card */}
             <div className="hidden xl:flex bg-white px-3.5 py-1.5 rounded-xl border border-slate-200 shadow-xs flex-col items-end shrink-0">
-              <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider whitespace-nowrap">Prelims Countdown</span>
-              <span className="text-sm font-mono font-bold text-indigo-600 whitespace-nowrap">{daysToPrelims} Days</span>
+              <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider whitespace-nowrap">
+                Prelims Countdown
+              </span>
+              <span className="text-sm font-mono font-bold text-indigo-600 whitespace-nowrap">
+                {daysToPrelims} Days
+              </span>
             </div>
 
             {/* Quick Stopwatch Pill */}
@@ -138,13 +159,23 @@ export const Navbar: React.FC<NavbarProps> = ({
                   : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50"
               }`}
             >
-              <Clock className={`w-3.5 h-3.5 shrink-0 ${timerRunning ? "text-emerald-600" : "text-slate-500"}`} />
-              <span className="font-mono font-bold text-xs whitespace-nowrap">{formatTimer(timerSeconds)}</span>
-              <span className={`w-2 h-2 rounded-full shrink-0 ${timerRunning ? "bg-emerald-500" : "bg-slate-400"}`} />
+              <Clock
+                className={`w-3.5 h-3.5 shrink-0 ${
+                  timerRunning ? "text-emerald-600" : "text-slate-500"
+                }`}
+              />
+              <span className="font-mono font-bold text-xs whitespace-nowrap">
+                {formatTimer(timerSeconds)}
+              </span>
+              <span
+                className={`w-2 h-2 rounded-full shrink-0 ${
+                  timerRunning ? "bg-emerald-500" : "bg-slate-400"
+                }`}
+              />
             </button>
 
             {/* Streak Counter */}
-            <div 
+            <div
               id="study-streak-badge"
               className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-orange-50 border border-orange-200 text-xs text-orange-700 font-bold shadow-xs shrink-0 whitespace-nowrap"
               title="Daily Active Study Streak"
@@ -173,7 +204,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="hidden sm:inline">AI UPSC Mentor</span>
               <span className="sm:hidden">AI Mentor</span>
             </button>
-
           </div>
         </div>
       </div>

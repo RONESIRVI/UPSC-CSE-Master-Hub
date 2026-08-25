@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { 
-  PrepSubTab, 
-  SyllabusTopic, 
-  StudyPlanPhase, 
-  StudySessionLog, 
+import {
+  PrepSubTab,
+  SyllabusTopic,
+  StudyPlanPhase,
+  StudySessionLog,
   RevisionItem,
-  PYQQuestion
+  PYQQuestion,
 } from "../../types";
 import { SyllabusTab } from "./SyllabusTab";
 import { StudyPlanTab } from "./StudyPlanTab";
@@ -15,11 +15,11 @@ import { RevisionNotesTab } from "./RevisionNotesTab";
 import { PYQTab } from "./PYQTab";
 import { QuickStudyLogModal } from "./QuickStudyLogModal";
 import { QuickThoughtsModal } from "./QuickThoughtsModal";
-import { 
-  BookOpen, 
-  Flag, 
-  Clock, 
-  RotateCcw, 
+import {
+  BookOpen,
+  Flag,
+  Clock,
+  RotateCcw,
   HelpCircle,
   StickyNote,
   ChevronDown,
@@ -27,14 +27,17 @@ import {
   Sparkles,
   Layers,
   Plus,
-  Lightbulb
+  Lightbulb,
 } from "lucide-react";
 
 interface PrepSectionProps {
   activeSubTab: PrepSubTab;
   setActiveSubTab: (subTab: PrepSubTab) => void;
   syllabus: SyllabusTopic[];
-  onUpdateTopicStatus: (topicId: string, nextStatus: SyllabusTopic["status"]) => void;
+  onUpdateTopicStatus: (
+    topicId: string,
+    nextStatus: SyllabusTopic["status"]
+  ) => void;
   onOpenTopicAI: (topic: SyllabusTopic) => void;
   onAddTopic?: (topic: SyllabusTopic) => void;
   onDeleteTopic?: (topicId: string) => void;
@@ -66,7 +69,9 @@ interface PrepSectionProps {
   onResetDefaultPYQs?: () => void;
   onOpenAIEvaluator: (question: string) => void;
   timerConfig?: import("../../types").FocusTimerConfig;
-  onUpdateTimerConfig?: (config: import("../../types").FocusTimerConfig) => void;
+  onUpdateTimerConfig?: (
+    config: import("../../types").FocusTimerConfig
+  ) => void;
   timerPhase?: import("../../types").TimerPhase;
   currentCycle?: number;
   onSkipInterval?: () => void;
@@ -113,11 +118,12 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
   timerPhase,
   currentCycle,
   onSkipInterval,
-  onSetTimerPhase
+  onSetTimerPhase,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [showQuickLogModal, setShowQuickLogModal] = useState<boolean>(false);
-  const [showQuickThoughtsModal, setShowQuickThoughtsModal] = useState<boolean>(false);
+  const [showQuickThoughtsModal, setShowQuickThoughtsModal] =
+    useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const subTabOptions: {
@@ -128,63 +134,67 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
     badge: string;
     color: string;
   }[] = [
-    { 
-      key: "syllabus", 
-      label: "Syllabus Tracker", 
-      description: "Micro-topic checklist & progress tracker", 
-      icon: BookOpen, 
+    {
+      key: "syllabus",
+      label: "Syllabus Tracker",
+      description: "Micro-topic checklist & progress tracker",
+      icon: BookOpen,
       badge: `${syllabus.length} Topics`,
-      color: "bg-blue-50 text-blue-600 border-blue-200"
+      color: "bg-blue-50 text-blue-600 border-blue-200",
     },
-    { 
-      key: "notes", 
-      label: "Quick Revision Notes", 
-      description: "Local high-yield fact cards & key points binder", 
-      icon: StickyNote, 
+    {
+      key: "notes",
+      label: "Quick Revision Notes",
+      description: "Local high-yield fact cards & key points binder",
+      icon: StickyNote,
       badge: "Binder",
-      color: "bg-amber-50 text-amber-600 border-amber-200"
+      color: "bg-amber-50 text-amber-600 border-amber-200",
     },
-    { 
-      key: "study-plan", 
-      label: "Study Plan & Milestones", 
-      description: "Phase-wise roadmap & strategic timeline", 
-      icon: Flag, 
+    {
+      key: "study-plan",
+      label: "Study Plan & Milestones",
+      description: "Phase-wise roadmap & strategic timeline",
+      icon: Flag,
       badge: "4 Phases",
-      color: "bg-indigo-50 text-indigo-600 border-indigo-200"
+      color: "bg-indigo-50 text-indigo-600 border-indigo-200",
     },
-    { 
-      key: "tracker", 
-      label: "Study Tracker & Focus Timer", 
-      description: "Live focus stopwatch & daily session analytics", 
-      icon: Clock, 
+    {
+      key: "tracker",
+      label: "Study Tracker & Focus Timer",
+      description: "Live focus stopwatch & daily session analytics",
+      icon: Clock,
       badge: "Live Focus",
-      color: "bg-emerald-50 text-emerald-600 border-emerald-200"
+      color: "bg-emerald-50 text-emerald-600 border-emerald-200",
     },
-    { 
-      key: "revision", 
-      label: "Spaced Repetition Queue", 
-      description: "Active recall flashcards on 1-3-7-15-30 cycles", 
-      icon: RotateCcw, 
+    {
+      key: "revision",
+      label: "Spaced Repetition Queue",
+      description: "Active recall flashcards on 1-3-7-15-30 cycles",
+      icon: RotateCcw,
       badge: `${revisionQueue.length} Due`,
-      color: "bg-teal-50 text-teal-600 border-teal-200"
+      color: "bg-teal-50 text-teal-600 border-teal-200",
     },
-    { 
-      key: "pyq", 
-      label: "PYQs & Model Keys", 
-      description: "Past year Prelims MCQs & Mains model answers", 
-      icon: HelpCircle, 
+    {
+      key: "pyq",
+      label: "PYQs & Model Keys",
+      description: "Past year Prelims MCQs & Mains model answers",
+      icon: HelpCircle,
       badge: "Exam Vault",
-      color: "bg-purple-50 text-purple-600 border-purple-200"
+      color: "bg-purple-50 text-purple-600 border-purple-200",
     },
   ];
 
-  const currentOption = subTabOptions.find(t => t.key === activeSubTab) || subTabOptions[0];
+  const currentOption =
+    subTabOptions.find((t) => t.key === activeSubTab) || subTabOptions[0];
   const CurrentIcon = currentOption.icon;
 
   // Close dropdown on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setDropdownOpen(false);
       }
     };
@@ -194,12 +204,9 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
 
   return (
     <div className="space-y-6">
-      
       {/* Top Navigation & Dropdown Bar */}
       <div className="bg-white p-3 rounded-2xl border-2 border-slate-200 shadow-sm space-y-3">
-        
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          
           {/* Main Dropdown Selector (Active on all screens with rich popover) */}
           <div className="relative flex-1 max-w-md" ref={dropdownRef}>
             <label className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1 flex items-center gap-1.5">
@@ -215,7 +222,9 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
               className="w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 border-2 border-slate-300 hover:border-indigo-500 text-slate-900 font-bold text-xs transition cursor-pointer shadow-2xs"
             >
               <div className="flex items-center gap-2.5 min-w-0">
-                <div className={`p-1.5 rounded-lg border ${currentOption.color} shrink-0`}>
+                <div
+                  className={`p-1.5 rounded-lg border ${currentOption.color} shrink-0`}
+                >
                   <CurrentIcon className="w-4 h-4" />
                 </div>
                 <div className="text-left truncate">
@@ -231,7 +240,11 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
                 </div>
               </div>
 
-              <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform shrink-0 ${dropdownOpen ? "rotate-180 text-indigo-600" : ""}`} />
+              <ChevronDown
+                className={`w-4 h-4 text-slate-500 transition-transform shrink-0 ${
+                  dropdownOpen ? "rotate-180 text-indigo-600" : ""
+                }`}
+              />
             </button>
 
             {/* Native Mobile Fallback Select (Hidden visually, accessible for screen readers & quick selection) */}
@@ -242,7 +255,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
               onChange={(e) => setActiveSubTab(e.target.value as PrepSubTab)}
               className="sr-only"
             >
-              {subTabOptions.map(opt => (
+              {subTabOptions.map((opt) => (
                 <option key={opt.key} value={opt.key}>
                   {opt.label} ({opt.badge})
                 </option>
@@ -269,13 +282,15 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
                         setDropdownOpen(false);
                       }}
                       className={`w-full flex items-center justify-between gap-3 p-2.5 rounded-xl text-left transition cursor-pointer ${
-                        isSelected 
-                          ? "bg-indigo-50/80 border border-indigo-200 text-indigo-950 shadow-2xs font-bold" 
+                        isSelected
+                          ? "bg-indigo-50/80 border border-indigo-200 text-indigo-950 shadow-2xs font-bold"
                           : "hover:bg-slate-50 text-slate-700 hover:text-slate-900 border border-transparent"
                       }`}
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className={`p-2 rounded-lg border ${option.color} shrink-0 shadow-2xs`}>
+                        <div
+                          className={`p-2 rounded-lg border ${option.color} shrink-0 shadow-2xs`}
+                        >
                           <Icon className="w-4 h-4" />
                         </div>
                         <div className="min-w-0">
@@ -324,12 +339,12 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
             <div className="bg-slate-50 px-3 py-2 rounded-xl border border-slate-200 text-xs shadow-2xs hidden md:flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-slate-600 font-medium">Active Module:</span>
-              <span className="font-extrabold text-indigo-700">{currentOption.label}</span>
+              <span className="font-extrabold text-indigo-700">
+                {currentOption.label}
+              </span>
             </div>
           </div>
-
         </div>
-
       </div>
 
       {/* Subtab Content Panels */}
@@ -346,10 +361,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
       )}
 
       {activeSubTab === "notes" && (
-        <RevisionNotesTab
-          syllabus={syllabus}
-          onOpenTopicAI={onOpenTopicAI}
-        />
+        <RevisionNotesTab syllabus={syllabus} onOpenTopicAI={onOpenTopicAI} />
       )}
 
       {activeSubTab === "study-plan" && (
@@ -396,9 +408,9 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
       )}
 
       {activeSubTab === "pyq" && (
-        <PYQTab 
+        <PYQTab
           pyqs={pyqs}
-          onOpenAIEvaluator={onOpenAIEvaluator} 
+          onOpenAIEvaluator={onOpenAIEvaluator}
           onAddPYQ={onAddPYQ}
           onDeletePYQ={onDeletePYQ}
           onResetDefaultPYQs={onResetDefaultPYQs}
@@ -455,7 +467,6 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
         syllabus={syllabus}
         onAddToSpacedRevision={onAddRevisionItem}
       />
-
     </div>
   );
 };

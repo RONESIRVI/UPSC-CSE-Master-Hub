@@ -1,26 +1,33 @@
 import React, { useState } from "react";
 import { TOPPERS_PROFILES } from "../../data/toppersData";
 import { TopperProfile } from "../../types";
-import { 
-  Trophy, 
-  BookOpen, 
-  Award, 
-  CheckCircle2, 
-  ChevronRight, 
-  Sparkles, 
-  Flame, 
+import {
+  Trophy,
+  BookOpen,
+  Award,
+  CheckCircle2,
+  ChevronRight,
+  Sparkles,
+  Flame,
   GraduationCap,
-  Filter
+  Filter,
 } from "lucide-react";
 
 export const TopperStrategyTab: React.FC = () => {
-  const [selectedTopper, setSelectedTopper] = useState<TopperProfile>(TOPPERS_PROFILES[0]);
-  const [activeStrategyPaper, setActiveStrategyPaper] = useState<"gs1" | "gs2" | "gs3" | "gs4" | "essay" | "optional" | "prelims" | "csat">("gs1");
+  const [selectedTopper, setSelectedTopper] = useState<TopperProfile>(
+    TOPPERS_PROFILES[0]
+  );
+  const [activeStrategyPaper, setActiveStrategyPaper] = useState<
+    "gs1" | "gs2" | "gs3" | "gs4" | "essay" | "optional" | "prelims" | "csat"
+  >("gs1");
   const [optionalFilter, setOptionalFilter] = useState<string>("All");
 
-  const optionals = ["All", ...Array.from(new Set(TOPPERS_PROFILES.map(t => t.optional)))];
+  const optionals = [
+    "All",
+    ...Array.from(new Set(TOPPERS_PROFILES.map((t) => t.optional))),
+  ];
 
-  const filteredToppers = TOPPERS_PROFILES.filter(t => {
+  const filteredToppers = TOPPERS_PROFILES.filter((t) => {
     if (optionalFilter === "All") return true;
     return t.optional === optionalFilter;
   });
@@ -32,15 +39,20 @@ export const TopperStrategyTab: React.FC = () => {
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
             <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-100 flex items-center gap-1.5">
-              <Trophy className="w-3.5 h-3.5 text-indigo-600" /> Rank 1 Blueprint
+              <Trophy className="w-3.5 h-3.5 text-indigo-600" /> Rank 1
+              Blueprint
             </span>
-            <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Decoded UPSC Scoring Strategies</span>
+            <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+              Decoded UPSC Scoring Strategies
+            </span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
             Topper Strategy & Subject Masterclass
           </h2>
           <p className="text-sm text-slate-600 max-w-3xl leading-relaxed">
-            Analyze the exact micro-strategies, answer presentation frameworks, notes methodology, and optional subject tactics that propelled rank holders to the top of the Civil Services Examination.
+            Analyze the exact micro-strategies, answer presentation frameworks,
+            notes methodology, and optional subject tactics that propelled rank
+            holders to the top of the Civil Services Examination.
           </p>
         </div>
 
@@ -53,8 +65,10 @@ export const TopperStrategyTab: React.FC = () => {
             onChange={(e) => setOptionalFilter(e.target.value)}
             className="bg-white border border-slate-200 text-slate-800 text-xs rounded-lg px-3 py-1.5 font-bold focus:ring-2 focus:ring-indigo-500 outline-none cursor-pointer"
           >
-            {optionals.map(opt => (
-              <option key={opt} value={opt}>{opt}</option>
+            {optionals.map((opt) => (
+              <option key={opt} value={opt}>
+                {opt}
+              </option>
             ))}
           </select>
         </div>
@@ -83,29 +97,42 @@ export const TopperStrategyTab: React.FC = () => {
                 <div className="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-start justify-between gap-2">
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-slate-900 text-lg truncate">{topper.name}</span>
+                      <span className="font-bold text-slate-900 text-lg truncate">
+                        {topper.name}
+                      </span>
                       <span className="px-2 py-0.5 rounded-md bg-indigo-600 text-white font-extrabold text-xs shadow-sm whitespace-nowrap">
                         AIR {topper.rank}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-500 font-medium mt-0.5">CSE {topper.year} • Attempt #{topper.attempt}</p>
+                    <p className="text-xs text-slate-500 font-medium mt-0.5">
+                      CSE {topper.year} • Attempt #{topper.attempt}
+                    </p>
                     <p className="text-xs text-indigo-600 font-bold truncate mt-1 flex items-center gap-1">
-                      <GraduationCap className="w-3.5 h-3.5 shrink-0" /> {topper.optional}
+                      <GraduationCap className="w-3.5 h-3.5 shrink-0" />{" "}
+                      {topper.optional}
                     </p>
                   </div>
-                  
+
                   {isSelected && (
                     <div className="flex items-center gap-2 self-start">
                       {topper.mainsScore && (
                         <div className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-center shadow-sm">
-                          <div className="text-[9px] uppercase font-bold text-slate-400">Mains</div>
-                          <div className="text-sm font-extrabold text-indigo-600">{topper.mainsScore}</div>
+                          <div className="text-[9px] uppercase font-bold text-slate-400">
+                            Mains
+                          </div>
+                          <div className="text-sm font-extrabold text-indigo-600">
+                            {topper.mainsScore}
+                          </div>
                         </div>
                       )}
                       {topper.interviewScore && (
                         <div className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-center shadow-sm">
-                          <div className="text-[9px] uppercase font-bold text-slate-400">Interview</div>
-                          <div className="text-sm font-extrabold text-emerald-600">{topper.interviewScore}</div>
+                          <div className="text-[9px] uppercase font-bold text-slate-400">
+                            Interview
+                          </div>
+                          <div className="text-sm font-extrabold text-emerald-600">
+                            {topper.interviewScore}
+                          </div>
                         </div>
                       )}
                     </div>
@@ -128,16 +155,17 @@ export const TopperStrategyTab: React.FC = () => {
 
               {/* INLINE EXPANDED CONTENT */}
               {isSelected && (
-                <div 
+                <div
                   className="mt-5 pt-5 border-t border-slate-200 cursor-default animate-in fade-in slide-in-from-top-2 duration-300 space-y-6"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <p className="text-sm text-slate-600 italic font-medium leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
                     "{topper.quote}"
                   </p>
-                  
+
                   <div className="text-sm text-slate-700">
-                    <span className="font-bold">Background:</span> {topper.background}
+                    <span className="font-bold">Background:</span>{" "}
+                    {topper.background}
                   </div>
 
                   {/* Golden Rules Bento Box */}
@@ -148,9 +176,14 @@ export const TopperStrategyTab: React.FC = () => {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {topper.goldenRules.map((rule, idx) => (
-                        <div key={idx} className="flex items-start gap-2.5 text-xs text-slate-700 bg-white p-3 rounded-lg border border-indigo-100 shadow-xs">
+                        <div
+                          key={idx}
+                          className="flex items-start gap-2.5 text-xs text-slate-700 bg-white p-3 rounded-lg border border-indigo-100 shadow-xs"
+                        >
                           <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                          <span className="leading-relaxed font-medium">{rule}</span>
+                          <span className="leading-relaxed font-medium">
+                            {rule}
+                          </span>
                         </div>
                       ))}
                     </div>
@@ -172,10 +205,13 @@ export const TopperStrategyTab: React.FC = () => {
                         { key: "gs3", label: "GS3" },
                         { key: "gs4", label: "GS4" },
                         { key: "essay", label: "Essay" },
-                        { key: "optional", label: `Optional (${topper.optional})` },
+                        {
+                          key: "optional",
+                          label: `Optional (${topper.optional})`,
+                        },
                         { key: "prelims", label: "Prelims GS1" },
                         { key: "csat", label: "CSAT" },
-                      ].map(tab => (
+                      ].map((tab) => (
                         <button
                           key={tab.key}
                           onClick={() => setActiveStrategyPaper(tab.key as any)}
@@ -193,63 +229,92 @@ export const TopperStrategyTab: React.FC = () => {
                     <div className="bg-slate-50 border-2 border-slate-200 rounded-2xl p-5 sm:p-6 shadow-xs space-y-3">
                       {activeStrategyPaper === "gs1" && (
                         <div>
-                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">GS1 Strategy (History, Geography, Society)</div>
-                          <p className="text-sm leading-relaxed text-slate-700 font-medium">{topper.gsStrategy.gs1}</p>
+                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">
+                            GS1 Strategy (History, Geography, Society)
+                          </div>
+                          <p className="text-sm leading-relaxed text-slate-700 font-medium">
+                            {topper.gsStrategy.gs1}
+                          </p>
                         </div>
                       )}
                       {activeStrategyPaper === "gs2" && (
                         <div>
-                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">GS2 Strategy (Polity, Governance, IR)</div>
-                          <p className="text-sm leading-relaxed text-slate-700 font-medium">{topper.gsStrategy.gs2}</p>
+                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">
+                            GS2 Strategy (Polity, Governance, IR)
+                          </div>
+                          <p className="text-sm leading-relaxed text-slate-700 font-medium">
+                            {topper.gsStrategy.gs2}
+                          </p>
                         </div>
                       )}
                       {activeStrategyPaper === "gs3" && (
                         <div>
-                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">GS3 Strategy (Economy, Sci-Tech, Environment)</div>
-                          <p className="text-sm leading-relaxed text-slate-700 font-medium">{topper.gsStrategy.gs3}</p>
+                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">
+                            GS3 Strategy (Economy, Sci-Tech, Environment)
+                          </div>
+                          <p className="text-sm leading-relaxed text-slate-700 font-medium">
+                            {topper.gsStrategy.gs3}
+                          </p>
                         </div>
                       )}
                       {activeStrategyPaper === "gs4" && (
                         <div>
-                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">GS4 Strategy (Ethics, Case Studies)</div>
-                          <p className="text-sm leading-relaxed text-slate-700 font-medium">{topper.gsStrategy.gs4}</p>
+                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">
+                            GS4 Strategy (Ethics, Case Studies)
+                          </div>
+                          <p className="text-sm leading-relaxed text-slate-700 font-medium">
+                            {topper.gsStrategy.gs4}
+                          </p>
                         </div>
                       )}
                       {activeStrategyPaper === "essay" && (
                         <div>
-                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">Essay Writing Methodology</div>
-                          <p className="text-sm leading-relaxed text-slate-700 font-medium">{topper.essayStrategy}</p>
+                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">
+                            Essay Writing Methodology
+                          </div>
+                          <p className="text-sm leading-relaxed text-slate-700 font-medium">
+                            {topper.essayStrategy}
+                          </p>
                         </div>
                       )}
                       {activeStrategyPaper === "optional" && (
                         <div>
-                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">Optional Strategy</div>
-                          <p className="text-sm leading-relaxed text-slate-700 font-medium">{topper.optionalStrategy}</p>
+                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">
+                            Optional Strategy
+                          </div>
+                          <p className="text-sm leading-relaxed text-slate-700 font-medium">
+                            {topper.optionalStrategy}
+                          </p>
                         </div>
                       )}
                       {activeStrategyPaper === "prelims" && (
                         <div>
-                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">Prelims GS Paper 1 Strategy</div>
-                          <p className="text-sm leading-relaxed text-slate-700 font-medium">{topper.prelimsStrategy}</p>
+                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">
+                            Prelims GS Paper 1 Strategy
+                          </div>
+                          <p className="text-sm leading-relaxed text-slate-700 font-medium">
+                            {topper.prelimsStrategy}
+                          </p>
                         </div>
                       )}
                       {activeStrategyPaper === "csat" && (
                         <div>
-                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">CSAT Strategy</div>
-                          <p className="text-sm leading-relaxed text-slate-700 font-medium">{topper.csatStrategy}</p>
+                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">
+                            CSAT Strategy
+                          </div>
+                          <p className="text-sm leading-relaxed text-slate-700 font-medium">
+                            {topper.csatStrategy}
+                          </p>
                         </div>
                       )}
                     </div>
                   </div>
-                  
                 </div>
               )}
             </div>
           );
         })}
       </div>
-
-
     </div>
   );
 };

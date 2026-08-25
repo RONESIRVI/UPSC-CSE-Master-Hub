@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { PYQQuestion } from "../../types";
 import { PYQ_DATABASE } from "../../data/pyqData";
-import { 
-  HelpCircle, 
-  CheckCircle2, 
-  XCircle, 
-  Sparkles, 
-  RotateCcw, 
-  BookOpen, 
-  Layers, 
+import {
+  HelpCircle,
+  CheckCircle2,
+  XCircle,
+  Sparkles,
+  RotateCcw,
+  BookOpen,
+  Layers,
   Filter,
   Edit3,
   Award,
   Plus,
-  Trash2
+  Trash2,
 } from "lucide-react";
 
 interface PYQTabProps {
@@ -24,14 +24,16 @@ interface PYQTabProps {
   onResetDefaultPYQs?: () => void;
 }
 
-export const PYQTab: React.FC<PYQTabProps> = ({ 
+export const PYQTab: React.FC<PYQTabProps> = ({
   pyqs = PYQ_DATABASE,
   onOpenAIEvaluator,
   onAddPYQ,
   onDeletePYQ,
-  onResetDefaultPYQs
+  onResetDefaultPYQs,
 }) => {
-  const [selectedType, setSelectedType] = useState<"All" | "Prelims" | "Mains">("All");
+  const [selectedType, setSelectedType] = useState<"All" | "Prelims" | "Mains">(
+    "All"
+  );
   const [selectedSubject, setSelectedSubject] = useState<string>("All");
   const [selectedYear, setSelectedYear] = useState<string>("All");
 
@@ -60,30 +62,34 @@ export const PYQTab: React.FC<PYQTabProps> = ({
   // Filter PYQ list
   const filteredPYQs = pyqs.filter((q) => {
     if (selectedType !== "All" && q.type !== selectedType) return false;
-    if (selectedSubject !== "All" && q.subject !== selectedSubject) return false;
-    if (selectedYear !== "All" && q.year.toString() !== selectedYear) return false;
+    if (selectedSubject !== "All" && q.subject !== selectedSubject)
+      return false;
+    if (selectedYear !== "All" && q.year.toString() !== selectedYear)
+      return false;
     return true;
   });
 
-  const subjects = Array.from(new Set(pyqs.map(q => q.subject)));
-  const years = Array.from(new Set(pyqs.map(q => q.year))).sort((a, b) => b - a);
+  const subjects = Array.from(new Set(pyqs.map((q) => q.subject)));
+  const years = Array.from(new Set(pyqs.map((q) => q.year))).sort(
+    (a, b) => b - a
+  );
 
   const handleSelectOption = (questionId: string, optLabel: string) => {
     if (showResults[questionId]) return;
-    setUserAnswers(prev => ({ ...prev, [questionId]: optLabel }));
+    setUserAnswers((prev) => ({ ...prev, [questionId]: optLabel }));
   };
 
   const handleCheckAnswer = (questionId: string) => {
-    setShowResults(prev => ({ ...prev, [questionId]: true }));
+    setShowResults((prev) => ({ ...prev, [questionId]: true }));
   };
 
   const handleResetQuestion = (questionId: string) => {
-    setUserAnswers(prev => {
+    setUserAnswers((prev) => {
       const next = { ...prev };
       delete next[questionId];
       return next;
     });
-    setShowResults(prev => {
+    setShowResults((prev) => {
       const next = { ...prev };
       delete next[questionId];
       return next;
@@ -102,20 +108,25 @@ export const PYQTab: React.FC<PYQTabProps> = ({
       subject: formSubject.trim() || "General Studies",
       topic: formTopic.trim() || "General Concept",
       questionText: formQuestionText.trim(),
-      ...(formType === "Prelims" ? {
-        options: [
-          { label: "A", text: formOptA.trim() || "Option A" },
-          { label: "B", text: formOptB.trim() || "Option B" },
-          { label: "C", text: formOptC.trim() || "Option C" },
-          { label: "D", text: formOptD.trim() || "Option D" },
-        ],
-        correctOption: formCorrectOpt,
-        explanation: formExplanation.trim() || "Refer to standard reference sources.",
-        eliminationTechnique: formElimination.trim() || undefined
-      } : {
-        marks: formMarks || 10,
-        modelAnswerOutline: formModelOutline.trim() || "Introduction -> Key Body Points -> Conclusion"
-      })
+      ...(formType === "Prelims"
+        ? {
+            options: [
+              { label: "A", text: formOptA.trim() || "Option A" },
+              { label: "B", text: formOptB.trim() || "Option B" },
+              { label: "C", text: formOptC.trim() || "Option C" },
+              { label: "D", text: formOptD.trim() || "Option D" },
+            ],
+            correctOption: formCorrectOpt,
+            explanation:
+              formExplanation.trim() || "Refer to standard reference sources.",
+            eliminationTechnique: formElimination.trim() || undefined,
+          }
+        : {
+            marks: formMarks || 10,
+            modelAnswerOutline:
+              formModelOutline.trim() ||
+              "Introduction -> Key Body Points -> Conclusion",
+          }),
     };
 
     if (onAddPYQ) {
@@ -135,22 +146,26 @@ export const PYQTab: React.FC<PYQTabProps> = ({
 
   return (
     <div className="space-y-6">
-      
       {/* Top Banner Bento Card */}
       <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 sm:p-6 shadow-sm space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex flex-wrap items-center gap-2">
               <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-100 flex items-center gap-1.5">
-                <HelpCircle className="w-3.5 h-3.5 text-indigo-600" /> UPSC Exam Vault
+                <HelpCircle className="w-3.5 h-3.5 text-indigo-600" /> UPSC Exam
+                Vault
               </span>
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Authentic Past Year Questions</span>
+              <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+                Authentic Past Year Questions
+              </span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">
               Previous Year Questions (PYQs) & Model Keys
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed mt-1">
-              Test your conceptual elimination techniques on genuine UPSC Prelims questions and dissect high-scoring Mains model structures with AI-assisted answer evaluation.
+              Test your conceptual elimination techniques on genuine UPSC
+              Prelims questions and dissect high-scoring Mains model structures
+              with AI-assisted answer evaluation.
             </p>
           </div>
 
@@ -167,7 +182,11 @@ export const PYQTab: React.FC<PYQTabProps> = ({
             {onResetDefaultPYQs && (
               <button
                 onClick={() => {
-                  if (confirm("Restore standard UPSC PYQ database? Custom questions will be reset.")) {
+                  if (
+                    confirm(
+                      "Restore standard UPSC PYQ database? Custom questions will be reset."
+                    )
+                  ) {
                     onResetDefaultPYQs();
                   }
                 }}
@@ -204,8 +223,10 @@ export const PYQTab: React.FC<PYQTabProps> = ({
               className="bg-transparent text-slate-900 font-bold outline-none cursor-pointer max-w-[160px] truncate"
             >
               <option value="All">All Subjects</option>
-              {subjects.map(s => (
-                <option key={s} value={s}>{s}</option>
+              {subjects.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
               ))}
             </select>
           </div>
@@ -218,14 +239,18 @@ export const PYQTab: React.FC<PYQTabProps> = ({
               className="bg-transparent text-slate-900 font-bold outline-none cursor-pointer"
             >
               <option value="All">All Years</option>
-              {years.map(y => (
-                <option key={y} value={y.toString()}>{y}</option>
+              {years.map((y) => (
+                <option key={y} value={y.toString()}>
+                  {y}
+                </option>
               ))}
             </select>
           </div>
 
           <span className="text-slate-500 ml-auto font-mono text-[11px] font-medium">
-            Showing <strong className="text-slate-900">{filteredPYQs.length}</strong> questions
+            Showing{" "}
+            <strong className="text-slate-900">{filteredPYQs.length}</strong>{" "}
+            questions
           </span>
         </div>
       </div>
@@ -235,9 +260,12 @@ export const PYQTab: React.FC<PYQTabProps> = ({
         {filteredPYQs.length === 0 ? (
           <div className="bg-white border-2 border-slate-200 rounded-2xl p-12 text-center space-y-3">
             <HelpCircle className="w-10 h-10 text-slate-300 mx-auto" />
-            <h3 className="text-sm font-bold text-slate-800">No questions found matching criteria</h3>
+            <h3 className="text-sm font-bold text-slate-800">
+              No questions found matching criteria
+            </h3>
             <p className="text-xs text-slate-500 max-w-sm mx-auto">
-              Add your own custom PYQ or practice question, or reset your filters.
+              Add your own custom PYQ or practice question, or reset your
+              filters.
             </p>
             <button
               onClick={() => setShowAddModal(true)}
@@ -264,8 +292,12 @@ export const PYQTab: React.FC<PYQTabProps> = ({
                     <span className="px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-extrabold text-xs border border-indigo-100">
                       UPSC {pyq.type} {pyq.year}
                     </span>
-                    <span className="text-xs font-semibold text-slate-600">{pyq.subject}</span>
-                    <span className="text-xs text-amber-700 font-bold">• {pyq.topic}</span>
+                    <span className="text-xs font-semibold text-slate-600">
+                      {pyq.subject}
+                    </span>
+                    <span className="text-xs text-amber-700 font-bold">
+                      • {pyq.topic}
+                    </span>
                   </div>
 
                   <div className="flex items-center gap-2">
@@ -306,17 +338,22 @@ export const PYQTab: React.FC<PYQTabProps> = ({
                       const isThisSelected = chosenOption === label;
                       const isThisCorrect = correctOpt === label;
 
-                      let optStyle = "bg-slate-50 border-slate-200 text-slate-800 hover:border-slate-300";
+                      let optStyle =
+                        "bg-slate-50 border-slate-200 text-slate-800 hover:border-slate-300";
                       if (isAnswered) {
                         if (isThisCorrect) {
-                          optStyle = "bg-emerald-50 border-emerald-500 text-emerald-900 font-bold";
+                          optStyle =
+                            "bg-emerald-50 border-emerald-500 text-emerald-900 font-bold";
                         } else if (isThisSelected && !isCorrect) {
-                          optStyle = "bg-rose-50 border-rose-400 text-rose-900 line-through";
+                          optStyle =
+                            "bg-rose-50 border-rose-400 text-rose-900 line-through";
                         } else {
-                          optStyle = "bg-slate-50/50 border-slate-200 text-slate-400";
+                          optStyle =
+                            "bg-slate-50/50 border-slate-200 text-slate-400";
                         }
                       } else if (isThisSelected) {
-                        optStyle = "bg-indigo-50 border-indigo-500 text-indigo-900 font-bold";
+                        optStyle =
+                          "bg-indigo-50 border-indigo-500 text-indigo-900 font-bold";
                       }
 
                       return (
@@ -372,7 +409,9 @@ export const PYQTab: React.FC<PYQTabProps> = ({
                       <div className="mt-3 space-y-2.5 animate-in fade-in duration-200">
                         {pyq.explanation && (
                           <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed font-medium">
-                            <strong className="text-indigo-950 block mb-1 font-bold">Official UPSC Explanation & Concept:</strong>
+                            <strong className="text-indigo-950 block mb-1 font-bold">
+                              Official UPSC Explanation & Concept:
+                            </strong>
                             {pyq.explanation}
                           </div>
                         )}
@@ -381,7 +420,9 @@ export const PYQTab: React.FC<PYQTabProps> = ({
                           <div className="bg-amber-50/70 p-3.5 rounded-xl border border-amber-200 text-xs text-amber-900 leading-relaxed flex items-start gap-2.5 font-medium">
                             <Sparkles className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                             <div>
-                              <strong className="font-bold block">Smart Elimination Strategy:</strong>
+                              <strong className="font-bold block">
+                                Smart Elimination Strategy:
+                              </strong>
                               {pyq.eliminationTechnique}
                             </div>
                           </div>
@@ -408,7 +449,8 @@ export const PYQTab: React.FC<PYQTabProps> = ({
 
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-slate-100">
                       <span className="text-xs text-slate-500 font-medium">
-                        Practice writing a 150/250-word answer on paper, then evaluate with AI.
+                        Practice writing a 150/250-word answer on paper, then
+                        evaluate with AI.
                       </span>
 
                       <button
@@ -434,7 +476,9 @@ export const PYQTab: React.FC<PYQTabProps> = ({
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2">
                 <HelpCircle className="w-5 h-5 text-indigo-600" />
-                <h3 className="text-base font-bold text-slate-900">Add Custom Practice / PYQ Question</h3>
+                <h3 className="text-base font-bold text-slate-900">
+                  Add Custom Practice / PYQ Question
+                </h3>
               </div>
               <button
                 onClick={() => setShowAddModal(false)}
@@ -447,7 +491,9 @@ export const PYQTab: React.FC<PYQTabProps> = ({
             <form onSubmit={handleCreatePYQ} className="space-y-3.5">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Type *</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Type *
+                  </label>
                   <select
                     value={formType}
                     onChange={(e) => setFormType(e.target.value as any)}
@@ -459,7 +505,9 @@ export const PYQTab: React.FC<PYQTabProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Year</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Year
+                  </label>
                   <input
                     type="number"
                     value={formYear}
@@ -471,7 +519,9 @@ export const PYQTab: React.FC<PYQTabProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Paper</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Paper
+                  </label>
                   <select
                     value={formPaper}
                     onChange={(e) => setFormPaper(e.target.value)}
@@ -488,7 +538,9 @@ export const PYQTab: React.FC<PYQTabProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Subject</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Subject
+                  </label>
                   <input
                     type="text"
                     placeholder="e.g. Indian Polity, Economy"
@@ -500,7 +552,9 @@ export const PYQTab: React.FC<PYQTabProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Topic / Theme</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Topic / Theme
+                </label>
                 <input
                   type="text"
                   placeholder="e.g. Due Process of Law / Fiscal Deficit"
@@ -511,7 +565,9 @@ export const PYQTab: React.FC<PYQTabProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Question Statement *</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Question Statement *
+                </label>
                 <textarea
                   rows={3}
                   required
@@ -524,7 +580,9 @@ export const PYQTab: React.FC<PYQTabProps> = ({
 
               {formType === "Prelims" ? (
                 <div className="space-y-3 p-3 bg-slate-50 rounded-2xl border border-slate-200">
-                  <div className="text-xs font-bold text-slate-800">Multiple Choice Options</div>
+                  <div className="text-xs font-bold text-slate-800">
+                    Multiple Choice Options
+                  </div>
                   <div className="grid grid-cols-2 gap-2">
                     <input
                       type="text"
@@ -557,9 +615,14 @@ export const PYQTab: React.FC<PYQTabProps> = ({
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <label className="text-xs font-bold text-slate-700">Correct Option:</label>
-                    {(["A", "B", "C", "D"] as const).map(opt => (
-                      <label key={opt} className="flex items-center gap-1 text-xs font-bold cursor-pointer">
+                    <label className="text-xs font-bold text-slate-700">
+                      Correct Option:
+                    </label>
+                    {(["A", "B", "C", "D"] as const).map((opt) => (
+                      <label
+                        key={opt}
+                        className="flex items-center gap-1 text-xs font-bold cursor-pointer"
+                      >
                         <input
                           type="radio"
                           name="correctOption"
@@ -573,7 +636,9 @@ export const PYQTab: React.FC<PYQTabProps> = ({
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Official Explanation</label>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                      Official Explanation
+                    </label>
                     <textarea
                       rows={2}
                       placeholder="Explain why the option is correct..."
@@ -584,7 +649,9 @@ export const PYQTab: React.FC<PYQTabProps> = ({
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Elimination Technique (Optional)</label>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                      Elimination Technique (Optional)
+                    </label>
                     <input
                       type="text"
                       placeholder="e.g. Extreme words rule / statement linkage..."
@@ -598,7 +665,9 @@ export const PYQTab: React.FC<PYQTabProps> = ({
                 <div className="space-y-3 p-3 bg-slate-50 rounded-2xl border border-slate-200">
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">Marks</label>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">
+                        Marks
+                      </label>
                       <select
                         value={formMarks}
                         onChange={(e) => setFormMarks(Number(e.target.value))}
@@ -612,7 +681,9 @@ export const PYQTab: React.FC<PYQTabProps> = ({
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Model Answer Outline</label>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                      Model Answer Outline
+                    </label>
                     <textarea
                       rows={4}
                       placeholder="Introduction (Context/Definition) &#10;• Dimension 1: Key Arguments&#10;• Dimension 2: Way Forward&#10;• Conclusion"
@@ -643,7 +714,6 @@ export const PYQTab: React.FC<PYQTabProps> = ({
           </div>
         </div>
       )}
-
     </div>
   );
 };

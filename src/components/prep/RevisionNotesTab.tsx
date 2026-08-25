@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { QuickRevisionNote, SyllabusTopic } from "../../types";
 import { DEFAULT_QUICK_REVISION_NOTES } from "../../data/notesData";
-import { 
-  StickyNote, 
-  Plus, 
-  Search, 
-  Trash2, 
-  Edit3, 
-  Copy, 
-  Check, 
-  Sparkles, 
-  Tag, 
-  BookOpen, 
+import {
+  StickyNote,
+  Plus,
+  Search,
+  Trash2,
+  Edit3,
+  Copy,
+  Check,
+  Sparkles,
+  Tag,
+  BookOpen,
   RotateCcw,
   Download,
   Flame,
   CheckCircle2,
-  ChevronRight
+  ChevronRight,
 } from "lucide-react";
 
 interface RevisionNotesTabProps {
@@ -28,7 +28,7 @@ interface RevisionNotesTabProps {
 export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
   syllabus,
   onOpenTopicAI,
-  onOpenAIMentorWithPrompt
+  onOpenAIMentorWithPrompt,
 }) => {
   // LocalStorage state for notes
   const [notes, setNotes] = useState<QuickRevisionNote[]>(() => {
@@ -56,7 +56,11 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
   useEffect(() => {
     const handleRefresh = (e?: Event) => {
       try {
-        if (e && (e as CustomEvent).detail && Array.isArray((e as CustomEvent).detail)) {
+        if (
+          e &&
+          (e as CustomEvent).detail &&
+          Array.isArray((e as CustomEvent).detail)
+        ) {
           setNotes((e as CustomEvent).detail);
           return;
         }
@@ -90,13 +94,16 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
   const [formTopicTitle, setFormTopicTitle] = useState("");
   const [formPaper, setFormPaper] = useState("Prelims GS1");
   const [formSubject, setFormSubject] = useState("Indian Polity & Governance");
-  const [formImportance, setFormImportance] = useState<QuickRevisionNote["importance"]>("🔥 High Yield");
+  const [formImportance, setFormImportance] =
+    useState<QuickRevisionNote["importance"]>("🔥 High Yield");
   const [formBulletsText, setFormBulletsText] = useState("");
   const [formTagsText, setFormTagsText] = useState("");
   const [selectedSyllabusId, setSelectedSyllabusId] = useState<string>("");
 
   // Quick Inline Bullet Add State
-  const [inlinePointText, setInlinePointText] = useState<{ [key: string]: string }>({});
+  const [inlinePointText, setInlinePointText] = useState<{
+    [key: string]: string;
+  }>({});
 
   const papers = [
     "All",
@@ -107,7 +114,7 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
     "Mains GS3",
     "Mains GS4",
     "Mains Essay",
-    "Optional"
+    "Optional",
   ];
 
   // Open Create Modal
@@ -140,7 +147,7 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
   const handleSelectSyllabusTopic = (topicId: string) => {
     setSelectedSyllabusId(topicId);
     if (!topicId) return;
-    const found = syllabus.find(s => s.id === topicId);
+    const found = syllabus.find((s) => s.id === topicId);
     if (found) {
       setFormTopicTitle(found.title);
       setFormPaper(found.paper);
@@ -161,34 +168,39 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
 
     const bulletPoints = formBulletsText
       .split("\n")
-      .map(b => b.trim())
+      .map((b) => b.trim())
       .filter(Boolean);
 
     const tags = formTagsText
       .split(",")
-      .map(t => t.trim())
+      .map((t) => t.trim())
       .filter(Boolean);
 
     const currentDate = new Date().toISOString().split("T")[0];
 
     if (editingNoteId) {
       // Update
-      setNotes(prev => prev.map(note => {
-        if (note.id === editingNoteId) {
-          return {
-            ...note,
-            topicId: selectedSyllabusId || undefined,
-            topicTitle: formTopicTitle.trim(),
-            paper: formPaper,
-            subject: formSubject.trim() || "General Studies",
-            importance: formImportance,
-            bulletPoints: bulletPoints.length > 0 ? bulletPoints : ["Key concept reviewed."],
-            tags: tags.length > 0 ? tags : ["Revision"],
-            updatedAt: currentDate
-          };
-        }
-        return note;
-      }));
+      setNotes((prev) =>
+        prev.map((note) => {
+          if (note.id === editingNoteId) {
+            return {
+              ...note,
+              topicId: selectedSyllabusId || undefined,
+              topicTitle: formTopicTitle.trim(),
+              paper: formPaper,
+              subject: formSubject.trim() || "General Studies",
+              importance: formImportance,
+              bulletPoints:
+                bulletPoints.length > 0
+                  ? bulletPoints
+                  : ["Key concept reviewed."],
+              tags: tags.length > 0 ? tags : ["Revision"],
+              updatedAt: currentDate,
+            };
+          }
+          return note;
+        })
+      );
     } else {
       // Create New
       const newNote: QuickRevisionNote = {
@@ -198,11 +210,12 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
         paper: formPaper,
         subject: formSubject.trim() || "General Studies",
         importance: formImportance,
-        bulletPoints: bulletPoints.length > 0 ? bulletPoints : ["Key concept reviewed."],
+        bulletPoints:
+          bulletPoints.length > 0 ? bulletPoints : ["Key concept reviewed."],
         tags: tags.length > 0 ? tags : ["Revision"],
-        updatedAt: currentDate
+        updatedAt: currentDate,
       };
-      setNotes(prev => [newNote, ...prev]);
+      setNotes((prev) => [newNote, ...prev]);
     }
 
     setIsModalOpen(false);
@@ -211,7 +224,7 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
   // Delete Note
   const handleDeleteNote = (id: string) => {
     if (confirm("Delete this revision note?")) {
-      setNotes(prev => prev.filter(n => n.id !== id));
+      setNotes((prev) => prev.filter((n) => n.id !== id));
     }
   };
 
@@ -220,23 +233,26 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
     const text = inlinePointText[noteId]?.trim();
     if (!text) return;
 
-    setNotes(prev => prev.map(note => {
-      if (note.id === noteId) {
-        return {
-          ...note,
-          bulletPoints: [...note.bulletPoints, text],
-          updatedAt: new Date().toISOString().split("T")[0]
-        };
-      }
-      return note;
-    }));
+    setNotes((prev) =>
+      prev.map((note) => {
+        if (note.id === noteId) {
+          return {
+            ...note,
+            bulletPoints: [...note.bulletPoints, text],
+            updatedAt: new Date().toISOString().split("T")[0],
+          };
+        }
+        return note;
+      })
+    );
 
-    setInlinePointText(prev => ({ ...prev, [noteId]: "" }));
+    setInlinePointText((prev) => ({ ...prev, [noteId]: "" }));
   };
 
   // Copy Note Content
   const handleCopyNote = (note: QuickRevisionNote) => {
-    const text = `📌 ${note.topicTitle} (${note.paper} - ${note.subject})\n` +
+    const text =
+      `📌 ${note.topicTitle} (${note.paper} - ${note.subject})\n` +
       note.bulletPoints.map((pt, i) => `${i + 1}. ${pt}`).join("\n") +
       `\nTags: #${note.tags.join(" #")}`;
 
@@ -247,55 +263,71 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
 
   // Export All Notes
   const handleExportNotes = () => {
-    const markdown = `# UPSC Conquest - Quick Revision Notes Binder\nGenerated on: ${new Date().toLocaleDateString()}\n\n` +
-      notes.map(note => (
-        `## ${note.topicTitle}\n` +
-        `**Paper:** ${note.paper} | **Subject:** ${note.subject} | **Yield:** ${note.importance}\n\n` +
-        note.bulletPoints.map(pt => `- ${pt}`).join("\n") +
-        `\n\n*Tags:* ${note.tags.map(t => `#${t}`).join(" ")}\n\n---\n`
-      )).join("\n");
+    const markdown =
+      `# UPSC Conquest - Quick Revision Notes Binder\nGenerated on: ${new Date().toLocaleDateString()}\n\n` +
+      notes
+        .map(
+          (note) =>
+            `## ${note.topicTitle}\n` +
+            `**Paper:** ${note.paper} | **Subject:** ${note.subject} | **Yield:** ${note.importance}\n\n` +
+            note.bulletPoints.map((pt) => `- ${pt}`).join("\n") +
+            `\n\n*Tags:* ${note.tags.map((t) => `#${t}`).join(" ")}\n\n---\n`
+        )
+        .join("\n");
 
     const blob = new Blob([markdown], { type: "text/markdown" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `UPSC-Revision-Notes-${new Date().toISOString().split("T")[0]}.md`;
+    a.download = `UPSC-Revision-Notes-${
+      new Date().toISOString().split("T")[0]
+    }.md`;
     a.click();
     URL.revokeObjectURL(url);
   };
 
   // Filter notes
-  const filteredNotes = notes.filter(note => {
-    const matchesSearch = 
+  const filteredNotes = notes.filter((note) => {
+    const matchesSearch =
       note.topicTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
       note.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      note.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      note.bulletPoints.some(b => b.toLowerCase().includes(searchQuery.toLowerCase()));
+      note.tags.some((t) =>
+        t.toLowerCase().includes(searchQuery.toLowerCase())
+      ) ||
+      note.bulletPoints.some((b) =>
+        b.toLowerCase().includes(searchQuery.toLowerCase())
+      );
 
-    const matchesPaper = selectedPaper === "All" || note.paper === selectedPaper;
-    const matchesImportance = selectedImportance === "All" || note.importance === selectedImportance;
+    const matchesPaper =
+      selectedPaper === "All" || note.paper === selectedPaper;
+    const matchesImportance =
+      selectedImportance === "All" || note.importance === selectedImportance;
 
     return matchesSearch && matchesPaper && matchesImportance;
   });
 
   return (
     <div className="space-y-6">
-      
       {/* Header Bento Tile */}
       <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 sm:p-6 shadow-sm space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex flex-wrap items-center gap-2">
               <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-100 flex items-center gap-1.5">
-                <StickyNote className="w-3.5 h-3.5 text-indigo-600 shrink-0" /> Quick Revision Binder
+                <StickyNote className="w-3.5 h-3.5 text-indigo-600 shrink-0" />{" "}
+                Quick Revision Binder
               </span>
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Local Persistence</span>
+              <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+                Local Persistence
+              </span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">
               Micro-Revision Points & Fact Cards
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed mt-1">
-              Save high-yield mnemonics, landmark Supreme Court articles, environmental treaties, and economic formulas for rapid last-minute revision.
+              Save high-yield mnemonics, landmark Supreme Court articles,
+              environmental treaties, and economic formulas for rapid
+              last-minute revision.
             </p>
           </div>
 
@@ -320,7 +352,11 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
 
             <button
               onClick={() => {
-                if (confirm("Reset to sample high-yield revision notes? Your custom notes will be replaced.")) {
+                if (
+                  confirm(
+                    "Reset to sample high-yield revision notes? Your custom notes will be replaced."
+                  )
+                ) {
                   setNotes(DEFAULT_QUICK_REVISION_NOTES);
                 }
               }}
@@ -351,8 +387,10 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
               onChange={(e) => setSelectedPaper(e.target.value)}
               className="bg-white border border-slate-200 text-slate-800 text-xs rounded-xl px-3 py-2 outline-none font-bold focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-xs whitespace-nowrap"
             >
-              {papers.map(p => (
-                <option key={p} value={p}>{p === "All" ? "All Papers" : p}</option>
+              {papers.map((p) => (
+                <option key={p} value={p}>
+                  {p === "All" ? "All Papers" : p}
+                </option>
               ))}
             </select>
 
@@ -374,9 +412,12 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
       {filteredNotes.length === 0 ? (
         <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 text-center space-y-3">
           <StickyNote className="w-10 h-10 text-slate-300 mx-auto" />
-          <h3 className="text-sm font-bold text-slate-800">No revision notes found</h3>
+          <h3 className="text-sm font-bold text-slate-800">
+            No revision notes found
+          </h3>
           <p className="text-xs text-slate-500 max-w-sm mx-auto">
-            Create your first quick revision note card for any syllabus topic or keyword.
+            Create your first quick revision note card for any syllabus topic or
+            keyword.
           </p>
           <button
             onClick={handleOpenCreateModal}
@@ -387,9 +428,9 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {filteredNotes.map(note => {
+          {filteredNotes.map((note) => {
             return (
-              <div 
+              <div
                 key={note.id}
                 className="bg-white border-2 border-slate-200 hover:border-indigo-300 rounded-2xl p-5 shadow-xs transition-all flex flex-col justify-between space-y-4"
               >
@@ -449,7 +490,10 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
                 <div className="bg-slate-50/80 rounded-xl p-3 border border-slate-100 space-y-2">
                   <ul className="space-y-2">
                     {note.bulletPoints.map((point, idx) => (
-                      <li key={idx} className="flex items-start gap-2 text-xs text-slate-700 leading-relaxed font-medium">
+                      <li
+                        key={idx}
+                        className="flex items-start gap-2 text-xs text-slate-700 leading-relaxed font-medium"
+                      >
                         <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0" />
                         <span>{point}</span>
                       </li>
@@ -462,7 +506,12 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
                       type="text"
                       placeholder="+ Quick add a fact or article point..."
                       value={inlinePointText[note.id] || ""}
-                      onChange={(e) => setInlinePointText({ ...inlinePointText, [note.id]: e.target.value })}
+                      onChange={(e) =>
+                        setInlinePointText({
+                          ...inlinePointText,
+                          [note.id]: e.target.value,
+                        })
+                      }
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           handleAddInlinePoint(note.id);
@@ -483,7 +532,10 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
                 <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
                   <div className="flex flex-wrap items-center gap-1.5">
                     {note.tags.map((tag, i) => (
-                      <span key={i} className="text-[10px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">
+                      <span
+                        key={i}
+                        className="text-[10px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200"
+                      >
                         #{tag}
                       </span>
                     ))}
@@ -507,7 +559,9 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
               <div className="flex items-center gap-2">
                 <StickyNote className="w-5 h-5 text-indigo-600" />
                 <h3 className="text-base font-bold text-slate-900">
-                  {editingNoteId ? "Edit Revision Note" : "Create Quick Revision Note"}
+                  {editingNoteId
+                    ? "Edit Revision Note"
+                    : "Create Quick Revision Note"}
                 </h3>
               </div>
               <button
@@ -519,7 +573,6 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
             </div>
 
             <form onSubmit={handleSaveNote} className="space-y-3.5">
-              
               {/* Syllabus Link Dropdown */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
@@ -530,8 +583,10 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
                   onChange={(e) => handleSelectSyllabusTopic(e.target.value)}
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-bold"
                 >
-                  <option value="">-- Select from Syllabus or enter custom below --</option>
-                  {syllabus.map(s => (
+                  <option value="">
+                    -- Select from Syllabus or enter custom below --
+                  </option>
+                  {syllabus.map((s) => (
                     <option key={s.id} value={s.id}>
                       [{s.paper}] {s.title}
                     </option>
@@ -540,7 +595,9 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Topic Title *</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Topic Title *
+                </label>
                 <input
                   type="text"
                   required
@@ -553,7 +610,9 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Paper</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Paper
+                  </label>
                   <select
                     value={formPaper}
                     onChange={(e) => setFormPaper(e.target.value)}
@@ -571,7 +630,9 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Subject</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Subject
+                  </label>
                   <input
                     type="text"
                     placeholder="e.g. Indian Polity, Economy, History"
@@ -583,7 +644,9 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Yield Priority</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Yield Priority
+                </label>
                 <select
                   value={formImportance}
                   onChange={(e) => setFormImportance(e.target.value as any)}
@@ -641,7 +704,6 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
           </div>
         </div>
       )}
-
     </div>
   );
 };

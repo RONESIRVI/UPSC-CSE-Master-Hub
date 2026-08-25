@@ -1,15 +1,21 @@
 import React, { useState, useMemo } from "react";
-import { StudySessionLog, FocusTimerConfig, TimerMode, TimerPhase, SyllabusTopic } from "../../types";
-import { 
-  Clock, 
-  Play, 
-  Pause, 
-  RotateCcw, 
-  Plus, 
-  Flame, 
-  Calendar, 
-  BookOpen, 
-  CheckCircle2, 
+import {
+  StudySessionLog,
+  FocusTimerConfig,
+  TimerMode,
+  TimerPhase,
+  SyllabusTopic,
+} from "../../types";
+import {
+  Clock,
+  Play,
+  Pause,
+  RotateCcw,
+  Plus,
+  Flame,
+  Calendar,
+  BookOpen,
+  CheckCircle2,
   Sparkles,
   BarChart2,
   Trash2,
@@ -27,7 +33,7 @@ import {
   Filter,
   Search,
   CheckCheck,
-  Lightbulb
+  Lightbulb,
 } from "lucide-react";
 import { TimerConfigModal, PRESET_CONFIGS } from "./TimerConfigModal";
 import { QuickStudyLogModal } from "./QuickStudyLogModal";
@@ -75,7 +81,7 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
     cyclesBeforeLongBreak: 4,
     autoStartBreaks: false,
     autoStartNextFocus: false,
-    soundAlertsEnabled: true
+    soundAlertsEnabled: true,
   },
   onUpdateTimerConfig,
   timerPhase = "focus",
@@ -83,29 +89,41 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
   onSkipInterval,
   onSetTimerPhase,
   syllabus = [],
-  onOpenAIMentorWithPrompt
+  onOpenAIMentorWithPrompt,
 }) => {
   const [activeSubject, setActiveSubject] = useState("Indian Polity");
   const [activePaper, setActivePaper] = useState("Prelims GS1");
   const [topicInput, setTopicInput] = useState("");
+  const [taskType, setTaskType] = useState<
+    "study" | "revision" | "pyq" | "notes" | "answer_writing"
+  >("study");
   const [focusRating, setFocusRating] = useState<1 | 2 | 3 | 4 | 5>(5);
   const [sessionNotes, setSessionNotes] = useState("");
   const [showQuickLogModal, setShowQuickLogModal] = useState<boolean>(false);
-  const [showQuickThoughtsModal, setShowQuickThoughtsModal] = useState<boolean>(false);
+  const [showQuickThoughtsModal, setShowQuickThoughtsModal] =
+    useState<boolean>(false);
   const [showConfigModal, setShowConfigModal] = useState<boolean>(false);
 
   // CSV Export & Filter State
   const [exportFeedback, setExportFeedback] = useState<string | null>(null);
-  const [historyTimeFilter, setHistoryTimeFilter] = useState<"all" | "today" | "week">("all");
-  const [historySubjectFilter, setHistorySubjectFilter] = useState<string>("all");
+  const [historyTimeFilter, setHistoryTimeFilter] = useState<
+    "all" | "today" | "week"
+  >("all");
+  const [historySubjectFilter, setHistorySubjectFilter] =
+    useState<string>("all");
   const [historySearchQuery, setHistorySearchQuery] = useState<string>("");
 
   // Today's total logged minutes
   const todayStr = new Date().toISOString().split("T")[0];
-  const todaysLogs = sessionLogs.filter(l => l.date === todayStr);
-  const totalMinutesToday = todaysLogs.reduce((acc, l) => acc + l.durationMinutes, 0) + (timerPhase === "focus" ? Math.floor(timerSeconds / 60) : 0);
+  const todaysLogs = sessionLogs.filter((l) => l.date === todayStr);
+  const totalMinutesToday =
+    todaysLogs.reduce((acc, l) => acc + l.durationMinutes, 0) +
+    (timerPhase === "focus" ? Math.floor(timerSeconds / 60) : 0);
   const totalHoursToday = (totalMinutesToday / 60).toFixed(1);
-  const dailyProgressPct = Math.min(Math.round((totalMinutesToday / (dailyGoalHours * 60)) * 100), 100);
+  const dailyProgressPct = Math.min(
+    Math.round((totalMinutesToday / (dailyGoalHours * 60)) * 100),
+    100
+  );
 
   // Filtered logs for History & CSV Export
   const filteredLogs = useMemo(() => {
@@ -114,17 +132,20 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
     sevenDaysAgo.setDate(now.getDate() - 7);
     const sevenDaysAgoStr = sevenDaysAgo.toISOString().split("T")[0];
 
-    return sessionLogs.filter(log => {
+    return sessionLogs.filter((log) => {
       // Time filter
       if (historyTimeFilter === "today" && log.date !== todayStr) return false;
-      if (historyTimeFilter === "week" && log.date < sevenDaysAgoStr) return false;
+      if (historyTimeFilter === "week" && log.date < sevenDaysAgoStr)
+        return false;
 
       // Subject filter with flexible prefix & contains match
       if (historySubjectFilter !== "all") {
         const cleanFilter = historySubjectFilter.toLowerCase().trim();
         const cleanLogSub = log.subject.toLowerCase().trim();
         const matchExact = cleanLogSub === cleanFilter;
-        const matchPrefix = cleanLogSub.includes(cleanFilter.slice(0, 6)) || cleanFilter.includes(cleanLogSub.slice(0, 6));
+        const matchPrefix =
+          cleanLogSub.includes(cleanFilter.slice(0, 6)) ||
+          cleanFilter.includes(cleanLogSub.slice(0, 6));
         if (!matchExact && !matchPrefix) return false;
       }
 
@@ -135,15 +156,25 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
         const matchesSubject = log.subject.toLowerCase().includes(query);
         const matchesNotes = (log.notes || "").toLowerCase().includes(query);
         const matchesPaper = (log.paper || "").toLowerCase().includes(query);
-        if (!matchesTopic && !matchesSubject && !matchesNotes && !matchesPaper) return false;
+        if (!matchesTopic && !matchesSubject && !matchesNotes && !matchesPaper)
+          return false;
       }
 
       return true;
     });
-  }, [sessionLogs, historyTimeFilter, historySubjectFilter, historySearchQuery, todayStr]);
+  }, [
+    sessionLogs,
+    historyTimeFilter,
+    historySubjectFilter,
+    historySearchQuery,
+    todayStr,
+  ]);
 
   // Filtered stats
-  const filteredTotalMinutes = filteredLogs.reduce((acc, l) => acc + l.durationMinutes, 0);
+  const filteredTotalMinutes = filteredLogs.reduce(
+    (acc, l) => acc + l.durationMinutes,
+    0
+  );
   const filteredTotalHours = (filteredTotalMinutes / 60).toFixed(1);
 
   // CSV Export Trigger
@@ -152,27 +183,34 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
       alert("No study logs available to export for this selection.");
       return;
     }
-    const success = exportStudyLogsToCsv(logsToExport, `upsc_study_sessions_${label}`);
+    const success = exportStudyLogsToCsv(
+      logsToExport,
+      `upsc_study_sessions_${label}`
+    );
     if (success) {
-      setExportFeedback(`Exported ${logsToExport.length} study session${logsToExport.length === 1 ? '' : 's'} to CSV!`);
+      setExportFeedback(
+        `Exported ${logsToExport.length} study session${
+          logsToExport.length === 1 ? "" : "s"
+        } to CSV!`
+      );
       setTimeout(() => setExportFeedback(null), 4000);
     }
   };
 
   // Determine current phase duration in seconds
   const isContinuous = timerConfig.mode === "stopwatch_continuous";
-  const currentTargetMinutes = 
-    timerPhase === "focus" 
-      ? timerConfig.focusMinutes 
-      : timerPhase === "short_break" 
-        ? timerConfig.shortBreakMinutes 
-        : timerConfig.longBreakMinutes;
+  const currentTargetMinutes =
+    timerPhase === "focus"
+      ? timerConfig.focusMinutes
+      : timerPhase === "short_break"
+      ? timerConfig.shortBreakMinutes
+      : timerConfig.longBreakMinutes;
 
   const currentTargetSeconds = currentTargetMinutes * 60;
-  
+
   // Remaining or Elapsed seconds for display
-  const displaySeconds = isContinuous 
-    ? timerSeconds 
+  const displaySeconds = isContinuous
+    ? timerSeconds
     : Math.max(currentTargetSeconds - timerSeconds, 0);
 
   const formatTimer = (totalSec: number) => {
@@ -180,41 +218,52 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
     const mins = Math.floor((totalSec % 3600) / 60);
     const secs = totalSec % 60;
     if (hrs > 0) {
-      return `${hrs.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+      return `${hrs.toString().padStart(2, "0")}:${mins
+        .toString()
+        .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
     }
-    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+    return `${mins.toString().padStart(2, "0")}:${secs
+      .toString()
+      .padStart(2, "0")}`;
   };
 
-  const progressPercent = isContinuous 
-    ? 100 
-    : currentTargetSeconds > 0 
-      ? Math.min(Math.round((timerSeconds / currentTargetSeconds) * 100), 100) 
-      : 0;
+  const progressPercent = isContinuous
+    ? 100
+    : currentTargetSeconds > 0
+    ? Math.min(Math.round((timerSeconds / currentTargetSeconds) * 100), 100)
+    : 0;
 
   const handleSaveTimerSession = () => {
-    const durationMins = isContinuous 
+    const durationMins = isContinuous
       ? Math.max(Math.round(timerSeconds / 60), 1)
-      : Math.max(Math.round(timerSeconds / 60), Math.min(timerConfig.focusMinutes, 1));
-    
+      : Math.max(
+          Math.round(timerSeconds / 60),
+          Math.min(timerConfig.focusMinutes, 1)
+        );
+
     const newLog: StudySessionLog = {
       id: `log-${Date.now()}`,
       date: todayStr,
       subject: activeSubject,
       paper: activePaper,
       durationMinutes: durationMins,
-      topicCovered: topicInput.trim() || `Focus Session (${timerConfig.mode.replace("_", " ").toUpperCase()})`,
+      topicCovered:
+        topicInput.trim() ||
+        `Focus Session (${timerConfig.mode.replace("_", " ").toUpperCase()})`,
+      taskType: taskType,
       qualityRating: focusRating,
-      notes: sessionNotes.trim()
+      notes: sessionNotes.trim(),
     };
     onAddSessionLog(newLog);
     onResetTimer();
     setTopicInput("");
     setSessionNotes("");
+    setTaskType("study");
   };
 
   const handleQuickPresetSelect = (mode: TimerMode) => {
     if (!onUpdateTimerConfig) return;
-    const preset = PRESET_CONFIGS.find(p => p.id === mode);
+    const preset = PRESET_CONFIGS.find((p) => p.id === mode);
     if (preset) {
       onUpdateTimerConfig({
         ...timerConfig,
@@ -222,38 +271,39 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
         focusMinutes: preset.focus,
         shortBreakMinutes: preset.shortBreak,
         longBreakMinutes: preset.longBreak,
-        cyclesBeforeLongBreak: preset.cycles
+        cyclesBeforeLongBreak: preset.cycles,
       });
       onResetTimer();
     }
   };
 
   // Get current active mode preset details
-  const activePreset = PRESET_CONFIGS.find(p => p.id === timerConfig.mode);
+  const activePreset = PRESET_CONFIGS.find((p) => p.id === timerConfig.mode);
 
   return (
     <div className="space-y-6">
-      
       {/* Top Banner & Timer Console */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
         {/* Stopwatch / Pomodoro Widget Bento Card */}
         <div className="lg:col-span-2 bg-white border-2 border-slate-200 rounded-3xl p-6 sm:p-7 shadow-sm space-y-5">
-          
           {/* Header with Title & Action Controls */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <div className="flex items-center gap-2">
                 <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-100 flex items-center gap-1.5 w-fit">
-                  <Clock className="w-3.5 h-3.5 text-indigo-600" /> UPSC Focus Engine
+                  <Clock className="w-3.5 h-3.5 text-indigo-600" /> UPSC Focus
+                  Engine
                 </span>
-                
+
                 {/* Interval Mode Badge */}
                 <span className="px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-mono font-bold border border-slate-200">
-                  {activePreset ? activePreset.name : "Custom Interval"} ({timerConfig.focusMinutes}m)
+                  {activePreset ? activePreset.name : "Custom Interval"} (
+                  {timerConfig.focusMinutes}m)
                 </span>
               </div>
-              <h2 className="text-xl font-bold text-slate-900 mt-1.5">Intelligent Study Interval Timer</h2>
+              <h2 className="text-xl font-bold text-slate-900 mt-1.5">
+                Intelligent Study Interval Timer
+              </h2>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
@@ -303,7 +353,9 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
               {onResetDefaultSessionLogs && (
                 <button
                   onClick={() => {
-                    if (confirm("Restore standard sample study session logs?")) {
+                    if (
+                      confirm("Restore standard sample study session logs?")
+                    ) {
                       onResetDefaultSessionLogs();
                     }
                   }}
@@ -323,12 +375,32 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
               Presets:
             </span>
             {[
-              { id: "pomodoro_25" as TimerMode, label: "25m Pomodoro", short: "25m / 5m" },
-              { id: "pomodoro_50" as TimerMode, label: "50m Deep Work", short: "50m / 10m" },
-              { id: "gs_marathon_90" as TimerMode, label: "90m GS Marathon", short: "90m / 15m" },
-              { id: "exam_slot_120" as TimerMode, label: "120m Exam Slot", short: "120m / 20m" },
-              { id: "stopwatch_continuous" as TimerMode, label: "Freeflow Stopwatch", short: "Count-up" },
-            ].map(preset => {
+              {
+                id: "pomodoro_25" as TimerMode,
+                label: "25m Pomodoro",
+                short: "25m / 5m",
+              },
+              {
+                id: "pomodoro_50" as TimerMode,
+                label: "50m Deep Work",
+                short: "50m / 10m",
+              },
+              {
+                id: "gs_marathon_90" as TimerMode,
+                label: "90m GS Marathon",
+                short: "90m / 15m",
+              },
+              {
+                id: "exam_slot_120" as TimerMode,
+                label: "120m Exam Slot",
+                short: "120m / 20m",
+              },
+              {
+                id: "stopwatch_continuous" as TimerMode,
+                label: "Freeflow Stopwatch",
+                short: "Count-up",
+              },
+            ].map((preset) => {
               const isSelected = timerConfig.mode === preset.id;
               return (
                 <button
@@ -342,7 +414,13 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
                   }`}
                 >
                   <span>{preset.label}</span>
-                  <span className={`text-[10px] font-mono px-1 rounded ${isSelected ? "bg-indigo-700/80 text-white" : "bg-slate-100 text-slate-500"}`}>
+                  <span
+                    className={`text-[10px] font-mono px-1 rounded ${
+                      isSelected
+                        ? "bg-indigo-700/80 text-white"
+                        : "bg-slate-100 text-slate-500"
+                    }`}
+                  >
                     {preset.short}
                   </span>
                 </button>
@@ -365,23 +443,30 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
 
           {/* Big Digital Timer Display with Phase Indicator */}
           <div className="relative py-7 px-6 bg-slate-950 rounded-3xl border border-slate-800 shadow-2xl text-center space-y-4 overflow-hidden">
-            
             {/* Ambient Background Glow for Active Sessions */}
             {timerRunning && (
-              <div className={`absolute inset-0 opacity-15 blur-2xl pointer-events-none transition-colors duration-700 ${
-                timerPhase === "focus" ? "bg-amber-500" : timerPhase === "short_break" ? "bg-emerald-500" : "bg-blue-500"
-              }`} />
+              <div
+                className={`absolute inset-0 opacity-15 blur-2xl pointer-events-none transition-colors duration-700 ${
+                  timerPhase === "focus"
+                    ? "bg-amber-500"
+                    : timerPhase === "short_break"
+                    ? "bg-emerald-500"
+                    : "bg-blue-500"
+                }`}
+              />
             )}
 
             {/* Current Phase & Cycle Pill */}
             <div className="flex items-center justify-center gap-3 relative z-10">
-              <div className={`px-3.5 py-1.5 rounded-full text-xs font-extrabold flex items-center gap-2 border shadow-xs ${
-                timerPhase === "focus" 
-                  ? "bg-amber-500/10 text-amber-300 border-amber-500/30"
-                  : timerPhase === "short_break"
+              <div
+                className={`px-3.5 py-1.5 rounded-full text-xs font-extrabold flex items-center gap-2 border shadow-xs ${
+                  timerPhase === "focus"
+                    ? "bg-amber-500/10 text-amber-300 border-amber-500/30"
+                    : timerPhase === "short_break"
                     ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/30"
                     : "bg-blue-500/10 text-blue-300 border-blue-500/30"
-              }`}>
+                }`}
+              >
                 {timerPhase === "focus" ? (
                   <>
                     <Zap className="w-3.5 h-3.5 text-amber-400" />
@@ -402,17 +487,21 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
 
               {!isContinuous && (
                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800/80 text-slate-300 border border-slate-700 text-xs font-mono font-bold">
-                  <span>Cycle {currentCycle}/{timerConfig.cyclesBeforeLongBreak}</span>
+                  <span>
+                    Cycle {currentCycle}/{timerConfig.cyclesBeforeLongBreak}
+                  </span>
                   <div className="flex items-center gap-1 ml-1">
-                    {Array.from({ length: timerConfig.cyclesBeforeLongBreak }).map((_, i) => (
+                    {Array.from({
+                      length: timerConfig.cyclesBeforeLongBreak,
+                    }).map((_, i) => (
                       <span
                         key={i}
                         className={`w-1.5 h-1.5 rounded-full ${
-                          i + 1 < currentCycle 
-                            ? "bg-emerald-400" 
-                            : i + 1 === currentCycle 
-                              ? "bg-amber-400 animate-pulse" 
-                              : "bg-slate-600"
+                          i + 1 < currentCycle
+                            ? "bg-emerald-400"
+                            : i + 1 === currentCycle
+                            ? "bg-amber-400 animate-pulse"
+                            : "bg-slate-600"
                         }`}
                       />
                     ))}
@@ -432,8 +521,8 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
                 <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden border border-slate-700/60">
                   <div
                     className={`h-full rounded-full transition-all duration-300 ${
-                      timerPhase === "focus" 
-                        ? "bg-gradient-to-r from-amber-500 to-amber-300" 
+                      timerPhase === "focus"
+                        ? "bg-gradient-to-r from-amber-500 to-amber-300"
                         : "bg-gradient-to-r from-emerald-500 to-emerald-300"
                     }`}
                     style={{ width: `${progressPercent}%` }}
@@ -447,7 +536,7 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
             )}
 
             <p className="text-xs text-slate-400 font-medium relative z-10">
-              {timerRunning 
+              {timerRunning
                 ? timerPhase === "focus"
                   ? "🔥 High-focus mode active — protect your concentration from all distractions."
                   : "☕ Rest interval active — hydrate, stretch, and rest your eyes."
@@ -456,32 +545,67 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
           </div>
 
           {/* Quick Subject & Topic Selection for this Focus Session */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
             <div>
-              <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">Subject Focus</label>
+              <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">
+                Subject Focus
+              </label>
               <select
                 value={activeSubject}
                 onChange={(e) => setActiveSubject(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3.5 py-2.5 outline-none font-bold focus:ring-2 focus:ring-indigo-500 cursor-pointer"
               >
-                <option value="Indian Polity">Indian Polity (Laxmikanth)</option>
-                <option value="Modern Indian History">Modern Indian History (Spectrum)</option>
-                <option value="Indian Economy">Indian Economy (Mrunal/Singhania)</option>
-                <option value="Environment & Ecology">Environment & Ecology (PMF/Shankar)</option>
-                <option value="Physical & Indian Geography">Geography (NCERT/GC Leong)</option>
+                <option value="Indian Polity">
+                  Indian Polity (Laxmikanth)
+                </option>
+                <option value="Modern Indian History">
+                  Modern Indian History (Spectrum)
+                </option>
+                <option value="Indian Economy">
+                  Indian Economy (Mrunal/Singhania)
+                </option>
+                <option value="Environment & Ecology">
+                  Environment & Ecology (PMF/Shankar)
+                </option>
+                <option value="Physical & Indian Geography">
+                  Geography (NCERT/GC Leong)
+                </option>
                 <option value="CSAT Paper II">CSAT Quant & Reasoning</option>
                 <option value="Ethics (GS4)">Ethics, Case Studies (GS4)</option>
                 <option value="Optional Subject">Optional Subject</option>
-                <option value="Current Affairs">Newspaper & Editorial Analysis</option>
-                <option value="Mains Answer Writing">Mains Answer Writing Practice</option>
+                <option value="Current Affairs">
+                  Newspaper & Editorial Analysis
+                </option>
+                <option value="Mains Answer Writing">
+                  Mains Answer Writing Practice
+                </option>
               </select>
             </div>
 
             <div>
-              <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">Topic / Chapter Name</label>
+              <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">
+                What did you do?
+              </label>
+              <select
+                value={taskType}
+                onChange={(e) => setTaskType(e.target.value as any)}
+                className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3.5 py-2.5 outline-none font-bold focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+              >
+                <option value="study">Study New Topic</option>
+                <option value="revision">Revision</option>
+                <option value="pyq">PYQ Practice</option>
+                <option value="notes">Note Making</option>
+                <option value="answer_writing">Answer Writing</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">
+                Topic Name
+              </label>
               <input
                 type="text"
-                placeholder="e.g. Fundamental Rights Article 19 or Money Multiplier"
+                placeholder="e.g. Fundamental Rights"
                 value={topicInput}
                 onChange={(e) => setTopicInput(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3.5 py-2.5 outline-none font-medium focus:ring-2 focus:ring-indigo-500"
@@ -500,7 +624,11 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
                     : "bg-indigo-600 hover:bg-indigo-700 text-white ring-2 ring-indigo-500/20"
                 }`}
               >
-                {timerRunning ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-white" />}
+                {timerRunning ? (
+                  <Pause className="w-4 h-4" />
+                ) : (
+                  <Play className="w-4 h-4 fill-white" />
+                )}
                 <span>{timerRunning ? "Pause Session" : "Start Session"}</span>
               </button>
 
@@ -517,10 +645,14 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
                 <button
                   onClick={onSkipInterval}
                   className="flex items-center gap-1 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-200 transition cursor-pointer"
-                  title={timerPhase === "focus" ? "Skip to Break" : "Skip to Focus"}
+                  title={
+                    timerPhase === "focus" ? "Skip to Break" : "Skip to Focus"
+                  }
                 >
                   <SkipForward className="w-3.5 h-3.5 text-slate-600" />
-                  <span className="hidden sm:inline">{timerPhase === "focus" ? "Take Break" : "Next Focus"}</span>
+                  <span className="hidden sm:inline">
+                    {timerPhase === "focus" ? "Take Break" : "Next Focus"}
+                  </span>
                 </button>
               )}
             </div>
@@ -532,11 +664,13 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
                 className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition cursor-pointer animate-in fade-in"
               >
                 <CheckCircle2 className="w-4 h-4" />
-                <span>Save to Daily Log ({Math.max(Math.round(timerSeconds / 60), 1)}m)</span>
+                <span>
+                  Save to Daily Log (
+                  {Math.max(Math.round(timerSeconds / 60), 1)}m)
+                </span>
               </button>
             )}
           </div>
-
         </div>
 
         {/* Daily Goal & Progress Dial Bento Card */}
@@ -544,12 +678,18 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
           <div>
             <div className="flex items-center justify-between text-xs font-bold text-slate-500 uppercase tracking-wider">
               <span>Today's Target Gauge</span>
-              <span className="text-indigo-600 font-extrabold">{dailyProgressPct}% Done</span>
+              <span className="text-indigo-600 font-extrabold">
+                {dailyProgressPct}% Done
+              </span>
             </div>
 
             <div className="mt-4 text-center">
-              <div className="text-3xl font-extrabold text-slate-900 font-mono">{totalHoursToday} hrs</div>
-              <p className="text-xs text-slate-500 mt-1 font-medium">Logged out of {dailyGoalHours} hrs daily target</p>
+              <div className="text-3xl font-extrabold text-slate-900 font-mono">
+                {totalHoursToday} hrs
+              </div>
+              <p className="text-xs text-slate-500 mt-1 font-medium">
+                Logged out of {dailyGoalHours} hrs daily target
+              </p>
             </div>
 
             <div className="mt-4 w-full h-3 rounded-full bg-slate-100 overflow-hidden border border-slate-200">
@@ -578,15 +718,21 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
             <div className="grid grid-cols-3 gap-1.5 text-center text-[10px]">
               <div className="bg-white p-2 rounded-xl border border-slate-200">
                 <div className="text-slate-400 uppercase font-bold">Focus</div>
-                <div className="font-mono font-extrabold text-indigo-600 text-xs mt-0.5">{timerConfig.focusMinutes}m</div>
+                <div className="font-mono font-extrabold text-indigo-600 text-xs mt-0.5">
+                  {timerConfig.focusMinutes}m
+                </div>
               </div>
               <div className="bg-white p-2 rounded-xl border border-slate-200">
                 <div className="text-slate-400 uppercase font-bold">Break</div>
-                <div className="font-mono font-extrabold text-amber-600 text-xs mt-0.5">{timerConfig.shortBreakMinutes}m</div>
+                <div className="font-mono font-extrabold text-amber-600 text-xs mt-0.5">
+                  {timerConfig.shortBreakMinutes}m
+                </div>
               </div>
               <div className="bg-white p-2 rounded-xl border border-slate-200">
                 <div className="text-slate-400 uppercase font-bold">Cycles</div>
-                <div className="font-mono font-extrabold text-emerald-600 text-xs mt-0.5">{timerConfig.cyclesBeforeLongBreak}x</div>
+                <div className="font-mono font-extrabold text-emerald-600 text-xs mt-0.5">
+                  {timerConfig.cyclesBeforeLongBreak}x
+                </div>
               </div>
             </div>
           </div>
@@ -596,12 +742,14 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
             <div className="flex items-center justify-between text-xs text-slate-700">
               <span className="font-bold">Daily Study Target:</span>
               <div className="flex items-center gap-1">
-                {[6, 8, 10, 12].map(hrs => (
+                {[6, 8, 10, 12].map((hrs) => (
                   <button
                     key={hrs}
                     onClick={() => onUpdateDailyGoal(hrs)}
                     className={`px-2.5 py-1 rounded-lg text-[11px] font-extrabold shadow-xs transition cursor-pointer ${
-                      dailyGoalHours === hrs ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200"
+                      dailyGoalHours === hrs
+                        ? "bg-indigo-600 text-white"
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200"
                     }`}
                   >
                     {hrs}h
@@ -614,24 +762,25 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
             </p>
           </div>
         </div>
-
       </div>
 
       {/* Today's & Historical Study Log Repository with CSV Export Bento Card */}
       <div className="bg-white border-2 border-slate-200 rounded-3xl p-6 shadow-sm space-y-5">
-        
         {/* Card Header & Primary Export Actions */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-4 border-b border-slate-100">
           <div>
             <div className="flex items-center gap-2">
               <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-100 flex items-center gap-1.5 w-fit">
-                <BarChart2 className="w-3.5 h-3.5 text-indigo-600" /> Study History Repository
+                <BarChart2 className="w-3.5 h-3.5 text-indigo-600" /> Study
+                History Repository
               </span>
               <span className="text-xs text-slate-500 font-mono font-semibold">
                 {sessionLogs.length} Total Sessions Logged
               </span>
             </div>
-            <h3 className="text-lg font-bold text-slate-900 mt-1">Study Session Logs & CSV Export Engine</h3>
+            <h3 className="text-lg font-bold text-slate-900 mt-1">
+              Study Session Logs & CSV Export Engine
+            </h3>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
@@ -648,16 +797,17 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
             </button>
 
             {/* Export All CSV Button */}
-            {filteredLogs.length !== sessionLogs.length && sessionLogs.length > 0 && (
-              <button
-                onClick={() => handleExportCsv(sessionLogs, "all_records")}
-                className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-200 transition cursor-pointer"
-                title="Export entire study log history to CSV"
-              >
-                <Download className="w-3.5 h-3.5 text-slate-600" />
-                <span>Export All ({sessionLogs.length})</span>
-              </button>
-            )}
+            {filteredLogs.length !== sessionLogs.length &&
+              sessionLogs.length > 0 && (
+                <button
+                  onClick={() => handleExportCsv(sessionLogs, "all_records")}
+                  className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-200 transition cursor-pointer"
+                  title="Export entire study log history to CSV"
+                >
+                  <Download className="w-3.5 h-3.5 text-slate-600" />
+                  <span>Export All ({sessionLogs.length})</span>
+                </button>
+              )}
           </div>
         </div>
 
@@ -666,9 +816,12 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
           <div className="p-3.5 rounded-2xl bg-emerald-50 border-2 border-emerald-200 text-emerald-900 text-xs font-bold flex items-center justify-between gap-2 animate-in fade-in slide-in-from-top-2 duration-300">
             <div className="flex items-center gap-2">
               <CheckCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span>{exportFeedback} Compatible with Microsoft Excel, Google Sheets, LibreOffice & Apple Numbers.</span>
+              <span>
+                {exportFeedback} Compatible with Microsoft Excel, Google Sheets,
+                LibreOffice & Apple Numbers.
+              </span>
             </div>
-            <button 
+            <button
               onClick={() => setExportFeedback(null)}
               className="text-emerald-700 hover:text-emerald-900 font-bold px-1.5"
             >
@@ -679,14 +832,13 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
 
         {/* Filter Controls Toolbar */}
         <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 bg-slate-50 p-3 rounded-2xl border border-slate-200">
-          
           {/* Time Range Segmented Selector */}
           <div className="sm:col-span-4 flex items-center bg-white p-1 rounded-xl border border-slate-200 shadow-2xs">
             {[
               { id: "all" as const, label: `All (${sessionLogs.length})` },
               { id: "today" as const, label: `Today (${todaysLogs.length})` },
               { id: "week" as const, label: "Past 7 Days" },
-            ].map(t => (
+            ].map((t) => (
               <button
                 key={t.id}
                 onClick={() => setHistoryTimeFilter(t.id)}
@@ -711,9 +863,13 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
             >
               <option value="all">All Subjects ({sessionLogs.length})</option>
               <option value="Indian Polity">Indian Polity</option>
-              <option value="Modern Indian History">Modern Indian History</option>
+              <option value="Modern Indian History">
+                Modern Indian History
+              </option>
               <option value="Indian Economy">Indian Economy</option>
-              <option value="Environment & Ecology">Environment & Ecology</option>
+              <option value="Environment & Ecology">
+                Environment & Ecology
+              </option>
               <option value="Physical & Indian Geography">Geography</option>
               <option value="CSAT Paper II">CSAT Paper II</option>
               <option value="Ethics (GS4)">Ethics (GS4)</option>
@@ -742,15 +898,22 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
               </button>
             )}
           </div>
-
         </div>
 
         {/* Telemetry Summary Bar */}
         <div className="flex flex-wrap items-center justify-between text-xs text-slate-600 px-1 font-medium gap-2">
           <div>
-            Showing <strong className="text-slate-900">{filteredLogs.length}</strong> matching sessions • Total Time: <strong className="text-indigo-600 font-mono">{filteredTotalHours} hrs</strong> ({filteredTotalMinutes} mins)
+            Showing{" "}
+            <strong className="text-slate-900">{filteredLogs.length}</strong>{" "}
+            matching sessions • Total Time:{" "}
+            <strong className="text-indigo-600 font-mono">
+              {filteredTotalHours} hrs
+            </strong>{" "}
+            ({filteredTotalMinutes} mins)
           </div>
-          {(historySubjectFilter !== "all" || historySearchQuery || historyTimeFilter !== "all") && (
+          {(historySubjectFilter !== "all" ||
+            historySearchQuery ||
+            historyTimeFilter !== "all") && (
             <button
               onClick={() => {
                 setHistoryTimeFilter("all");
@@ -868,7 +1031,6 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
         syllabus={syllabus}
         onOpenAIMentorWithPrompt={onOpenAIMentorWithPrompt}
       />
-
     </div>
   );
 };

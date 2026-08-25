@@ -1,12 +1,12 @@
 import React, { useState, useMemo } from "react";
 import { WeakAreaItem, SyllabusTopic, MockTestLog } from "../../types";
-import { 
-  AlertTriangle, 
-  CheckCircle2, 
-  Sparkles, 
-  BookOpen, 
-  HelpCircle, 
-  Flame, 
+import {
+  AlertTriangle,
+  CheckCircle2,
+  Sparkles,
+  BookOpen,
+  HelpCircle,
+  Flame,
   Layers,
   ArrowRight,
   Filter,
@@ -19,7 +19,7 @@ import {
   XCircle,
   HelpCircle as QuestionIcon,
   ChevronRight,
-  Download
+  Download,
 } from "lucide-react";
 
 interface WeakAreasTabProps {
@@ -35,13 +35,15 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
   onOpenExplainTopic,
   syllabus = [],
   mockLogs = [],
-  onOpenExportReport
+  onOpenExportReport,
 }) => {
   const [selectedPaper, setSelectedPaper] = useState<string>("All");
   const [selectedIntensity, setSelectedIntensity] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [viewMode, setViewMode] = useState<"heatmap" | "cards">("heatmap");
-  const [selectedTopicId, setSelectedTopicId] = useState<string | null>(weakAreas[0]?.id || null);
+  const [selectedTopicId, setSelectedTopicId] = useState<string | null>(
+    weakAreas[0]?.id || null
+  );
 
   // Calculate failed question intensity level
   const getIntensityInfo = (failedCount: number = 0, accuracy: number = 50) => {
@@ -50,40 +52,44 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
         level: "Critical (6+ Failed)",
         badge: "🔴 Critical Risk",
         badgeBg: "bg-rose-100 text-rose-800 border-rose-300",
-        cellBg: "bg-rose-50/90 border-rose-300 hover:border-rose-500 text-rose-950",
+        cellBg:
+          "bg-rose-50/90 border-rose-300 hover:border-rose-500 text-rose-950",
         headerBg: "bg-rose-500 text-white",
         barColor: "bg-rose-600",
-        intensityText: "High Failure Density"
+        intensityText: "High Failure Density",
       };
     } else if (failedCount >= 4 || accuracy < 60) {
       return {
         level: "Moderate (4-5 Failed)",
         badge: "🟠 Moderate Risk",
         badgeBg: "bg-amber-100 text-amber-800 border-amber-300",
-        cellBg: "bg-amber-50/90 border-amber-300 hover:border-amber-500 text-amber-950",
+        cellBg:
+          "bg-amber-50/90 border-amber-300 hover:border-amber-500 text-amber-950",
         headerBg: "bg-amber-500 text-white",
         barColor: "bg-amber-500",
-        intensityText: "Moderate Failure Density"
+        intensityText: "Moderate Failure Density",
       };
     } else if (failedCount >= 2 || accuracy < 75) {
       return {
         level: "Mild (2-3 Failed)",
         badge: "🟡 Mild Risk",
         badgeBg: "bg-yellow-100 text-yellow-800 border-yellow-300",
-        cellBg: "bg-yellow-50/80 border-yellow-300 hover:border-yellow-500 text-yellow-950",
+        cellBg:
+          "bg-yellow-50/80 border-yellow-300 hover:border-yellow-500 text-yellow-950",
         headerBg: "bg-yellow-500 text-white",
         barColor: "bg-yellow-500",
-        intensityText: "Low Failure Density"
+        intensityText: "Low Failure Density",
       };
     } else {
       return {
         level: "Secure (0-1 Failed)",
         badge: "🟢 Mastered",
         badgeBg: "bg-emerald-100 text-emerald-800 border-emerald-300",
-        cellBg: "bg-emerald-50/80 border-emerald-300 hover:border-emerald-500 text-emerald-950",
+        cellBg:
+          "bg-emerald-50/80 border-emerald-300 hover:border-emerald-500 text-emerald-950",
         headerBg: "bg-emerald-600 text-white",
         barColor: "bg-emerald-500",
-        intensityText: "Zero/Negligible Deficit"
+        intensityText: "Zero/Negligible Deficit",
       };
     }
   };
@@ -91,46 +97,73 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
   // Filtered topics
   const filteredWeakAreas = useMemo(() => {
     return weakAreas.filter((item) => {
-      const matchPaper = selectedPaper === "All" || item.paper === selectedPaper;
-      const failedCount = item.failedQuestionsCount || (item.severity === "Critical" ? 7 : item.severity === "Moderate" ? 4 : 2);
-      const intensity = getIntensityInfo(failedCount, item.accuracyInMocks || 50);
-      const matchIntensity = selectedIntensity === "All" || intensity.level.startsWith(selectedIntensity);
-      const matchQuery = 
+      const matchPaper =
+        selectedPaper === "All" || item.paper === selectedPaper;
+      const failedCount =
+        item.failedQuestionsCount ||
+        (item.severity === "Critical"
+          ? 7
+          : item.severity === "Moderate"
+          ? 4
+          : 2);
+      const intensity = getIntensityInfo(
+        failedCount,
+        item.accuracyInMocks || 50
+      );
+      const matchIntensity =
+        selectedIntensity === "All" ||
+        intensity.level.startsWith(selectedIntensity);
+      const matchQuery =
         !searchQuery.trim() ||
         item.topic.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.subject.toLowerCase().includes(searchQuery.toLowerCase());
-      
+
       return matchPaper && matchIntensity && matchQuery;
     });
   }, [weakAreas, selectedPaper, selectedIntensity, searchQuery]);
 
   // Aggregate metrics
   const totalFailedQuestions = useMemo(() => {
-    return weakAreas.reduce((acc, curr) => acc + (curr.failedQuestionsCount || (curr.severity === "Critical" ? 7 : curr.severity === "Moderate" ? 4 : 2)), 0);
+    return weakAreas.reduce(
+      (acc, curr) =>
+        acc +
+        (curr.failedQuestionsCount ||
+          (curr.severity === "Critical"
+            ? 7
+            : curr.severity === "Moderate"
+            ? 4
+            : 2)),
+      0
+    );
   }, [weakAreas]);
 
   const totalMarksLoss = useMemo(() => {
-    return weakAreas.reduce((acc, curr) => acc + (curr.estimatedMarkLoss || 0), 0);
+    return weakAreas.reduce(
+      (acc, curr) => acc + (curr.estimatedMarkLoss || 0),
+      0
+    );
   }, [weakAreas]);
 
   const criticalCount = useMemo(() => {
-    return weakAreas.filter(w => (w.failedQuestionsCount || 0) >= 6 || w.severity === "Critical").length;
+    return weakAreas.filter(
+      (w) => (w.failedQuestionsCount || 0) >= 6 || w.severity === "Critical"
+    ).length;
   }, [weakAreas]);
 
   const selectedTopic = useMemo(() => {
-    return weakAreas.find(w => w.id === selectedTopicId) || weakAreas[0];
+    return weakAreas.find((w) => w.id === selectedTopicId) || weakAreas[0];
   }, [weakAreas, selectedTopicId]);
 
   return (
     <div className="space-y-6">
-      
       {/* Top Banner Bento Card */}
       <div className="bg-white border-2 border-slate-200 rounded-3xl p-6 sm:p-7 shadow-sm space-y-4">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
           <div>
             <div className="flex items-center gap-2">
               <span className="px-3 py-1 rounded-full bg-rose-50 text-rose-700 text-xs font-bold border border-rose-200 flex items-center gap-1.5 shadow-2xs">
-                <AlertTriangle className="w-3.5 h-3.5 text-rose-600" /> Negative Mark Deficit Engine
+                <AlertTriangle className="w-3.5 h-3.5 text-rose-600" /> Negative
+                Mark Deficit Engine
               </span>
               <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
                 Mock Error Analytics
@@ -140,23 +173,37 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
               Syllabus Weak Areas & Failure Intensity Heatmap
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed mt-1">
-              Visual matrix mapping syllabus topics against negative marks and failed mock test questions. Color intensity highlights vulnerable topics where targeted PYQ practice delivers immediate score jumps.
+              Visual matrix mapping syllabus topics against negative marks and
+              failed mock test questions. Color intensity highlights vulnerable
+              topics where targeted PYQ practice delivers immediate score jumps.
             </p>
           </div>
 
           {/* Quick Metrics Bar */}
           <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 shrink-0">
             <div className="bg-rose-50/80 border border-rose-200 rounded-2xl p-3 text-center min-w-[100px] shadow-2xs">
-              <span className="text-[10px] font-bold text-rose-700 uppercase tracking-wider block">Failed MCQs</span>
-              <span className="text-xl font-mono font-extrabold text-rose-700">{totalFailedQuestions}</span>
+              <span className="text-[10px] font-bold text-rose-700 uppercase tracking-wider block">
+                Failed MCQs
+              </span>
+              <span className="text-xl font-mono font-extrabold text-rose-700">
+                {totalFailedQuestions}
+              </span>
             </div>
             <div className="bg-amber-50/80 border border-amber-200 rounded-2xl p-3 text-center min-w-[100px] shadow-2xs">
-              <span className="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">Marks Bleed</span>
-              <span className="text-xl font-mono font-extrabold text-amber-700">-{totalMarksLoss.toFixed(1)}</span>
+              <span className="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">
+                Marks Bleed
+              </span>
+              <span className="text-xl font-mono font-extrabold text-amber-700">
+                -{totalMarksLoss.toFixed(1)}
+              </span>
             </div>
             <div className="bg-indigo-50/80 border border-indigo-200 rounded-2xl p-3 text-center min-w-[100px] shadow-2xs">
-              <span className="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">Critical Nodes</span>
-              <span className="text-xl font-mono font-extrabold text-indigo-700">{criticalCount}</span>
+              <span className="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">
+                Critical Nodes
+              </span>
+              <span className="text-xl font-mono font-extrabold text-indigo-700">
+                {criticalCount}
+              </span>
             </div>
           </div>
         </div>
@@ -191,7 +238,6 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
 
       {/* Filter and View Controls Toolbar */}
       <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-        
         {/* Search */}
         <div className="relative flex-1">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -206,7 +252,6 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
 
         {/* Filters */}
         <div className="flex flex-wrap items-center gap-2">
-          
           {/* Paper filter */}
           <select
             value={selectedPaper}
@@ -236,8 +281,8 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
             <button
               onClick={() => setViewMode("heatmap")}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
-                viewMode === "heatmap" 
-                  ? "bg-white text-indigo-700 shadow-xs border border-slate-200" 
+                viewMode === "heatmap"
+                  ? "bg-white text-indigo-700 shadow-xs border border-slate-200"
                   : "text-slate-600 hover:text-slate-900"
               }`}
               title="Visual Grid Matrix"
@@ -248,8 +293,8 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
             <button
               onClick={() => setViewMode("cards")}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
-                viewMode === "cards" 
-                  ? "bg-white text-indigo-700 shadow-xs border border-slate-200" 
+                viewMode === "cards"
+                  ? "bg-white text-indigo-700 shadow-xs border border-slate-200"
                   : "text-slate-600 hover:text-slate-900"
               }`}
               title="Diagnostic Action Cards"
@@ -270,27 +315,34 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
               <span>Export Heatmap Report</span>
             </button>
           )}
-
         </div>
-
       </div>
 
       {/* Main Content Area */}
       {viewMode === "heatmap" ? (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
           {/* Heatmap Visual Matrix (2 Columns on large screens) */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center justify-between text-xs font-bold text-slate-500 uppercase tracking-wider px-1">
-              <span>Failure Intensity Grid ({filteredWeakAreas.length} Topics)</span>
+              <span>
+                Failure Intensity Grid ({filteredWeakAreas.length} Topics)
+              </span>
               <span>Click a tile to inspect diagnosis</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               {filteredWeakAreas.map((item) => {
-                const failedCount = item.failedQuestionsCount || (item.severity === "Critical" ? 7 : item.severity === "Moderate" ? 4 : 2);
+                const failedCount =
+                  item.failedQuestionsCount ||
+                  (item.severity === "Critical"
+                    ? 7
+                    : item.severity === "Moderate"
+                    ? 4
+                    : 2);
                 const totalMocks = item.totalAttemptedInMocks || 12;
-                const accuracy = item.accuracyInMocks || Math.round(((totalMocks - failedCount) / totalMocks) * 100);
+                const accuracy =
+                  item.accuracyInMocks ||
+                  Math.round(((totalMocks - failedCount) / totalMocks) * 100);
                 const intensity = getIntensityInfo(failedCount, accuracy);
                 const isSelected = selectedTopic?.id === item.id;
 
@@ -302,12 +354,11 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                     className={`p-4 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between space-y-3 ${
                       intensity.cellBg
                     } ${
-                      isSelected 
-                        ? "ring-3 ring-indigo-500 shadow-md scale-[1.01]" 
+                      isSelected
+                        ? "ring-3 ring-indigo-500 shadow-md scale-[1.01]"
                         : "hover:shadow-sm"
                     }`}
                   >
-                    
                     {/* Top Subject & Intensity Indicator */}
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
@@ -324,7 +375,9 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                         </h4>
                       </div>
 
-                      <span className={`px-2 py-0.5 rounded-md text-[10px] font-black shrink-0 border uppercase tracking-wider ${intensity.badgeBg}`}>
+                      <span
+                        className={`px-2 py-0.5 rounded-md text-[10px] font-black shrink-0 border uppercase tracking-wider ${intensity.badgeBg}`}
+                      >
                         {failedCount} Failed
                       </span>
                     </div>
@@ -349,7 +402,6 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                         <span>{item.recommendedPYQCount}+ PYQs Req</span>
                       </div>
                     </div>
-
                   </div>
                 );
               })}
@@ -358,8 +410,12 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
             {filteredWeakAreas.length === 0 && (
               <div className="p-12 text-center bg-white border-2 border-slate-200 rounded-3xl space-y-2">
                 <CheckCircle2 className="w-10 h-10 text-emerald-500 mx-auto" />
-                <h4 className="text-sm font-bold text-slate-800">No Weak Topics Found for Selected Filters</h4>
-                <p className="text-xs text-slate-500">Try adjusting your paper or intensity filters above.</p>
+                <h4 className="text-sm font-bold text-slate-800">
+                  No Weak Topics Found for Selected Filters
+                </h4>
+                <p className="text-xs text-slate-500">
+                  Try adjusting your paper or intensity filters above.
+                </p>
               </div>
             )}
           </div>
@@ -372,16 +428,20 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
 
             {selectedTopic ? (
               <div className="bg-white border-2 border-slate-200 rounded-3xl p-6 shadow-sm space-y-5 sticky top-4">
-                
                 {/* Topic Header */}
                 <div className="space-y-2 pb-4 border-b border-slate-100">
                   <div className="flex items-center justify-between">
                     <span className="px-2.5 py-0.5 rounded-lg bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-200">
                       {selectedTopic.paper}
                     </span>
-                    <span className={`px-2.5 py-0.5 rounded-lg text-xs font-black border ${
-                      getIntensityInfo(selectedTopic.failedQuestionsCount || 5, selectedTopic.accuracyInMocks || 50).badgeBg
-                    }`}>
+                    <span
+                      className={`px-2.5 py-0.5 rounded-lg text-xs font-black border ${
+                        getIntensityInfo(
+                          selectedTopic.failedQuestionsCount || 5,
+                          selectedTopic.accuracyInMocks || 50
+                        ).badgeBg
+                      }`}
+                    >
                       {selectedTopic.failedQuestionsCount || 5} Questions Failed
                     </span>
                   </div>
@@ -389,19 +449,25 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                   <h3 className="text-base font-extrabold text-slate-900 leading-tight">
                     {selectedTopic.topic}
                   </h3>
-                  <div className="text-xs text-slate-500 font-semibold">{selectedTopic.subject}</div>
+                  <div className="text-xs text-slate-500 font-semibold">
+                    {selectedTopic.subject}
+                  </div>
                 </div>
 
                 {/* Score & Error Breakdown */}
                 <div className="grid grid-cols-2 gap-2.5">
                   <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                    <span className="text-[10px] font-bold text-slate-500 uppercase block">Mock Accuracy</span>
+                    <span className="text-[10px] font-bold text-slate-500 uppercase block">
+                      Mock Accuracy
+                    </span>
                     <span className="text-base font-mono font-extrabold text-rose-600">
                       {selectedTopic.accuracyInMocks}%
                     </span>
                   </div>
                   <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                    <span className="text-[10px] font-bold text-slate-500 uppercase block">Mark Penalty</span>
+                    <span className="text-[10px] font-bold text-slate-500 uppercase block">
+                      Mark Penalty
+                    </span>
                     <span className="text-base font-mono font-extrabold text-amber-700">
                       -{selectedTopic.estimatedMarkLoss} M
                     </span>
@@ -411,17 +477,20 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                 {/* Root Cause Analysis */}
                 <div className="space-y-1.5 text-xs">
                   <span className="font-bold text-slate-900 flex items-center gap-1.5">
-                    <AlertTriangle className="w-3.5 h-3.5 text-rose-600" /> Root Cause of Mock Failures:
+                    <AlertTriangle className="w-3.5 h-3.5 text-rose-600" /> Root
+                    Cause of Mock Failures:
                   </span>
                   <div className="p-3 bg-rose-50/60 rounded-xl border border-rose-200 text-slate-700 leading-relaxed font-medium">
-                    {selectedTopic.rootCause || "High negative marking due to close distractors in Prelims options."}
+                    {selectedTopic.rootCause ||
+                      "High negative marking due to close distractors in Prelims options."}
                   </div>
                 </div>
 
                 {/* Targeted Action Plan */}
                 <div className="space-y-1.5 text-xs">
                   <span className="font-bold text-slate-900 flex items-center gap-1.5">
-                    <Target className="w-3.5 h-3.5 text-indigo-600" /> Prescribed Action Plan:
+                    <Target className="w-3.5 h-3.5 text-indigo-600" />{" "}
+                    Prescribed Action Plan:
                   </span>
                   <div className="p-3 bg-indigo-50/60 rounded-xl border border-indigo-200 text-slate-700 leading-relaxed font-medium">
                     {selectedTopic.recommendedAction}
@@ -433,13 +502,18 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                   <div className="flex items-center gap-2 p-2.5 bg-slate-50 rounded-xl border border-slate-200">
                     <BookOpen className="w-4 h-4 text-indigo-600 shrink-0" />
                     <span className="text-slate-600 font-medium">
-                      Primary Book: <strong className="text-slate-900">{selectedTopic.priorityBook}</strong>
+                      Primary Book:{" "}
+                      <strong className="text-slate-900">
+                        {selectedTopic.priorityBook}
+                      </strong>
                     </span>
                   </div>
 
                   <div className="flex items-center justify-between p-2.5 bg-emerald-50 rounded-xl border border-emerald-200 font-bold text-emerald-800">
                     <span>Target PYQ Target:</span>
-                    <span className="font-mono">{selectedTopic.recommendedPYQCount || 20}+ Questions</span>
+                    <span className="font-mono">
+                      {selectedTopic.recommendedPYQCount || 20}+ Questions
+                    </span>
                   </div>
                 </div>
 
@@ -453,23 +527,29 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                     <span>Ask AI Mentor to Explain This Topic</span>
                   </button>
                 </div>
-
               </div>
             ) : (
               <div className="p-8 text-center bg-white border-2 border-slate-200 rounded-3xl text-slate-500 text-xs">
                 Select a topic from the heatmap to inspect its diagnosis.
               </div>
             )}
-
           </div>
-
         </div>
       ) : (
         /* Detailed Cards View */
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {filteredWeakAreas.map((item) => {
-            const failedCount = item.failedQuestionsCount || (item.severity === "Critical" ? 7 : item.severity === "Moderate" ? 4 : 2);
-            const intensity = getIntensityInfo(failedCount, item.accuracyInMocks || 50);
+            const failedCount =
+              item.failedQuestionsCount ||
+              (item.severity === "Critical"
+                ? 7
+                : item.severity === "Moderate"
+                ? 4
+                : 2);
+            const intensity = getIntensityInfo(
+              failedCount,
+              item.accuracyInMocks || 50
+            );
 
             return (
               <div
@@ -477,7 +557,6 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                 className="bg-white border-2 border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between space-y-4 hover:border-slate-300 transition"
               >
                 <div className="space-y-3">
-                  
                   {/* Header */}
                   <div className="flex items-start justify-between gap-2">
                     <div>
@@ -485,12 +564,18 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                         <span className="px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-[11px] font-bold border border-indigo-100">
                           {item.paper}
                         </span>
-                        <span className="text-xs text-slate-600 font-semibold">{item.subject}</span>
+                        <span className="text-xs text-slate-600 font-semibold">
+                          {item.subject}
+                        </span>
                       </div>
-                      <h3 className="text-base font-bold text-slate-900 mt-1.5">{item.topic}</h3>
+                      <h3 className="text-base font-bold text-slate-900 mt-1.5">
+                        {item.topic}
+                      </h3>
                     </div>
 
-                    <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider border ${intensity.badgeBg}`}>
+                    <span
+                      className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider border ${intensity.badgeBg}`}
+                    >
                       {failedCount} Failed
                     </span>
                   </div>
@@ -498,31 +583,49 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                   {/* Stats Bar */}
                   <div className="grid grid-cols-3 gap-2 bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs shadow-xs text-center">
                     <div>
-                      <span className="text-slate-500 block text-[10px] font-semibold">Mock Accuracy</span>
-                      <span className="font-bold text-rose-600 font-mono">{item.accuracyInMocks}%</span>
+                      <span className="text-slate-500 block text-[10px] font-semibold">
+                        Mock Accuracy
+                      </span>
+                      <span className="font-bold text-rose-600 font-mono">
+                        {item.accuracyInMocks}%
+                      </span>
                     </div>
                     <div>
-                      <span className="text-slate-500 block text-[10px] font-semibold">Marks Loss</span>
-                      <span className="font-bold text-amber-700 font-mono">-{item.estimatedMarkLoss} Marks</span>
+                      <span className="text-slate-500 block text-[10px] font-semibold">
+                        Marks Loss
+                      </span>
+                      <span className="font-bold text-amber-700 font-mono">
+                        -{item.estimatedMarkLoss} Marks
+                      </span>
                     </div>
                     <div>
-                      <span className="text-slate-500 block text-[10px] font-semibold">PYQs Needed</span>
-                      <span className="font-bold text-emerald-700 font-mono">{item.recommendedPYQCount}+ MCQs</span>
+                      <span className="text-slate-500 block text-[10px] font-semibold">
+                        PYQs Needed
+                      </span>
+                      <span className="font-bold text-emerald-700 font-mono">
+                        {item.recommendedPYQCount}+ MCQs
+                      </span>
                     </div>
                   </div>
 
                   {/* Recommended Action & Books */}
                   <div className="space-y-2 text-xs text-slate-700">
                     <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 font-medium">
-                      <strong className="text-slate-900 font-bold">Action Plan: </strong>
+                      <strong className="text-slate-900 font-bold">
+                        Action Plan:{" "}
+                      </strong>
                       {item.recommendedAction}
                     </div>
                     <div className="text-slate-600 flex items-center gap-1.5 font-medium">
                       <BookOpen className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                      <span>Refer: <strong className="text-slate-900">{item.priorityBook}</strong></span>
+                      <span>
+                        Refer:{" "}
+                        <strong className="text-slate-900">
+                          {item.priorityBook}
+                        </strong>
+                      </span>
                     </div>
                   </div>
-
                 </div>
 
                 {/* AI Remedy Button */}
@@ -535,13 +638,11 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                     <span>AI Concept Clarity on "{item.topic}"</span>
                   </button>
                 </div>
-
               </div>
             );
           })}
         </div>
       )}
-
     </div>
   );
 };

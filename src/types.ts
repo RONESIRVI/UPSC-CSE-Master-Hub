@@ -1,8 +1,24 @@
-export type MainTab = "toppers" | "prep" | "analytics" | "ai-mentor";
+export type MainTab = "home" | "toppers" | "prep" | "analytics" | "ai-mentor";
 
-export type TopperSubTab = "strategy" | "books" | "routine" | "notes" | "interviews";
-export type PrepSubTab = "syllabus" | "study-plan" | "tracker" | "revision" | "notes" | "pyq";
-export type AnalyticsSubTab = "progress" | "performance" | "weak-areas" | "gap-analysis" | "rank-benchmark";
+export type TopperSubTab =
+  | "strategy"
+  | "books"
+  | "routine"
+  | "notes"
+  | "interviews";
+export type PrepSubTab =
+  | "syllabus"
+  | "study-plan"
+  | "tracker"
+  | "revision"
+  | "notes"
+  | "pyq";
+export type AnalyticsSubTab =
+  | "progress"
+  | "performance"
+  | "weak-areas"
+  | "gap-analysis"
+  | "rank-benchmark";
 
 export interface TopperProfile {
   id: string;
@@ -35,8 +51,19 @@ export interface BookItem {
   title: string;
   authorOrPublication: string;
   subject: string;
-  paper: "Prelims GS1" | "CSAT" | "Mains GS1" | "Mains GS2" | "Mains GS3" | "Mains GS4" | "Essay" | "Optional";
-  priority: "Must Read / Core" | "High Yield Reference" | "Supplementary / Skim";
+  paper:
+    | "Prelims GS1"
+    | "CSAT"
+    | "Mains GS1"
+    | "Mains GS2"
+    | "Mains GS3"
+    | "Mains GS4"
+    | "Essay"
+    | "Optional";
+  priority:
+    | "Must Read / Core"
+    | "High Yield Reference"
+    | "Supplementary / Skim";
   recommendedBy: string[];
   keyChapters: string[];
   tipsForReading: string;
@@ -46,14 +73,25 @@ export interface BookItem {
 export interface RoutineSlot {
   time: string;
   activity: string;
-  category: "GS" | "Optional" | "Current Affairs" | "CSAT / Revision" | "Answer Writing" | "Break / Health";
+  category:
+    | "GS"
+    | "Optional"
+    | "Current Affairs"
+    | "CSAT / Revision"
+    | "Answer Writing"
+    | "Break / Health";
   description: string;
 }
 
 export interface TopperRoutine {
   id: string;
   title: string;
-  type: "Full Time (10-12h)" | "Working Professional (5-6h)" | "College Student (4h)" | "Prelims Sprint (Last 60 Days)" | "Mains Sprint";
+  type:
+    | "Full Time (10-12h)"
+    | "Working Professional (5-6h)"
+    | "College Student (4h)"
+    | "Prelims Sprint (Last 60 Days)"
+    | "Mains Sprint";
   topperRef: string;
   totalStudyHours: number;
   wakeUpTime: string;
@@ -68,11 +106,21 @@ export interface NoteItem {
   subject: string;
   paper: string;
   topperSource: string;
-  type: "Diagram / Mindmap" | "Framework / Template" | "Supreme Court Verdicts" | "Committee Summaries" | "Data Bank";
+  type:
+    | "Diagram / Mindmap"
+    | "Framework / Template"
+    | "Supreme Court Verdicts"
+    | "Committee Summaries"
+    | "Data Bank";
   summary: string;
   keyPoints: string[];
   diagramDescription?: string;
-  svgDiagramType?: "pestle" | "constitution-flow" | "ethics-matrix" | "economy-cycle" | "intro-body-conclusion";
+  svgDiagramType?:
+    | "pestle"
+    | "constitution-flow"
+    | "ethics-matrix"
+    | "economy-cycle"
+    | "intro-body-conclusion";
 }
 
 export interface InterviewTranscript {
@@ -96,14 +144,26 @@ export interface InterviewTranscript {
 
 export interface SyllabusTopic {
   id: string;
-  paper: "Prelims GS1" | "Prelims CSAT" | "Mains GS1" | "Mains GS2" | "Mains GS3" | "Mains GS4" | "Mains Essay";
+  paper:
+    | "Prelims GS1"
+    | "Prelims CSAT"
+    | "Mains GS1"
+    | "Mains GS2"
+    | "Mains GS3"
+    | "Mains GS4"
+    | "Mains Essay";
   subject: string;
   module: string;
   title: string;
   yield: "🔥 High Yield" | "⭐ Medium Yield" | "📘 Standard";
   weightagePercentage: number;
   pyqFrequencyLast5Years: number;
-  status: "not_started" | "in_progress" | "revised_1" | "revised_2" | "mastered";
+  status:
+    | "not_started"
+    | "in_progress"
+    | "revised_1"
+    | "revised_2"
+    | "mastered";
   notes?: string;
   subtopics: string[];
   failedMockQuestions?: number;
@@ -130,19 +190,48 @@ export interface StudySessionLog {
   paper: string;
   durationMinutes: number;
   topicCovered: string;
+  taskType?: "study" | "revision" | "pyq" | "notes" | "answer_writing";
   qualityRating: 1 | 2 | 3 | 4 | 5; // 5 = High focus
   notes?: string;
 }
 
-export type TimerMode = 
-  | "pomodoro_25" 
-  | "pomodoro_50" 
-  | "gs_marathon_90" 
-  | "exam_slot_120" 
-  | "custom_interval" 
+export type TimerMode =
+  | "pomodoro_25"
+  | "pomodoro_50"
+  | "gs_marathon_90"
+  | "exam_slot_120"
+  | "custom_interval"
   | "stopwatch_continuous";
 
 export type TimerPhase = "focus" | "short_break" | "long_break";
+
+export interface PreparationHealth {
+  overallScore: number;
+  metrics: {
+    studyHours: number; // 0-100
+    pyq: number; // 0-100
+    revision: number; // 0-100
+    tests: number; // 0-100
+    answers: number; // 0-100
+    syllabus: number; // 0-100
+  };
+}
+
+export interface DailyTask {
+  id: string;
+  title: string;
+  completed: boolean;
+  type: "study" | "revision" | "pyq" | "notes" | "answer_writing";
+  timeSlot?: string;
+  subject?: string;
+}
+
+export interface SmartRecommendation {
+  subject: string;
+  topic: string;
+  reason: string;
+  tags: string[];
+}
 
 export interface FocusTimerConfig {
   mode: TimerMode;
@@ -243,8 +332,11 @@ export interface TimeVsWeightageGap {
   subject: string;
   paper?: string;
   upscMarksWeightagePct?: number; // e.g. Polity is 17% in Prelims
-  timeInvestedPct?: number;       // e.g. user spent 8% or 30%
-  gapStatus?: "Under-investing (High Risk)" | "Balanced" | "Over-investing (Low Yield)";
+  timeInvestedPct?: number; // e.g. user spent 8% or 30%
+  gapStatus?:
+    | "Under-investing (High Risk)"
+    | "Balanced"
+    | "Over-investing (Low Yield)";
   actionAdvice?: string;
   actualTimePercent?: number;
   idealWeightagePercent?: number;
@@ -257,7 +349,10 @@ export type GapAnalysisMetric = TimeVsWeightageGap;
 
 export interface CutoffBenchmark {
   year: number;
-  examStage?: "Prelims (GS1 /200)" | "Mains (GS+Opt+Essay /1750)" | "Final Selection (/2025)";
+  examStage?:
+    | "Prelims (GS1 /200)"
+    | "Mains (GS+Opt+Essay /1750)"
+    | "Final Selection (/2025)";
   generalCutoff?: number;
   obcCutoff?: number;
   ewsCutoff?: number;
@@ -298,4 +393,3 @@ export interface QuickRevisionNote {
   importance: "🔥 High Yield" | "⭐ Important" | "📘 Standard";
   updatedAt: string;
 }
-

@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { StudyPlanPhase } from "../../types";
-import { 
-  Calendar, 
-  CheckCircle2, 
-  Circle, 
-  Sparkles, 
+import {
+  Calendar,
+  CheckCircle2,
+  Circle,
+  Sparkles,
   Flag,
   Plus,
   RotateCcw,
   Trash2,
   Layers,
-  ChevronRight
+  ChevronRight,
 } from "lucide-react";
 
 interface StudyPlanTabProps {
@@ -28,19 +28,24 @@ export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
   onOpenAIStrategy,
   onAddMilestone,
   onDeleteMilestone,
-  onResetDefaultStudyPlan
+  onResetDefaultStudyPlan,
 }) => {
-  const [selectedPlanType, setSelectedPlanType] = useState<"1-Year" | "6-Month Fast Track" | "2-Year Foundation">("1-Year");
-  
+  const [selectedPlanType, setSelectedPlanType] = useState<
+    "1-Year" | "6-Month Fast Track" | "2-Year Foundation"
+  >("1-Year");
+
   // Modal for Add Custom Milestone
   const [showAddModal, setShowAddModal] = useState(false);
-  const [targetPhaseId, setTargetPhaseId] = useState<string>(phases[0]?.id || "phase-1");
+  const [targetPhaseId, setTargetPhaseId] = useState<string>(
+    phases[0]?.id || "phase-1"
+  );
   const [milestoneTitle, setMilestoneTitle] = useState("");
   const [milestoneDate, setMilestoneDate] = useState("");
 
-  const totalMilestones = phases.flatMap(p => p.milestones);
-  const completedMilestones = totalMilestones.filter(m => m.completed).length;
-  const milestoneProgress = Math.round((completedMilestones / totalMilestones.length) * 100) || 0;
+  const totalMilestones = phases.flatMap((p) => p.milestones);
+  const completedMilestones = totalMilestones.filter((m) => m.completed).length;
+  const milestoneProgress =
+    Math.round((completedMilestones / totalMilestones.length) * 100) || 0;
 
   const handleCreateMilestone = (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,8 +53,8 @@ export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
 
     if (onAddMilestone) {
       onAddMilestone(
-        targetPhaseId, 
-        milestoneTitle.trim(), 
+        targetPhaseId,
+        milestoneTitle.trim(),
         milestoneDate.trim() || new Date().toISOString().split("T")[0]
       );
     }
@@ -61,22 +66,26 @@ export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
 
   return (
     <div className="space-y-6">
-      
       {/* Header Banner Bento Card */}
       <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 sm:p-6 shadow-sm space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex flex-wrap items-center gap-2">
               <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-100 flex items-center gap-1.5">
-                <Flag className="w-3.5 h-3.5 text-indigo-600" /> Milestone-Driven Roadmap
+                <Flag className="w-3.5 h-3.5 text-indigo-600" />{" "}
+                Milestone-Driven Roadmap
               </span>
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Phase-Wise Strategic Planning</span>
+              <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+                Phase-Wise Strategic Planning
+              </span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">
               Personalized UPSC Study Roadmap
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed mt-1">
-              Follow a time-tested 4-phase preparation lifecycle: Foundation ➔ Core GS & Optional ➔ Mains Consolidation ➔ Prelims Intensive War-Footing.
+              Follow a time-tested 4-phase preparation lifecycle: Foundation ➔
+              Core GS & Optional ➔ Mains Consolidation ➔ Prelims Intensive
+              War-Footing.
             </p>
           </div>
 
@@ -93,7 +102,11 @@ export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
             {onResetDefaultStudyPlan && (
               <button
                 onClick={() => {
-                  if (confirm("Restore standard UPSC 4-Phase study plan? Your custom milestones will be reset.")) {
+                  if (
+                    confirm(
+                      "Restore standard UPSC 4-Phase study plan? Your custom milestones will be reset."
+                    )
+                  ) {
                     onResetDefaultStudyPlan();
                   }
                 }}
@@ -118,7 +131,9 @@ export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
         {/* Plan Mode Selector & Overall Milestone Progress */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-4 border-t border-slate-100">
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
-            {(["1-Year", "6-Month Fast Track", "2-Year Foundation"] as const).map(type => (
+            {(
+              ["1-Year", "6-Month Fast Track", "2-Year Foundation"] as const
+            ).map((type) => (
               <button
                 key={type}
                 onClick={() => setSelectedPlanType(type)}
@@ -134,11 +149,19 @@ export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
           </div>
 
           <div className="flex items-center gap-3 bg-slate-50 px-4 py-2 rounded-xl border border-slate-200 text-xs shadow-xs shrink-0">
-            <span className="text-slate-600 font-medium">Roadmap Progress:</span>
+            <span className="text-slate-600 font-medium">
+              Roadmap Progress:
+            </span>
             <div className="w-24 h-2.5 bg-slate-200 rounded-full overflow-hidden">
-              <div className="h-full bg-indigo-600 rounded-full transition-all" style={{ width: `${milestoneProgress}%` }} />
+              <div
+                className="h-full bg-indigo-600 rounded-full transition-all"
+                style={{ width: `${milestoneProgress}%` }}
+              />
             </div>
-            <span className="font-extrabold text-indigo-600">{milestoneProgress}% ({completedMilestones}/{totalMilestones.length})</span>
+            <span className="font-extrabold text-indigo-600">
+              {milestoneProgress}% ({completedMilestones}/
+              {totalMilestones.length})
+            </span>
           </div>
         </div>
       </div>
@@ -163,18 +186,24 @@ export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
               {/* Phase Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3.5 border-b border-slate-100">
                 <div className="flex items-center gap-3">
-                  <span className={`w-8 h-8 rounded-xl text-xs font-extrabold flex items-center justify-center shadow-xs ${
-                    isPhaseCompleted
-                      ? "bg-emerald-600 text-white"
-                      : isPhaseActive
-                      ? "bg-indigo-600 text-white"
-                      : "bg-slate-100 text-slate-600 border border-slate-200"
-                  }`}>
+                  <span
+                    className={`w-8 h-8 rounded-xl text-xs font-extrabold flex items-center justify-center shadow-xs ${
+                      isPhaseCompleted
+                        ? "bg-emerald-600 text-white"
+                        : isPhaseActive
+                        ? "bg-indigo-600 text-white"
+                        : "bg-slate-100 text-slate-600 border border-slate-200"
+                    }`}
+                  >
                     {pIdx + 1}
                   </span>
                   <div>
-                    <h3 className="text-base font-bold text-slate-900">{phase.phaseName}</h3>
-                    <p className="text-xs text-slate-500 font-medium">{phase.focusArea}</p>
+                    <h3 className="text-base font-bold text-slate-900">
+                      {phase.phaseName}
+                    </h3>
+                    <p className="text-xs text-slate-500 font-medium">
+                      {phase.focusArea}
+                    </p>
                   </div>
                 </div>
 
@@ -193,13 +222,15 @@ export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
                   <span className="text-xs font-mono font-bold text-slate-700 bg-slate-50 px-3 py-1 rounded-lg border border-slate-200 shadow-xs">
                     {phase.durationMonths}
                   </span>
-                  <span className={`px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${
-                    isPhaseCompleted
-                      ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                      : isPhaseActive
-                      ? "bg-indigo-50 text-indigo-700 border border-indigo-200 animate-pulse"
-                      : "bg-slate-100 text-slate-600 border border-slate-200"
-                  }`}>
+                  <span
+                    className={`px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${
+                      isPhaseCompleted
+                        ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                        : isPhaseActive
+                        ? "bg-indigo-50 text-indigo-700 border border-indigo-200 animate-pulse"
+                        : "bg-slate-100 text-slate-600 border border-slate-200"
+                    }`}
+                  >
                     {phase.status.replace("_", " ")}
                   </span>
                 </div>
@@ -221,7 +252,7 @@ export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
                           : "bg-slate-50 border-slate-200 hover:border-indigo-300 text-slate-800 shadow-xs"
                       }`}
                     >
-                      <div 
+                      <div
                         onClick={() => onToggleMilestone(phase.id, m.id)}
                         className="flex items-center gap-3 cursor-pointer flex-1"
                       >
@@ -230,7 +261,13 @@ export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
                         ) : (
                           <Circle className="w-5 h-5 text-slate-400 shrink-0" />
                         )}
-                        <span className={`text-xs font-semibold ${m.completed ? "line-through text-slate-400" : "text-slate-900"}`}>
+                        <span
+                          className={`text-xs font-semibold ${
+                            m.completed
+                              ? "line-through text-slate-400"
+                              : "text-slate-900"
+                          }`}
+                        >
                           {m.title}
                         </span>
                       </div>
@@ -255,7 +292,6 @@ export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
                   ))}
                 </div>
               </div>
-
             </div>
           );
         })}
@@ -268,7 +304,9 @@ export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2">
                 <Flag className="w-5 h-5 text-indigo-600" />
-                <h3 className="text-base font-bold text-slate-900">Add Custom Milestone</h3>
+                <h3 className="text-base font-bold text-slate-900">
+                  Add Custom Milestone
+                </h3>
               </div>
               <button
                 onClick={() => setShowAddModal(false)}
@@ -280,13 +318,15 @@ export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
 
             <form onSubmit={handleCreateMilestone} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Select Phase *</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Select Phase *
+                </label>
                 <select
                   value={targetPhaseId}
                   onChange={(e) => setTargetPhaseId(e.target.value)}
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-900 outline-none font-bold"
                 >
-                  {phases.map(p => (
+                  {phases.map((p) => (
                     <option key={p.id} value={p.id}>
                       {p.phaseName} ({p.durationMonths})
                     </option>
@@ -295,7 +335,9 @@ export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Milestone Title *</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Milestone Title *
+                </label>
                 <input
                   type="text"
                   required
@@ -307,7 +349,9 @@ export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Target Completion Date</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Target Completion Date
+                </label>
                 <input
                   type="date"
                   value={milestoneDate}
@@ -335,7 +379,6 @@ export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
           </div>
         </div>
       )}
-
     </div>
   );
 };

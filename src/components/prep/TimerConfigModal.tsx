@@ -1,28 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { FocusTimerConfig, TimerMode } from "../../types";
-import { 
-  Sliders, 
-  Clock, 
-  Coffee, 
-  Volume2, 
-  VolumeX, 
-  Play, 
-  Zap, 
-  RotateCcw, 
-  Sparkles, 
+import {
+  Sliders,
+  Clock,
+  Coffee,
+  Volume2,
+  VolumeX,
+  Play,
+  Zap,
+  RotateCcw,
+  Sparkles,
   ShieldCheck,
   CheckCircle2,
   Bell,
   BellRing,
   BellOff,
-  X
+  X,
 } from "lucide-react";
 import { playTimerChime } from "../../utils/audioAlert";
-import { 
-  isNotificationSupported, 
-  getNotificationPermission, 
-  requestNotificationPermission, 
-  triggerTimerEndNotification 
+import {
+  isNotificationSupported,
+  getNotificationPermission,
+  requestNotificationPermission,
+  triggerTimerEndNotification,
 } from "../../utils/browserNotifications";
 
 interface TimerConfigModalProps {
@@ -50,8 +50,9 @@ export const PRESET_CONFIGS: {
     shortBreak: 5,
     longBreak: 15,
     cycles: 4,
-    description: "Classic high-intensity cadence. Best for retention and preventing mental fatigue.",
-    tagColor: "bg-rose-50 text-rose-700 border-rose-200"
+    description:
+      "Classic high-intensity cadence. Best for retention and preventing mental fatigue.",
+    tagColor: "bg-rose-50 text-rose-700 border-rose-200",
   },
   {
     id: "pomodoro_50",
@@ -61,8 +62,9 @@ export const PRESET_CONFIGS: {
     shortBreak: 10,
     longBreak: 20,
     cycles: 3,
-    description: "Extended flow state. Ideal for dense chapters in Laxmikanth, Spectrum, or Mrunal.",
-    tagColor: "bg-indigo-50 text-indigo-700 border-indigo-200"
+    description:
+      "Extended flow state. Ideal for dense chapters in Laxmikanth, Spectrum, or Mrunal.",
+    tagColor: "bg-indigo-50 text-indigo-700 border-indigo-200",
   },
   {
     id: "gs_marathon_90",
@@ -72,8 +74,9 @@ export const PRESET_CONFIGS: {
     shortBreak: 15,
     longBreak: 30,
     cycles: 2,
-    description: "Deep immersion marathon. Mimics a standard 1.5-hour coaching slot or PYQ analysis block.",
-    tagColor: "bg-amber-50 text-amber-700 border-amber-200"
+    description:
+      "Deep immersion marathon. Mimics a standard 1.5-hour coaching slot or PYQ analysis block.",
+    tagColor: "bg-amber-50 text-amber-700 border-amber-200",
   },
   {
     id: "exam_slot_120",
@@ -83,8 +86,9 @@ export const PRESET_CONFIGS: {
     shortBreak: 20,
     longBreak: 40,
     cycles: 2,
-    description: "Authentic 2-hour UPSC exam slot simulation (9:30-11:30 AM GS1 or CSAT Paper II).",
-    tagColor: "bg-emerald-50 text-emerald-700 border-emerald-200"
+    description:
+      "Authentic 2-hour UPSC exam slot simulation (9:30-11:30 AM GS1 or CSAT Paper II).",
+    tagColor: "bg-emerald-50 text-emerald-700 border-emerald-200",
   },
   {
     id: "stopwatch_continuous",
@@ -94,26 +98,41 @@ export const PRESET_CONFIGS: {
     shortBreak: 0,
     longBreak: 0,
     cycles: 1,
-    description: "Pure count-up timer. Study at your own pace without preset alarms or break limits.",
-    tagColor: "bg-slate-100 text-slate-700 border-slate-300"
-  }
+    description:
+      "Pure count-up timer. Study at your own pace without preset alarms or break limits.",
+    tagColor: "bg-slate-100 text-slate-700 border-slate-300",
+  },
 ];
 
 export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
   config,
   onSaveConfig,
-  onClose
+  onClose,
 }) => {
   const [activeMode, setActiveMode] = useState<TimerMode>(config.mode);
   const [focusMins, setFocusMins] = useState<number>(config.focusMinutes || 25);
-  const [shortBreakMins, setShortBreakMins] = useState<number>(config.shortBreakMinutes || 5);
-  const [longBreakMins, setLongBreakMins] = useState<number>(config.longBreakMinutes || 15);
-  const [cycles, setCycles] = useState<number>(config.cyclesBeforeLongBreak || 4);
+  const [shortBreakMins, setShortBreakMins] = useState<number>(
+    config.shortBreakMinutes || 5
+  );
+  const [longBreakMins, setLongBreakMins] = useState<number>(
+    config.longBreakMinutes || 15
+  );
+  const [cycles, setCycles] = useState<number>(
+    config.cyclesBeforeLongBreak || 4
+  );
   const [autoBreaks, setAutoBreaks] = useState<boolean>(config.autoStartBreaks);
-  const [autoNextFocus, setAutoNextFocus] = useState<boolean>(config.autoStartNextFocus);
-  const [soundAlerts, setSoundAlerts] = useState<boolean>(config.soundAlertsEnabled);
-  const [nativeNotifications, setNativeNotifications] = useState<boolean>(config.nativeNotificationsEnabled !== false);
-  const [permissionStatus, setPermissionStatus] = useState<string>(getNotificationPermission());
+  const [autoNextFocus, setAutoNextFocus] = useState<boolean>(
+    config.autoStartNextFocus
+  );
+  const [soundAlerts, setSoundAlerts] = useState<boolean>(
+    config.soundAlertsEnabled
+  );
+  const [nativeNotifications, setNativeNotifications] = useState<boolean>(
+    config.nativeNotificationsEnabled !== false
+  );
+  const [permissionStatus, setPermissionStatus] = useState<string>(
+    getNotificationPermission()
+  );
   const [testSent, setTestSent] = useState<boolean>(false);
 
   useEffect(() => {
@@ -127,8 +146,9 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
       setNativeNotifications(true);
       triggerTimerEndNotification({
         phase: "focus",
-        topic: "Browser Notifications Active! You will be alerted when study intervals complete even in background.",
-        playSound: soundAlerts
+        topic:
+          "Browser Notifications Active! You will be alerted when study intervals complete even in background.",
+        playSound: soundAlerts,
       });
       setTestSent(true);
       setTimeout(() => setTestSent(false), 4000);
@@ -139,13 +159,13 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
     triggerTimerEndNotification({
       phase: "focus",
       topic: "GS1 Indian Polity Revision (Test)",
-      playSound: soundAlerts
+      playSound: soundAlerts,
     });
     setTestSent(true);
     setTimeout(() => setTestSent(false), 4000);
   };
 
-  const handleApplyPreset = (preset: typeof PRESET_CONFIGS[0]) => {
+  const handleApplyPreset = (preset: (typeof PRESET_CONFIGS)[0]) => {
     setActiveMode(preset.id);
     if (preset.id !== "stopwatch_continuous") {
       setFocusMins(preset.focus);
@@ -165,7 +185,7 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
       autoStartBreaks: autoBreaks,
       autoStartNextFocus: autoNextFocus,
       soundAlertsEnabled: soundAlerts,
-      nativeNotificationsEnabled: nativeNotifications
+      nativeNotificationsEnabled: nativeNotifications,
     });
     onClose();
   };
@@ -173,7 +193,6 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/50 backdrop-blur-xs animate-in fade-in duration-150">
       <div className="w-full max-w-2xl bg-white border-2 border-slate-200 rounded-3xl p-6 sm:p-7 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto no-scrollbar">
-        
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-slate-100">
           <div className="flex items-center gap-3">
@@ -181,8 +200,13 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
               <Sliders className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-slate-900">Focus Timer Intervals & Mode Configuration</h3>
-              <p className="text-xs text-slate-500 font-medium">Customize Pomodoro cadences, exam marathon blocks, or freeflow stopwatches</p>
+              <h3 className="text-lg font-bold text-slate-900">
+                Focus Timer Intervals & Mode Configuration
+              </h3>
+              <p className="text-xs text-slate-500 font-medium">
+                Customize Pomodoro cadences, exam marathon blocks, or freeflow
+                stopwatches
+              </p>
             </div>
           </div>
 
@@ -219,7 +243,9 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
                     <div className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
                       <span>{preset.name}</span>
                     </div>
-                    <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-md border ${preset.tagColor}`}>
+                    <span
+                      className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-md border ${preset.tagColor}`}
+                    >
                       {preset.badge}
                     </span>
                   </div>
@@ -249,7 +275,8 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
                 </span>
               </div>
               <p className="text-[11px] text-slate-500 leading-snug">
-                Set bespoke focus durations, custom breaks, and personalized cycle counts.
+                Set bespoke focus durations, custom breaks, and personalized
+                cycle counts.
               </p>
             </button>
           </div>
@@ -263,11 +290,12 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
                 <Clock className="w-4 h-4 text-indigo-600" />
                 <span>Interval Durations (Minutes)</span>
               </span>
-              <span className="text-[10px] text-slate-500 font-medium">Fine-tune numbers</span>
+              <span className="text-[10px] text-slate-500 font-medium">
+                Fine-tune numbers
+              </span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              
               {/* Focus Duration */}
               <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs space-y-2">
                 <div className="flex items-center justify-between text-xs">
@@ -280,18 +308,19 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
                 </div>
                 <input
                   type="range"
-                  min="5"
+                  min="1"
                   max="180"
-                  step="5"
+                  step="1"
                   value={focusMins}
                   onChange={(e) => {
                     setFocusMins(Number(e.target.value));
-                    if (activeMode !== "custom_interval") setActiveMode("custom_interval");
+                    if (activeMode !== "custom_interval")
+                      setActiveMode("custom_interval");
                   }}
                   className="w-full accent-indigo-600 cursor-pointer"
                 />
                 <div className="flex justify-between text-[10px] text-slate-400">
-                  <span>5m</span>
+                  <span>1m</span>
                   <span>90m</span>
                   <span>180m</span>
                 </div>
@@ -301,7 +330,8 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
               <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs space-y-2">
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-bold text-amber-900 flex items-center gap-1">
-                    <Coffee className="w-3.5 h-3.5 text-amber-600" /> Short Break
+                    <Coffee className="w-3.5 h-3.5 text-amber-600" /> Short
+                    Break
                   </span>
                   <span className="font-mono font-extrabold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">
                     {shortBreakMins}m
@@ -315,7 +345,8 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
                   value={shortBreakMins}
                   onChange={(e) => {
                     setShortBreakMins(Number(e.target.value));
-                    if (activeMode !== "custom_interval") setActiveMode("custom_interval");
+                    if (activeMode !== "custom_interval")
+                      setActiveMode("custom_interval");
                   }}
                   className="w-full accent-amber-500 cursor-pointer"
                 />
@@ -330,7 +361,8 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
               <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs space-y-2">
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-bold text-emerald-900 flex items-center gap-1">
-                    <Coffee className="w-3.5 h-3.5 text-emerald-600" /> Long Break
+                    <Coffee className="w-3.5 h-3.5 text-emerald-600" /> Long
+                    Break
                   </span>
                   <span className="font-mono font-extrabold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">
                     {longBreakMins}m
@@ -344,7 +376,8 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
                   value={longBreakMins}
                   onChange={(e) => {
                     setLongBreakMins(Number(e.target.value));
-                    if (activeMode !== "custom_interval") setActiveMode("custom_interval");
+                    if (activeMode !== "custom_interval")
+                      setActiveMode("custom_interval");
                   }}
                   className="w-full accent-emerald-600 cursor-pointer"
                 />
@@ -354,27 +387,32 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
                   <span>60m</span>
                 </div>
               </div>
-
             </div>
 
             {/* Cycles before long break */}
             <div className="bg-white p-3.5 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
               <div>
-                <div className="text-xs font-bold text-slate-900">Cycles Before Long Break</div>
-                <p className="text-[11px] text-slate-500">Number of focus intervals before triggering the extended rest break.</p>
+                <div className="text-xs font-bold text-slate-900">
+                  Cycles Before Long Break
+                </div>
+                <p className="text-[11px] text-slate-500">
+                  Number of focus intervals before triggering the extended rest
+                  break.
+                </p>
               </div>
               <div className="flex items-center gap-1.5">
-                {[2, 3, 4, 5, 6].map(c => (
+                {[2, 3, 4, 5, 6].map((c) => (
                   <button
                     key={c}
                     type="button"
                     onClick={() => {
                       setCycles(c);
-                      if (activeMode !== "custom_interval") setActiveMode("custom_interval");
+                      if (activeMode !== "custom_interval")
+                        setActiveMode("custom_interval");
                     }}
                     className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition cursor-pointer ${
-                      cycles === c 
-                        ? "bg-indigo-600 text-white shadow-2xs" 
+                      cycles === c
+                        ? "bg-indigo-600 text-white shadow-2xs"
                         : "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200"
                     }`}
                   >
@@ -383,7 +421,6 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
                 ))}
               </div>
             </div>
-
           </div>
         )}
 
@@ -394,7 +431,6 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
           </label>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            
             {/* Auto Start Breaks */}
             <label className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-slate-100/60 transition">
               <input
@@ -404,8 +440,12 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
                 className="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 accent-indigo-600"
               />
               <div className="text-left">
-                <div className="text-xs font-bold text-slate-900">Auto-Start Breaks</div>
-                <div className="text-[10px] text-slate-500 leading-tight">Begins rest period automatically when focus session completes.</div>
+                <div className="text-xs font-bold text-slate-900">
+                  Auto-Start Breaks
+                </div>
+                <div className="text-[10px] text-slate-500 leading-tight">
+                  Begins rest period automatically when focus session completes.
+                </div>
               </div>
             </label>
 
@@ -418,8 +458,12 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
                 className="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 accent-indigo-600"
               />
               <div className="text-left">
-                <div className="text-xs font-bold text-slate-900">Auto-Start Focus</div>
-                <div className="text-[10px] text-slate-500 leading-tight">Resumes study session automatically after break concludes.</div>
+                <div className="text-xs font-bold text-slate-900">
+                  Auto-Start Focus
+                </div>
+                <div className="text-[10px] text-slate-500 leading-tight">
+                  Resumes study session automatically after break concludes.
+                </div>
               </div>
             </label>
 
@@ -433,11 +477,15 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
                   className="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500 accent-indigo-600"
                 />
                 <div className="text-left">
-                  <div className="text-xs font-bold text-slate-900">Audio Chimes</div>
-                  <div className="text-[10px] text-slate-500 leading-tight">Plays soft Tibetan bell when interval ends.</div>
+                  <div className="text-xs font-bold text-slate-900">
+                    Audio Chimes
+                  </div>
+                  <div className="text-[10px] text-slate-500 leading-tight">
+                    Plays soft Tibetan bell when interval ends.
+                  </div>
                 </div>
               </label>
-              
+
               <button
                 type="button"
                 onClick={() => playTimerChime("focus_end")}
@@ -447,7 +495,6 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
                 <span>Test Chime</span>
               </button>
             </div>
-
           </div>
         </div>
 
@@ -458,14 +505,20 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
               <BellRing className="w-3.5 h-3.5 text-indigo-600" />
               <span>Browser-Native Notifications (Background Alert)</span>
             </label>
-            <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border ${
-              permissionStatus === "granted" 
-                ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
+            <span
+              className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border ${
+                permissionStatus === "granted"
+                  ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                  : permissionStatus === "denied"
+                  ? "bg-rose-50 text-rose-700 border-rose-200"
+                  : "bg-amber-50 text-amber-700 border-amber-200"
+              }`}
+            >
+              {permissionStatus === "granted"
+                ? "● Permission Granted"
                 : permissionStatus === "denied"
-                ? "bg-rose-50 text-rose-700 border-rose-200"
-                : "bg-amber-50 text-amber-700 border-amber-200"
-            }`}>
-              {permissionStatus === "granted" ? "● Permission Granted" : permissionStatus === "denied" ? "● Permission Blocked" : "● Permission Required"}
+                ? "● Permission Blocked"
+                : "● Permission Required"}
             </span>
           </div>
 
@@ -474,10 +527,14 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
               <div className="space-y-0.5">
                 <div className="text-xs font-extrabold text-slate-900 flex items-center gap-2">
                   <span>Send Native System Alerts on Interval Finish</span>
-                  <span className="text-[9px] px-1.5 py-0.2 rounded bg-indigo-100 text-indigo-800 font-bold uppercase">Tab Inactive Ready</span>
+                  <span className="text-[9px] px-1.5 py-0.2 rounded bg-indigo-100 text-indigo-800 font-bold uppercase">
+                    Tab Inactive Ready
+                  </span>
                 </div>
                 <p className="text-[11px] text-slate-600 leading-relaxed max-w-lg">
-                  Pushes a native OS notification and flashes the browser tab bar when your study timer ends, even if you are reading a PDF in another tab or have minimized your browser.
+                  Pushes a native OS notification and flashes the browser tab
+                  bar when your study timer ends, even if you are reading a PDF
+                  in another tab or have minimized your browser.
                 </p>
               </div>
 
@@ -498,7 +555,9 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
                     className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-slate-50 text-indigo-700 border border-indigo-200 text-xs font-bold shadow-2xs transition cursor-pointer"
                   >
                     <BellRing className="w-3.5 h-3.5 text-indigo-600" />
-                    <span>{testSent ? "Alert Dispatched!" : "Test Background Alert"}</span>
+                    <span>
+                      {testSent ? "Alert Dispatched!" : "Test Background Alert"}
+                    </span>
                   </button>
                 )}
               </div>
@@ -507,7 +566,11 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
             {permissionStatus === "denied" && (
               <div className="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-[11px] text-rose-800 flex items-center gap-2">
                 <BellOff className="w-4 h-4 text-rose-600 shrink-0" />
-                <span>Browser notifications are currently blocked in your browser settings. To enable them, click the padlock/settings icon in your browser URL bar.</span>
+                <span>
+                  Browser notifications are currently blocked in your browser
+                  settings. To enable them, click the padlock/settings icon in
+                  your browser URL bar.
+                </span>
               </div>
             )}
           </div>
@@ -542,7 +605,6 @@ export const TimerConfigModal: React.FC<TimerConfigModalProps> = ({
             </button>
           </div>
         </div>
-
       </div>
     </div>
   );

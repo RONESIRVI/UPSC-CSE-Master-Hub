@@ -1,28 +1,31 @@
 import React, { useState } from "react";
 import { SyllabusTopic } from "../../types";
-import { 
-  CheckCircle2, 
-  Circle, 
-  Clock, 
-  Sparkles, 
-  Search, 
-  Filter, 
-  Layers, 
-  Flame, 
-  BookOpen, 
-  ChevronDown, 
+import {
+  CheckCircle2,
+  Circle,
+  Clock,
+  Sparkles,
+  Search,
+  Filter,
+  Layers,
+  Flame,
+  BookOpen,
+  ChevronDown,
   ChevronUp,
   Award,
   Plus,
   Trash2,
   RotateCcw,
   BookMarked,
-  StickyNote
+  StickyNote,
 } from "lucide-react";
 
 interface SyllabusTabProps {
   syllabus: SyllabusTopic[];
-  onUpdateTopicStatus: (topicId: string, nextStatus: SyllabusTopic["status"]) => void;
+  onUpdateTopicStatus: (
+    topicId: string,
+    nextStatus: SyllabusTopic["status"]
+  ) => void;
   onOpenTopicAI: (topic: SyllabusTopic) => void;
   onAddTopic?: (topic: SyllabusTopic) => void;
   onDeleteTopic?: (topicId: string) => void;
@@ -37,7 +40,7 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
   onAddTopic,
   onDeleteTopic,
   onResetDefaultSyllabus,
-  onNavigateToNotes
+  onNavigateToNotes,
 }) => {
   const [selectedPaper, setSelectedPaper] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState("");
@@ -47,10 +50,12 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
   // New Custom Topic Modal / Form State
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [newTitle, setNewTitle] = useState("");
-  const [newPaper, setNewPaper] = useState<SyllabusTopic["paper"]>("Prelims GS1");
+  const [newPaper, setNewPaper] =
+    useState<SyllabusTopic["paper"]>("Prelims GS1");
   const [newSubject, setNewSubject] = useState("Indian Polity");
   const [newModule, setNewModule] = useState("");
-  const [newYield, setNewYield] = useState<SyllabusTopic["yield"]>("🔥 High Yield");
+  const [newYield, setNewYield] =
+    useState<SyllabusTopic["yield"]>("🔥 High Yield");
   const [newSubtopicsInput, setNewSubtopicsInput] = useState("");
   const [newNotes, setNewNotes] = useState("");
 
@@ -65,40 +70,69 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
     "Mains Essay",
   ];
 
-  const filteredTopics = syllabus.filter(t => {
+  const filteredTopics = syllabus.filter((t) => {
     if (selectedPaper !== "All" && t.paper !== selectedPaper) return false;
     if (yieldFilter !== "All" && t.yield !== yieldFilter) return false;
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       const matchTitle = t.title.toLowerCase().includes(q);
       const matchSubject = t.subject.toLowerCase().includes(q);
-      const matchSubtopics = t.subtopics.some(sub => sub.toLowerCase().includes(q));
+      const matchSubtopics = t.subtopics.some((sub) =>
+        sub.toLowerCase().includes(q)
+      );
       return matchTitle || matchSubject || matchSubtopics;
     }
     return true;
   });
 
-  const masteredCount = syllabus.filter(t => t.status === "mastered").length;
-  const inProgressCount = syllabus.filter(t => t.status === "in_progress" || t.status === "revised_1" || t.status === "revised_2").length;
+  const masteredCount = syllabus.filter((t) => t.status === "mastered").length;
+  const inProgressCount = syllabus.filter(
+    (t) =>
+      t.status === "in_progress" ||
+      t.status === "revised_1" ||
+      t.status === "revised_2"
+  ).length;
   const totalCount = syllabus.length;
-  const completionPercentage = totalCount > 0 ? Math.round(((masteredCount * 1 + inProgressCount * 0.5) / totalCount) * 100) : 0;
+  const completionPercentage =
+    totalCount > 0
+      ? Math.round(
+          ((masteredCount * 1 + inProgressCount * 0.5) / totalCount) * 100
+        )
+      : 0;
 
   const getStatusBadge = (status: SyllabusTopic["status"]) => {
     switch (status) {
       case "mastered":
-        return { label: "Mastered", color: "bg-emerald-50 text-emerald-700 border-emerald-200" };
+        return {
+          label: "Mastered",
+          color: "bg-emerald-50 text-emerald-700 border-emerald-200",
+        };
       case "revised_2":
-        return { label: "Revised (2x)", color: "bg-teal-50 text-teal-700 border-teal-200" };
+        return {
+          label: "Revised (2x)",
+          color: "bg-teal-50 text-teal-700 border-teal-200",
+        };
       case "revised_1":
-        return { label: "Revised (1x)", color: "bg-indigo-50 text-indigo-700 border-indigo-200" };
+        return {
+          label: "Revised (1x)",
+          color: "bg-indigo-50 text-indigo-700 border-indigo-200",
+        };
       case "in_progress":
-        return { label: "In Progress", color: "bg-amber-50 text-amber-700 border-amber-200" };
+        return {
+          label: "In Progress",
+          color: "bg-amber-50 text-amber-700 border-amber-200",
+        };
       default:
-        return { label: "Not Started", color: "bg-slate-100 text-slate-600 border-slate-200" };
+        return {
+          label: "Not Started",
+          color: "bg-slate-100 text-slate-600 border-slate-200",
+        };
     }
   };
 
-  const getNextStatus = (current: SyllabusTopic["status"]): SyllabusTopic["status"] => {
+  const getNextStatus = (
+    current: SyllabusTopic["status"]
+  ): SyllabusTopic["status"] => {
     if (current === "not_started") return "in_progress";
     if (current === "in_progress") return "revised_1";
     if (current === "revised_1") return "revised_2";
@@ -112,7 +146,7 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
 
     const subtopics = newSubtopicsInput
       .split("\n")
-      .map(s => s.trim())
+      .map((s) => s.trim())
       .filter(Boolean);
 
     const newTopic: SyllabusTopic = {
@@ -126,13 +160,13 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
       pyqFrequencyLast5Years: 3,
       status: "not_started",
       notes: newNotes.trim() || undefined,
-      subtopics: subtopics.length > 0 ? subtopics : [newTitle.trim()]
+      subtopics: subtopics.length > 0 ? subtopics : [newTitle.trim()],
     };
 
     if (onAddTopic) {
       onAddTopic(newTopic);
     }
-    
+
     // Reset Form
     setNewTitle("");
     setNewModule("");
@@ -143,22 +177,26 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
 
   return (
     <div className="space-y-6">
-      
       {/* Top Header & Coverage Gauge Bento Card */}
       <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 sm:p-6 shadow-sm space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex flex-wrap items-center gap-2">
               <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-100 flex items-center gap-1.5">
-                <BookOpen className="w-3.5 h-3.5 text-emerald-600 shrink-0" /> UPSC Syllabus Engine
+                <BookOpen className="w-3.5 h-3.5 text-emerald-600 shrink-0" />{" "}
+                UPSC Syllabus Engine
               </span>
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Flexible & Customizable</span>
+              <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+                Flexible & Customizable
+              </span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">
               Hierarchical Syllabus Tracker
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed mt-1">
-              Track official UPSC syllabus micro-topics or add your own custom optional/mains subjects. Cycle your revisions and generate AI concept mindmaps.
+              Track official UPSC syllabus micro-topics or add your own custom
+              optional/mains subjects. Cycle your revisions and generate AI
+              concept mindmaps.
             </p>
           </div>
 
@@ -167,7 +205,9 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
             <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 shrink-0 min-w-[200px] shadow-sm">
               <div className="flex items-center justify-between text-xs font-bold text-slate-700 mb-1.5">
                 <span>Overall Syllabus Mastery</span>
-                <span className="text-indigo-600 font-extrabold">{completionPercentage}%</span>
+                <span className="text-indigo-600 font-extrabold">
+                  {completionPercentage}%
+                </span>
               </div>
               <div className="w-full h-2.5 rounded-full bg-slate-200 overflow-hidden">
                 <div
@@ -190,11 +230,15 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                 <Plus className="w-4 h-4 shrink-0" />
                 <span>Add Custom Topic</span>
               </button>
-              
+
               {onResetDefaultSyllabus && (
                 <button
                   onClick={() => {
-                    if (confirm("Restore official UPSC standard syllabus? Custom added topics will be reset.")) {
+                    if (
+                      confirm(
+                        "Restore official UPSC standard syllabus? Custom added topics will be reset."
+                      )
+                    ) {
                       onResetDefaultSyllabus();
                     }
                   }}
@@ -228,8 +272,10 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
               onChange={(e) => setSelectedPaper(e.target.value)}
               className="bg-white border border-slate-200 text-slate-800 text-xs rounded-xl px-3 py-2 outline-none font-bold focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-xs whitespace-nowrap"
             >
-              {papers.map(p => (
-                <option key={p} value={p}>{p === "All" ? "All Papers" : p}</option>
+              {papers.map((p) => (
+                <option key={p} value={p}>
+                  {p === "All" ? "All Papers" : p}
+                </option>
               ))}
             </select>
 
@@ -254,7 +300,9 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2">
                 <BookMarked className="w-5 h-5 text-indigo-600" />
-                <h3 className="text-base font-bold text-slate-900">Add Syllabus Topic / Module</h3>
+                <h3 className="text-base font-bold text-slate-900">
+                  Add Syllabus Topic / Module
+                </h3>
               </div>
               <button
                 onClick={() => setIsAddModalOpen(false)}
@@ -266,7 +314,9 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
 
             <form onSubmit={handleCreateTopic} className="space-y-3.5">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Topic Title *</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Topic Title *
+                </label>
                 <input
                   type="text"
                   required
@@ -279,7 +329,9 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Paper</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Paper
+                  </label>
                   <select
                     value={newPaper}
                     onChange={(e) => setNewPaper(e.target.value as any)}
@@ -296,7 +348,9 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Subject</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Subject
+                  </label>
                   <input
                     type="text"
                     placeholder="e.g. Polity, History, Economy, Optional"
@@ -309,7 +363,9 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Module / Unit</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Module / Unit
+                  </label>
                   <input
                     type="text"
                     placeholder="e.g. Indian Constitution"
@@ -320,7 +376,9 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Yield Level</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Yield Level
+                  </label>
                   <select
                     value={newYield}
                     onChange={(e) => setNewYield(e.target.value as any)}
@@ -334,7 +392,9 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Micro-Subtopics (One per line)</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Micro-Subtopics (One per line)
+                </label>
                 <textarea
                   rows={3}
                   placeholder="e.g.&#10;Right to Equality (Art 14-18)&#10;Right to Freedom (Art 19-22)&#10;Writs & Judicial Review"
@@ -345,7 +405,9 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Strategy / Reference Notes (Optional)</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Strategy / Reference Notes (Optional)
+                </label>
                 <input
                   type="text"
                   placeholder="e.g. Refer Laxmikanth Ch 7 + PYQs 2018-2023"
@@ -379,9 +441,12 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
       {filteredTopics.length === 0 && (
         <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 text-center space-y-3">
           <BookOpen className="w-10 h-10 text-slate-300 mx-auto" />
-          <h3 className="text-sm font-bold text-slate-800">No syllabus topics found</h3>
+          <h3 className="text-sm font-bold text-slate-800">
+            No syllabus topics found
+          </h3>
           <p className="text-xs text-slate-500 max-w-sm mx-auto">
-            Try adjusting your search query or filter, or click "Add Custom Topic" to create your own syllabus modules.
+            Try adjusting your search query or filter, or click "Add Custom
+            Topic" to create your own syllabus modules.
           </p>
           <button
             onClick={() => setIsAddModalOpen(true)}
@@ -411,13 +476,22 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
             >
               {/* Topic Header Line */}
               <div className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="space-y-1.5 flex-1 cursor-pointer" onClick={() => setExpandedTopicId(isExpanded ? null : topic.id)}>
+                <div
+                  className="space-y-1.5 flex-1 cursor-pointer"
+                  onClick={() =>
+                    setExpandedTopicId(isExpanded ? null : topic.id)
+                  }
+                >
                   <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                     <span className="px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-bold text-[11px] border border-indigo-100 whitespace-nowrap">
                       {topic.paper}
                     </span>
-                    <span className="text-xs text-slate-600 font-semibold">{topic.subject}</span>
-                    <span className="text-xs text-amber-700 font-bold whitespace-nowrap">• {topic.yield}</span>
+                    <span className="text-xs text-slate-600 font-semibold">
+                      {topic.subject}
+                    </span>
+                    <span className="text-xs text-amber-700 font-bold whitespace-nowrap">
+                      • {topic.yield}
+                    </span>
                     {topic.pyqFrequencyLast5Years !== undefined && (
                       <span className="text-[11px] text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md font-medium border border-slate-200 whitespace-nowrap">
                         ~{topic.pyqFrequencyLast5Years} PYQs in 5 yrs
@@ -425,16 +499,21 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                     )}
                   </div>
 
-                  <h3 className="text-sm sm:text-base font-bold text-slate-900">{topic.title}</h3>
-                  <p className="text-xs text-slate-500 line-clamp-1 font-medium">{topic.module}</p>
+                  <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                    {topic.title}
+                  </h3>
+                  <p className="text-xs text-slate-500 line-clamp-1 font-medium">
+                    {topic.module}
+                  </p>
                 </div>
 
                 {/* Right Action buttons */}
                 <div className="flex items-center gap-1.5 sm:gap-2 self-start sm:self-center shrink-0">
-                  
                   {/* Status Toggle Cycle */}
                   <button
-                    onClick={() => onUpdateTopicStatus(topic.id, getNextStatus(topic.status))}
+                    onClick={() =>
+                      onUpdateTopicStatus(topic.id, getNextStatus(topic.status))
+                    }
                     className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition flex items-center gap-1.5 shadow-xs cursor-pointer ${statusInfo.color}`}
                     title="Click to cycle completion status"
                   >
@@ -443,7 +522,9 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                     ) : (
                       <Circle className="w-3.5 h-3.5 shrink-0" />
                     )}
-                    <span className="whitespace-nowrap">{statusInfo.label}</span>
+                    <span className="whitespace-nowrap">
+                      {statusInfo.label}
+                    </span>
                   </button>
 
                   {/* AI Explain Topic Button */}
@@ -472,10 +553,16 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
 
                   {/* Expand / Collapse Button */}
                   <button
-                    onClick={() => setExpandedTopicId(isExpanded ? null : topic.id)}
+                    onClick={() =>
+                      setExpandedTopicId(isExpanded ? null : topic.id)
+                    }
                     className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition border border-slate-200 shadow-xs cursor-pointer"
                   >
-                    {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                    {isExpanded ? (
+                      <ChevronUp className="w-4 h-4" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -485,7 +572,9 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                 <div className="px-4 sm:px-5 pb-5 pt-3 border-t border-slate-100 space-y-3 bg-slate-50/70 rounded-b-2xl">
                   {topic.notes && (
                     <div className="text-xs text-amber-800 bg-amber-50/70 p-3 rounded-xl border border-amber-200">
-                      <strong className="text-amber-900">Study Strategy Note: </strong>
+                      <strong className="text-amber-900">
+                        Study Strategy Note:{" "}
+                      </strong>
                       {topic.notes}
                     </div>
                   )}
@@ -493,12 +582,18 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                   <div className="space-y-1.5">
                     <div className="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
                       <Layers className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                      <span>Micro-Subtopics Breakdown ({topic.subtopics.length} items)</span>
+                      <span>
+                        Micro-Subtopics Breakdown ({topic.subtopics.length}{" "}
+                        items)
+                      </span>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                       {topic.subtopics.map((sub, index) => (
-                        <div key={index} className="flex items-start gap-2 text-xs text-slate-700 bg-white p-2.5 rounded-xl border border-slate-200 shadow-xs font-medium">
+                        <div
+                          key={index}
+                          className="flex items-start gap-2 text-xs text-slate-700 bg-white p-2.5 rounded-xl border border-slate-200 shadow-xs font-medium"
+                        >
                           <span className="text-indigo-600 font-bold">•</span>
                           <span>{sub}</span>
                         </div>
@@ -530,13 +625,10 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                   </div>
                 </div>
               )}
-
             </div>
           );
         })}
       </div>
-
     </div>
   );
 };
-

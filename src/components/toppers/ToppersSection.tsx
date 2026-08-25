@@ -5,17 +5,17 @@ import { TopperBooksTab } from "./TopperBooksTab";
 import { TopperRoutineTab } from "./TopperRoutineTab";
 import { TopperNotesTab } from "./TopperNotesTab";
 import { TopperInterviewsTab } from "./TopperInterviewsTab";
-import { 
-  Trophy, 
-  BookOpen, 
-  Clock, 
-  FileText, 
+import {
+  Trophy,
+  BookOpen,
+  Clock,
+  FileText,
   Users,
   ChevronDown,
   Check,
   Award,
   Sparkles,
-  Layers
+  Layers,
 } from "lucide-react";
 
 interface ToppersSectionProps {
@@ -31,7 +31,7 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
   setActiveSubTab,
   books,
   onToggleBookStatus,
-  onAdoptRoutine
+  onAdoptRoutine,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -47,10 +47,11 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
     {
       key: "strategy",
       label: "Strategy & Blueprints",
-      description: "AIR 1 preparation roadmaps, phase breakdown & paper-wise blueprints",
+      description:
+        "AIR 1 preparation roadmaps, phase breakdown & paper-wise blueprints",
       icon: Trophy,
       badge: "Rank 1 Roadmaps",
-      color: "bg-amber-50 text-amber-600 border-amber-200"
+      color: "bg-amber-50 text-amber-600 border-amber-200",
     },
     {
       key: "books",
@@ -58,41 +59,48 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
       description: "Standard Prelims & Mains booklist recommended by toppers",
       icon: BookOpen,
       badge: `${books.length} Books`,
-      color: "bg-blue-50 text-blue-600 border-blue-200"
+      color: "bg-blue-50 text-blue-600 border-blue-200",
     },
     {
       key: "routine",
       label: "Routines & Timetables",
-      description: "Daily hourly study timetables of toppers (Full-time & Working)",
+      description:
+        "Daily hourly study timetables of toppers (Full-time & Working)",
       icon: Clock,
       badge: "5 Schedules",
-      color: "bg-indigo-50 text-indigo-600 border-indigo-200"
+      color: "bg-indigo-50 text-indigo-600 border-indigo-200",
     },
     {
       key: "notes",
       label: "Mindmaps & Notes",
-      description: "Handwritten toppers notes, micro-diagrams & GS 1-4 high-yield mindmaps",
+      description:
+        "Handwritten toppers notes, micro-diagrams & GS 1-4 high-yield mindmaps",
       icon: FileText,
       badge: "GS 1-4 Vault",
-      color: "bg-emerald-50 text-emerald-600 border-emerald-200"
+      color: "bg-emerald-50 text-emerald-600 border-emerald-200",
     },
     {
       key: "interviews",
       label: "Interview Transcripts",
-      description: "Personality Test transcripts, DAF grilling & board panel insights",
+      description:
+        "Personality Test transcripts, DAF grilling & board panel insights",
       icon: Users,
       badge: "AIR 1-50 Q&A",
-      color: "bg-purple-50 text-purple-600 border-purple-200"
-    }
+      color: "bg-purple-50 text-purple-600 border-purple-200",
+    },
   ];
 
-  const currentOption = subTabOptions.find(t => t.key === activeSubTab) || subTabOptions[0];
+  const currentOption =
+    subTabOptions.find((t) => t.key === activeSubTab) || subTabOptions[0];
   const CurrentIcon = currentOption.icon;
 
   // Close dropdown on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setDropdownOpen(false);
       }
     };
@@ -102,12 +110,9 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
 
   return (
     <div className="space-y-6">
-      
       {/* Top Navigation Bar with Interactive Dropdown & Fast Pill Switcher */}
       <div className="bg-white p-3.5 rounded-2xl border-2 border-slate-200 shadow-sm space-y-3">
-        
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          
           {/* Main Dropdown Selector */}
           <div className="relative flex-1 max-w-md" ref={dropdownRef}>
             <label className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1 flex items-center gap-1.5">
@@ -123,7 +128,9 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
               className="w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 border-2 border-slate-300 hover:border-indigo-500 text-slate-900 font-bold text-xs transition cursor-pointer shadow-2xs"
             >
               <div className="flex items-center gap-2.5 min-w-0">
-                <div className={`p-1.5 rounded-lg border ${currentOption.color} shrink-0`}>
+                <div
+                  className={`p-1.5 rounded-lg border ${currentOption.color} shrink-0`}
+                >
                   <CurrentIcon className="w-4 h-4" />
                 </div>
                 <div className="text-left truncate">
@@ -139,7 +146,11 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
                 </div>
               </div>
 
-              <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform shrink-0 ${dropdownOpen ? "rotate-180 text-indigo-600" : ""}`} />
+              <ChevronDown
+                className={`w-4 h-4 text-slate-500 transition-transform shrink-0 ${
+                  dropdownOpen ? "rotate-180 text-indigo-600" : ""
+                }`}
+              />
             </button>
 
             {/* Native Mobile Fallback Select (Accessible for fast navigation) */}
@@ -150,7 +161,7 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
               onChange={(e) => setActiveSubTab(e.target.value as TopperSubTab)}
               className="sr-only"
             >
-              {subTabOptions.map(opt => (
+              {subTabOptions.map((opt) => (
                 <option key={opt.key} value={opt.key}>
                   {opt.label} ({opt.badge})
                 </option>
@@ -161,8 +172,12 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
             {dropdownOpen && (
               <div className="absolute top-full left-0 right-0 mt-2 z-50 bg-white rounded-2xl border-2 border-slate-200 shadow-2xl p-2 space-y-1 animate-in fade-in slide-in-from-top-2 duration-150">
                 <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100 flex items-center justify-between">
-                  <span>Toppers' Vault Blueprints ({subTabOptions.length})</span>
-                  <span className="text-[9px] font-mono text-indigo-600 font-bold">AIR 1 Curated</span>
+                  <span>
+                    Toppers' Vault Blueprints ({subTabOptions.length})
+                  </span>
+                  <span className="text-[9px] font-mono text-indigo-600 font-bold">
+                    AIR 1 Curated
+                  </span>
                 </div>
 
                 {subTabOptions.map((option) => {
@@ -178,13 +193,15 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
                         setDropdownOpen(false);
                       }}
                       className={`w-full flex items-center justify-between gap-3 p-2.5 rounded-xl text-left transition cursor-pointer ${
-                        isSelected 
-                          ? "bg-indigo-50/80 border border-indigo-200 text-indigo-950 shadow-2xs font-bold" 
+                        isSelected
+                          ? "bg-indigo-50/80 border border-indigo-200 text-indigo-950 shadow-2xs font-bold"
                           : "hover:bg-slate-50 text-slate-700 hover:text-slate-900 border border-transparent"
                       }`}
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className={`p-2 rounded-lg border ${option.color} shrink-0 shadow-2xs`}>
+                        <div
+                          className={`p-2 rounded-lg border ${option.color} shrink-0 shadow-2xs`}
+                        >
                           <Icon className="w-4 h-4" />
                         </div>
                         <div className="min-w-0">
@@ -219,18 +236,19 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
               <span>Verified AIR 1-50 Blueprints</span>
             </span>
           </div>
-
         </div>
-
       </div>
 
       {/* Subtab Contents */}
       {activeSubTab === "strategy" && <TopperStrategyTab />}
-      {activeSubTab === "books" && <TopperBooksTab books={books} onToggleBookStatus={onToggleBookStatus} />}
-      {activeSubTab === "routine" && <TopperRoutineTab onAdoptRoutine={onAdoptRoutine} />}
+      {activeSubTab === "books" && (
+        <TopperBooksTab books={books} onToggleBookStatus={onToggleBookStatus} />
+      )}
+      {activeSubTab === "routine" && (
+        <TopperRoutineTab onAdoptRoutine={onAdoptRoutine} />
+      )}
       {activeSubTab === "notes" && <TopperNotesTab />}
       {activeSubTab === "interviews" && <TopperInterviewsTab />}
-
     </div>
   );
 };

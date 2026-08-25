@@ -213,6 +213,8 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
       const canvas = await html2canvas(historyListRef.current, {
         scale: 2,
         backgroundColor: "#ffffff",
+        useCORS: true,
+        allowTaint: true,
         onclone: (document) => {
           const header = document.querySelector('.print-header') as HTMLElement;
           if (header) header.style.display = 'block';

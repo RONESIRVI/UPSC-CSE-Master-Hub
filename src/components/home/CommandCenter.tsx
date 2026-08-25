@@ -63,6 +63,16 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
               </span>{" "}
               / {dailyGoalHours}h
             </div>
+            
+            <div className="mt-4">
+              <button
+                onClick={() => alert("Screen Pinning Instructions:\n\n1. Open Android Settings > Security > Advanced > App Pinning.\n2. Turn it ON.\n3. Open Recent Apps screen.\n4. Tap this app's icon and select 'Pin'.\n5. To unpin, hold Back and Overview buttons together.")}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-500/30 hover:bg-indigo-500/50 text-indigo-100 text-[10px] font-bold border border-indigo-400/30 transition shadow-sm"
+              >
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                <span>Enable Screen Pinning 🔒</span>
+              </button>
+            </div>
           </div>
         </div>
 

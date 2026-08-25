@@ -77,29 +77,31 @@ export const TopperStrategyTab: React.FC<TopperStrategyTabProps> = ({
           </p>
         </div>
 
-        {/* Optional Filter Bento Widget */}
-        <div className="flex items-center gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200 self-start md:self-auto shrink-0 shadow-sm">
-          <Filter className="w-4 h-4 text-indigo-600" />
-          <label className="text-xs text-slate-600 font-bold">Optional:</label>
-          <select
-            value={optionalFilter}
-            onChange={(e) => setOptionalFilter(e.target.value)}
-            className="bg-white border border-slate-200 text-slate-800 text-xs rounded-lg px-3 py-1.5 font-bold focus:ring-2 focus:ring-indigo-500 outline-none cursor-pointer"
-          >
-            {optionals.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
+        {/* Actions Area */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 self-start md:self-auto shrink-0">
+          <div className="flex items-center gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200 shadow-sm w-full sm:w-auto">
+            <Filter className="w-4 h-4 text-indigo-600" />
+            <label className="text-xs text-slate-600 font-bold">Optional:</label>
+            <select
+              value={optionalFilter}
+              onChange={(e) => setOptionalFilter(e.target.value)}
+              className="bg-white border border-slate-200 text-slate-800 text-xs rounded-lg px-3 py-1.5 font-bold focus:ring-2 focus:ring-indigo-500 outline-none cursor-pointer flex-1"
+            >
+              {optionals.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+          </div>
           <button
             onClick={() => {
               setEditingTopper(undefined);
               setIsModalOpen(true);
             }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm transition ml-2"
+            className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold shadow-md transition w-full sm:w-auto cursor-pointer"
           >
-            <Plus className="w-3.5 h-3.5" />
+            <Plus className="w-4 h-4" />
             <span>Add Topper</span>
           </button>
         </div>

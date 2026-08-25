@@ -63,6 +63,13 @@ const DEFAULT_TIMER_CONFIG: FocusTimerConfig = {
 };
 
 export default function App() {
+  // Request Notification Permissions on Mount
+  useEffect(() => {
+    if ("Notification" in window && Notification.permission === "default") {
+      Notification.requestPermission();
+    }
+  }, []);
+
   // Navigation State
   const [activeTab, setActiveTab] = useState<MainTab>("home");
   const [topperSubTab, setTopperSubTab] = useState<TopperSubTab>("strategy");
@@ -96,13 +103,13 @@ export default function App() {
   });
 
   const [syllabus, setSyllabus] = useState<SyllabusTopic[]>(() => {
-    const saved = localStorage.getItem("upsc_syllabus");
+    const saved = localStorage.getItem("ras_syllabus_v1");
     return saved ? JSON.parse(saved) : DEFAULT_SYLLABUS;
   });
 
   const [studyPlanPhases, setStudyPlanPhases] = useState<StudyPlanPhase[]>(
     () => {
-      const saved = localStorage.getItem("upsc_study_plan");
+      const saved = localStorage.getItem("ras_study_plan_v1");
       return saved ? JSON.parse(saved) : DEFAULT_STUDY_PLAN;
     }
   );
@@ -234,39 +241,36 @@ export default function App() {
 
   useEffect(() => {
     localStorage.setItem("upsc_books", JSON.stringify(books));
-  }, [books]);
-
-  useEffect(() => {
     localStorage.setItem("upsc_toppers", JSON.stringify(toppers));
-  }, [toppers]);
-
-  useEffect(() => {
-    localStorage.setItem("upsc_syllabus", JSON.stringify(syllabus));
-  }, [syllabus]);
-
-  useEffect(() => {
-    localStorage.setItem("upsc_study_plan", JSON.stringify(studyPlanPhases));
-  }, [studyPlanPhases]);
-
-  useEffect(() => {
+    localStorage.setItem("ras_syllabus_v1", JSON.stringify(syllabus));
+    localStorage.setItem(
+      "ras_study_plan_v1",
+      JSON.stringify(studyPlanPhases)
+    );
     localStorage.setItem("upsc_study_logs", JSON.stringify(sessionLogs));
-  }, [sessionLogs]);
-
-  useEffect(() => {
     localStorage.setItem("upsc_mock_logs", JSON.stringify(mockLogs));
-  }, [mockLogs]);
-
-  useEffect(() => {
-    localStorage.setItem("upsc_revision_queue", JSON.stringify(revisionQueue));
-  }, [revisionQueue]);
-
-  useEffect(() => {
+    localStorage.setItem(
+      "upsc_revision_queue",
+      JSON.stringify(revisionQueue)
+    );
     localStorage.setItem("upsc_pyqs", JSON.stringify(pyqs));
-  }, [pyqs]);
-
-  useEffect(() => {
-    localStorage.setItem("upsc_timer_config", JSON.stringify(timerConfig));
-  }, [timerConfig]);
+    localStorage.setItem("upsc_weak_areas", JSON.stringify(weakAreas));
+    localStorage.setItem(
+      "upsc_timer_config",
+      JSON.stringify(timerConfig)
+    );
+  }, [
+    books,
+    toppers,
+    syllabus,
+    studyPlanPhases,
+    sessionLogs,
+    mockLogs,
+    revisionQueue,
+    pyqs,
+    weakAreas,
+    timerConfig,
+  ]);
 
   // Timer Tick Engine with Smart Interval Automation & Sounds
   useEffect(() => {

@@ -11,12 +11,14 @@ import {
   Clock,
   Calendar,
   Compass,
+  ScanSearch,
 } from "lucide-react";
 
 interface NavbarProps {
   activeTab: MainTab;
   setActiveTab: (tab: MainTab) => void;
   onOpenSearch: () => void;
+  onOpenSmartExtractor: () => void;
   onOpenAIMentor: () => void;
   studyStreak: number;
   timerRunning: boolean;
@@ -28,6 +30,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   activeTab,
   setActiveTab,
   onOpenSearch,
+  onOpenSmartExtractor,
   onOpenAIMentor,
   studyStreak,
   timerRunning,
@@ -184,14 +187,14 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span>{studyStreak}d</span>
             </div>
 
-            {/* Global Search Button */}
+            {/* Global Search Button -> Changed to OCR Tool as requested */}
             <button
-              id="global-search-btn"
-              onClick={onOpenSearch}
-              className="p-1.5 sm:p-2 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 shadow-xs transition cursor-pointer shrink-0"
-              title="Search Toppers, Syllabus, Books, PYQs (Ctrl+K)"
+              id="global-ocr-btn"
+              onClick={onOpenSmartExtractor}
+              className="p-1.5 sm:p-2 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 shadow-xs transition cursor-pointer shrink-0"
+              title="Smart OCR & Diagram Extractor"
             >
-              <Search className="w-4 h-4" />
+              <ScanSearch className="w-4 h-4" />
             </button>
 
             {/* AI Mains Mentor & Evaluator Button */}

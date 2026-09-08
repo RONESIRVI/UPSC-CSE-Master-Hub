@@ -11,6 +11,7 @@ import { ToppersSection } from "./components/toppers/ToppersSection";
 import { PrepSection } from "./components/prep/PrepSection";
 import { AnalyticsSection } from "./components/analytics/AnalyticsSection";
 import { AIMentorModal } from "./components/ai/AIMentorModal";
+import { SmartExtractorModal } from "./components/prep/SmartExtractorModal";
 import { SplashScreen } from "./components/SplashScreen";
 import {
   Home,
@@ -20,6 +21,7 @@ import {
   Sparkles,
   Search,
   Flame,
+  ScanSearch,
 } from "lucide-react";
 
 import { TOPPER_BOOKS, TOPPERS_PROFILES, TOPPER_ROUTINES } from "./data/toppersData";
@@ -266,6 +268,8 @@ export default function App() {
   const [timerPhase, setTimerPhase] = useState<TimerPhase>("focus");
   const [currentCycle, setCurrentCycle] = useState<number>(1);
   const [timerRunning, setTimerRunning] = useState<boolean>(false);
+  const [isAIMentorOpen, setIsAIMentorOpen] = useState(false);
+  const [isSmartExtractorOpen, setIsSmartExtractorOpen] = useState(false);
   const [timerSeconds, setTimerSeconds] = useState<number>(0);
   const [studyStreak, setStudyStreak] = useState<number>(14);
   const [dailyGoalHours, setDailyGoalHours] = useState<number>(8);
@@ -880,11 +884,11 @@ export default function App() {
           </button>
 
           <button
-            onClick={() => setSearchOpen(true)}
+            onClick={() => setIsSmartExtractorOpen(true)}
             className="flex flex-col items-center justify-center py-1 px-3 rounded-xl text-slate-500 hover:text-slate-800 transition cursor-pointer"
           >
-            <Search className="w-5 h-5 mb-0.5 text-slate-500" />
-            <span className="text-[10px] tracking-tight">Search</span>
+            <ScanSearch className="w-5 h-5 mb-0.5 text-slate-500" />
+            <span className="text-[10px] tracking-tight">OCR</span>
           </button>
         </div>
 
@@ -893,6 +897,12 @@ export default function App() {
           isOpen={searchOpen}
           onClose={() => setSearchOpen(false)}
           onNavigate={handleGlobalNavigate}
+        />
+
+        {/* Smart OCR Extractor Modal */}
+        <SmartExtractorModal
+          isOpen={isSmartExtractorOpen}
+          onClose={() => setIsSmartExtractorOpen(false)}
         />
 
         {/* AI Mains Mentor & Evaluator Modal */}

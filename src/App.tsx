@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { AppIcon } from "./components/AppIcon";
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { Capacitor } from '@capacitor/core';
+import { CapacitorUpdater } from '@capgo/capacitor-updater';
 import { Navbar } from "./components/Navbar";
 import { GlobalSearchModal } from "./components/GlobalSearchModal";
 import { HomeSection } from "./components/home/HomeSection";
@@ -67,15 +68,34 @@ const DEFAULT_TIMER_CONFIG: FocusTimerConfig = {
 };
 
 export default function App() {
-  // Request Notification Permissions on Mount
+  // Request Notification Permissions & Check Live Updates on Mount
   useEffect(() => {
-    const requestPermissions = async () => {
+    const initApp = async () => {
       try {
         if (Capacitor.isNativePlatform()) {
           // Request Native Permissions
           await LocalNotifications.requestPermissions();
           
-          // Request Microphone permission for audio recorder if possible, although WebRTC getUserMedia usually prompts when called.
+          // Live Updates Initialization
+          await CapacitorUpdater.notifyAppReady();
+          
+          // Check for GitHub Releases
+          const res = await fetch("https://api.github.com/repos/RONESIRVI/UPSC-CSE-Master-Hub/releases/latest");
+          const data = await res.json();
+          if (data && data.assets) {
+            const asset = data.assets.find((a: any) => a.name === "dist.zip");
+            if (asset) {
+              const currentVersion = localStorage.getItem("app_version") || "v1.0.0";
+              if (data.tag_name !== currentVersion && data.tag_name) {
+                const version = await CapacitorUpdater.download({
+                  url: asset.browser_download_url,
+                  version: data.tag_name,
+                });
+                localStorage.setItem("app_version", data.tag_name);
+                await CapacitorUpdater.set({ id: version.id });
+              }
+            }
+          }
         } else {
           // Web Fallback
           if ("Notification" in window && Notification.permission !== "granted") {
@@ -83,10 +103,10 @@ export default function App() {
           }
         }
       } catch (e) {
-        console.warn("Could not request permissions on startup", e);
+        console.warn("Initialization or Update Check failed", e);
       }
     };
-    requestPermissions();
+    initApp();
   }, []);
 
   // Navigation State

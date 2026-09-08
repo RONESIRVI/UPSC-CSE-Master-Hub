@@ -1,4 +1,4 @@
-export type MainTab = "home" | "toppers" | "prep" | "analytics" | "ai-mentor";
+export type MainTab = "home" | "toppers" | "prep" | "analytics" | "ocr" | "ai-mentor";
 
 export type TopperSubTab =
   | "strategy"

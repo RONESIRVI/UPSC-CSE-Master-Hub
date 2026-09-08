@@ -18,7 +18,6 @@ interface NavbarProps {
   activeTab: MainTab;
   setActiveTab: (tab: MainTab) => void;
   onOpenSearch: () => void;
-  onOpenSmartExtractor: () => void;
   onOpenAIMentor: () => void;
   studyStreak: number;
   timerRunning: boolean;
@@ -30,7 +29,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   activeTab,
   setActiveTab,
   onOpenSearch,
-  onOpenSmartExtractor,
   onOpenAIMentor,
   studyStreak,
   timerRunning,
@@ -190,9 +188,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Global Search Button -> Changed to OCR Tool as requested */}
             <button
               id="global-ocr-btn"
-              onClick={onOpenSmartExtractor}
-              className="p-1.5 sm:p-2 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 shadow-xs transition cursor-pointer shrink-0"
-              title="Smart OCR & Diagram Extractor"
+              onClick={() => setActiveTab("ocr")}
+              className={`p-1.5 sm:p-2 rounded-xl border text-slate-600 shadow-xs transition cursor-pointer shrink-0 ${
+                activeTab === "ocr" 
+                  ? "bg-indigo-50 border-indigo-200 text-indigo-700 font-bold" 
+                  : "bg-white border-slate-200 hover:text-indigo-600 hover:bg-indigo-50"
+              }`}
+              title="Smart OCR Scanner"
             >
               <ScanSearch className="w-4 h-4" />
             </button>

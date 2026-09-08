@@ -11,7 +11,7 @@ import { ToppersSection } from "./components/toppers/ToppersSection";
 import { PrepSection } from "./components/prep/PrepSection";
 import { AnalyticsSection } from "./components/analytics/AnalyticsSection";
 import { AIMentorModal } from "./components/ai/AIMentorModal";
-import { SmartExtractorModal } from "./components/prep/SmartExtractorModal";
+import { SmartExtractorTab } from "./components/prep/SmartExtractorTab";
 import { SplashScreen } from "./components/SplashScreen";
 import {
   Home,
@@ -269,7 +269,6 @@ export default function App() {
   const [currentCycle, setCurrentCycle] = useState<number>(1);
   const [timerRunning, setTimerRunning] = useState<boolean>(false);
   const [isAIMentorOpen, setIsAIMentorOpen] = useState(false);
-  const [isSmartExtractorOpen, setIsSmartExtractorOpen] = useState(false);
   const [timerSeconds, setTimerSeconds] = useState<number>(0);
   const [studyStreak, setStudyStreak] = useState<number>(14);
   const [dailyGoalHours, setDailyGoalHours] = useState<number>(8);
@@ -800,6 +799,9 @@ export default function App() {
                     onOpenExplainTopic={handleOpenExplainTopic}
                   />
                 )}
+
+                {/* Pillar 4: SMART OCR */}
+                {activeTab === "ocr" && <SmartExtractorTab />}
               </motion.div>
             </AnimatePresence>
           </main>
@@ -884,10 +886,16 @@ export default function App() {
           </button>
 
           <button
-            onClick={() => setIsSmartExtractorOpen(true)}
-            className="flex flex-col items-center justify-center py-1 px-3 rounded-xl text-slate-500 hover:text-slate-800 transition cursor-pointer"
+            onClick={() => setActiveTab("ocr")}
+            className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition cursor-pointer ${
+              activeTab === "ocr"
+                ? "text-indigo-600 font-bold bg-indigo-50/80"
+                : "text-slate-500 hover:text-slate-800"
+            }`}
           >
-            <ScanSearch className="w-5 h-5 mb-0.5 text-slate-500" />
+            <ScanSearch className={`w-5 h-5 mb-0.5 ${
+                activeTab === "ocr" ? "text-indigo-600" : "text-slate-500"
+              }`} />
             <span className="text-[10px] tracking-tight">OCR</span>
           </button>
         </div>

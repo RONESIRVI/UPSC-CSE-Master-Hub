@@ -81,9 +81,23 @@ export default function App() {
           // Live Updates Initialization
           await CapacitorUpdater.notifyAppReady();
           
-          // NOTE: Auto-update via GitHub Releases is disabled because the repository is PRIVATE.
-          // To enable OTA updates, you must either make the repo public, use Capgo Cloud, 
-          // or host the dist.zip on a public server.
+          // Check for GitHub Releases (Works because repo is now PUBLIC)
+          const res = await fetch("https://api.github.com/repos/RONESIRVI/UPSC-CSE-Master-Hub/releases/latest");
+          const data = await res.json();
+          if (data && data.assets) {
+            const asset = data.assets.find((a: any) => a.name === "dist.zip");
+            if (asset) {
+              const currentVersion = localStorage.getItem("app_version") || "v1.0.0";
+              if (data.tag_name !== currentVersion && data.tag_name) {
+                const version = await CapacitorUpdater.download({
+                  url: asset.browser_download_url,
+                  version: data.tag_name,
+                });
+                localStorage.setItem("app_version", data.tag_name);
+                await CapacitorUpdater.set({ id: version.id });
+              }
+            }
+          }
         } else {
           // Web Fallback
           if ("Notification" in window && Notification.permission !== "granted") {
@@ -91,7 +105,7 @@ export default function App() {
           }
         }
       } catch (e) {
-        console.warn("Initialization failed", e);
+        console.warn("Initialization or Update Check failed", e);
       }
     };
     initApp();

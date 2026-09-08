@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import Tesseract from "tesseract.js";
 import {
   X,
   UploadCloud,
@@ -27,6 +28,9 @@ export const SmartExtractorModal: React.FC<SmartExtractorModalProps> = ({
 }) => {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [ocrProgress, setOcrProgress] = useState(0);
+  const [ocrStatus, setOcrStatus] = useState("");
+  const [extractedText, setExtractedText] = useState("");
   const [activeRightTab, setActiveRightTab] = useState<"text" | "visuals">("text");
   const [showExportSettings, setShowExportSettings] = useState(false);
   
@@ -52,18 +56,41 @@ export const SmartExtractorModal: React.FC<SmartExtractorModalProps> = ({
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
-        setUploadedImage(event.target?.result as string);
-        simulateProcessing();
+        const result = event.target?.result as string;
+        setUploadedImage(result);
+        runActualOCR(result);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const simulateProcessing = () => {
+  const runActualOCR = async (imageSrc: string) => {
     setIsProcessing(true);
-    setTimeout(() => {
+    setOcrProgress(0);
+    setOcrStatus("Initializing AI Model...");
+    try {
+      const { data } = await Tesseract.recognize(
+        imageSrc,
+        'eng',
+        { 
+          logger: m => {
+            if (m.status === "recognizing text") {
+              setOcrProgress(Math.round(m.progress * 100));
+              setOcrStatus(`Recognizing Text: ${Math.round(m.progress * 100)}%`);
+            } else {
+              setOcrStatus(m.status);
+            }
+          } 
+        }
+      );
+      setExtractedText(data.text);
+    } catch (err) {
+      console.error("OCR Failed:", err);
+      setExtractedText("Failed to extract text. Please try a clearer image.");
+    } finally {
       setIsProcessing(false);
-    }, 2500);
+      setActiveRightTab("text");
+    }
   };
 
   const toggleVisualSelection = (id: number) => {
@@ -157,9 +184,16 @@ export const SmartExtractorModal: React.FC<SmartExtractorModalProps> = ({
                   </div>
                 ) : isProcessing ? (
                   <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm flex flex-col items-center justify-center z-10 text-white">
-                    <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-                    <h3 className="text-lg font-bold flex items-center gap-2"><Sparkles className="w-5 h-5 text-indigo-400" /> Analyzing Layout...</h3>
-                    <p className="text-sm text-indigo-200 mt-1">Separating Handwriting & Diagrams</p>
+                    <div className="w-16 h-16 relative flex items-center justify-center mb-4">
+                      <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="8" />
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="#6366f1" strokeWidth="8" strokeDasharray={`${2 * Math.PI * 45}`} strokeDashoffset={`${2 * Math.PI * 45 * (1 - ocrProgress / 100)}`} className="transition-all duration-300 ease-out" />
+                      </svg>
+                      <span className="absolute text-sm font-bold">{ocrProgress}%</span>
+                    </div>
+                    <h3 className="text-lg font-bold flex items-center gap-2"><Sparkles className="w-5 h-5 text-indigo-400" /> AI OCR Running...</h3>
+                    <p className="text-sm text-indigo-200 mt-1 uppercase tracking-widest">{ocrStatus}</p>
+                    <p className="text-xs text-slate-400 mt-4 max-w-xs text-center">(Downloading Language Models on first run may take up to 15 seconds)</p>
                   </div>
                 ) : (
                   <div className="relative w-full h-full p-4 overflow-auto flex justify-center items-center group">
@@ -223,9 +257,13 @@ export const SmartExtractorModal: React.FC<SmartExtractorModalProps> = ({
                   <div className="space-y-4 h-full flex flex-col">
                     <textarea 
                       className="w-full flex-1 bg-white border border-slate-200 rounded-xl p-3 text-sm text-slate-700 font-mono resize-none focus:ring-2 focus:ring-indigo-500 outline-none"
-                      defaultValue={`Aristotle\nVirtue Ethics...\n\nGolden Mean - Avoid Extremes\n\nThe fundamental principle revolves around finding balance between deficiency and excess. As shown in the diagram...`}
+                      value={extractedText}
+                      onChange={(e) => setExtractedText(e.target.value)}
                     />
-                    <button className="w-full py-2.5 bg-slate-900 text-white rounded-xl font-bold text-sm hover:bg-slate-800 transition-colors shadow-sm active:scale-95">
+                    <button 
+                      onClick={() => navigator.clipboard.writeText(extractedText)}
+                      className="w-full py-2.5 bg-slate-900 text-white rounded-xl font-bold text-sm hover:bg-slate-800 transition-colors shadow-sm active:scale-95"
+                    >
                       Copy Text
                     </button>
                   </div>

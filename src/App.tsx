@@ -69,7 +69,14 @@ const DEFAULT_TIMER_CONFIG: FocusTimerConfig = {
   nativeNotificationsEnabled: true,
 };
 
+import { UpdateModal } from "./components/ui/UpdateModal";
+
 export default function App() {
+  // Update System State
+  const [updateInfo, setUpdateInfo] = useState<{ version: string; body: string; url: string } | null>(null);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [updateProgress, setUpdateProgress] = useState<number | null>(null);
+
   // Request Notification Permissions & Live Updates Initialization on Mount
   useEffect(() => {
     const initApp = async () => {
@@ -81,7 +88,7 @@ export default function App() {
           // Live Updates Initialization
           await CapacitorUpdater.notifyAppReady();
           
-          // Check for GitHub Releases (Works because repo is now PUBLIC)
+          // Check for GitHub Releases
           const res = await fetch("https://api.github.com/repos/RONESIRVI/UPSC-CSE-Master-Hub/releases/latest");
           const data = await res.json();
           if (data && data.assets) {
@@ -89,12 +96,38 @@ export default function App() {
             if (asset) {
               const currentVersion = localStorage.getItem("app_version") || "v1.0.0";
               if (data.tag_name !== currentVersion && data.tag_name) {
-                const version = await CapacitorUpdater.download({
-                  url: asset.browser_download_url,
+                // We found a new version! Do NOT download silently.
+                setUpdateInfo({
                   version: data.tag_name,
+                  body: data.body || "Performance improvements and bug fixes.",
+                  url: asset.browser_download_url
                 });
-                localStorage.setItem("app_version", data.tag_name);
-                await CapacitorUpdater.set({ id: version.id });
+
+                // Send Android Native Notification
+                await LocalNotifications.schedule({
+                  notifications: [
+                    {
+                      title: "🆕 UPSC CSE Master Hub Update",
+                      body: `Version ${data.tag_name} available. Tap to view & update.`,
+                      id: 1,
+                      schedule: { at: new Date(Date.now() + 1000) },
+                      sound: undefined,
+                      attachments: undefined,
+                      actionTypeId: "",
+                      extra: null,
+                    }
+                  ]
+                });
+
+                // Listen for notification tap to open modal
+                LocalNotifications.addListener('localNotificationActionPerformed', (notification) => {
+                  if (notification.notification.id === 1) {
+                    setIsUpdateModalOpen(true);
+                  }
+                });
+
+                // Optionally auto-open modal if user is active
+                setIsUpdateModalOpen(true);
               }
             }
           }
@@ -109,7 +142,54 @@ export default function App() {
       }
     };
     initApp();
+
+    // Cleanup listeners
+    return () => {
+      LocalNotifications.removeAllListeners();
+    };
   }, []);
+
+  const handleUpdateNow = async () => {
+    if (!updateInfo) return;
+    try {
+      setUpdateProgress(0);
+      
+      // Attach progress listener
+      CapacitorUpdater.addListener('download', (info: any) => {
+        setUpdateProgress(info.percent);
+      });
+
+      const version = await CapacitorUpdater.download({
+        url: updateInfo.url,
+        version: updateInfo.version,
+      });
+      
+      setUpdateProgress(100);
+      localStorage.setItem("app_version", updateInfo.version);
+      
+      // Success Notification
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            title: "✓ UPSC CSE Master Hub Updated",
+            body: `Version ${updateInfo.version} installed successfully.`,
+            id: 2,
+            schedule: { at: new Date(Date.now() + 1000) }
+          }
+        ]
+      });
+
+      // Set the update and reload app
+      setTimeout(async () => {
+        await CapacitorUpdater.set({ id: version.id });
+      }, 1000);
+      
+    } catch (error) {
+      console.error("Update failed:", error);
+      alert("Failed to download the update. Please check your internet connection.");
+      setUpdateProgress(null);
+    }
+  };
 
   // Navigation State
   const [activeTab, setActiveTab] = useState<MainTab>("home");
@@ -878,6 +958,15 @@ export default function App() {
             <span className="text-[10px] tracking-tight">OCR</span>
           </button>
         </div>
+
+        {/* Update Modal */}
+        <UpdateModal
+          isOpen={isUpdateModalOpen}
+          onClose={() => setIsUpdateModalOpen(false)}
+          updateInfo={updateInfo}
+          onUpdateNow={handleUpdateNow}
+          progress={updateProgress}
+        />
 
         {/* Global Search Modal */}
         <GlobalSearchModal

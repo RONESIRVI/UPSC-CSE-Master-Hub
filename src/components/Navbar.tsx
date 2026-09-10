@@ -159,47 +159,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </span>
             </div>
 
-            {/* Quick Stopwatch Pill */}
-            <button
-              id="header-timer-btn"
-              onClick={onToggleTimer}
-              title={timerRunning ? "Pause Study Session" : "Start Study Timer"}
-              className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-xl border text-xs font-semibold shadow-sm transition-all cursor-pointer shrink-0 ${
-                timerRunning
-                  ? "bg-emerald-50 border-emerald-300 text-emerald-700 animate-pulse"
-                  : "bg-white border-slate-200/80 text-slate-700 hover:bg-slate-50"
-              }`}
-            >
-              <Clock
-                className={`w-3.5 h-3.5 shrink-0 ${
-                  timerRunning ? "text-emerald-600" : "text-slate-500"
-                }`}
-              />
-              <span className="font-mono font-bold text-xs whitespace-nowrap">
-                {formatTimer(timerSeconds)}
-              </span>
-              <span
-                className={`w-2 h-2 rounded-full shrink-0 ${
-                  timerRunning ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" : "bg-slate-300"
-                }`}
-              />
-            </button>
 
-
-
-            {/* Notes Scanner Button */}
-            <button
-              id="global-ocr-btn"
-              onClick={() => setActiveTab("ocr")}
-              className={`p-1.5 sm:p-2 rounded-xl border text-slate-600 shadow-sm transition-all cursor-pointer shrink-0 ${
-                activeTab === "ocr" 
-                  ? "bg-indigo-50 border-indigo-200 text-indigo-700 font-bold" 
-                  : "bg-white border-slate-200/80 hover:text-indigo-600 hover:bg-indigo-50"
-              }`}
-              title="Smart Notes Scanner (OCR)"
-            >
-              <Camera className="w-4 h-4" />
-            </button>
 
             {/* AI Mains Mentor & Evaluator Button - Premium Glowing VIP Look */}
             <button

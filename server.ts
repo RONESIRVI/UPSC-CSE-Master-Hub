@@ -234,6 +234,38 @@ Implement transparent institutional SOPs, strengthen capacity building, and alig
     }
   });
 
+  // General Doubt Solver / Chat Endpoint (with Google Search Grounding)
+  app.post("/api/ai/chat", async (req, res) => {
+    try {
+      const { question } = req.body;
+      const ai = getAIClient();
+
+      const prompt = `You are an expert UPSC CSE Mentor and General Doubt Solver.
+A student has asked the following doubt/question:
+"${question}"
+
+Provide a highly accurate, up-to-date, and analytical answer from a UPSC perspective.
+If it is a factual question, give exact facts. If it is analytical, provide a structured multi-dimensional view (PESTLE).
+Keep it conversational but highly professional and strictly UPSC-oriented.`;
+
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: prompt,
+        config: {
+          tools: [{ googleSearch: {} }],
+        }
+      });
+
+      res.json({ success: true, answer: response.text });
+    } catch (error: any) {
+      console.error("AI Chat error:", error);
+      res.status(200).json({
+        success: true,
+        answer: `🤖 AI Mentor Fallback Response:\n\nRegarding your query: "${req.body.question}"\n\n(Note: The AI service is currently overloaded or the API key is missing. Please ensure your backend is properly configured with a valid Gemini API key to get real-time answers from Google's Knowledge Graph.)\n\nFrom a standard UPSC perspective, try to break this topic down into its Historical, Constitutional, and Current Affairs dimensions. Refer to standard textbooks and link it with the syllabus.`
+      });
+    }
+  });
+
   // Vite middleware setup
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({

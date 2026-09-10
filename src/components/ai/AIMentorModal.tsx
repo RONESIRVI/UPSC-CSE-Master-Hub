@@ -79,33 +79,27 @@ export const AIMentorModal: React.FC<AIMentorModalProps> = ({
     setEvalError(null);
     setEvalResult(null);
 
-    // Mock API Response
-    setTimeout(() => {
-      setEvalResult({
-        estimatedScore: targetMarks === 10 ? 5.5 : 8.5,
-        maxMarks: targetMarks,
-        rubricBreakdown: {
-          introduction: "7/10",
-          coreArguments: "6/10",
-          dataAndExamples: "4/10",
-          conclusion: "6/10",
-        },
-        strengths: [
-          "Clear understanding of the core directive",
-          "Good use of paragraph structuring",
-        ],
-        missingElements: [
-          "Lack of Supreme Court judgments/articles",
-          "Conclusion is too generic and lacks a way forward",
-        ],
-        topperUpgradeSuggestions: [
-          "Quote 2nd ARC recommendations",
-          "Include a relevant constitutional article in the introduction",
-        ],
-        modelAnswerOutline: "Intro: Define the constitutional provision -> Body: Discuss powers, limitations, and recent SC guidelines -> Conclusion: Way forward based on Sarkaria/Punchhi commission.",
-      } as AIEvaluationResult);
+    try {
+      const res = await fetch("/api/ai/evaluate-answer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question: mainsQuestion,
+          answer: userAnswer,
+          maxMarks: targetMarks,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Evaluation failed");
+      setEvalResult(data);
+    } catch (err: any) {
+      setEvalError(
+        err.message || "Failed to evaluate answer. Please try again."
+      );
+    } finally {
       setIsEvaluating(false);
-    }, 2000);
+    }
   };
 
   // Handle AI Strategy Advisor
@@ -114,13 +108,30 @@ export const AIMentorModal: React.FC<AIMentorModalProps> = ({
     setIsGeneratingStrategy(true);
     setStrategyResult(null);
 
-    // Mock API Response
-    setTimeout(() => {
-      const workingConstraint = isWorkingProfessional ? "Since you are a working professional, we will optimize for 4-5 hours of intense output." : `We will plan for a dedicated ${hoursPerDay} hours daily schedule.`;
-      
-      setStrategyResult(`🎯 UPSC CSE ${targetYear} Tailored Blueprint\n\nBackground: ${aspirantBackground} | Optional: ${selectedOptional} | Attempt: ${attemptNumber}\n\n${workingConstraint}\n\nPhase 1: Core Foundation (Next 3 Months)\n• Focus 60% time on GS subjects (Polity, History, Geo).\n• Focus 40% time on ${selectedOptional} paper 1.\n• Read The Hindu/Indian Express daily for 45 mins.\n\nPhase 2: Answer Writing & Consolidation (Month 4 to 6)\n• Start daily 2 answer writing practice.\n• Complete Optional Paper 2 syllabus.\n• Start Weekend Prelims Mocks.\n\nPhase 3: Revision & Simulation (Last 3 Months)\n• Revise core subjects 3 times.\n• Attempt full-length FLTs in exam-like conditions.\n\n💡 Pro-Tip: Leverage your ${aspirantBackground} background for CSAT and analytical GS3 topics!`);
+    try {
+      const res = await fetch("/api/ai/strategy-advisor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          background: aspirantBackground,
+          optional: selectedOptional,
+          attempt: attemptNumber,
+          targetYear,
+          hoursPerDay,
+          isWorkingProfessional,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Strategy generation failed");
+      setStrategyResult(data.strategy);
+    } catch (err: any) {
+      setStrategyResult(
+        "Strategy generation encountered an error. Please try again."
+      );
+    } finally {
       setIsGeneratingStrategy(false);
-    }, 2000);
+    }
   };
 
   // Handle AI Topic Explainer
@@ -131,11 +142,26 @@ export const AIMentorModal: React.FC<AIMentorModalProps> = ({
     setIsExplaining(true);
     setExplainResult(null);
 
-    // Mock API Response
-    setTimeout(() => {
-      setExplainResult(`🧠 Quick AI Concept Breakdown: ${topicName}\n\nContext: ${topicPaper}\n\n1️⃣ What is it?\nThis is a critical concept that frequently appears in Mains. It refers to the fundamental principles and mechanisms surrounding the issue.\n\n2️⃣ Key Dimensions:\n• Historical: Originated due to socio-political shifts.\n• Constitutional/Legal: Supported by key statutes and articles.\n• Current Relevance: Frequently in news due to recent controversies or amendments.\n\n3️⃣ How UPSC Asks This:\n• Prelims: Factual questions on articles or committees involved.\n• Mains: "Critically examine the impact of ${topicName} on modern governance."\n\n🎯 Recommendation: Ensure you have 2 solid examples and 1 Supreme Court case ready for this topic!`);
+    try {
+      const res = await fetch("/api/ai/explain-topic", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          topic: topicName,
+          paper: topicPaper,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Explanation failed");
+      setExplainResult(data.explanation);
+    } catch (err: any) {
+      setExplainResult(
+        "Topic explainer encountered an error. Please try again."
+      );
+    } finally {
       setIsExplaining(false);
-    }, 2000);
+    }
   };
 
   // Handle General Doubt Solver / Chat
@@ -146,11 +172,23 @@ export const AIMentorModal: React.FC<AIMentorModalProps> = ({
     setIsChatting(true);
     setChatResult(null);
 
-    // Mock API Response
-    setTimeout(() => {
-      setChatResult(`🤖 AI Mentor Response:\n\nRegarding your query: "${chatQuestion}"\n\nFrom a UPSC perspective, you should approach this multi-dimensionally (PESTLE format: Political, Economic, Social, Tech, Legal, Environmental).\n\nIf it's a factual doubt, refer to standard sources like Laxmikanth or Spectrum. If it's analytical, try to link it with current affairs from the past 1-2 years and frame a balanced, optimistic conclusion.\n\nLet me know if you need specific data points or committee recommendations for this!`);
+    try {
+      const res = await fetch("/api/ai/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: chatQuestion }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Chat failed");
+      setChatResult(data.answer);
+    } catch (err: any) {
+      setChatResult(
+        "Doubt solver encountered an error. Please try again."
+      );
+    } finally {
       setIsChatting(false);
-    }, 2000);
+    }
   };
 
   return (

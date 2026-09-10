@@ -244,41 +244,4 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
   },
 ];
 
-export const DEFAULT_STUDY_PLAN: StudyPlanPhase[] = [
-  {
-    id: "phase-1",
-    name: "Foundation (Phase 1)",
-    durationWeeks: 12,
-    focus: "Build Core Concepts in Prelims & Mains Overlapping Subjects",
-    status: "current",
-    milestones: [
-      "राजस्थान का इतिहास एवं भूगोल सम्पूर्ण",
-      "भारत का इतिहास (प्राचीन व मध्यकालीन)",
-      "भारतीय संविधान एवं राज व्यवस्था"
-    ],
-  },
-  {
-    id: "phase-2",
-    name: "Mains Specific & Answer Writing (Phase 2)",
-    durationWeeks: 16,
-    focus: "Mains specific topics like Ethics, Public Administration, Law",
-    status: "upcoming",
-    milestones: [
-      "प्रशासनिक नीतिशास्त्र, समाजशास्त्र व प्रबंधन",
-      "लोक प्रशासन एवं विधि",
-      "सामान्य हिंदी एवं सामान्य अंग्रेजी व्याकरण"
-    ],
-  },
-  {
-    id: "phase-3",
-    name: "Prelims Sprint & Revision (Phase 3)",
-    durationWeeks: 12,
-    focus: "Current Affairs, Aptitude and Intense Mock Tests",
-    status: "upcoming",
-    milestones: [
-      "तार्किक विवेचन एवं मानसिक योग्यता",
-      "राजस्थान एवं भारत की अर्थव्यवस्था (बजट/समीक्षा)",
-      "समसामयिक घटनाएँ एवं 50+ फुल लेंथ टेस्ट"
-    ],
-  },
-];
+export const DEFAULT_STUDY_PLAN: StudyPlanPhase[] = [];

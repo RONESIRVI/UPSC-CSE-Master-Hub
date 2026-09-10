@@ -161,50 +161,29 @@ export default function App() {
   );
 
   const [sessionLogs, setSessionLogs] = useState<StudySessionLog[]>(() => {
-    const saved = localStorage.getItem("upsc_study_logs");
-    return saved
-      ? JSON.parse(saved)
-      : [
-          {
-            id: "init-1",
-            date: new Date().toISOString().split("T")[0],
-            subject: "Indian Polity",
-            paper: "Prelims GS1",
-            durationMinutes: 120,
-            topicCovered: "Preamble & Fundamental Rights Articles 14-18",
-            qualityRating: 5,
-            notes: "Revised landmark case laws (Maneka Gandhi, Kesavananda)",
-          },
-          {
-            id: "init-2",
-            date: new Date().toISOString().split("T")[0],
-            subject: "Current Affairs",
-            paper: "Prelims GS1",
-            durationMinutes: 60,
-            topicCovered:
-              "The Hindu Editorial: India-US Trade & Semiconductor Mission",
-            qualityRating: 4,
-          },
-        ];
+    const saved = localStorage.getItem("upsc_session_logs_v2");
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [mockLogs, setMockLogs] = useState<MockTestLog[]>(() => {
-    const saved = localStorage.getItem("upsc_mock_logs");
+    const saved = localStorage.getItem("upsc_mock_logs_v2");
     return saved ? JSON.parse(saved) : DEFAULT_MOCK_LOGS;
   });
 
   const [revisionQueue, setRevisionQueue] = useState<RevisionItem[]>(() => {
-    const saved = localStorage.getItem("upsc_revision_queue");
+    const saved = localStorage.getItem("upsc_revision_queue_v2");
     return saved ? JSON.parse(saved) : DEFAULT_REVISION_QUEUE;
   });
 
   const [pyqs, setPyqs] = useState<PYQQuestion[]>(() => {
-    const saved = localStorage.getItem("upsc_pyqs");
+    const saved = localStorage.getItem("upsc_pyqs_v2");
     return saved ? JSON.parse(saved) : PYQ_DATABASE;
   });
 
-  const [weakAreas, setWeakAreas] =
-    useState<WeakAreaItem[]>(DEFAULT_WEAK_AREAS);
+  const [weakAreas, setWeakAreas] = useState<WeakAreaItem[]>(() => {
+    const saved = localStorage.getItem("upsc_weak_areas_v2");
+    return saved ? JSON.parse(saved) : DEFAULT_WEAK_AREAS;
+  });
 
   const [dailyTasks, setDailyTasks] = useState<DailyTask[]>([
     {

@@ -82,7 +82,7 @@ export const AIMentorModal: React.FC<AIMentorModalProps> = ({
     };
 
     if (useSearch) {
-      body.tools = [{ googleSearch: {} }];
+      body.tools = [{ google_search: {} }];
     }
 
     const res = await fetch(url, {
@@ -92,7 +92,12 @@ export const AIMentorModal: React.FC<AIMentorModalProps> = ({
     });
 
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error?.message || "Gemini API Error");
+    if (!res.ok) {
+      if (res.status === 400 && data.error?.message?.includes("API key not valid")) {
+        throw new Error("Invalid API Key. Please check your settings.");
+      }
+      throw new Error(data.error?.message || "Gemini API Error");
+    }
     
     return data.candidates?.[0]?.content?.parts?.[0]?.text || "No response generated.";
   };

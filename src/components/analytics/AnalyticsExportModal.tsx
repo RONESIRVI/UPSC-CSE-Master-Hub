@@ -155,6 +155,8 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
       includeMocks,
       includeGapAnalysis,
       includeRankBenchmarks,
+      syllabusProgress,
+      totalHoursLogged,
     };
 
     const result = await exportAnalyticsDocument(

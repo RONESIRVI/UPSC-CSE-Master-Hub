@@ -220,7 +220,7 @@ export const SmartExtractorTab: React.FC = () => {
             ) : (
               <div className="space-y-4 h-full flex flex-col">
                 <textarea 
-                  className="w-full flex-1 bg-white border border-slate-200 rounded-xl p-3 text-base sm:text-lg text-slate-800 font-medium resize-none focus:ring-2 focus:ring-indigo-500 outline-none leading-relaxed"
+                  className="w-full flex-1 min-h-[350px] lg:min-h-0 bg-white border border-slate-200 rounded-xl p-3 text-base sm:text-lg text-slate-800 font-medium resize-none focus:ring-2 focus:ring-indigo-500 outline-none leading-relaxed"
                   value={extractedText}
                   onChange={(e) => setExtractedText(e.target.value)}
                   placeholder="Extracted text will appear here..."

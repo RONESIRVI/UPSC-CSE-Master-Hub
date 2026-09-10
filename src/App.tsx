@@ -241,7 +241,7 @@ export default function App() {
   });
 
   const [syllabus, setSyllabus] = useState<SyllabusTopic[]>(() => {
-    const saved = localStorage.getItem("ras_syllabus_v1");
+    const saved = localStorage.getItem("ras_syllabus_v2");
     return saved ? JSON.parse(saved) : DEFAULT_SYLLABUS;
   });
 
@@ -289,7 +289,7 @@ export default function App() {
   });
 
   const [audioNotes, setAudioNotes] = useState<AudioNote[]>(() => {
-    const saved = localStorage.getItem("ras_audio_notes");
+    const saved = localStorage.getItem("ras_audio_notes_v2");
     return saved ? JSON.parse(saved) : [];
   });
   const [timerPhase, setTimerPhase] = useState<TimerPhase>("focus");
@@ -297,7 +297,7 @@ export default function App() {
   const [timerRunning, setTimerRunning] = useState<boolean>(false);
   const [isAIMentorOpen, setIsAIMentorOpen] = useState(false);
   const [timerSeconds, setTimerSeconds] = useState<number>(0);
-  const [studyStreak, setStudyStreak] = useState<number>(14);
+  const [studyStreak, setStudyStreak] = useState<number>(0);
   const [dailyGoalHours, setDailyGoalHours] = useState<number>(8);
 
   // Modals State

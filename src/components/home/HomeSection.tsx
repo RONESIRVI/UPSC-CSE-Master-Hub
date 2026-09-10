@@ -69,16 +69,16 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
 
   // Compute Health Score
   const healthScore = useMemo<PreparationHealth>(() => {
-    // Dummy calculation for demonstration - you can make this deeply analytical
+    // Zero out scores to reflect fresh state
     const studyHoursScore =
       Math.min(
         100,
         Math.round((totalStudyTimeToday / 3600 / dailyGoalHours) * 100)
       ) || 0;
-    const pyqScore = 82; // Static for demo
-    const revisionScore = 70;
-    const testsScore = 68;
-    const answersScore = 75;
+    const pyqScore = 0; 
+    const revisionScore = 0;
+    const testsScore = 0;
+    const answersScore = 0;
 
     const completedSyllabus = syllabus.filter(
       (s) => s.status === "mastered" || s.status === "revised_2"
@@ -86,7 +86,7 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
     const syllabusScore = Math.min(
       100,
       Math.round((completedSyllabus / Math.max(syllabus.length, 1)) * 100)
-    );
+    ) || 0;
 
     const overallScore = Math.round(
       (studyHoursScore +
@@ -96,7 +96,7 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
         answersScore +
         syllabusScore) /
         6
-    );
+    ) || 0;
 
     return {
       overallScore,

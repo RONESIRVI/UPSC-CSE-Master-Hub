@@ -91,18 +91,16 @@ function moveToOffScreen(element: HTMLElement): {
 async function captureAsPng(element: HTMLElement): Promise<string> {
   return toPng(element, {
     quality: 1,
-    pixelRatio: 2,
+    pixelRatio: 4,        // 384 DPI — High-end print quality (4000px wide)
     backgroundColor: '#ffffff',
     skipAutoScale: false,
-    // Retry up to 4 times — html-to-image may load webfonts on 1st pass
-    // and need a second pass to render them correctly
   });
 }
 
 async function captureAsJpeg(element: HTMLElement): Promise<string> {
   return toJpeg(element, {
-    quality: 0.95,
-    pixelRatio: 2,
+    quality: 0.98,
+    pixelRatio: 4,        // 384 DPI — High-end print quality (4000px wide)
     backgroundColor: '#ffffff',
   });
 }

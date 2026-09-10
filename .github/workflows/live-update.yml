@@ -30,8 +30,8 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v1.0.${{ github.run_number }}
+          tag_name: v2.1.${{ github.run_number }}
           files: dist.zip
-          name: Live Update v1.0.${{ github.run_number }}
+          name: Live Update v2.1.${{ github.run_number }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

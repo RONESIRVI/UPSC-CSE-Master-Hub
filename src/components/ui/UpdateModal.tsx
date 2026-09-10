@@ -85,13 +85,21 @@ export function UpdateModal({
             {/* Footer / Action Area */}
             <div className="p-6 bg-white border-t border-slate-100 shrink-0">
               {progress === null ? (
-                <button
-                  onClick={onUpdateNow}
-                  className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold text-lg transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-200"
-                >
-                  <DownloadCloud className="w-6 h-6" />
-                  UPDATE NOW
-                </button>
+                <div className="flex flex-col gap-3">
+                  <button
+                    onClick={onUpdateNow}
+                    className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold text-lg transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-200"
+                  >
+                    <DownloadCloud className="w-6 h-6" />
+                    UPDATE NOW
+                  </button>
+                  <button
+                    onClick={onClose}
+                    className="w-full py-3 bg-slate-50 hover:bg-slate-100 text-slate-500 rounded-2xl font-semibold text-sm transition"
+                  >
+                    MAYBE LATER
+                  </button>
+                </div>
               ) : isDownloading ? (
                 <div className="space-y-3">
                   <div className="flex items-center justify-between text-sm font-semibold text-indigo-700">

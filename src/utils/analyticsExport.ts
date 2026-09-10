@@ -15,44 +15,99 @@ export interface AnalyticsExportOptions {
   includeRankBenchmarks: boolean;
 }
 
-/** Result returned by exportAnalyticsDocument */
 export interface ExportResult {
   success: boolean;
-  /** Human-readable message for toast (success OR error reason) */
   message: string;
-  /** Filename that was saved (only on success) */
   filename?: string;
 }
 
 /**
- * Detaches the element from its current position in the DOM,
- * appends it directly to document.body (off-screen via fixed position),
- * captures it with html2canvas, then moves it back.
+ * TailwindCSS v4 uses oklch() for all colors, but html2canvas v1.4.x
+ * cannot parse oklch(), oklab(), lch(), or lab() color functions.
  *
- * This is the only reliable way to capture elements that are inside
- * overflow:hidden / overflow:auto scrollable containers (like modals).
+ * This function reads the browser-resolved computed color values (which are
+ * always plain rgb/rgba) and applies them as inline styles on every element
+ * before html2canvas runs. Returns a cleanup function to restore original styles.
+ */
+function inlineResolvedColors(root: HTMLElement): () => void {
+  const COLOR_PROPS = [
+    'color',
+    'background-color',
+    'border-top-color',
+    'border-right-color',
+    'border-bottom-color',
+    'border-left-color',
+    'outline-color',
+    'text-decoration-color',
+    'fill',
+    'stroke',
+  ] as const;
+
+  // Collect all elements including root
+  const elements = [root, ...Array.from(root.querySelectorAll<HTMLElement>('*'))];
+  const restorers: Array<() => void> = [];
+
+  elements.forEach((el) => {
+    if (!(el instanceof HTMLElement) && !(el instanceof SVGElement)) return;
+    const computed = window.getComputedStyle(el as HTMLElement);
+    const saved: Array<{ prop: string; prev: string }> = [];
+
+    COLOR_PROPS.forEach((prop) => {
+      // getComputedStyle always resolves oklch → rgb(...)
+      const resolved = computed.getPropertyValue(prop);
+      if (!resolved || resolved === 'none' || resolved === 'transparent') return;
+
+      // Only inline if it's a valid resolved rgb/rgba value
+      // (to avoid inlining "inherit" or empty strings)
+      if (resolved.startsWith('rgb') || resolved.startsWith('#')) {
+        saved.push({ prop, prev: (el as HTMLElement).style.getPropertyValue(prop) });
+        (el as HTMLElement).style.setProperty(prop, resolved, 'important');
+      }
+    });
+
+    if (saved.length > 0) {
+      restorers.push(() => {
+        saved.forEach(({ prop, prev }) => {
+          if (prev) {
+            (el as HTMLElement).style.setProperty(prop, prev);
+          } else {
+            (el as HTMLElement).style.removeProperty(prop);
+          }
+        });
+      });
+    }
+  });
+
+  return () => restorers.forEach((r) => r());
+}
+
+/**
+ * Detaches element from its current DOM position (which may be inside a
+ * modal with overflow:hidden that clips html2canvas rendering), appends it
+ * to document.body off-screen, captures it, then moves it back.
  */
 async function captureElementToCanvas(element: HTMLElement): Promise<HTMLCanvasElement> {
   const originalParent = element.parentElement!;
   const originalNextSibling = element.nextSibling;
+  const prevStyle = element.getAttribute('style') || '';
 
-  // Create a temporary off-screen wrapper
+  // Move element to document.body to bypass modal overflow clipping
   const wrapper = document.createElement('div');
   wrapper.style.cssText =
-    'position:fixed;top:-99999px;left:0;z-index:-9999;width:1200px;background:#fff;overflow:visible;';
-
-  // Move element into the wrapper on document.body
+    'position:fixed;top:-99999px;left:0;z-index:-9999;' +
+    'width:1200px;overflow:visible;background:#ffffff;';
   wrapper.appendChild(element);
   document.body.appendChild(wrapper);
 
-  // Force element styles to be fully visible
-  const prevStyle = element.getAttribute('style') || '';
   element.style.cssText =
-    'display:block!important;visibility:visible!important;opacity:1!important;' +
-    'clip:auto!important;width:1000px;background:#fff;';
+    'display:block!important;visibility:visible!important;' +
+    'opacity:1!important;clip:auto!important;width:1000px;background:#ffffff;';
 
-  // Wait for layout/paint
-  await new Promise((r) => setTimeout(r, 150));
+  // Fix oklch → rgb for html2canvas compatibility
+  const restoreColors = inlineResolvedColors(element);
+
+  // Wait for layout recalc before capture
+  await new Promise((r) => setTimeout(r, 180));
 
   let canvas: HTMLCanvasElement;
   try {
@@ -62,9 +117,15 @@ async function captureElementToCanvas(element: HTMLElement): Promise<HTMLCanvasE
       logging: false,
       backgroundColor: '#ffffff',
       windowWidth: 1200,
+      // Ignore elements that are absolutely off screen (prevents rare crashes)
+      ignoreElements: (el) => {
+        const s = window.getComputedStyle(el);
+        return s.display === 'none' || s.visibility === 'hidden';
+      },
     });
   } finally {
-    // Always restore element to its original position
+    // Always restore, even on error
+    restoreColors();
     element.setAttribute('style', prevStyle);
     if (originalNextSibling) {
       originalParent.insertBefore(element, originalNextSibling);
@@ -85,27 +146,28 @@ export async function exportAnalyticsDocument(
   const element = document.getElementById(elementId);
   if (!element) {
     const msg = 'Export failed: Report canvas not found. Please try reopening the dialog.';
-    console.error(`[Analytics Export] Element #${elementId} not found in DOM.`);
+    console.error(`[Analytics Export] #${elementId} not found in DOM.`);
     return { success: false, message: msg };
   }
 
   try {
-    if (onProgress) onProgress('Rendering report canvas...');
+    if (onProgress) onProgress('Resolving colors & rendering report canvas...');
 
     const canvas = await captureElementToCanvas(element);
 
-    // Sanity check: blank canvas guard (width < 100 means capture failed)
+    // Sanity check for blank capture
     if (canvas.width < 100 || canvas.height < 100) {
       return {
         success: false,
-        message: 'Export failed: Report rendered as blank. Please try enabling Preview first, then export.',
+        message:
+          'Export failed: Blank canvas captured (width < 100px). Try enabling Preview first, then export.',
       };
     }
 
     const timestamp = new Date().toISOString().split('T')[0];
     const filename = `UPSC_Analytics_${timestamp}`;
 
-    // ─────────────── PNG ───────────────
+    // ─────────────────── PNG ───────────────────
     if (options.format === 'png') {
       if (onProgress) onProgress('Generating high-resolution PNG...');
       const imageUri = canvas.toDataURL('image/png');
@@ -121,7 +183,6 @@ export async function exportAnalyticsDocument(
           recursive: true,
         });
 
-        // Also save persistent copy in Documents
         try {
           await Filesystem.writeFile({
             path: `UPSC Hub/Reports/${filename}.png`,
@@ -139,6 +200,12 @@ export async function exportAnalyticsDocument(
           url: savedFile.uri,
           dialogTitle: 'Save Image to Gallery or Share',
         });
+
+        return {
+          success: true,
+          message: '✅ Report image ready! Use the share sheet to save to Gallery.',
+          filename: `${filename}.png`,
+        };
       } else {
         const link = document.createElement('a');
         link.download = `${filename}.png`;
@@ -146,23 +213,21 @@ export async function exportAnalyticsDocument(
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-      }
 
-      return {
-        success: true,
-        message: Capacitor.isNativePlatform()
-          ? `✅ Report image ready! Use the share sheet to save to Gallery.`
-          : `✅ PNG image downloaded: ${filename}.png`,
-        filename: `${filename}.png`,
-      };
+        return {
+          success: true,
+          message: `✅ PNG image downloaded: ${filename}.png`,
+          filename: `${filename}.png`,
+        };
+      }
     }
 
-    // ─────────────── PDF ───────────────
+    // ─────────────────── PDF ───────────────────
     if (options.format === 'pdf') {
       if (onProgress) onProgress('Compiling multi-page PDF...');
       const imgData = canvas.toDataURL('image/jpeg', 0.95);
 
-      const imgWidth = 210; // A4 mm
+      const imgWidth = 210;
       const pageHeight = 297;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       let heightLeft = imgHeight;
@@ -207,23 +272,27 @@ export async function exportAnalyticsDocument(
           url: savedFile.uri,
           dialogTitle: 'Save PDF or Share',
         });
+
+        return {
+          success: true,
+          message: '✅ PDF ready! Use the share sheet to save or send.',
+          filename: `${filename}.pdf`,
+        };
       } else {
         pdf.save(`${filename}.pdf`);
+        return {
+          success: true,
+          message: `✅ PDF downloaded: ${filename}.pdf`,
+          filename: `${filename}.pdf`,
+        };
       }
-
-      return {
-        success: true,
-        message: Capacitor.isNativePlatform()
-          ? `✅ PDF ready! Use the share sheet to save or send.`
-          : `✅ PDF downloaded: ${filename}.pdf`,
-        filename: `${filename}.pdf`,
-      };
     }
 
     return { success: false, message: 'Unknown export format selected.' };
   } catch (error: any) {
     console.error('[Analytics Export] Failed:', error);
-    const reason = error?.message || String(error) || 'Unknown error';
+    const reason: string =
+      typeof error?.message === 'string' ? error.message : String(error);
     return {
       success: false,
       message: `Export failed: ${reason}`,

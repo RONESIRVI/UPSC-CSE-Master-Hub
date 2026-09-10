@@ -885,18 +885,6 @@ export default function App() {
           </button>
 
           <button
-            onClick={() => {
-              setAiModalInitialMode("evaluate");
-              setAiModalOpen(true);
-            }}
-            className="flex flex-col items-center justify-center -mt-4 bg-indigo-600 text-white rounded-2xl w-12 h-12 shadow-lg shadow-indigo-500/30 hover:bg-indigo-700 transition cursor-pointer active:scale-95"
-            title="Open AI Mentor"
-          >
-            <Sparkles className="w-5 h-5" />
-            <span className="text-[9px] font-bold">AI</span>
-          </button>
-
-          <button
             onClick={() => setActiveTab("analytics")}
             className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition cursor-pointer ${
               activeTab === "analytics"

@@ -398,8 +398,18 @@ Provide a tactical 4-Phase Roadmap, Daily Routine, and Booklist. Keep it highly 
                 {isValidatingKey ? <RotateCcw className="w-4 h-4 animate-spin" /> : "Save"}
               </button>
             </div>
-            {keyError && <p className="text-[10px] text-rose-600 font-bold mt-2">{keyError}</p>}
-            {keySuccess && <p className="text-[10px] text-emerald-600 font-bold mt-2">{keySuccess}</p>}
+            {keyError && (
+              <div className="mt-3 p-3 bg-rose-100 border border-rose-300 rounded-xl flex items-start gap-2 animate-fade-in">
+                <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                <p className="text-xs text-rose-800 font-bold">{keyError}</p>
+              </div>
+            )}
+            {keySuccess && (
+              <div className="mt-3 p-3 bg-emerald-100 border border-emerald-300 rounded-xl flex items-start gap-2 animate-fade-in">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <p className="text-xs text-emerald-800 font-bold">{keySuccess}</p>
+              </div>
+            )}
             {!keyError && !keySuccess && (
               <p className="text-[10px] text-indigo-600 mt-2">
                 Get a free API key from Google AI Studio. Your key is stored securely in your browser's local storage and is never sent to our servers.

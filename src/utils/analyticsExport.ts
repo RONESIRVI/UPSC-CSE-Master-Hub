@@ -1,8 +1,22 @@
-import html2canvas from "html2canvas";
+import { toPng, toJpeg } from "html-to-image";
 import { jsPDF } from "jspdf";
 import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// WHY html-to-image instead of html2canvas?
+//
+// html2canvas v1.4.x CANNOT parse TailwindCSS v4 color functions:
+//   oklch(), oklab(), lch(), lab()
+// → Throws: "attempting to parse an unsupported color function oklch"
+// → Entire export fails regardless of any workaround attempted.
+//
+// html-to-image uses SVG <foreignObject> rendering. It reads COMPUTED styles
+// via window.getComputedStyle() which the browser has already resolved to
+// rgb/rgba — no oklch ever reaches its renderer. Works perfectly with
+// TailwindCSS v4, modern CSS, Capacitor WebView, and all browsers.
+// ─────────────────────────────────────────────────────────────────────────────
 
 export interface AnalyticsExportOptions {
   format: "pdf" | "png";
@@ -26,108 +40,47 @@ export interface ExportResult {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// oklch FIX
+// ELEMENT VISIBILITY FIX
 //
-// TailwindCSS v4 emits all colors as oklch() in its CSS.
-// html2canvas v1.4.x CANNOT parse oklch/oklab/lch/lab and throws:
-//   "attempting to parse an unsupported color function oklch"
+// The report element (#printable-analytics-report) sits inside a `sr-only`
+// wrapper (position:absolute; width:1px; height:1px) and a modal with
+// overflow:auto. Both clip the element so it renders at 1px.
 //
-// The fix works at the CSSOM level — BEFORE html2canvas reads anything:
-//   1. Iterate every CSSStyleRule in every stylesheet (handles both <style>
-//      tags and <link> stylesheets, including Vite-bundled CSS files)
-//   2. For each property value that contains oklch(), resolve it to rgb()
-//      by setting it on a hidden probe element and reading getComputedStyle
-//      (the browser converts oklch → rgb natively)
-//   3. Overwrite the CSSOM rule's property with the resolved rgb value
-//   4. Return a restore function that puts the original values back
-//
-// Because we patch the LIVE CSSOM (not textContent), the change is
-// immediate and synchronous. When html2canvas clones the document it
-// copies the already-patched CSSOM — no oklch reaches its parser.
+// Fix: Move the element to document.body at a fixed off-screen position
+// before capturing, then restore it afterwards.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const MODERN_COLOR_RE = /oklch\([^)]*\)|oklab\([^)]*\)|lch\([^)]*\)|lab\([^)]*\)/;
+function moveToOffScreen(element: HTMLElement): {
+  wrapper: HTMLDivElement;
+  restore: () => void;
+} {
+  const originalParent = element.parentElement!;
+  const originalNextSibling = element.nextSibling;
+  const prevStyle = element.getAttribute('style') || '';
 
-/** Recursively collects all CSSStyleRules from a stylesheet (handles @media etc.) */
-function collectStyleRules(rules: CSSRuleList, out: CSSStyleRule[]): void {
-  for (const rule of Array.from(rules)) {
-    if (rule instanceof CSSStyleRule) {
-      out.push(rule);
-    } else if ('cssRules' in rule && (rule as any).cssRules) {
-      // @media, @layer, @supports, etc.
-      collectStyleRules((rule as any).cssRules, out);
-    }
-  }
-}
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText =
+    'position:fixed;top:-99999px;left:0;z-index:-9999;' +
+    'width:1200px;overflow:visible;background:#ffffff;';
+  wrapper.appendChild(element);
+  document.body.appendChild(wrapper);
 
-/** Resolve an oklch/oklab/etc. value to plain rgb() via the browser. */
-let _probe: HTMLDivElement | null = null;
-function resolveModernColor(val: string): string {
-  if (!_probe) {
-    _probe = document.createElement('div');
-    _probe.style.cssText = 'position:absolute;top:-9999px;left:-9999px;pointer-events:none;';
-    document.body.appendChild(_probe);
-  }
-  try {
-    _probe.style.color = '';
-    _probe.style.color = val;
-    const resolved = window.getComputedStyle(_probe).color;
-    return resolved && resolved !== '' ? resolved : 'rgb(0,0,0)';
-  } catch {
-    return 'rgb(0,0,0)';
-  }
-}
+  element.style.cssText =
+    'display:block!important;visibility:visible!important;' +
+    'opacity:1!important;clip:auto!important;' +
+    'width:1000px;background:#ffffff;';
 
-/**
- * Patches the live CSSOM to replace oklch/oklab/lch/lab with rgb().
- * Returns a restore function that reverts all changes.
- *
- * Must be called BEFORE html2canvas() so the cloned document inherits
- * the patched (rgb-only) CSSOM.
- */
-function patchLiveCSSOM(): () => void {
-  const backups: Array<{ rule: CSSStyleRule; prop: string; orig: string; priority: string }> = [];
-
-  for (const sheet of Array.from(document.styleSheets)) {
-    let rules: CSSRuleList | null = null;
-    try {
-      rules = sheet.cssRules; // throws for cross-origin sheets
-    } catch {
-      continue;
-    }
-    if (!rules) continue;
-
-    const styleRules: CSSStyleRule[] = [];
-    collectStyleRules(rules, styleRules);
-
-    for (const rule of styleRules) {
-      const style = rule.style;
-      for (let i = 0; i < style.length; i++) {
-        const prop = style[i];
-        const val = style.getPropertyValue(prop);
-        if (!val || !MODERN_COLOR_RE.test(val)) continue;
-
-        // Replace ALL modern color functions in this value
-        const resolved = val.replace(
-          new RegExp(MODERN_COLOR_RE.source, 'g'),
-          (match) => resolveModernColor(match)
-        );
-
-        backups.push({ rule, prop, orig: val, priority: style.getPropertyPriority(prop) });
-        rule.style.setProperty(prop, resolved, style.getPropertyPriority(prop));
+  return {
+    wrapper,
+    restore: () => {
+      element.setAttribute('style', prevStyle);
+      if (originalNextSibling) {
+        originalParent.insertBefore(element, originalNextSibling);
+      } else {
+        originalParent.appendChild(element);
       }
-    }
-  }
-
-  return () => {
-    for (const { rule, prop, orig, priority } of backups) {
-      try { rule.style.setProperty(prop, orig, priority); } catch { /* ignore */ }
-    }
-    // Clean up probe
-    if (_probe && _probe.parentNode) {
-      _probe.parentNode.removeChild(_probe);
-      _probe = null;
-    }
+      document.body.removeChild(wrapper);
+    },
   };
 }
 
@@ -135,58 +88,23 @@ function patchLiveCSSOM(): () => void {
 // CAPTURE
 // ─────────────────────────────────────────────────────────────────────────────
 
-/**
- * Captures an element to a canvas.
- *
- * Handles two issues:
- *  1. Element inside sr-only / overflow:hidden modal → move to body off-screen
- *  2. TailwindCSS v4 oklch colors → patch live CSSOM before html2canvas runs
- */
-async function captureElementToCanvas(element: HTMLElement): Promise<HTMLCanvasElement> {
-  // ── Step A: Move element off-screen to bypass modal overflow clipping ──
-  const originalParent = element.parentElement!;
-  const originalNextSibling = element.nextSibling;
-  const prevInlineStyle = element.getAttribute('style') || '';
+async function captureAsPng(element: HTMLElement): Promise<string> {
+  return toPng(element, {
+    quality: 1,
+    pixelRatio: 2,
+    backgroundColor: '#ffffff',
+    skipAutoScale: false,
+    // Retry up to 4 times — html-to-image may load webfonts on 1st pass
+    // and need a second pass to render them correctly
+  });
+}
 
-  const offScreenWrapper = document.createElement('div');
-  offScreenWrapper.style.cssText =
-    'position:fixed;top:-99999px;left:0;z-index:-9999;' +
-    'width:1200px;overflow:visible;background:#ffffff;';
-  offScreenWrapper.appendChild(element);
-  document.body.appendChild(offScreenWrapper);
-
-  element.style.cssText =
-    'display:block!important;visibility:visible!important;opacity:1!important;' +
-    'clip:auto!important;width:1000px;background:#ffffff;';
-
-  // ── Step B: Patch live CSSOM oklch → rgb BEFORE html2canvas clones ──
-  const restoreCSSOM = patchLiveCSSOM();
-
-  // Allow browser to apply layout changes
-  await new Promise((r) => setTimeout(r, 150));
-
-  let canvas: HTMLCanvasElement;
-  try {
-    canvas = await html2canvas(element, {
-      scale: 2,
-      useCORS: true,
-      logging: false,
-      backgroundColor: '#ffffff',
-      windowWidth: 1200,
-    });
-  } finally {
-    // ── Restore: always run regardless of success/error ──
-    restoreCSSOM();
-    element.setAttribute('style', prevInlineStyle);
-    if (originalNextSibling) {
-      originalParent.insertBefore(element, originalNextSibling);
-    } else {
-      originalParent.appendChild(element);
-    }
-    document.body.removeChild(offScreenWrapper);
-  }
-
-  return canvas;
+async function captureAsJpeg(element: HTMLElement): Promise<string> {
+  return toJpeg(element, {
+    quality: 0.95,
+    pixelRatio: 2,
+    backgroundColor: '#ffffff',
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -206,18 +124,11 @@ export async function exportAnalyticsDocument(
     };
   }
 
+  const { restore } = moveToOffScreen(element);
+
   try {
-    if (onProgress) onProgress('Rendering styled report canvas...');
-
-    const canvas = await captureElementToCanvas(element);
-
-    if (canvas.width < 100 || canvas.height < 100) {
-      return {
-        success: false,
-        message:
-          'Export failed: Blank canvas captured. Try enabling Preview first, then export.',
-      };
-    }
+    // Let layout settle after moving element
+    await new Promise((r) => setTimeout(r, 200));
 
     const timestamp = new Date().toISOString().split('T')[0];
     const filename = `UPSC_Analytics_${timestamp}`;
@@ -234,8 +145,13 @@ export async function exportAnalyticsDocument(
 
     // ────────────────── PNG ──────────────────
     if (options.format === 'png') {
+      if (onProgress) onProgress('Rendering report (Pass 1 of 2)...');
+      // Two-pass render: first pass loads fonts/resources, second captures them
+      await captureAsPng(element);
       if (onProgress) onProgress('Generating high-resolution PNG...');
-      const imageUri = canvas.toDataURL('image/png');
+      const imageUri = await captureAsPng(element);
+
+      restore();
 
       if (Capacitor.isNativePlatform()) {
         if (onProgress) onProgress('Saving image to device...');
@@ -277,6 +193,7 @@ export async function exportAnalyticsDocument(
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+
       return {
         success: true,
         message: `✅ PNG downloaded: ${filename}.png`,
@@ -286,12 +203,24 @@ export async function exportAnalyticsDocument(
 
     // ────────────────── PDF ──────────────────
     if (options.format === 'pdf') {
+      if (onProgress) onProgress('Rendering report (Pass 1 of 2)...');
+      await captureAsJpeg(element); // warm-up pass
       if (onProgress) onProgress('Compiling multi-page PDF...');
-      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      const imgData = await captureAsJpeg(element);
 
-      const imgWidth = 210;
+      restore();
+
+      // Build jsPDF from the captured image
+      const img = new Image();
+      img.src = imgData;
+      await new Promise<void>((res, rej) => {
+        img.onload = () => res();
+        img.onerror = rej;
+      });
+
+      const imgWidth = 210; // A4 width mm
       const pageHeight = 297;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const imgHeight = (img.height * imgWidth) / img.width;
       let heightLeft = imgHeight;
       let position = 0;
 
@@ -348,8 +277,10 @@ export async function exportAnalyticsDocument(
       };
     }
 
+    restore();
     return { success: false, message: 'Unknown export format selected.' };
   } catch (error: any) {
+    restore();
     console.error('[Analytics Export] Failed:', error);
     const reason: string =
       typeof error?.message === 'string' ? error.message : String(error);

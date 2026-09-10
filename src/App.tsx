@@ -907,11 +907,6 @@ export default function App() {
           onNavigate={handleGlobalNavigate}
         />
 
-        {/* Smart OCR Extractor Modal */}
-        <SmartExtractorModal
-          isOpen={isSmartExtractorOpen}
-          onClose={() => setIsSmartExtractorOpen(false)}
-        />
 
         {/* AI Mains Mentor & Evaluator Modal */}
         <AIMentorModal

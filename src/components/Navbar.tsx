@@ -12,6 +12,7 @@ import {
   Calendar,
   Compass,
   ScanSearch,
+  Crown,
 } from "lucide-react";
 
 interface NavbarProps {
@@ -62,22 +63,23 @@ export const Navbar: React.FC<NavbarProps> = ({
     >
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-15 sm:h-18">
-          {/* Brand Logo & Name */}
-          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-xs shrink-0">
-              U
+          {/* Brand Logo & Name - Premium VIP Redesign */}
+          <div className="flex items-center gap-3 shrink-0 group cursor-pointer">
+            <div className="relative flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-600 shadow-lg shadow-amber-500/30 overflow-hidden transform transition-all duration-300 group-hover:scale-105 group-hover:-rotate-3 shrink-0">
+              <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+              <Crown className="w-6 h-6 text-white drop-shadow-md z-10" strokeWidth={2.5} />
             </div>
-            <div>
-              <div className="flex items-center gap-1.5 sm:gap-2">
-                <h1 className="text-base sm:text-xl font-bold text-slate-900 tracking-tight whitespace-nowrap">
+            <div className="flex flex-col justify-center">
+              <div className="flex items-center gap-2">
+                <h1 className="text-lg sm:text-2xl font-black tracking-tighter whitespace-nowrap bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 drop-shadow-sm">
                   UPSC CONQUEST
                 </h1>
-                <span className="hidden sm:inline-block px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider rounded-md bg-indigo-50 text-indigo-700 border border-indigo-100 whitespace-nowrap">
-                  Bento Suite
+                <span className="hidden sm:inline-block px-2.5 py-0.5 text-[9px] uppercase font-black tracking-widest rounded-full bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-800 border border-amber-200/60 shadow-sm whitespace-nowrap">
+                  VIP Suite
                 </span>
               </div>
-              <p className="text-[11px] font-medium text-slate-500 uppercase tracking-widest hidden md:block">
-                IAS Preparation • Topper Blueprints • Deep Analytics
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] hidden md:block mt-0.5">
+                Elite Preparation Ecosystem
               </p>
             </div>
           </div>
@@ -147,14 +149,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           </nav>
 
           {/* Right Action Utilities */}
-          <div className="flex items-center gap-1.5 sm:gap-2.5">
-            {/* Bento Countdown Card */}
-            <div className="hidden xl:flex bg-white px-3.5 py-1.5 rounded-xl border border-slate-200 shadow-xs flex-col items-end shrink-0">
-              <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider whitespace-nowrap">
-                Prelims Countdown
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Bento Countdown Card - Premium VIP Alert */}
+            <div className="hidden xl:flex bg-gradient-to-br from-rose-50 to-red-50 px-3.5 py-1.5 rounded-xl border border-red-200/80 shadow-sm flex-col items-end shrink-0">
+              <span className="text-[9px] text-red-500 font-black uppercase tracking-widest whitespace-nowrap">
+                TARGET PRELIMS
               </span>
-              <span className="text-sm font-mono font-bold text-indigo-600 whitespace-nowrap">
-                {daysToPrelims} Days
+              <span className="text-sm font-mono font-black text-red-700 whitespace-nowrap tracking-tight">
+                {daysToPrelims} DAYS LEFT
               </span>
             </div>
 
@@ -163,10 +165,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               id="header-timer-btn"
               onClick={onToggleTimer}
               title={timerRunning ? "Pause Study Session" : "Start Study Timer"}
-              className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-xl border text-xs font-semibold shadow-xs transition-all cursor-pointer shrink-0 ${
+              className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-xl border text-xs font-semibold shadow-sm transition-all cursor-pointer shrink-0 ${
                 timerRunning
                   ? "bg-emerald-50 border-emerald-300 text-emerald-700 animate-pulse"
-                  : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50"
+                  : "bg-white border-slate-200/80 text-slate-700 hover:bg-slate-50"
               }`}
             >
               <Clock
@@ -179,44 +181,45 @@ export const Navbar: React.FC<NavbarProps> = ({
               </span>
               <span
                 className={`w-2 h-2 rounded-full shrink-0 ${
-                  timerRunning ? "bg-emerald-500" : "bg-slate-400"
+                  timerRunning ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" : "bg-slate-300"
                 }`}
               />
             </button>
 
-            {/* Streak Counter */}
+            {/* Streak Counter - Premium VIP Look */}
             <div
               id="study-streak-badge"
-              className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-orange-50 border border-orange-200 text-xs text-orange-700 font-bold shadow-xs shrink-0 whitespace-nowrap"
+              className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200/80 text-xs text-orange-700 font-black shadow-sm shrink-0 whitespace-nowrap"
               title="Daily Active Study Streak"
             >
-              <Flame className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-orange-500 text-orange-500 shrink-0" />
+              <Flame className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-orange-500 text-orange-500 shrink-0 drop-shadow-sm" />
               <span>{studyStreak}d</span>
             </div>
 
-            {/* Global Search Button -> Changed to OCR Tool as requested */}
+            {/* Global Search Button -> OCR Tool */}
             <button
               id="global-ocr-btn"
               onClick={() => setActiveTab("ocr")}
-              className={`p-1.5 sm:p-2 rounded-xl border text-slate-600 shadow-xs transition cursor-pointer shrink-0 ${
+              className={`p-1.5 sm:p-2 rounded-xl border text-slate-600 shadow-sm transition-all cursor-pointer shrink-0 ${
                 activeTab === "ocr" 
                   ? "bg-indigo-50 border-indigo-200 text-indigo-700 font-bold" 
-                  : "bg-white border-slate-200 hover:text-indigo-600 hover:bg-indigo-50"
+                  : "bg-white border-slate-200/80 hover:text-indigo-600 hover:bg-indigo-50"
               }`}
               title="Smart OCR Scanner"
             >
               <ScanSearch className="w-4 h-4" />
             </button>
 
-            {/* AI Mains Mentor & Evaluator Button */}
+            {/* AI Mains Mentor & Evaluator Button - Premium Glowing VIP Look */}
             <button
               id="ai-mentor-btn"
               onClick={onOpenAIMentor}
-              className="flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-xs transition active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
+              className="group relative flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 text-white font-black text-[10px] sm:text-xs shadow-lg shadow-indigo-500/40 transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer shrink-0 whitespace-nowrap overflow-hidden bg-[length:200%_auto] hover:bg-right"
             >
-              <Sparkles className="w-3.5 h-3.5 shrink-0" />
-              <span className="hidden sm:inline">AI UPSC Mentor</span>
-              <span className="sm:hidden">AI Mentor</span>
+              <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <Sparkles className="w-3.5 h-3.5 shrink-0 text-amber-300 drop-shadow-md animate-pulse" />
+              <span className="hidden sm:inline drop-shadow-md tracking-wider">AI UPSC MENTOR</span>
+              <span className="sm:hidden drop-shadow-md tracking-wider">AI MENTOR</span>
             </button>
           </div>
         </div>

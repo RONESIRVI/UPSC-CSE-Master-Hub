@@ -65,10 +65,54 @@ export const AIMentorModal: React.FC<AIMentorModalProps> = ({
   // Settings / API Key State
   const [showSettings, setShowSettings] = useState(false);
   const [apiKey, setApiKey] = useState(() => localStorage.getItem("UPSC_GEMINI_API_KEY") || "");
+  const [isValidatingKey, setIsValidatingKey] = useState(false);
+  const [keyError, setKeyError] = useState<string | null>(null);
+  const [keySuccess, setKeySuccess] = useState<string | null>(null);
 
-  const saveApiKey = () => {
-    localStorage.setItem("UPSC_GEMINI_API_KEY", apiKey.trim());
-    setShowSettings(false);
+  const saveApiKey = async () => {
+    if (!apiKey.trim()) {
+      localStorage.removeItem("UPSC_GEMINI_API_KEY");
+      setApiKey("");
+      setKeySuccess(null);
+      setKeyError(null);
+      setShowSettings(false);
+      return;
+    }
+
+    setIsValidatingKey(true);
+    setKeyError(null);
+    setKeySuccess(null);
+
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey.trim()}`;
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ role: "user", parts: [{ text: "hi" }] }],
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        if (res.status === 400 && data.error?.message?.includes("API key not valid")) {
+          throw new Error("Invalid API Key. Please ensure you copied it correctly.");
+        }
+        throw new Error(data.error?.message || "Invalid API Key");
+      }
+
+      // Success
+      localStorage.setItem("UPSC_GEMINI_API_KEY", apiKey.trim());
+      setKeySuccess("API Key verified and saved successfully! 🎉");
+      setTimeout(() => {
+        setShowSettings(false);
+        setKeySuccess(null);
+      }, 2500);
+    } catch (err: any) {
+      setKeyError(err.message || "Failed to verify API key.");
+    } finally {
+      setIsValidatingKey(false);
+    }
   };
 
   // Helper to call Gemini REST API directly from browser
@@ -348,14 +392,19 @@ Provide a tactical 4-Phase Roadmap, Daily Routine, and Booklist. Keep it highly 
               />
               <button
                 onClick={saveApiKey}
-                className="bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-indigo-700 transition cursor-pointer shrink-0"
+                disabled={isValidatingKey}
+                className="bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-indigo-700 disabled:opacity-50 transition cursor-pointer shrink-0 flex items-center justify-center min-w-[60px]"
               >
-                Save
+                {isValidatingKey ? <RotateCcw className="w-4 h-4 animate-spin" /> : "Save"}
               </button>
             </div>
-            <p className="text-[10px] text-indigo-600 mt-2">
-              Get a free API key from Google AI Studio. Your key is stored securely in your browser's local storage and is never sent to our servers.
-            </p>
+            {keyError && <p className="text-[10px] text-rose-600 font-bold mt-2">{keyError}</p>}
+            {keySuccess && <p className="text-[10px] text-emerald-600 font-bold mt-2">{keySuccess}</p>}
+            {!keyError && !keySuccess && (
+              <p className="text-[10px] text-indigo-600 mt-2">
+                Get a free API key from Google AI Studio. Your key is stored securely in your browser's local storage and is never sent to our servers.
+              </p>
+            )}
           </div>
         )}
 

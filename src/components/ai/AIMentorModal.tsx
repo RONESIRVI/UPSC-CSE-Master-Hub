@@ -62,6 +62,41 @@ export const AIMentorModal: React.FC<AIMentorModalProps> = ({
   const [isChatting, setIsChatting] = useState(false);
   const [chatResult, setChatResult] = useState<string | null>(null);
 
+  // Settings / API Key State
+  const [showSettings, setShowSettings] = useState(false);
+  const [apiKey, setApiKey] = useState(() => localStorage.getItem("UPSC_GEMINI_API_KEY") || "");
+
+  const saveApiKey = () => {
+    localStorage.setItem("UPSC_GEMINI_API_KEY", apiKey.trim());
+    setShowSettings(false);
+  };
+
+  // Helper to call Gemini REST API directly from browser
+  const callGeminiDirectly = async (prompt: string, useSearch = false) => {
+    if (!apiKey.trim()) throw new Error("NO_API_KEY");
+    
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey.trim()}`;
+    
+    const body: any = {
+      contents: [{ role: "user", parts: [{ text: prompt }] }],
+    };
+
+    if (useSearch) {
+      body.tools = [{ googleSearch: {} }];
+    }
+
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || "Gemini API Error");
+    
+    return data.candidates?.[0]?.content?.parts?.[0]?.text || "No response generated.";
+  };
+
   useEffect(() => {
     if (initialMode) setActiveMode(initialMode);
     if (initialQuestion) setMainsQuestion(initialQuestion);
@@ -80,23 +115,48 @@ export const AIMentorModal: React.FC<AIMentorModalProps> = ({
     setEvalResult(null);
 
     try {
-      const res = await fetch("/api/ai/evaluate-answer", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          question: mainsQuestion,
-          answer: userAnswer,
-          maxMarks: targetMarks,
-        }),
-      });
+      if (apiKey.trim()) {
+        const prompt = `You are a senior UPSC CSE Mains copy evaluator and IAS mentor.
+Evaluate the following Mains answer strictly according to UPSC standards.
+Max Marks: ${targetMarks}
+Question: "${mainsQuestion}"
+Candidate Answer: "${userAnswer}"
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Evaluation failed");
-      setEvalResult(data);
+Provide your evaluation in structured JSON format exactly like this:
+{
+  "estimatedScore": number (e.g. 5.5),
+  "maxMarks": ${targetMarks},
+  "scoreCategory": "Excellent" | "Good" | "Average" | "Needs Improvement",
+  "rubricBreakdown": { "introduction": "...", "coreArguments": "...", "dataAndExamples": "...", "conclusion": "..." },
+  "strengths": ["...", "..."],
+  "missingElements": ["...", "..."],
+  "topperUpgradeSuggestions": ["...", "..."],
+  "modelAnswerOutline": "..."
+}`;
+        const rawRes = await callGeminiDirectly(prompt);
+        const cleanRes = rawRes.replace(/```json/g, "").replace(/```/g, "").trim();
+        setEvalResult(JSON.parse(cleanRes));
+      } else {
+        const res = await fetch("/api/ai/evaluate-answer", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: mainsQuestion, answer: userAnswer, maxMarks: targetMarks }),
+        });
+        
+        // Check if Vite served HTML instead of API JSON (404 fallback)
+        const textData = await res.text();
+        if (textData.trim().startsWith("<")) throw new Error("API route not found. Please set Gemini API Key in settings ⚙️.");
+        
+        const data = JSON.parse(textData);
+        if (!res.ok) throw new Error(data.error || "Evaluation failed");
+        setEvalResult(data);
+      }
     } catch (err: any) {
-      setEvalError(
-        err.message || "Failed to evaluate answer. Please try again."
-      );
+      if (err.message === "NO_API_KEY") {
+        setEvalError("Please set your Gemini API Key in settings ⚙️ to use AI Mentor on mobile/standalone.");
+      } else {
+        setEvalError(err.message || "Failed to evaluate answer. Please try again.");
+      }
     } finally {
       setIsEvaluating(false);
     }
@@ -109,26 +169,34 @@ export const AIMentorModal: React.FC<AIMentorModalProps> = ({
     setStrategyResult(null);
 
     try {
-      const res = await fetch("/api/ai/strategy-advisor", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          background: aspirantBackground,
-          optional: selectedOptional,
-          attempt: attemptNumber,
-          targetYear,
-          hoursPerDay,
-          isWorkingProfessional,
-        }),
-      });
+      if (apiKey.trim()) {
+        const prompt = `You are a renowned UPSC CSE Strategy Coach and former IAS officer.
+Create a personalized UPSC CSE Strategy for this aspirant:
+Background: ${aspirantBackground}, Optional: ${selectedOptional}, Attempt: ${attemptNumber}, Year: ${targetYear}, Daily Hours: ${hoursPerDay}, Working Prof: ${isWorkingProfessional}
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Strategy generation failed");
-      setStrategyResult(data.strategy);
+Provide a tactical 4-Phase Roadmap, Daily Routine, and Booklist. Keep it highly practical.`;
+        const resText = await callGeminiDirectly(prompt);
+        setStrategyResult(resText);
+      } else {
+        const res = await fetch("/api/ai/strategy-advisor", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ background: aspirantBackground, optional: selectedOptional, attempt: attemptNumber, targetYear, hoursPerDay, isWorkingProfessional }),
+        });
+        
+        const textData = await res.text();
+        if (textData.trim().startsWith("<")) throw new Error("API route not found. Please set Gemini API Key in settings ⚙️.");
+        
+        const data = JSON.parse(textData);
+        if (!res.ok) throw new Error(data.error || "Strategy generation failed");
+        setStrategyResult(data.strategy);
+      }
     } catch (err: any) {
-      setStrategyResult(
-        "Strategy generation encountered an error. Please try again."
-      );
+      if (err.message === "NO_API_KEY") {
+        setStrategyResult("Please set your Gemini API Key in settings ⚙️ to use AI Mentor.");
+      } else {
+        setStrategyResult("Strategy generation encountered an error: " + err.message);
+      }
     } finally {
       setIsGeneratingStrategy(false);
     }
@@ -143,22 +211,35 @@ export const AIMentorModal: React.FC<AIMentorModalProps> = ({
     setExplainResult(null);
 
     try {
-      const res = await fetch("/api/ai/explain-topic", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          topic: topicName,
-          paper: topicPaper,
-        }),
-      });
+      if (apiKey.trim()) {
+        const prompt = `Explain the topic "${topicName}" for UPSC CSE (${topicPaper}). Provide a high-yield, exam-oriented crisp note (200 words) formatted in markdown:
+1. Core Conceptual Breakdown
+2. Constitutional Articles / Landmark SC Judgements
+3. Prelims Traps
+4. Mains PESTLE dimensions
+5. Way Forward`;
+        const resText = await callGeminiDirectly(prompt);
+        setExplainResult(resText);
+      } else {
+        const res = await fetch("/api/ai/explain-topic", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ topic: topicName, paper: topicPaper }),
+        });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Explanation failed");
-      setExplainResult(data.explanation);
+        const textData = await res.text();
+        if (textData.trim().startsWith("<")) throw new Error("API route not found. Please set Gemini API Key in settings ⚙️.");
+        
+        const data = JSON.parse(textData);
+        if (!res.ok) throw new Error(data.error || "Explanation failed");
+        setExplainResult(data.explanation);
+      }
     } catch (err: any) {
-      setExplainResult(
-        "Topic explainer encountered an error. Please try again."
-      );
+      if (err.message === "NO_API_KEY") {
+        setExplainResult("Please set your Gemini API Key in settings ⚙️ to use AI Mentor.");
+      } else {
+        setExplainResult("Topic explainer encountered an error: " + err.message);
+      }
     } finally {
       setIsExplaining(false);
     }
@@ -173,19 +254,31 @@ export const AIMentorModal: React.FC<AIMentorModalProps> = ({
     setChatResult(null);
 
     try {
-      const res = await fetch("/api/ai/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: chatQuestion }),
-      });
+      if (apiKey.trim()) {
+        const prompt = `You are an expert UPSC CSE Mentor and General Doubt Solver. A student has asked: "${chatQuestion}". Provide a highly accurate, up-to-date answer from a UPSC perspective (factual or PESTLE structure).`;
+        // Pass true to enable Google Search Grounding for real-time answers
+        const resText = await callGeminiDirectly(prompt, true);
+        setChatResult(resText);
+      } else {
+        const res = await fetch("/api/ai/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: chatQuestion }),
+        });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Chat failed");
-      setChatResult(data.answer);
+        const textData = await res.text();
+        if (textData.trim().startsWith("<")) throw new Error("API route not found. Please set Gemini API Key in settings ⚙️.");
+        
+        const data = JSON.parse(textData);
+        if (!res.ok) throw new Error(data.error || "Chat failed");
+        setChatResult(data.answer);
+      }
     } catch (err: any) {
-      setChatResult(
-        "Doubt solver encountered an error. Please try again."
-      );
+      if (err.message === "NO_API_KEY") {
+        setChatResult("Please set your Gemini API Key in settings ⚙️ to use AI Mentor.");
+      } else {
+        setChatResult("Doubt solver encountered an error: " + err.message);
+      }
     } finally {
       setIsChatting(false);
     }
@@ -201,8 +294,13 @@ export const AIMentorModal: React.FC<AIMentorModalProps> = ({
               <Sparkles className="w-4 h-4 text-indigo-600" />
             </div>
             <div>
-              <h2 className="text-sm sm:text-lg font-bold text-slate-900 leading-tight">
+              <h2 className="text-sm sm:text-lg font-bold text-slate-900 leading-tight flex items-center gap-2">
                 AI UPSC Mentor & Evaluator
+                {!apiKey.trim() && (
+                  <span className="bg-rose-100 text-rose-700 text-[9px] px-2 py-0.5 rounded-full font-bold uppercase">
+                    Setup Required
+                  </span>
+                )}
               </h2>
               <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium">
                 Topper Answer Rubrics & Evaluation
@@ -210,13 +308,51 @@ export const AIMentorModal: React.FC<AIMentorModalProps> = ({
             </div>
           </div>
 
-          <button
-            onClick={onClose}
-            className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 transition cursor-pointer shrink-0"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowSettings(!showSettings)}
+              className={`p-1.5 rounded-lg transition cursor-pointer shrink-0 ${
+                showSettings ? "bg-indigo-100 text-indigo-700" : "bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900"
+              }`}
+              title="API Key Settings"
+            >
+              <div className="w-5 h-5 flex items-center justify-center">⚙️</div>
+            </button>
+            <button
+              onClick={onClose}
+              className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 transition cursor-pointer shrink-0"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
+
+        {/* API Settings Panel */}
+        {showSettings && (
+          <div className="p-4 bg-indigo-50 border-b border-indigo-100 animate-fade-in">
+            <label className="text-xs font-bold text-indigo-900 block mb-1">
+              Gemini API Key (Required for Mobile App / Local Mode)
+            </label>
+            <div className="flex gap-2">
+              <input
+                type="password"
+                placeholder="AIzaSy..."
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                className="flex-1 bg-white border border-indigo-200 text-slate-900 text-xs rounded-xl p-2.5 outline-none focus:border-indigo-600"
+              />
+              <button
+                onClick={saveApiKey}
+                className="bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-indigo-700 transition cursor-pointer shrink-0"
+              >
+                Save
+              </button>
+            </div>
+            <p className="text-[10px] text-indigo-600 mt-2">
+              Get a free API key from Google AI Studio. Your key is stored securely in your browser's local storage and is never sent to our servers.
+            </p>
+          </div>
+        )}
 
         {/* 3 AI Modes Selector */}
         <div className="flex border-b border-slate-100 bg-slate-50/50 p-1.5 sm:p-2 gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar">

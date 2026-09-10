@@ -277,54 +277,10 @@ export default function App() {
     return saved ? JSON.parse(saved) : DEFAULT_WEAK_AREAS;
   });
 
-  const [dailyTasks, setDailyTasks] = useState<DailyTask[]>([
-    {
-      id: "t1",
-      title: "Polity (Parliament)",
-      completed: true,
-      type: "study",
-      timeSlot: "07:00-09:00",
-      subject: "Polity",
-    },
-    {
-      id: "t2",
-      title: "Optional",
-      completed: true,
-      type: "study",
-      timeSlot: "09:30-11:30",
-      subject: "Optional",
-    },
-    {
-      id: "t3",
-      title: "PYQ Practice",
-      completed: false,
-      type: "pyq",
-      timeSlot: "12:00-13:00",
-      subject: "Polity",
-    },
-    {
-      id: "t4",
-      title: "Economy",
-      completed: false,
-      type: "study",
-      timeSlot: "14:30-15:30",
-      subject: "Economy",
-    },
-    {
-      id: "t5",
-      title: "Answer Writing",
-      completed: false,
-      type: "answer_writing",
-      timeSlot: "16:00-17:00",
-    },
-    {
-      id: "t6",
-      title: "Revision",
-      completed: false,
-      type: "revision",
-      timeSlot: "19:00-20:30",
-    },
-  ]);
+  const [dailyTasks, setDailyTasks] = useState<DailyTask[]>(() => {
+    const saved = localStorage.getItem("upsc_daily_tasks_v2");
+    return saved ? JSON.parse(saved) : [];
+  });
 
   // Focus Timer State & Configurations
   const [timerConfig, setTimerConfig] = useState<FocusTimerConfig>(() => {

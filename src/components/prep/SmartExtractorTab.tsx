@@ -16,6 +16,7 @@ export const SmartExtractorTab: React.FC = () => {
   const [ocrProgress, setOcrProgress] = useState(0);
   const [ocrStatus, setOcrStatus] = useState("");
   const [extractedText, setExtractedText] = useState("");
+  const [ocrLang, setOcrLang] = useState("hin+eng");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -32,18 +33,50 @@ export const SmartExtractorTab: React.FC = () => {
     }
   };
 
+  const preprocessImage = (imageSrc: string): Promise<string> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return resolve(imageSrc);
+        
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+        
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imgData.data;
+        
+        // High contrast grayscale
+        const factor = (259 * (128 + 255)) / (255 * (259 - 128));
+        for (let i = 0; i < data.length; i += 4) {
+          const avg = data[i] * 0.299 + data[i+1] * 0.587 + data[i+2] * 0.114;
+          let val = factor * (avg - 128) + 128;
+          val = val > 255 ? 255 : val < 0 ? 0 : val;
+          data[i] = val; data[i+1] = val; data[i+2] = val;
+        }
+        ctx.putImageData(imgData, 0, 0);
+        resolve(canvas.toDataURL("image/png"));
+      };
+      img.src = imageSrc;
+    });
+  };
+
   const runActualOCR = async (imageSrc: string) => {
     setIsProcessing(true);
     setOcrProgress(0);
     setOcrStatus("Loading AI Engine...");
     try {
-      // Dynamically import Tesseract to prevent startup crashes in Android WebView
       const Tesseract = (await import("tesseract.js")).default;
       
-      setOcrStatus("Initializing AI Model (Hindi + English)...");
+      setOcrStatus("Enhancing Image...");
+      const processedImageSrc = await preprocessImage(imageSrc);
+      
+      setOcrStatus("Initializing AI Model...");
       const { data } = await Tesseract.recognize(
-        imageSrc,
-        'hin+eng', // Hindi and English
+        processedImageSrc,
+        ocrLang,
         { 
           logger: (m: any) => {
             if (m.status === "recognizing text") {
@@ -102,9 +135,21 @@ export const SmartExtractorTab: React.FC = () => {
             <h3 className="text-sm font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
               <ImageIcon className="w-4 h-4" /> Original Document
             </h3>
-            {uploadedImage && !isProcessing && (
-              <button onClick={() => fileInputRef.current?.click()} className="text-xs font-bold text-indigo-600 hover:text-indigo-700 bg-indigo-50 px-3 py-1.5 rounded-lg">Upload New Image</button>
-            )}
+            <div className="flex items-center gap-2">
+              <select 
+                value={ocrLang} 
+                onChange={(e) => setOcrLang(e.target.value)}
+                className="text-xs font-bold text-slate-600 bg-white border border-slate-200 px-2 py-1.5 rounded-lg outline-none cursor-pointer"
+                disabled={isProcessing}
+              >
+                <option value="hin">Hindi Only</option>
+                <option value="eng">English Only</option>
+                <option value="hin+eng">Hindi + English</option>
+              </select>
+              {uploadedImage && !isProcessing && (
+                <button onClick={() => fileInputRef.current?.click()} className="text-xs font-bold text-indigo-600 hover:text-indigo-700 bg-indigo-50 px-3 py-1.5 rounded-lg">Upload New</button>
+              )}
+            </div>
           </div>
 
           <div className="flex-1 bg-white rounded-xl border border-slate-200 overflow-hidden relative shadow-sm flex items-center justify-center">

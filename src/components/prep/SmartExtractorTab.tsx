@@ -153,15 +153,15 @@ export const SmartExtractorTab: React.FC = () => {
           </div>
 
           <div className="flex-1 bg-white rounded-xl border border-slate-200 overflow-hidden relative shadow-sm flex items-center justify-center">
+            <input 
+              type="file" 
+              accept="image/*" 
+              className="hidden" 
+              ref={fileInputRef} 
+              onChange={handleImageUpload} 
+            />
             {!uploadedImage ? (
               <div className="text-center p-8">
-                <input 
-                  type="file" 
-                  accept="image/*" 
-                  className="hidden" 
-                  ref={fileInputRef} 
-                  onChange={handleImageUpload} 
-                />
                 <div className="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-indigo-100 border-dashed">
                   <UploadCloud className="w-8 h-8" />
                 </div>

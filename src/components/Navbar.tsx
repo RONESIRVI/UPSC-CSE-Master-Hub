@@ -84,6 +84,15 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Center Main Pillars Tabs (Bento Segmented Controller) */}
           <nav className="hidden lg:flex items-center gap-1.5 bg-slate-100/90 p-1.5 rounded-2xl border border-slate-200/80 shadow-inner">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => (window as any).testUpdateModal?.()}
+                className="hidden md:flex items-center justify-center w-8 h-8 rounded-xl bg-orange-100 text-orange-600 hover:bg-orange-200 transition"
+                title="Test Update Modal"
+              >
+                <div className="w-4 h-4 rounded-full bg-orange-500 animate-pulse" />
+              </button>
+            </div>
             <button
               id="tab-btn-home"
               onClick={() => setActiveTab("home")}

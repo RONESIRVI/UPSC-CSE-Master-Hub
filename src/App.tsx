@@ -149,6 +149,18 @@ export default function App() {
     };
   }, []);
 
+  // Expose test function to window for debugging
+  useEffect(() => {
+    (window as any).testUpdateModal = () => {
+      setUpdateInfo({
+        version: "v2.1.0",
+        body: "### 🚀 What's New in v2.1.0\n\n- 🆕 New OCR improvements\n- 📚 New Study Material\n- ⚡ Performance improvements\n- 🛠️ Bug fixes\n- 🎨 UI improvements\n\n![Screenshot](https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop)",
+        url: ""
+      });
+      setIsUpdateModalOpen(true);
+    };
+  }, []);
+
   const handleUpdateNow = async () => {
     if (!updateInfo) return;
     try {

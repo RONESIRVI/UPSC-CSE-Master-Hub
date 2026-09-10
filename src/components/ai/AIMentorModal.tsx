@@ -79,40 +79,15 @@ export const AIMentorModal: React.FC<AIMentorModalProps> = ({
       return;
     }
 
-    setIsValidatingKey(true);
+    // Save directly without strict validation to prevent blocking the user
+    localStorage.setItem("UPSC_GEMINI_API_KEY", apiKey.trim());
+    setKeySuccess("API Key saved successfully! 🎉");
     setKeyError(null);
-    setKeySuccess(null);
-
-    try {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey.trim()}`;
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ role: "user", parts: [{ text: "hi" }] }],
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        if (res.status === 400 && data.error?.message?.includes("API key not valid")) {
-          throw new Error("Invalid API Key. Please ensure you copied it correctly.");
-        }
-        throw new Error(data.error?.message || "Invalid API Key");
-      }
-
-      // Success
-      localStorage.setItem("UPSC_GEMINI_API_KEY", apiKey.trim());
-      setKeySuccess("API Key verified and saved successfully! 🎉");
-      setTimeout(() => {
-        setShowSettings(false);
-        setKeySuccess(null);
-      }, 2500);
-    } catch (err: any) {
-      setKeyError(err.message || "Failed to verify API key.");
-    } finally {
-      setIsValidatingKey(false);
-    }
+    
+    setTimeout(() => {
+      setShowSettings(false);
+      setKeySuccess(null);
+    }, 1500);
   };
 
   // Helper to call Gemini REST API directly from browser

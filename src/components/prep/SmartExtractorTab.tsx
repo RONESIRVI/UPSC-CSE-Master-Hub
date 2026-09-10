@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import Tesseract from "tesseract.js";
 import {
   UploadCloud,
   ScanSearch,
@@ -36,13 +35,17 @@ export const SmartExtractorTab: React.FC = () => {
   const runActualOCR = async (imageSrc: string) => {
     setIsProcessing(true);
     setOcrProgress(0);
-    setOcrStatus("Initializing AI Model (Hindi + English)...");
+    setOcrStatus("Loading AI Engine...");
     try {
+      // Dynamically import Tesseract to prevent startup crashes in Android WebView
+      const Tesseract = (await import("tesseract.js")).default;
+      
+      setOcrStatus("Initializing AI Model (Hindi + English)...");
       const { data } = await Tesseract.recognize(
         imageSrc,
         'hin+eng', // Hindi and English
         { 
-          logger: m => {
+          logger: (m: any) => {
             if (m.status === "recognizing text") {
               setOcrProgress(Math.round(m.progress * 100));
               setOcrStatus(`Recognizing Text: ${Math.round(m.progress * 100)}%`);

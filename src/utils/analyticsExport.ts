@@ -25,83 +25,129 @@ export interface ExportResult {
   filename?: string;
 }
 
-/**
- * TailwindCSS v4 generates all colors using modern CSS color functions:
- *   oklch(), oklab(), lch(), lab()
- *
- * html2canvas v1.4.x CANNOT parse these color functions. When it encounters
- * them in a <style> element it throws an error and stops processing that
- * stylesheet entirely — leaving the captured element completely unstyled
- * (no backgrounds, borders, layout colors — just plain black text).
- *
- * This function:
- *   1. Scans all <style> elements in the live document for these color values
- *   2. Resolves each one to plain rgb() using the browser's own color engine
- *      (via a hidden probe element + getComputedStyle)
- *   3. Patches the corresponding <style> elements in the CLONED document
- *      (the one html2canvas renders from) so all CSS rules parse correctly
- *
- * Must be called inside html2canvas's onclone() callback.
- */
-function patchStylesheetsForHtmlCanvas(clonedDoc: Document): void {
-  // Match oklch(...), oklab(...), lch(...), lab(...) — the unsupported ones
-  const MODERN_COLOR_RE = /oklch\([^)]+\)|oklab\([^)]+\)|lch\([^)]+\)|lab\([^)]+\)/g;
+// ─────────────────────────────────────────────────────────────────────────────
+// oklch FIX
+//
+// TailwindCSS v4 emits all colors as oklch() in its CSS.
+// html2canvas v1.4.x CANNOT parse oklch/oklab/lch/lab and throws:
+//   "attempting to parse an unsupported color function oklch"
+//
+// The fix works at the CSSOM level — BEFORE html2canvas reads anything:
+//   1. Iterate every CSSStyleRule in every stylesheet (handles both <style>
+//      tags and <link> stylesheets, including Vite-bundled CSS files)
+//   2. For each property value that contains oklch(), resolve it to rgb()
+//      by setting it on a hidden probe element and reading getComputedStyle
+//      (the browser converts oklch → rgb natively)
+//   3. Overwrite the CSSOM rule's property with the resolved rgb value
+//   4. Return a restore function that puts the original values back
+//
+// Because we patch the LIVE CSSOM (not textContent), the change is
+// immediate and synchronous. When html2canvas clones the document it
+// copies the already-patched CSSOM — no oklch reaches its parser.
+// ─────────────────────────────────────────────────────────────────────────────
 
-  // ── Step 1: Collect all unique modern color values from live document ──
-  const uniqueColors = new Set<string>();
-  for (const styleEl of Array.from(document.querySelectorAll('style'))) {
-    const text = styleEl.textContent || '';
-    for (const match of text.matchAll(new RegExp(MODERN_COLOR_RE.source, 'g'))) {
-      uniqueColors.add(match[0]);
+const MODERN_COLOR_RE = /oklch\([^)]*\)|oklab\([^)]*\)|lch\([^)]*\)|lab\([^)]*\)/;
+
+/** Recursively collects all CSSStyleRules from a stylesheet (handles @media etc.) */
+function collectStyleRules(rules: CSSRuleList, out: CSSStyleRule[]): void {
+  for (const rule of Array.from(rules)) {
+    if (rule instanceof CSSStyleRule) {
+      out.push(rule);
+    } else if ('cssRules' in rule && (rule as any).cssRules) {
+      // @media, @layer, @supports, etc.
+      collectStyleRules((rule as any).cssRules, out);
     }
   }
+}
 
-  if (uniqueColors.size === 0) return;
-
-  // ── Step 2: Resolve each color value to rgb() using a hidden probe ──
-  // The browser resolves oklch → rgb natively; we read that back.
-  const probe = document.createElement('div');
-  probe.style.cssText = 'position:absolute;top:-9999px;left:-9999px;';
-  document.body.appendChild(probe);
-
-  const colorMap = new Map<string, string>();
-  for (const colorVal of uniqueColors) {
-    try {
-      probe.style.color = colorVal;
-      const resolved = window.getComputedStyle(probe).color;
-      // resolved is always "rgb(...)" or "rgba(...)" from the browser
-      colorMap.set(colorVal, resolved && resolved !== '' ? resolved : 'rgb(0,0,0)');
-    } catch {
-      colorMap.set(colorVal, 'rgb(0,0,0)');
-    }
+/** Resolve an oklch/oklab/etc. value to plain rgb() via the browser. */
+let _probe: HTMLDivElement | null = null;
+function resolveModernColor(val: string): string {
+  if (!_probe) {
+    _probe = document.createElement('div');
+    _probe.style.cssText = 'position:absolute;top:-9999px;left:-9999px;pointer-events:none;';
+    document.body.appendChild(_probe);
   }
-  document.body.removeChild(probe);
-
-  // ── Step 3: Replace in cloned document's <style> elements ──
-  for (const styleEl of Array.from(clonedDoc.querySelectorAll('style'))) {
-    if (!styleEl.textContent) continue;
-    styleEl.textContent = styleEl.textContent.replace(
-      new RegExp(MODERN_COLOR_RE.source, 'g'),
-      (match) => colorMap.get(match) ?? 'rgb(0,0,0)'
-    );
+  try {
+    _probe.style.color = '';
+    _probe.style.color = val;
+    const resolved = window.getComputedStyle(_probe).color;
+    return resolved && resolved !== '' ? resolved : 'rgb(0,0,0)';
+  } catch {
+    return 'rgb(0,0,0)';
   }
 }
 
 /**
- * Moves the target element from its current position (which may be inside
- * a modal with overflow:hidden or sr-only that clips html2canvas) to a
- * fixed off-screen position on document.body, captures it, then restores it.
+ * Patches the live CSSOM to replace oklch/oklab/lch/lab with rgb().
+ * Returns a restore function that reverts all changes.
  *
- * This is necessary because:
- *  - sr-only CSS makes the element 1px × 1px → html2canvas captures 1px
- *  - Modal overflow:auto clips the rendered canvas
+ * Must be called BEFORE html2canvas() so the cloned document inherits
+ * the patched (rgb-only) CSSOM.
+ */
+function patchLiveCSSOM(): () => void {
+  const backups: Array<{ rule: CSSStyleRule; prop: string; orig: string; priority: string }> = [];
+
+  for (const sheet of Array.from(document.styleSheets)) {
+    let rules: CSSRuleList | null = null;
+    try {
+      rules = sheet.cssRules; // throws for cross-origin sheets
+    } catch {
+      continue;
+    }
+    if (!rules) continue;
+
+    const styleRules: CSSStyleRule[] = [];
+    collectStyleRules(rules, styleRules);
+
+    for (const rule of styleRules) {
+      const style = rule.style;
+      for (let i = 0; i < style.length; i++) {
+        const prop = style[i];
+        const val = style.getPropertyValue(prop);
+        if (!val || !MODERN_COLOR_RE.test(val)) continue;
+
+        // Replace ALL modern color functions in this value
+        const resolved = val.replace(
+          new RegExp(MODERN_COLOR_RE.source, 'g'),
+          (match) => resolveModernColor(match)
+        );
+
+        backups.push({ rule, prop, orig: val, priority: style.getPropertyPriority(prop) });
+        rule.style.setProperty(prop, resolved, style.getPropertyPriority(prop));
+      }
+    }
+  }
+
+  return () => {
+    for (const { rule, prop, orig, priority } of backups) {
+      try { rule.style.setProperty(prop, orig, priority); } catch { /* ignore */ }
+    }
+    // Clean up probe
+    if (_probe && _probe.parentNode) {
+      _probe.parentNode.removeChild(_probe);
+      _probe = null;
+    }
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CAPTURE
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Captures an element to a canvas.
+ *
+ * Handles two issues:
+ *  1. Element inside sr-only / overflow:hidden modal → move to body off-screen
+ *  2. TailwindCSS v4 oklch colors → patch live CSSOM before html2canvas runs
  */
 async function captureElementToCanvas(element: HTMLElement): Promise<HTMLCanvasElement> {
+  // ── Step A: Move element off-screen to bypass modal overflow clipping ──
   const originalParent = element.parentElement!;
   const originalNextSibling = element.nextSibling;
   const prevInlineStyle = element.getAttribute('style') || '';
 
-  // Create off-screen wrapper and move element there
   const offScreenWrapper = document.createElement('div');
   offScreenWrapper.style.cssText =
     'position:fixed;top:-99999px;left:0;z-index:-9999;' +
@@ -109,13 +155,15 @@ async function captureElementToCanvas(element: HTMLElement): Promise<HTMLCanvasE
   offScreenWrapper.appendChild(element);
   document.body.appendChild(offScreenWrapper);
 
-  // Force element to be fully visible and sized correctly
   element.style.cssText =
     'display:block!important;visibility:visible!important;opacity:1!important;' +
     'clip:auto!important;width:1000px;background:#ffffff;';
 
-  // Allow browser to calculate layout before capture
-  await new Promise((r) => setTimeout(r, 200));
+  // ── Step B: Patch live CSSOM oklch → rgb BEFORE html2canvas clones ──
+  const restoreCSSOM = patchLiveCSSOM();
+
+  // Allow browser to apply layout changes
+  await new Promise((r) => setTimeout(r, 150));
 
   let canvas: HTMLCanvasElement;
   try {
@@ -125,14 +173,10 @@ async function captureElementToCanvas(element: HTMLElement): Promise<HTMLCanvasE
       logging: false,
       backgroundColor: '#ffffff',
       windowWidth: 1200,
-      onclone: (clonedDoc) => {
-        // Fix oklch/oklab/lch/lab → rgb in all stylesheets of the cloned doc
-        // This is what makes all TailwindCSS v4 styles render correctly
-        patchStylesheetsForHtmlCanvas(clonedDoc);
-      },
     });
   } finally {
-    // Always restore element to its original DOM position
+    // ── Restore: always run regardless of success/error ──
+    restoreCSSOM();
     element.setAttribute('style', prevInlineStyle);
     if (originalNextSibling) {
       originalParent.insertBefore(element, originalNextSibling);
@@ -145,6 +189,10 @@ async function captureElementToCanvas(element: HTMLElement): Promise<HTMLCanvasE
   return canvas;
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// MAIN EXPORT FUNCTION
+// ─────────────────────────────────────────────────────────────────────────────
+
 export async function exportAnalyticsDocument(
   elementId: string,
   options: AnalyticsExportOptions,
@@ -152,9 +200,10 @@ export async function exportAnalyticsDocument(
 ): Promise<ExportResult> {
   const element = document.getElementById(elementId);
   if (!element) {
-    const msg = 'Export failed: Report canvas not found. Try reopening the export dialog.';
-    console.error(`[Analytics Export] #${elementId} not found in DOM.`);
-    return { success: false, message: msg };
+    return {
+      success: false,
+      message: 'Export failed: Report canvas not found. Try reopening the export dialog.',
+    };
   }
 
   try {
@@ -173,7 +222,7 @@ export async function exportAnalyticsDocument(
     const timestamp = new Date().toISOString().split('T')[0];
     const filename = `UPSC_Analytics_${timestamp}`;
 
-    // Build dynamic share text
+    // Dynamic share text
     const shareDate = new Date().toLocaleDateString('en-IN', { dateStyle: 'long' });
     const shareText =
       `📊 ${options.targetExam} | Performance Blueprint\n\n` +
@@ -206,9 +255,7 @@ export async function exportAnalyticsDocument(
             directory: Directory.Documents,
             recursive: true,
           });
-        } catch {
-          /* non-fatal */
-        }
+        } catch { /* non-fatal */ }
 
         await Share.share({
           title: 'UPSC Analytics Report',
@@ -224,7 +271,6 @@ export async function exportAnalyticsDocument(
         };
       }
 
-      // Web browser direct download
       const link = document.createElement('a');
       link.download = `${filename}.png`;
       link.href = imageUri;
@@ -243,7 +289,7 @@ export async function exportAnalyticsDocument(
       if (onProgress) onProgress('Compiling multi-page PDF...');
       const imgData = canvas.toDataURL('image/jpeg', 0.95);
 
-      const imgWidth = 210; // A4 width in mm
+      const imgWidth = 210;
       const pageHeight = 297;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       let heightLeft = imgHeight;
@@ -278,9 +324,7 @@ export async function exportAnalyticsDocument(
             directory: Directory.Documents,
             recursive: true,
           });
-        } catch {
-          /* non-fatal */
-        }
+        } catch { /* non-fatal */ }
 
         await Share.share({
           title: 'UPSC Analytics Report PDF',
@@ -309,9 +353,6 @@ export async function exportAnalyticsDocument(
     console.error('[Analytics Export] Failed:', error);
     const reason: string =
       typeof error?.message === 'string' ? error.message : String(error);
-    return {
-      success: false,
-      message: `Export failed: ${reason}`,
-    };
+    return { success: false, message: `Export failed: ${reason}` };
   }
 }

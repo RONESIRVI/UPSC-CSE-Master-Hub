@@ -9,9 +9,8 @@ import {
   Search,
   Flame,
   Clock,
-  Calendar,
   Compass,
-  ScanSearch,
+  Camera,
   Crown,
 } from "lucide-react";
 
@@ -186,17 +185,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               />
             </button>
 
-            {/* Streak Counter - Premium VIP Look */}
-            <div
-              id="study-streak-badge"
-              className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200/80 text-xs text-orange-700 font-black shadow-sm shrink-0 whitespace-nowrap"
-              title="Daily Active Study Streak"
-            >
-              <Flame className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-orange-500 text-orange-500 shrink-0 drop-shadow-sm" />
-              <span>{studyStreak}d</span>
-            </div>
 
-            {/* Global Search Button -> OCR Tool */}
+
+            {/* Notes Scanner Button */}
             <button
               id="global-ocr-btn"
               onClick={() => setActiveTab("ocr")}
@@ -205,9 +196,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                   ? "bg-indigo-50 border-indigo-200 text-indigo-700 font-bold" 
                   : "bg-white border-slate-200/80 hover:text-indigo-600 hover:bg-indigo-50"
               }`}
-              title="Smart OCR Scanner"
+              title="Smart Notes Scanner (OCR)"
             >
-              <ScanSearch className="w-4 h-4" />
+              <Camera className="w-4 h-4" />
             </button>
 
             {/* AI Mains Mentor & Evaluator Button - Premium Glowing VIP Look */}

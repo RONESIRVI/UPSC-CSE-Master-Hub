@@ -22,92 +22,96 @@ export interface ExportResult {
 }
 
 /**
- * TailwindCSS v4 uses oklch() for all colors, but html2canvas v1.4.x
- * cannot parse oklch(), oklab(), lch(), or lab() color functions.
+ * TailwindCSS v4 generates all colors using modern CSS color functions:
+ *   oklch(), oklab(), lch(), lab()
  *
- * This function reads the browser-resolved computed color values (which are
- * always plain rgb/rgba) and applies them as inline styles on every element
- * before html2canvas runs. Returns a cleanup function to restore original styles.
+ * html2canvas v1.4.x CANNOT parse these color functions. When it encounters
+ * them in a <style> element it throws an error and stops processing that
+ * stylesheet entirely — leaving the captured element completely unstyled
+ * (no backgrounds, borders, layout colors — just plain black text).
+ *
+ * This function:
+ *   1. Scans all <style> elements in the live document for these color values
+ *   2. Resolves each one to plain rgb() using the browser's own color engine
+ *      (via a hidden probe element + getComputedStyle)
+ *   3. Patches the corresponding <style> elements in the CLONED document
+ *      (the one html2canvas renders from) so all CSS rules parse correctly
+ *
+ * Must be called inside html2canvas's onclone() callback.
  */
-function inlineResolvedColors(root: HTMLElement): () => void {
-  const COLOR_PROPS = [
-    'color',
-    'background-color',
-    'border-top-color',
-    'border-right-color',
-    'border-bottom-color',
-    'border-left-color',
-    'outline-color',
-    'text-decoration-color',
-    'fill',
-    'stroke',
-  ] as const;
+function patchStylesheetsForHtmlCanvas(clonedDoc: Document): void {
+  // Match oklch(...), oklab(...), lch(...), lab(...) — the unsupported ones
+  const MODERN_COLOR_RE = /oklch\([^)]+\)|oklab\([^)]+\)|lch\([^)]+\)|lab\([^)]+\)/g;
 
-  // Collect all elements including root
-  const elements = [root, ...Array.from(root.querySelectorAll<HTMLElement>('*'))];
-  const restorers: Array<() => void> = [];
-
-  elements.forEach((el) => {
-    if (!(el instanceof HTMLElement) && !(el instanceof SVGElement)) return;
-    const computed = window.getComputedStyle(el as HTMLElement);
-    const saved: Array<{ prop: string; prev: string }> = [];
-
-    COLOR_PROPS.forEach((prop) => {
-      // getComputedStyle always resolves oklch → rgb(...)
-      const resolved = computed.getPropertyValue(prop);
-      if (!resolved || resolved === 'none' || resolved === 'transparent') return;
-
-      // Only inline if it's a valid resolved rgb/rgba value
-      // (to avoid inlining "inherit" or empty strings)
-      if (resolved.startsWith('rgb') || resolved.startsWith('#')) {
-        saved.push({ prop, prev: (el as HTMLElement).style.getPropertyValue(prop) });
-        (el as HTMLElement).style.setProperty(prop, resolved, 'important');
-      }
-    });
-
-    if (saved.length > 0) {
-      restorers.push(() => {
-        saved.forEach(({ prop, prev }) => {
-          if (prev) {
-            (el as HTMLElement).style.setProperty(prop, prev);
-          } else {
-            (el as HTMLElement).style.removeProperty(prop);
-          }
-        });
-      });
+  // ── Step 1: Collect all unique modern color values from live document ──
+  const uniqueColors = new Set<string>();
+  for (const styleEl of Array.from(document.querySelectorAll('style'))) {
+    const text = styleEl.textContent || '';
+    for (const match of text.matchAll(new RegExp(MODERN_COLOR_RE.source, 'g'))) {
+      uniqueColors.add(match[0]);
     }
-  });
+  }
 
-  return () => restorers.forEach((r) => r());
+  if (uniqueColors.size === 0) return;
+
+  // ── Step 2: Resolve each color value to rgb() using a hidden probe ──
+  // The browser resolves oklch → rgb natively; we read that back.
+  const probe = document.createElement('div');
+  probe.style.cssText = 'position:absolute;top:-9999px;left:-9999px;';
+  document.body.appendChild(probe);
+
+  const colorMap = new Map<string, string>();
+  for (const colorVal of uniqueColors) {
+    try {
+      probe.style.color = colorVal;
+      const resolved = window.getComputedStyle(probe).color;
+      // resolved is always "rgb(...)" or "rgba(...)" from the browser
+      colorMap.set(colorVal, resolved && resolved !== '' ? resolved : 'rgb(0,0,0)');
+    } catch {
+      colorMap.set(colorVal, 'rgb(0,0,0)');
+    }
+  }
+  document.body.removeChild(probe);
+
+  // ── Step 3: Replace in cloned document's <style> elements ──
+  for (const styleEl of Array.from(clonedDoc.querySelectorAll('style'))) {
+    if (!styleEl.textContent) continue;
+    styleEl.textContent = styleEl.textContent.replace(
+      new RegExp(MODERN_COLOR_RE.source, 'g'),
+      (match) => colorMap.get(match) ?? 'rgb(0,0,0)'
+    );
+  }
 }
 
 /**
- * Detaches element from its current DOM position (which may be inside a
- * modal with overflow:hidden that clips html2canvas rendering), appends it
- * to document.body off-screen, captures it, then moves it back.
+ * Moves the target element from its current position (which may be inside
+ * a modal with overflow:hidden or sr-only that clips html2canvas) to a
+ * fixed off-screen position on document.body, captures it, then restores it.
+ *
+ * This is necessary because:
+ *  - sr-only CSS makes the element 1px × 1px → html2canvas captures 1px
+ *  - Modal overflow:auto clips the rendered canvas
  */
 async function captureElementToCanvas(element: HTMLElement): Promise<HTMLCanvasElement> {
   const originalParent = element.parentElement!;
   const originalNextSibling = element.nextSibling;
-  const prevStyle = element.getAttribute('style') || '';
+  const prevInlineStyle = element.getAttribute('style') || '';
 
-  // Move element to document.body to bypass modal overflow clipping
-  const wrapper = document.createElement('div');
-  wrapper.style.cssText =
+  // Create off-screen wrapper and move element there
+  const offScreenWrapper = document.createElement('div');
+  offScreenWrapper.style.cssText =
     'position:fixed;top:-99999px;left:0;z-index:-9999;' +
     'width:1200px;overflow:visible;background:#ffffff;';
-  wrapper.appendChild(element);
-  document.body.appendChild(wrapper);
+  offScreenWrapper.appendChild(element);
+  document.body.appendChild(offScreenWrapper);
 
+  // Force element to be fully visible and sized correctly
   element.style.cssText =
-    'display:block!important;visibility:visible!important;' +
-    'opacity:1!important;clip:auto!important;width:1000px;background:#ffffff;';
+    'display:block!important;visibility:visible!important;opacity:1!important;' +
+    'clip:auto!important;width:1000px;background:#ffffff;';
 
-  // Fix oklch → rgb for html2canvas compatibility
-  const restoreColors = inlineResolvedColors(element);
-
-  // Wait for layout recalc before capture
-  await new Promise((r) => setTimeout(r, 180));
+  // Allow browser to calculate layout before capture
+  await new Promise((r) => setTimeout(r, 200));
 
   let canvas: HTMLCanvasElement;
   try {
@@ -117,22 +121,21 @@ async function captureElementToCanvas(element: HTMLElement): Promise<HTMLCanvasE
       logging: false,
       backgroundColor: '#ffffff',
       windowWidth: 1200,
-      // Ignore elements that are absolutely off screen (prevents rare crashes)
-      ignoreElements: (el) => {
-        const s = window.getComputedStyle(el);
-        return s.display === 'none' || s.visibility === 'hidden';
+      onclone: (clonedDoc) => {
+        // Fix oklch/oklab/lch/lab → rgb in all stylesheets of the cloned doc
+        // This is what makes all TailwindCSS v4 styles render correctly
+        patchStylesheetsForHtmlCanvas(clonedDoc);
       },
     });
   } finally {
-    // Always restore, even on error
-    restoreColors();
-    element.setAttribute('style', prevStyle);
+    // Always restore element to its original DOM position
+    element.setAttribute('style', prevInlineStyle);
     if (originalNextSibling) {
       originalParent.insertBefore(element, originalNextSibling);
     } else {
       originalParent.appendChild(element);
     }
-    document.body.removeChild(wrapper);
+    document.body.removeChild(offScreenWrapper);
   }
 
   return canvas;
@@ -145,29 +148,28 @@ export async function exportAnalyticsDocument(
 ): Promise<ExportResult> {
   const element = document.getElementById(elementId);
   if (!element) {
-    const msg = 'Export failed: Report canvas not found. Please try reopening the dialog.';
+    const msg = 'Export failed: Report canvas not found. Try reopening the export dialog.';
     console.error(`[Analytics Export] #${elementId} not found in DOM.`);
     return { success: false, message: msg };
   }
 
   try {
-    if (onProgress) onProgress('Resolving colors & rendering report canvas...');
+    if (onProgress) onProgress('Rendering styled report canvas...');
 
     const canvas = await captureElementToCanvas(element);
 
-    // Sanity check for blank capture
     if (canvas.width < 100 || canvas.height < 100) {
       return {
         success: false,
         message:
-          'Export failed: Blank canvas captured (width < 100px). Try enabling Preview first, then export.',
+          'Export failed: Blank canvas captured. Try enabling Preview first, then export.',
       };
     }
 
     const timestamp = new Date().toISOString().split('T')[0];
     const filename = `UPSC_Analytics_${timestamp}`;
 
-    // ─────────────────── PNG ───────────────────
+    // ────────────────── PNG ──────────────────
     if (options.format === 'png') {
       if (onProgress) onProgress('Generating high-resolution PNG...');
       const imageUri = canvas.toDataURL('image/png');
@@ -191,43 +193,43 @@ export async function exportAnalyticsDocument(
             recursive: true,
           });
         } catch {
-          // Non-fatal
+          /* non-fatal */
         }
 
         await Share.share({
           title: 'UPSC Analytics Report',
           text: 'My UPSC CSE Analytics Performance Report',
           url: savedFile.uri,
-          dialogTitle: 'Save Image to Gallery or Share',
+          dialogTitle: 'Save to Gallery or Share',
         });
 
         return {
           success: true,
-          message: '✅ Report image ready! Use the share sheet to save to Gallery.',
-          filename: `${filename}.png`,
-        };
-      } else {
-        const link = document.createElement('a');
-        link.download = `${filename}.png`;
-        link.href = imageUri;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        return {
-          success: true,
-          message: `✅ PNG image downloaded: ${filename}.png`,
+          message: '✅ Report image ready! Save to Gallery using the share sheet.',
           filename: `${filename}.png`,
         };
       }
+
+      // Web browser direct download
+      const link = document.createElement('a');
+      link.download = `${filename}.png`;
+      link.href = imageUri;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      return {
+        success: true,
+        message: `✅ PNG downloaded: ${filename}.png`,
+        filename: `${filename}.png`,
+      };
     }
 
-    // ─────────────────── PDF ───────────────────
+    // ────────────────── PDF ──────────────────
     if (options.format === 'pdf') {
       if (onProgress) onProgress('Compiling multi-page PDF...');
       const imgData = canvas.toDataURL('image/jpeg', 0.95);
 
-      const imgWidth = 210;
+      const imgWidth = 210; // A4 width in mm
       const pageHeight = 297;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       let heightLeft = imgHeight;
@@ -263,7 +265,7 @@ export async function exportAnalyticsDocument(
             recursive: true,
           });
         } catch {
-          // Non-fatal
+          /* non-fatal */
         }
 
         await Share.share({
@@ -275,17 +277,17 @@ export async function exportAnalyticsDocument(
 
         return {
           success: true,
-          message: '✅ PDF ready! Use the share sheet to save or send.',
-          filename: `${filename}.pdf`,
-        };
-      } else {
-        pdf.save(`${filename}.pdf`);
-        return {
-          success: true,
-          message: `✅ PDF downloaded: ${filename}.pdf`,
+          message: '✅ PDF ready! Save or share using the sheet below.',
           filename: `${filename}.pdf`,
         };
       }
+
+      pdf.save(`${filename}.pdf`);
+      return {
+        success: true,
+        message: `✅ PDF downloaded: ${filename}.pdf`,
+        filename: `${filename}.pdf`,
+      };
     }
 
     return { success: false, message: 'Unknown export format selected.' };

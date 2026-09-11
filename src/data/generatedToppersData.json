@@ -155,8 +155,10 @@
   "TOPPER_ROUTINES": [
     {
       "id": "routine-working-professional",
-      "title": "Routine for undefined",
-      "totalStudyHours": 0,
+      "title": "Routine for Working Professional",
+      "type": "Working Professional (5-6h)",
+      "topperRef": "Various",
+      "totalStudyHours": 6,
       "wakeUpTime": "06:00 AM",
       "sleepTime": "11:00 PM",
       "schedule": [
@@ -202,12 +204,15 @@
           "category": "GS",
           "description": ""
         }
-      ]
+      ],
+      "tips": []
     },
     {
       "id": "routine-prelims-sprint",
-      "title": "Routine for undefined",
-      "totalStudyHours": 0,
+      "title": "Routine for Working Professional",
+      "type": "Working Professional (5-6h)",
+      "topperRef": "Various",
+      "totalStudyHours": 6,
       "wakeUpTime": "06:00 AM",
       "sleepTime": "11:00 PM",
       "schedule": [
@@ -253,19 +258,30 @@
           "category": "CSAT / Revision",
           "description": ""
         }
-      ]
+      ],
+      "tips": []
     }
   ],
   "INTERVIEW_TRANSCRIPTS": [
     {
-      "id": "interview-1",
-      "candidate": "Aditya Srivastava",
-      "board": "Manoj Soni Board",
+      "id": "interview-aditya srivastava",
+      "candidateName": "Aditya Srivastava",
       "year": 2023,
+      "rank": 1,
+      "boardChairperson": "Manoj Soni Board",
       "score": 200,
-      "question": "Why did you leave Goldman Sachs for Civil Services?",
-      "answer": "While corporate life offered financial growth, I wanted to work on larger societal impact...",
-      "topic": "DAF / Work Experience"
+      "durationMinutes": 30,
+      "background": "",
+      "dafHighlights": [],
+      "qaExcerpts": [
+        {
+          "question": "Why did you leave Goldman Sachs for Civil Services?",
+          "askedBy": "Member",
+          "answer": "While corporate life offered financial growth, I wanted to work on larger societal impact...",
+          "analysis": ""
+        }
+      ],
+      "keyTakeaways": []
     }
   ]
 }

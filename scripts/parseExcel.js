@@ -25,7 +25,19 @@ try {
   
   // 2. Books
   const booksSheet = wb.Sheets['Books'];
-  const booksData = booksSheet ? XLSX.utils.sheet_to_json(booksSheet) : [];
+  const booksDataRaw = booksSheet ? XLSX.utils.sheet_to_json(booksSheet) : [];
+  const booksData = booksDataRaw.map(b => ({
+    id: b.id || `book-${Date.now()}-${Math.random()}`,
+    title: b.title || 'Unknown Book',
+    authorOrPublication: b.authorOrPublication || '',
+    subject: b.subject || '',
+    paper: b.paper || 'Prelims GS1',
+    priority: b.priority || 'High Yield Reference',
+    recommendedBy: typeof b.recommendedBy === 'string' ? b.recommendedBy.split(',').map(s => s.trim()) : [],
+    keyChapters: typeof b.keyChapters === 'string' ? b.keyChapters.split(',').map(s => s.trim()) : [],
+    tipsForReading: b.tipsForReading || '',
+    status: b.status || 'not_started'
+  }));
   
   // 3. Routines
   const routinesSheet = wb.Sheets['Routines'];
@@ -36,22 +48,23 @@ try {
   routinesDataRaw.forEach((r) => {
     if (!routinesMap.has(r.routineId)) {
       routinesMap.set(r.routineId, {
-        id: r.routineId,
-        title: `Routine for ${r.topperName}`,
-        type: r.profileType,
-        topperRef: r.topperName,
-        totalStudyHours: 0, // Simplified
-        wakeUpTime: '06:00 AM',
-        sleepTime: '11:00 PM',
-        schedule: []
+        id: r.routineId || `routine-${Date.now()}`,
+        title: `Routine for ${r.topperName || 'Working Professional'}`,
+        type: r.profileType || 'Working Professional (5-6h)',
+        topperRef: r.topperName || 'Various',
+        totalStudyHours: parseInt(r.totalStudyHours) || 6,
+        wakeUpTime: r.wakeUpTime || '06:00 AM',
+        sleepTime: r.sleepTime || '11:00 PM',
+        schedule: [],
+        tips: typeof r.tips === 'string' ? r.tips.split('|').map(t => t.trim()) : []
       });
     }
     const routine = routinesMap.get(r.routineId);
     routine.schedule.push({
-      time: r.time,
-      activity: r.activity,
-      category: r.category,
-      description: ''
+      time: r.time || '00:00',
+      activity: r.activity || 'Study',
+      category: r.category || 'GS',
+      description: r.description || ''
     });
   });
   const routinesData = Array.from(routinesMap.values());
@@ -59,7 +72,36 @@ try {
   // 4. Interviews
   const interviewsSheet = wb.Sheets['Interviews'];
   const interviewsDataRaw = interviewsSheet ? XLSX.utils.sheet_to_json(interviewsSheet) : [];
-  const interviewsData = interviewsDataRaw;
+  
+  const interviewsMap = new Map();
+  interviewsDataRaw.forEach((row) => {
+    const candidateName = row.candidate || 'Unknown';
+    if (!interviewsMap.has(candidateName)) {
+      interviewsMap.set(candidateName, {
+        id: `interview-${candidateName.toLowerCase().replace(/\\s+/g, '-')}`,
+        candidateName: candidateName,
+        year: parseInt(row.year) || 2023,
+        rank: parseInt(row.rank) || 1,
+        boardChairperson: row.board || 'UPSC Board',
+        score: parseInt(row.score) || 200,
+        durationMinutes: parseInt(row.duration) || 30,
+        background: row.background || '',
+        dafHighlights: typeof row.dafHighlights === 'string' ? row.dafHighlights.split('|').map(s => s.trim()) : [],
+        qaExcerpts: [],
+        keyTakeaways: typeof row.keyTakeaways === 'string' ? row.keyTakeaways.split('|').map(s => s.trim()) : []
+      });
+    }
+    const transcript = interviewsMap.get(candidateName);
+    if (row.question || row.answer) {
+      transcript.qaExcerpts.push({
+        question: row.question || '',
+        askedBy: row.askedBy || 'Member',
+        answer: row.answer || '',
+        analysis: row.analysis || ''
+      });
+    }
+  });
+  const interviewsData = Array.from(interviewsMap.values());
 
   // Format Profiles
   const formattedProfiles = strategyData.map(t => ({

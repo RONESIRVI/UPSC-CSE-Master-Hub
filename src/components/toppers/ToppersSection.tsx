@@ -127,10 +127,27 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           {/* Main Dropdown Selector */}
           <div className="relative flex-1 max-w-md" ref={dropdownRef}>
-            <label className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1 flex items-center gap-1.5">
-              <Layers className="w-3 h-3 text-indigo-600" />
-              <span>Select Toppers' Resource Dropdown:</span>
-            </label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                <Layers className="w-3 h-3 text-indigo-600" />
+                <span>Select Toppers' Resource Dropdown:</span>
+              </label>
+              
+              <button
+                onClick={() => {
+                  if (window.confirm("Are you sure you want to clear cache and reload fresh data?")) {
+                    localStorage.removeItem("upsc_books");
+                    localStorage.removeItem("upsc_toppers_v1");
+                    localStorage.removeItem("upsc_topper_routines_v1");
+                    localStorage.removeItem("ras_audio_notes_v2");
+                    window.location.reload();
+                  }
+                }}
+                className="flex items-center gap-1 px-2 py-1 bg-red-50 text-red-600 rounded text-[10px] font-bold hover:bg-red-100 transition border border-red-200"
+              >
+                Reset / Clear Cache
+              </button>
+            </div>
 
             {/* Custom Interactive Dropdown Button */}
             <button

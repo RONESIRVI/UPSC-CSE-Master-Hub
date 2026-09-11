@@ -56,28 +56,11 @@ export interface AudioNote {
   durationSecs: number;
 }
 
-export interface BookItem {
+
+export interface StrategySetupItem {
   id: string;
   title: string;
-  authorOrPublication: string;
-  subject: string;
-  paper:
-    | "Prelims GS1"
-    | "CSAT"
-    | "Mains GS1"
-    | "Mains GS2"
-    | "Mains GS3"
-    | "Mains GS4"
-    | "Essay"
-    | "Optional";
-  priority:
-    | "Must Read / Core"
-    | "High Yield Reference"
-    | "Supplementary / Skim";
-  recommendedBy: string[];
-  keyChapters: string[];
-  tipsForReading: string;
-  status: "not_started" | "reading" | "completed";
+  content: string;
   extraData?: Record<string, string>;
 }
 

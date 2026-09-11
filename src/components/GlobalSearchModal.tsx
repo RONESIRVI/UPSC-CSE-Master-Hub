@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import {
   TOPPERS_PROFILES,
-  TOPPER_BOOKS,
+  STRATEGY_SETUP,
   TOPPER_NOTES_VAULT,
 } from "../data/toppersData";
 import { DEFAULT_SYLLABUS } from "../data/syllabusData";
@@ -43,11 +43,10 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
         t.keyStrategy.toLowerCase().includes(q)
     ).slice(0, 3);
 
-    const books = TOPPER_BOOKS.filter(
-      (b) =>
-        b.title.toLowerCase().includes(q) ||
-        b.subject.toLowerCase().includes(q) ||
-        b.authorOrPublication.toLowerCase().includes(q)
+    const strategies = STRATEGY_SETUP.filter(
+      (s) =>
+        s.title.toLowerCase().includes(q) ||
+        s.content.toLowerCase().includes(q)
     ).slice(0, 3);
 
     const syllabus = DEFAULT_SYLLABUS.filter(
@@ -71,12 +70,12 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
         n.summary.toLowerCase().includes(q)
     ).slice(0, 3);
 
-    return { toppers, books, syllabus, pyqs, notes };
+    return { toppers, strategies, syllabus, pyqs, notes };
   }, [searchQuery]);
 
   const totalResults =
     results.toppers.length +
-    results.books.length +
+    results.strategies.length +
     results.syllabus.length +
     results.pyqs.length +
     results.notes.length;
@@ -174,16 +173,16 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                 </div>
               )}
 
-              {/* Books Results */}
-              {results.books.length > 0 && (
+              {/* Strategies Results */}
+              {results.strategies.length > 0 && (
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-sky-700 uppercase tracking-wider">
                     <BookOpen className="w-3.5 h-3.5" />
-                    <span>Recommended Books ({results.books.length})</span>
+                    <span>Master Strategies ({results.strategies.length})</span>
                   </div>
-                  {results.books.map((b) => (
+                  {results.strategies.map((s) => (
                     <button
-                      key={b.id}
+                      key={s.id}
                       onClick={() => {
                         onNavigate("toppers", "books");
                         onClose();
@@ -192,13 +191,10 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                     >
                       <div>
                         <div className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                          <span>{b.title}</span>
-                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-sky-100 text-sky-800 font-bold">
-                            {b.subject}
-                          </span>
+                          <span>{s.title}</span>
                         </div>
                         <p className="text-xs text-slate-600 line-clamp-1 mt-0.5 font-medium">
-                          {b.authorOrPublication}
+                          {s.content}
                         </p>
                       </div>
                       <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-sky-600 transition transform group-hover:translate-x-1" />

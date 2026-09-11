@@ -24,7 +24,7 @@ import {
   ScanSearch,
 } from "lucide-react";
 
-import { TOPPER_BOOKS, TOPPERS_PROFILES, TOPPER_ROUTINES } from "./data/toppersData";
+import { STRATEGY_SETUP, TOPPERS_PROFILES, TOPPER_ROUTINES } from "./data/toppersData";
 import { DEFAULT_SYLLABUS, DEFAULT_STUDY_PLAN } from "./data/syllabusData";
 import {
   DEFAULT_REVISION_QUEUE,
@@ -37,7 +37,7 @@ import {
   TopperSubTab,
   PrepSubTab,
   AnalyticsSubTab,
-  BookItem,
+  StrategySetupItem,
   SyllabusTopic,
   StudyPlanPhase,
   StudySessionLog,
@@ -217,9 +217,9 @@ export default function App() {
   const [dailyGoalHours] = useState<number>(8);
 
   // Core Data States with LocalStorage Hydration
-  const [books, setBooks] = useState<BookItem[]>(() => {
-    const saved = localStorage.getItem("upsc_books");
-    return saved ? JSON.parse(saved) : TOPPER_BOOKS;
+  const [strategies, setStrategies] = useState<StrategySetupItem[]>(() => {
+    const saved = localStorage.getItem("upsc_strategies");
+    return saved ? JSON.parse(saved) : STRATEGY_SETUP;
   });
 
   const [toppers, setToppers] = useState<TopperProfile[]>(() => {
@@ -343,7 +343,7 @@ export default function App() {
   }, [topperRoutines]);
 
   useEffect(() => {
-    localStorage.setItem("upsc_books", JSON.stringify(books));
+    localStorage.setItem("upsc_strategies", JSON.stringify(strategies));
     localStorage.setItem("upsc_toppers", JSON.stringify(toppers));
     localStorage.setItem("ras_syllabus_v1", JSON.stringify(syllabus));
     localStorage.setItem(
@@ -360,7 +360,7 @@ export default function App() {
     localStorage.setItem("upsc_weak_areas", JSON.stringify(weakAreas));
     localStorage.setItem("ras_audio_notes", JSON.stringify(audioNotes));
   }, [
-    books,
+    strategies,
     toppers,
     syllabus,
     studyPlanPhases,
@@ -383,19 +383,6 @@ export default function App() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
-
-  // Handlers for Topper Books
-  const handleToggleBookStatus = (bookId: string) => {
-    setBooks((prev) =>
-      prev.map((b) => {
-        if (b.id !== bookId) return b;
-        let nextStatus: BookItem["status"] = "reading";
-        if (b.status === "reading") nextStatus = "completed";
-        else if (b.status === "completed") nextStatus = "not_started";
-        return { ...b, status: nextStatus };
-      })
-    );
-  };
 
   // Handlers for Syllabus
   const handleUpdateTopicStatus = (
@@ -680,8 +667,7 @@ export default function App() {
                   <ToppersSection
                     activeSubTab={topperSubTab}
                     setActiveSubTab={setTopperSubTab}
-                    books={books}
-                    onToggleBookStatus={handleToggleBookStatus}
+                    strategies={strategies}
                     onAdoptRoutine={handleAdoptRoutine}
                     toppers={toppers}
                     setToppers={setToppers}

@@ -56,26 +56,20 @@ try {
     return result;
   }
   
-  // 1. Strategy
-  const strategySheet = wb.Sheets['Strategy'];
+  // 1. Strategy & Blueprints (TopperProfiles)
+  const strategySheet = wb.Sheets['TopperProfiles'];
   const strategyData = strategySheet ? parseTransposedSheet(strategySheet) : [];
   
-  // 2. Books
-  const booksSheet = wb.Sheets['Books'];
-  const booksDataRaw = booksSheet ? parseTransposedSheet(booksSheet) : [];
-  const booksData = booksDataRaw.map(b => ({
-    id: b.id || `book-${Date.now()}-${Math.random()}`,
-    title: b.title || 'Unknown Book',
-    authorOrPublication: b.authorOrPublication || '',
-    subject: b.subject || '',
-    paper: b.paper || 'Prelims GS1',
-    priority: b.priority || 'High Yield Reference',
-    recommendedBy: typeof b.recommendedBy === 'string' ? b.recommendedBy.split(',').map(s => s.trim()) : [],
-    keyChapters: typeof b.keyChapters === 'string' ? b.keyChapters.split(',').map(s => s.trim()) : [],
-    tipsForReading: b.tipsForReading || '',
-    status: b.status || 'not_started'
+  // 2. Strategy Setup (replaces Books)
+  const strategySetupSheet = wb.Sheets['Strategy'];
+  const strategySetupDataRaw = strategySetupSheet ? parseTransposedSheet(strategySetupSheet) : [];
+  const strategySetupData = strategySetupDataRaw.map(s => ({
+    id: s.id || `strategy-${Date.now()}-${Math.random()}`,
+    title: s.title || 'Aditya\'s Plan',
+    content: s.content || '',
+    extraData: s.extraData
   }));
-  
+
   // 3. Routines
   const routinesSheet = wb.Sheets['Routines'];
   const routinesDataRaw = routinesSheet ? parseTransposedSheet(routinesSheet) : [];
@@ -170,7 +164,7 @@ try {
 
   const finalData = {
     TOPPERS_PROFILES: formattedProfiles,
-    TOPPER_BOOKS: booksData,
+    STRATEGY_SETUP: strategySetupData,
     TOPPER_ROUTINES: routinesData,
     INTERVIEW_TRANSCRIPTS: interviewsData
   };

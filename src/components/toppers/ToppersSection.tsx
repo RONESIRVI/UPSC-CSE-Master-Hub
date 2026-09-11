@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { TopperSubTab, BookItem, TopperRoutine, TopperProfile } from "../../types";
 import { TopperStrategyTab } from "./TopperStrategyTab";
-import { TopperBooksTab } from "./TopperBooksTab";
+import { TopperStrategySetupTab } from "./TopperStrategySetupTab";
 import { TopperRoutineTab } from "./TopperRoutineTab";
 import { TopperNotesTab } from "./TopperNotesTab";
 import { TopperInterviewsTab } from "./TopperInterviewsTab";
@@ -21,8 +21,7 @@ import {
 interface ToppersSectionProps {
   activeSubTab: TopperSubTab;
   setActiveSubTab: (subTab: TopperSubTab) => void;
-  books: BookItem[];
-  onToggleBookStatus: (bookId: string) => void;
+  strategies: import("../../types").StrategySetupItem[];
   onAdoptRoutine: (routine: TopperRoutine) => void;
   toppers: TopperProfile[];
   setToppers: React.Dispatch<React.SetStateAction<TopperProfile[]>>;
@@ -35,8 +34,7 @@ interface ToppersSectionProps {
 export const ToppersSection: React.FC<ToppersSectionProps> = ({
   activeSubTab,
   setActiveSubTab,
-  books,
-  onToggleBookStatus,
+  strategies,
   onAdoptRoutine,
   toppers,
   setToppers,
@@ -67,10 +65,10 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
     },
     {
       key: "books",
-      label: "Booklist Matrix",
+      label: "Strategy Setup",
       description: "Standard Prelims & Mains booklist recommended by toppers",
       icon: BookOpen,
-      badge: `${books.length} Books`,
+      badge: `${strategies.length} Strategies`,
       color: "bg-blue-50 text-blue-600 border-blue-200",
     },
     {
@@ -255,7 +253,7 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
       <div className="pt-2">
         {activeSubTab === "strategy" && <TopperStrategyTab toppers={toppers} setToppers={setToppers} />}
         {activeSubTab === "books" && (
-          <TopperBooksTab books={books} onToggleBookStatus={onToggleBookStatus} />
+          <TopperStrategySetupTab strategies={strategies} />
         )}
         {activeSubTab === "routine" && (
           <TopperRoutineTab onAdoptRoutine={onAdoptRoutine} routines={routines} setRoutines={setRoutines} />

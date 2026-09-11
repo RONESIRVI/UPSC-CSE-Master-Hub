@@ -18,14 +18,51 @@ try {
 
   const fileData = fs.readFileSync(excelPath);
   const wb = XLSX.read(fileData, { type: 'buffer' });
+
+  function parseTransposedSheet(sheet) {
+    if (!sheet) return [];
+    const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+    if (rows.length === 0) return [];
+    
+    const numCols = rows[0].length;
+    const result = [];
+    
+    for (let col = 1; col < numCols; col++) {
+      const obj = {};
+      const extraData = {};
+      const coreKeys = ['id', 'name', 'rank', 'year', 'optional', 'attempt', 'background', 'avatar', 'quote', 'keyStrategy', 'gs1', 'gs2', 'gs3', 'gs4', 'essayStrategy', 'optionalStrategy', 'prelimsStrategy', 'csatStrategy', 'interviewScore', 'mainsScore', 'goldenRules', 'title', 'authorOrPublication', 'subject', 'paper', 'priority', 'recommendedBy', 'keyChapters', 'tipsForReading', 'status', 'routineId', 'topperName', 'profileType', 'totalStudyHours', 'wakeUpTime', 'sleepTime', 'time', 'activity', 'category', 'description', 'tips', 'candidate', 'board', 'score', 'duration', 'dafHighlights', 'question', 'askedBy', 'answer', 'analysis', 'keyTakeaways'];
+      
+      for (let row = 0; row < rows.length; row++) {
+        const key = rows[row][0];
+        let val = rows[row][col];
+        
+        if (!key) continue;
+        if (val === undefined) val = '';
+        
+        if (coreKeys.includes(key)) {
+          obj[key] = val;
+        } else {
+          if (val !== '') {
+            extraData[key] = val;
+          }
+        }
+      }
+      
+      if (Object.keys(obj).length > 0 || Object.keys(extraData).length > 0) {
+        obj.extraData = extraData;
+        result.push(obj);
+      }
+    }
+    return result;
+  }
   
   // 1. Strategy
   const strategySheet = wb.Sheets['Strategy'];
-  const strategyData = strategySheet ? XLSX.utils.sheet_to_json(strategySheet) : [];
+  const strategyData = strategySheet ? parseTransposedSheet(strategySheet) : [];
   
   // 2. Books
   const booksSheet = wb.Sheets['Books'];
-  const booksDataRaw = booksSheet ? XLSX.utils.sheet_to_json(booksSheet) : [];
+  const booksDataRaw = booksSheet ? parseTransposedSheet(booksSheet) : [];
   const booksData = booksDataRaw.map(b => ({
     id: b.id || `book-${Date.now()}-${Math.random()}`,
     title: b.title || 'Unknown Book',
@@ -41,7 +78,7 @@ try {
   
   // 3. Routines
   const routinesSheet = wb.Sheets['Routines'];
-  const routinesDataRaw = routinesSheet ? XLSX.utils.sheet_to_json(routinesSheet) : [];
+  const routinesDataRaw = routinesSheet ? parseTransposedSheet(routinesSheet) : [];
   
   // Convert flat routines to nested structure
   const routinesMap = new Map();
@@ -71,7 +108,7 @@ try {
 
   // 4. Interviews
   const interviewsSheet = wb.Sheets['Interviews'];
-  const interviewsDataRaw = interviewsSheet ? XLSX.utils.sheet_to_json(interviewsSheet) : [];
+  const interviewsDataRaw = interviewsSheet ? parseTransposedSheet(interviewsSheet) : [];
   
   const interviewsMap = new Map();
   interviewsDataRaw.forEach((row) => {
@@ -127,7 +164,8 @@ try {
     csatStrategy: t.csatStrategy,
     interviewScore: t.interviewScore,
     mainsScore: t.mainsScore,
-    goldenRules: typeof t.goldenRules === 'string' ? t.goldenRules.split('|').map(r => r.trim()) : []
+    goldenRules: typeof t.goldenRules === 'string' ? t.goldenRules.split('|').map(r => r.trim()) : [],
+    extraData: t.extraData
   }));
 
   const finalData = {

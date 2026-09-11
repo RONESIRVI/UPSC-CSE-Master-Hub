@@ -227,6 +227,22 @@ export const TopperBooksTab: React.FC<TopperBooksTabProps> = ({
                   </span>
                   {book.tipsForReading}
                 </div>
+
+                {/* Dynamic Extra Data */}
+                {book.extraData && Object.keys(book.extraData).length > 0 && (
+                  <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2 mt-2">
+                    <div className="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+                      <span>Additional Info</span>
+                    </div>
+                    {Object.entries(book.extraData).map(([key, value]) => (
+                      <div key={key} className="text-xs text-slate-600 flex flex-col gap-0.5 border-b border-slate-200 pb-1.5 last:border-0 last:pb-0">
+                        <span className="font-bold text-slate-800">{key}</span>
+                        <span>{value}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Status Action Bar */}

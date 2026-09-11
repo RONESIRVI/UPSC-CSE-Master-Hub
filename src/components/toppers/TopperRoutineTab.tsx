@@ -246,6 +246,24 @@ export const TopperRoutineTab: React.FC<TopperRoutineTabProps> = ({
             ))}
           </ul>
         </div>
+
+        {/* Dynamic Extra Data */}
+        {selectedRoutine.extraData && Object.keys(selectedRoutine.extraData).length > 0 && (
+          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mt-4">
+            <div className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5 mb-3">
+              <Sparkles className="w-4 h-4 text-indigo-600" />
+              <span>Additional Info</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {Object.entries(selectedRoutine.extraData).map(([key, value]) => (
+                <div key={key} className="bg-white p-3 rounded-lg border border-slate-100">
+                  <div className="text-[10px] uppercase font-bold text-slate-400 mb-1">{key}</div>
+                  <div className="text-sm font-medium text-slate-700 whitespace-pre-wrap">{value}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
       {/* Editor Modal */}
       {isEditorOpen && (

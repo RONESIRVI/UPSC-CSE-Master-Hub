@@ -44,6 +44,7 @@ export interface TopperProfile {
   interviewScore?: number;
   mainsScore?: number;
   goldenRules: string[];
+  extraData?: Record<string, string>;
 }
 
 export interface AudioNote {
@@ -77,6 +78,7 @@ export interface BookItem {
   keyChapters: string[];
   tipsForReading: string;
   status: "not_started" | "reading" | "completed";
+  extraData?: Record<string, string>;
 }
 
 export interface RoutineSlot {
@@ -107,6 +109,7 @@ export interface TopperRoutine {
   sleepTime: string;
   schedule: RoutineSlot[];
   tips: string[];
+  extraData?: Record<string, string>;
 }
 
 export interface NoteItem {
@@ -149,6 +152,7 @@ export interface InterviewTranscript {
     analysis: string;
   }[];
   keyTakeaways: string[];
+  extraData?: Record<string, string>;
 }
 
 export interface SyllabusTopic {

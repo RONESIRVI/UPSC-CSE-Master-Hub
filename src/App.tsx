@@ -637,6 +637,8 @@ export default function App() {
             timerRunning={false}
             timerSeconds={0}
             onToggleTimer={() => {}}
+            hasUpdate={!!updateInfo}
+            onOpenUpdateModal={() => setIsUpdateModalOpen(true)}
           />
 
           {/* Core Content Canvas */}

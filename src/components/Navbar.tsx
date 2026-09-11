@@ -23,6 +23,8 @@ interface NavbarProps {
   timerRunning: boolean;
   timerSeconds: number;
   onToggleTimer: () => void;
+  hasUpdate?: boolean;
+  onOpenUpdateModal?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -34,6 +36,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   timerRunning,
   timerSeconds,
   onToggleTimer,
+  hasUpdate,
+  onOpenUpdateModal,
 }) => {
   const [daysToPrelims, setDaysToPrelims] = useState<number>(0);
 
@@ -86,13 +90,18 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Center Main Pillars Tabs (Bento Segmented Controller) */}
           <nav className="hidden lg:flex items-center gap-1.5 bg-slate-100/90 p-1.5 rounded-2xl border border-slate-200/80 shadow-inner">
             <div className="flex items-center gap-2">
-              <button
-                onClick={() => (window as any).testUpdateModal?.()}
-                className="hidden md:flex items-center justify-center w-8 h-8 rounded-xl bg-orange-100 text-orange-600 hover:bg-orange-200 transition"
-                title="Test Update Modal"
-              >
-                <div className="w-4 h-4 rounded-full bg-orange-500 animate-pulse" />
-              </button>
+              {hasUpdate && (
+                <button
+                  onClick={onOpenUpdateModal}
+                  className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-green-100 text-green-700 hover:bg-green-200 transition border border-green-300 font-bold text-xs"
+                >
+                  <div className="relative flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                  </div>
+                  New Update
+                </button>
+              )}
             </div>
             <button
               id="tab-btn-home"

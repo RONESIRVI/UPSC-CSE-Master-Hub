@@ -84,15 +84,21 @@ export default function App() {
               const currentVersion =
                 localStorage.getItem("app_version") || "v1.0.0";
               if (data.tag_name !== currentVersion && data.tag_name) {
-                // ✅ NEW VERSION FOUND — Download Silently in Background
-                console.log(`Update found: ${data.tag_name}, downloading...`);
+                console.log(`Update found: ${data.tag_name}, waiting for user...`);
+                
+                // Set update info so the Update Modal can display it
+                setUpdateInfo({
+                  version: data.tag_name,
+                  body: data.body || "Performance improvements and bug fixes.",
+                  url: asset.browser_download_url
+                });
 
-                // Step 1: Notify user that update is downloading
+                // Notify user that an update is available
                 await LocalNotifications.schedule({
                   notifications: [
                     {
-                      title: "⬇️ Update Download हो रही है...",
-                      body: `UPSC Conquest ${data.tag_name} background में install हो रहा है।`,
+                      title: "🆕 UPSC Conquest Update!",
+                      body: `Version ${data.tag_name} उपलब्ध है। App में जाकर 'Update Now' पर क्लिक करें।`,
                       id: 10,
                       schedule: { at: new Date(Date.now() + 500) },
                       sound: undefined,
@@ -103,35 +109,15 @@ export default function App() {
                   ],
                 });
 
-                // Step 2: Silently Download the update
-                const version = await CapacitorUpdater.download({
-                  url: asset.browser_download_url,
-                  version: data.tag_name,
+                // Listen for notification tap to open modal
+                LocalNotifications.addListener('localNotificationActionPerformed', (notification) => {
+                  if (notification.notification.id === 10) {
+                    setIsUpdateModalOpen(true);
+                  }
                 });
 
-                // Step 3: Save version to localStorage
-                localStorage.setItem("app_version", data.tag_name);
-
-                // Step 4: Notify user — update ready, app restarting
-                await LocalNotifications.schedule({
-                  notifications: [
-                    {
-                      title: "✅ Update तैयार है! App Restart हो रही है...",
-                      body: `UPSC Conquest ${data.tag_name} install हो गया। App अभी restart होगी।`,
-                      id: 11,
-                      schedule: { at: new Date(Date.now() + 1000) },
-                      sound: undefined,
-                      attachments: undefined,
-                      actionTypeId: "",
-                      extra: null,
-                    },
-                  ],
-                });
-
-                // Step 5: Apply update → CapacitorUpdater.set() auto-restarts the app
-                setTimeout(async () => {
-                  await CapacitorUpdater.set({ id: version.id });
-                }, 2500);
+                // Auto-open modal if user is active in the app
+                setIsUpdateModalOpen(true);
               }
             }
           }

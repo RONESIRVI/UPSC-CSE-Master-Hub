@@ -61,73 +61,95 @@ export default function App() {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [updateProgress, setUpdateProgress] = useState<number | null>(null);
 
-  // Request Notification Permissions & Live Updates Initialization on Mount
+  // Silent Auto-Update Engine on App Open
   useEffect(() => {
     const initApp = async () => {
       try {
         if (Capacitor.isNativePlatform()) {
           // Request Native Permissions
           await LocalNotifications.requestPermissions();
-          
-          // Live Updates Initialization
+
+          // Tell Capacitor Updater the app loaded successfully
           await CapacitorUpdater.notifyAppReady();
-          
+
           // Check for GitHub Releases
-          const res = await fetch("https://api.github.com/repos/RONESIRVI/UPSC-CSE-Master-Hub/releases/latest");
+          const res = await fetch(
+            "https://api.github.com/repos/RONESIRVI/UPSC-CSE-Master-Hub/releases/latest"
+          );
           const data = await res.json();
+
           if (data && data.assets) {
             const asset = data.assets.find((a: any) => a.name === "dist.zip");
             if (asset) {
-              const currentVersion = localStorage.getItem("app_version") || "v1.0.0";
+              const currentVersion =
+                localStorage.getItem("app_version") || "v1.0.0";
               if (data.tag_name !== currentVersion && data.tag_name) {
-                // We found a new version! Do NOT download silently.
-                setUpdateInfo({
-                  version: data.tag_name,
-                  body: data.body || "Performance improvements and bug fixes.",
-                  url: asset.browser_download_url
-                });
+                // ✅ NEW VERSION FOUND — Download Silently in Background
+                console.log(`Update found: ${data.tag_name}, downloading...`);
 
-                // Send Android Native Notification
+                // Step 1: Notify user that update is downloading
                 await LocalNotifications.schedule({
                   notifications: [
                     {
-                      title: "🆕 UPSC CSE Master Hub Update",
-                      body: `Version ${data.tag_name} available. Tap to view & update.`,
-                      id: 1,
+                      title: "⬇️ Update Download हो रही है...",
+                      body: `UPSC Conquest ${data.tag_name} background में install हो रहा है।`,
+                      id: 10,
+                      schedule: { at: new Date(Date.now() + 500) },
+                      sound: undefined,
+                      attachments: undefined,
+                      actionTypeId: "",
+                      extra: null,
+                    },
+                  ],
+                });
+
+                // Step 2: Silently Download the update
+                const version = await CapacitorUpdater.download({
+                  url: asset.browser_download_url,
+                  version: data.tag_name,
+                });
+
+                // Step 3: Save version to localStorage
+                localStorage.setItem("app_version", data.tag_name);
+
+                // Step 4: Notify user — update ready, app restarting
+                await LocalNotifications.schedule({
+                  notifications: [
+                    {
+                      title: "✅ Update तैयार है! App Restart हो रही है...",
+                      body: `UPSC Conquest ${data.tag_name} install हो गया। App अभी restart होगी।`,
+                      id: 11,
                       schedule: { at: new Date(Date.now() + 1000) },
                       sound: undefined,
                       attachments: undefined,
                       actionTypeId: "",
                       extra: null,
-                    }
-                  ]
+                    },
+                  ],
                 });
 
-                // Listen for notification tap to open modal
-                LocalNotifications.addListener('localNotificationActionPerformed', (notification) => {
-                  if (notification.notification.id === 1) {
-                    setIsUpdateModalOpen(true);
-                  }
-                });
-
-                // Optionally auto-open modal if user is active
-                setIsUpdateModalOpen(true);
+                // Step 5: Apply update → CapacitorUpdater.set() auto-restarts the app
+                setTimeout(async () => {
+                  await CapacitorUpdater.set({ id: version.id });
+                }, 2500);
               }
             }
           }
         } else {
           // Web Fallback
-          if ("Notification" in window && Notification.permission !== "granted") {
+          if (
+            "Notification" in window &&
+            Notification.permission !== "granted"
+          ) {
             await Notification.requestPermission();
           }
         }
       } catch (e) {
-        console.warn("Initialization or Update Check failed", e);
+        console.warn("Auto-update check failed:", e);
       }
     };
     initApp();
 
-    // Cleanup listeners
     return () => {
       LocalNotifications.removeAllListeners();
     };

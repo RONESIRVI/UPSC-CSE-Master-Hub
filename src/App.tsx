@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { AppIcon } from "./components/AppIcon";
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { Capacitor } from '@capacitor/core';
 import { App as CapacitorApp } from '@capacitor/app';
@@ -214,6 +213,8 @@ export default function App() {
     topic: "",
     taskType: "study",
   });
+
+  const [dailyGoalHours] = useState<number>(8);
 
   // Core Data States with LocalStorage Hydration
   const [books, setBooks] = useState<BookItem[]>(() => {
@@ -723,7 +724,6 @@ export default function App() {
                     onDeletePYQ={handleDeletePYQ}
                     onResetDefaultPYQs={handleResetDefaultPYQs}
                     onOpenAIEvaluator={handleOpenAIEvaluator}
-                    currentStudySession={currentStudySession}
                   />
                 )}
 

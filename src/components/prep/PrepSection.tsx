@@ -373,7 +373,21 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
         isOpen={showQuickThoughtsModal}
         onClose={() => setShowQuickThoughtsModal(false)}
         syllabus={syllabus}
-        onAddToSpacedRevision={onAddRevisionItem}
+        onAddToSpacedRevision={(item) => {
+          onAddRevisionItem({
+            id: `rev-${Date.now()}`,
+            topicId: `topic-${Date.now()}`,
+            topicTitle: item.title,
+            subject: item.subject,
+            paper: item.paper,
+            lastStudiedDate: new Date().toISOString(),
+            intervalStage: 1,
+            nextDueDate: new Date(Date.now() + 86400000).toISOString(),
+            isOverdue: false,
+            quickSummary: item.keyPoints,
+            flashcardQuestions: []
+          });
+        }}
       />
     </div>
   );

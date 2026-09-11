@@ -1,0 +1,358 @@
+{
+  "TOPPERS_PROFILES": [
+    {
+      "id": "aditya-srivastava",
+      "name": "Aditya Srivastava",
+      "rank": 1,
+      "year": 2023,
+      "optional": "Electrical Engineering",
+      "attempt": 3,
+      "background": "B.Tech IIT Kanpur (Ex-Goldman Sachs & Ex-IPS)",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+      "quote": "Mains is all about smart presentation, precise micro-diagrams, and time management. Every half mark accumulated across 20 questions makes the difference between AIR 1 and missing the list.",
+      "keyStrategy": "Treated UPSC preparation as a structured engineering optimization problem. Focused heavily on PYQ reverse-engineering, creating concise 1-page notes for every syllabus keyword, and rigorous timed full-length test simulations.",
+      "gsStrategy": {
+        "gs1": "History through timelines and maps; Geography with crisp schematic drawings; Society with recent Census data, NFHS-5 surveys, and committee reports.",
+        "gs2": "Directly mapped every constitutional article, Supreme Court 2nd & 3rd ARC recommendations, and punchy international relations 2x2 matrices.",
+        "gs3": "Focus on Economic Survey graphs, NITI Aayog Strategy for New India metrics, science & tech contemporary applications, and internal security maps.",
+        "gs4": "Prepared a personal repository of 50 real-life civil servant examples, philosophical quotes with applied meanings, and standard 7-step case study stakeholder resolution framework."
+      },
+      "essayStrategy": "Wrote multi-dimensional essays exploring Historical, Social, Economic, Political, Psychological, and Ethical angles (PESTLE + philosophical lens). Used catchy quotes in intro and closed with inspirational vision.",
+      "optionalStrategy": "Mastered electrical engineering fundamentals through rigorous numerical problem-solving and clean circuit diagrams. Practiced 10 years PYQs thrice.",
+      "prelimsStrategy": "Solved 60+ full length mock tests. Analyzed every incorrect option thoroughly. Maintained 90+ attempts with a calculated intelligent elimination approach.",
+      "csatStrategy": "Practiced 30 minutes daily from January onwards. Prioritized high-accuracy reading comprehension and quant problem patterns.",
+      "interviewScore": 200,
+      "mainsScore": 899,
+      "goldenRules": [
+        "Limit your resources: 1 book read 10 times is better than 10 books read once.",
+        "Never write an answer without at least 1 diagram/flowchart or data point.",
+        "Syllabus keywords are your holy grail: prepare 150-word notes for each keyword.",
+        "Consistency over intensity: 7 focused hours daily beats erratic 14-hour burnout."
+      ]
+    },
+    {
+      "id": "ishita-kishore",
+      "name": "Ishita Kishore",
+      "rank": 1,
+      "year": 2022,
+      "optional": "PSIR (Political Science & IR)",
+      "attempt": 3,
+      "background": "BA (Hons) Economics, SRCC Delhi (National Football Player)",
+      "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80",
+      "quote": "Failures are simply data points showing where to refine your technique. After two prelims failures, fixing my active recall and mock test feedback loop changed everything.",
+      "keyStrategy": "Strong focus on PSIR interlinkages with GS2. Used current affairs extensively to substantiate theoretical concepts. Dedicated last 75 days before Prelims exclusively to MCQ testing and revision cycles.",
+      "gsStrategy": {
+        "gs1": "Modern India revision through Spectrum summaries. Art & Culture through Nitin Singhania notes with visual flashcards.",
+        "gs2": "Heavy citation of landmark judgements (Puttaswamy, Kesavananda, Navtej Johar) and Law Commission reports.",
+        "gs3": "Crisp notes on Budget, Economic Survey, agriculture supply chains, and renewable energy targets.",
+        "gs4": "Values and ethical frameworks applied cleanly to administrative dilemmas. Authentic case study answers without pretense."
+      },
+      "essayStrategy": "Brainstormed for 15-20 minutes before penning down the essay. Balanced flow between prose, philosophical depth, and contemporary governance initiatives.",
+      "optionalStrategy": "For PSIR, connected Western & Indian Political Thinkers directly with contemporary global geopolitical dynamics (e.g. Morgenthau with Indo-Pacific tensions).",
+      "prelimsStrategy": "Maintained a dedicated 'Mistake Notebook'. Reviewed every silly mistake 24 hours before subsequent tests.",
+      "csatStrategy": "Mastered reading comprehension tone analysis and quick arithmetic elimination.",
+      "interviewScore": 193,
+      "mainsScore": 901,
+      "goldenRules": [
+        "Maintain a dedicated Mistake Logbook for both Prelims and Mains.",
+        "Interlink static theory with dynamic current affairs in every GS answer.",
+        "Physical fitness and sports keep mental resilience sharp during low phases.",
+        "Do not give up after Prelims setbacks—analyze the root cause objectively."
+      ]
+    },
+    {
+      "id": "shruti-sharma",
+      "name": "Shruti Sharma",
+      "rank": 1,
+      "year": 2021,
+      "optional": "History",
+      "attempt": 2,
+      "background": "St. Stephen's College & JNU (History)",
+      "avatar": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80",
+      "quote": "Own your notes. Making your own consolidated handwritten notes provides an unmatched mental index during the intense 3-hour Mains papers.",
+      "keyStrategy": "Prepared self-made digital and handwritten notes directly aligned with UPSC syllabus headings. Extensive answer writing practice at Jamia RCA, focusing on clarity, structure, and subheadings.",
+      "gsStrategy": {
+        "gs1": "Deep historiographical perspectives for History; map-based geography; sociological case studies for Society.",
+        "gs2": "Structured answers into Constitutional provisions, Statutory backing, Institutional bottlenecks, and Way Forward.",
+        "gs3": "Point-wise presentation with data bullets, committee quotes, and clean schematic diagrams.",
+        "gs4": "Prepared definitions of all GS4 terms in 1-2 lines with 2 personal and 2 administrative examples."
+      },
+      "essayStrategy": "Addressed philosophical topics through varied lenses: individual, societal, administrative, national, and global.",
+      "optionalStrategy": "History optional requires historiography, archaeological evidence, and high-quality historical site maps.",
+      "prelimsStrategy": "Solved previous 15 years UPSC Prelims papers multiple times to decode UPSC's question drafting mindset.",
+      "csatStrategy": "Regular practice of English comprehension and logical syllogisms.",
+      "interviewScore": 173,
+      "mainsScore": 932,
+      "goldenRules": [
+        "Consolidate your own notes for every single line of the syllabus.",
+        "PYQs are the best teacher: study the options that UPSC eliminated in previous years.",
+        "Write answer copies in the actual UPSC format with margins.",
+        "Keep answers balanced, objective, and constructive."
+      ]
+    },
+    {
+      "id": "shubham-kumar",
+      "name": "Shubham Kumar",
+      "rank": 1,
+      "year": 2020,
+      "optional": "Anthropology",
+      "attempt": 3,
+      "background": "B.Tech IIT Bombay (Civil Engineering)",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "Stick to the basics and optimize your optional. Anthropology diagrams and case studies gave me the decisive scoring edge.",
+      "keyStrategy": "High scoring in Optional (320+) and GS3/GS4. Mastered fast diagramming techniques in Mains, completing every single paper on time.",
+      "gsStrategy": {
+        "gs1": "Brief intro + 2 neat subheadings + map/diagram + 1 line balanced conclusion.",
+        "gs2": "Articles highlighted with boxes, ARC-2 recommendations, NITI Aayog indices.",
+        "gs3": "High-scoring graphs for inflation, GDP trends, and agriculture marketing.",
+        "gs4": "Practical ethical analysis with clear stakeholder matrices."
+      },
+      "essayStrategy": "Structured essays with catchy thematic titles, real stories from rural India, and concrete policy recommendations.",
+      "optionalStrategy": "Prepared over 150 biological and socio-cultural anthropology diagrams that could be drawn in under 45 seconds.",
+      "prelimsStrategy": "Practiced 75+ mocks. Focused heavily on high-weightage pillars (Polity, Modern History, Economy, Environment).",
+      "csatStrategy": "Strong focus on quant speed techniques and data interpretation.",
+      "interviewScore": 176,
+      "mainsScore": 878,
+      "goldenRules": [
+        "Draw diagrams in at least 12 out of 20 questions in every GS paper.",
+        "Time management is supreme: 7 mins for 10-markers, 11 mins for 15-markers.",
+        "Revise high-weightage static subjects before touching new current affairs.",
+        "Maintain physical discipline through daily running and meditation."
+      ]
+    },
+    {
+      "id": "kanishak-kataria",
+      "name": "Kanishak Kataria",
+      "rank": 1,
+      "year": 2018,
+      "optional": "Mathematics",
+      "attempt": 1,
+      "background": "B.Tech IIT Bombay (Computer Science & Engineering)",
+      "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80",
+      "quote": "Objectivity is the key to UPSC Mains. Write what is asked, not what you know. Keep sentences short, data-backed, and use flowcharts whenever possible to save time.",
+      "keyStrategy": "Scored massively in Mathematics Optional (361/500). Prepared digitally using Evernote and OneNote, categorizing notes strictly by the UPSC syllabus keywords. Focused completely on high return on investment subjects like Ethics, Essay, and Optional.",
+      "gsStrategy": {
+        "gs1": "Relied entirely on standard books. For Geography, practiced rapid map drawing for every location-based concept.",
+        "gs2": "Used sub-headings aggressively. Quoted specific Articles, Constitutional Amendments, and Supreme Court judgements in every answer.",
+        "gs3": "Treated GS3 like a technical paper. Filled answers with facts, figures, NITI Aayog data points, and block diagrams.",
+        "gs4": "Prepared a personal list of core values and associated them with real-life administrative examples. Kept case studies structured and purely logical."
+      },
+      "essayStrategy": "Brainstormed for 25 minutes before starting. Focused on logical flow, transitions between paragraphs, and maintaining a balanced, optimistic tone throughout.",
+      "optionalStrategy": "Mathematics demands absolute rigor. Solved 15-20 years of PYQs. Made formula sheets for quick revision and practiced under strict time constraints to avoid calculation errors.",
+      "prelimsStrategy": "Did not over-read. Limited sources but revised them 5-6 times. Solved around 50 mock tests to develop the intuition for intelligent guessing and elimination.",
+      "csatStrategy": "Being from a math background, relied on natural aptitude but still practiced a few PYQs to stay in touch with the UPSC question phrasing.",
+      "interviewScore": 179,
+      "mainsScore": 942,
+      "goldenRules": [
+        "Digital notes are easier to update, organize, and revise quickly.",
+        "Mathematics optional requires solving problems with pen and paper, not just reading solutions.",
+        "Focus intensely on your Optional, Essay, and Ethics—these create the rank difference.",
+        "Do not try to read everything; stick to the syllabus boundaries strictly."
+      ]
+    }
+  ],
+  "TOPPER_BOOKS": [],
+  "TOPPER_ROUTINES": [
+    {
+      "id": "routine-full-time",
+      "title": "Routine for undefined",
+      "totalStudyHours": 0,
+      "wakeUpTime": "06:00 AM",
+      "sleepTime": "11:00 PM",
+      "schedule": [
+        {
+          "time": "06:00 - 06:30 AM",
+          "activity": "Wake up, Hydration, Light Exercise / Yoga",
+          "category": "Break / Health",
+          "description": ""
+        },
+        {
+          "time": "06:30 - 09:00 AM",
+          "activity": "Slot 1: Heavy Static GS (Polity / Economy / History)",
+          "category": "GS",
+          "description": ""
+        },
+        {
+          "time": "09:00 - 09:45 AM",
+          "activity": "Nutritious Breakfast & Break",
+          "category": "Break / Health",
+          "description": ""
+        },
+        {
+          "time": "09:45 - 11:45 AM",
+          "activity": "Slot 2: Newspaper (The Hindu / IE) + Editorial Notes",
+          "category": "Current Affairs",
+          "description": ""
+        },
+        {
+          "time": "11:45 - 01:45 PM",
+          "activity": "Slot 3: Optional Subject (Paper 1 / Paper 2)",
+          "category": "Optional",
+          "description": ""
+        },
+        {
+          "time": "01:45 - 02:45 PM",
+          "activity": "Lunch & 20-min Power Nap",
+          "category": "Break / Health",
+          "description": ""
+        },
+        {
+          "time": "02:45 - 04:30 PM",
+          "activity": "Slot 4: Optional Notes / Numerical / Diagrams",
+          "category": "Optional",
+          "description": ""
+        },
+        {
+          "time": "04:30 - 05:00 PM",
+          "activity": "Tea break & Quick Walk",
+          "category": "Break / Health",
+          "description": ""
+        },
+        {
+          "time": "05:00 - 06:30 PM",
+          "activity": "Slot 5: CSAT / Prelims 30 MCQs Practice",
+          "category": "CSAT / Revision",
+          "description": ""
+        },
+        {
+          "time": "06:30 - 08:00 PM",
+          "activity": "Slot 6: Mains Answer Writing (2 GS + 1 Optional Question)",
+          "category": "Answer Writing",
+          "description": ""
+        },
+        {
+          "time": "08:00 - 09:00 PM",
+          "activity": "Dinner & Family Time",
+          "category": "Break / Health",
+          "description": ""
+        },
+        {
+          "time": "09:00 - 10:30 PM",
+          "activity": "Slot 7: Spaced Revision of Day's Topics + Plan Next Day",
+          "category": "CSAT / Revision",
+          "description": ""
+        },
+        {
+          "time": "10:30 - 11:00 PM",
+          "activity": "Wind Down & Sleep",
+          "category": "Break / Health",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "id": "routine-working-professional",
+      "title": "Routine for undefined",
+      "totalStudyHours": 0,
+      "wakeUpTime": "06:00 AM",
+      "sleepTime": "11:00 PM",
+      "schedule": [
+        {
+          "time": "05:30 - 08:00 AM",
+          "activity": "Slot 1 (Pre-Office): Deep Static GS / Optional",
+          "category": "GS",
+          "description": ""
+        },
+        {
+          "time": "08:00 - 09:00 AM",
+          "activity": "Commute / Breakfast: Audio Current Affairs / Podcasts",
+          "category": "Current Affairs",
+          "description": ""
+        },
+        {
+          "time": "01:00 - 01:45 PM",
+          "activity": "Office Lunch Break: Digital Newspaper Editorials",
+          "category": "Current Affairs",
+          "description": ""
+        },
+        {
+          "time": "07:30 - 09:30 PM",
+          "activity": "Slot 2 (Post-Office): Optional Subject / Answer Writing",
+          "category": "Optional",
+          "description": ""
+        },
+        {
+          "time": "09:30 - 10:15 PM",
+          "activity": "Dinner & Refreshment",
+          "category": "Break / Health",
+          "description": ""
+        },
+        {
+          "time": "10:15 - 11:15 PM",
+          "activity": "Slot 3: Daily MCQs / Spaced Revision",
+          "category": "CSAT / Revision",
+          "description": ""
+        },
+        {
+          "time": "Weekends (Sat & Sun)",
+          "activity": "10-Hour Supercharge Weekend Sprints",
+          "category": "GS",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "id": "routine-prelims-sprint",
+      "title": "Routine for undefined",
+      "totalStudyHours": 0,
+      "wakeUpTime": "06:00 AM",
+      "sleepTime": "11:00 PM",
+      "schedule": [
+        {
+          "time": "07:00 - 09:00 AM",
+          "activity": "Subject 1 Fast Revision (Polity / Economy / Env)",
+          "category": "GS",
+          "description": ""
+        },
+        {
+          "time": "09:30 - 11:30 AM",
+          "activity": "Full Length Prelims Mock Test (GS Paper 1)",
+          "category": "CSAT / Revision",
+          "description": ""
+        },
+        {
+          "time": "11:45 - 01:45 PM",
+          "activity": "Mock Test In-Depth 360° Post-Mortem",
+          "category": "CSAT / Revision",
+          "description": ""
+        },
+        {
+          "time": "02:30 - 04:30 PM",
+          "activity": "CSAT Full Length Mock Test / Quant-Logic Sprint",
+          "category": "CSAT / Revision",
+          "description": ""
+        },
+        {
+          "time": "05:00 - 07:30 PM",
+          "activity": "Yearly Current Affairs Compilation (PT 365 / Annual Digest)",
+          "category": "Current Affairs",
+          "description": ""
+        },
+        {
+          "time": "08:30 - 10:30 PM",
+          "activity": "UPSC 10-Year PYQ Option Elimination Practice",
+          "category": "CSAT / Revision",
+          "description": ""
+        },
+        {
+          "time": "10:30 - 11:30 PM",
+          "activity": "Mistake Diary Review",
+          "category": "CSAT / Revision",
+          "description": ""
+        }
+      ]
+    }
+  ],
+  "INTERVIEW_TRANSCRIPTS": [
+    {
+      "id": "interview-1",
+      "candidate": "Aditya Srivastava",
+      "board": "Manoj Soni Board",
+      "year": 2023,
+      "score": 200,
+      "question": "Why did you leave Goldman Sachs for Civil Services?",
+      "answer": "While corporate life offered financial growth, I wanted to work on larger societal impact...",
+      "topic": "DAF / Work Experience"
+    }
+  ]
+}

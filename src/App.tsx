@@ -225,6 +225,11 @@ export default function App() {
     taskType: "study",
   });
 
+  const currentStudySessionRef = useRef(currentStudySession);
+  useEffect(() => {
+    currentStudySessionRef.current = currentStudySession;
+  }, [currentStudySession]);
+
   // Core Data States with LocalStorage Hydration
   const [books, setBooks] = useState<BookItem[]>(() => {
     const saved = localStorage.getItem("upsc_books");
@@ -283,23 +288,12 @@ export default function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Focus Timer State & Configurations
-  const [timerConfig, setTimerConfig] = useState<FocusTimerConfig>(() => {
-    const saved = localStorage.getItem("upsc_timer_config");
-    return saved ? JSON.parse(saved) : DEFAULT_TIMER_CONFIG;
-  });
-
   const [audioNotes, setAudioNotes] = useState<AudioNote[]>(() => {
     const saved = localStorage.getItem("ras_audio_notes_v2");
     return saved ? JSON.parse(saved) : [];
   });
-  const [timerPhase, setTimerPhase] = useState<TimerPhase>("focus");
-  const [currentCycle, setCurrentCycle] = useState<number>(1);
-  const [timerRunning, setTimerRunning] = useState<boolean>(false);
   const [isAIMentorOpen, setIsAIMentorOpen] = useState(false);
-  const [timerSeconds, setTimerSeconds] = useState<number>(0);
   const [studyStreak, setStudyStreak] = useState<number>(0);
-  const [dailyGoalHours, setDailyGoalHours] = useState<number>(8);
 
   // Modals State
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
@@ -378,10 +372,6 @@ export default function App() {
     );
     localStorage.setItem("upsc_pyqs", JSON.stringify(pyqs));
     localStorage.setItem("upsc_weak_areas", JSON.stringify(weakAreas));
-    localStorage.setItem(
-      "upsc_timer_config",
-      JSON.stringify(timerConfig)
-    );
     localStorage.setItem("ras_audio_notes", JSON.stringify(audioNotes));
   }, [
     books,
@@ -393,91 +383,8 @@ export default function App() {
     revisionQueue,
     pyqs,
     weakAreas,
-    timerConfig,
     audioNotes,
   ]);
-
-  // Timer Tick Engine with Smart Interval Automation & Sounds
-  useEffect(() => {
-    let interval: any = null;
-    if (timerRunning) {
-      interval = setInterval(() => {
-        setTimerSeconds((prevSeconds) => {
-          // If continuous stopwatch mode, simple count up
-          if (timerConfig.mode === "stopwatch_continuous") {
-            return prevSeconds + 1;
-          }
-
-          const targetMins =
-            timerPhase === "focus"
-              ? timerConfig.focusMinutes
-              : timerPhase === "short_break"
-              ? timerConfig.shortBreakMinutes
-              : timerConfig.longBreakMinutes;
-
-          const targetSecs = Math.max(targetMins * 60, 1);
-
-          if (prevSeconds + 1 >= targetSecs) {
-            // Trigger browser-native notification + audio chime + background tab alert
-            if (timerConfig.nativeNotificationsEnabled !== false) {
-              triggerTimerEndNotification({
-                phase: timerPhase,
-                cycle: currentCycle,
-                playSound: timerConfig.soundAlertsEnabled !== false,
-              });
-            } else if (timerConfig.soundAlertsEnabled) {
-              playTimerChime(
-                timerPhase === "focus" ? "focus_end" : "break_end"
-              );
-            }
-
-            if (timerPhase === "focus") {
-              if (currentCycle >= timerConfig.cyclesBeforeLongBreak) {
-                setTimerPhase("long_break");
-                setCurrentCycle(1);
-              } else {
-                setTimerPhase("short_break");
-                setCurrentCycle((c) => c + 1);
-              }
-              if (!timerConfig.autoStartBreaks) {
-                setTimerRunning(false);
-              }
-            } else {
-              setTimerPhase("focus");
-              if (!timerConfig.autoStartNextFocus) {
-                setTimerRunning(false);
-              }
-            }
-            return 0;
-          }
-
-          return prevSeconds + 1;
-        });
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [timerRunning, timerConfig, timerPhase, currentCycle]);
-
-  // Skip Current Interval Handler
-  const handleSkipInterval = () => {
-    if (timerPhase === "focus") {
-      if (currentCycle >= timerConfig.cyclesBeforeLongBreak) {
-        setTimerPhase("long_break");
-        setCurrentCycle(1);
-      } else {
-        setTimerPhase("short_break");
-        setCurrentCycle((c) => c + 1);
-      }
-    } else {
-      setTimerPhase("focus");
-    }
-    setTimerSeconds(0);
-  };
-
-  const handleResetTimer = () => {
-    setTimerRunning(false);
-    setTimerSeconds(0);
-  };
 
   // Keyboard shortcut for Global Search (Ctrl+K or Cmd+K)
   useEffect(() => {
@@ -741,9 +648,9 @@ export default function App() {
               setAiModalOpen(true);
             }}
             studyStreak={studyStreak}
-            timerRunning={timerRunning}
-            timerSeconds={timerSeconds}
-            onToggleTimer={() => setTimerRunning((prev) => !prev)}
+            timerRunning={false}
+            timerSeconds={0}
+            onToggleTimer={() => {}}
           />
 
           {/* Core Content Canvas */}
@@ -819,18 +726,6 @@ export default function App() {
                     onAddSessionLog={handleAddSessionLog}
                     onDeleteSessionLog={handleDeleteSessionLog}
                     onResetDefaultSessionLogs={handleResetDefaultSessionLogs}
-                    timerRunning={timerRunning}
-                    timerSeconds={timerSeconds}
-                    onToggleTimer={() => setTimerRunning((prev) => !prev)}
-                    onResetTimer={handleResetTimer}
-                    dailyGoalHours={dailyGoalHours}
-                    onUpdateDailyGoal={setDailyGoalHours}
-                    timerConfig={timerConfig}
-                    onUpdateTimerConfig={setTimerConfig}
-                    timerPhase={timerPhase}
-                    currentCycle={currentCycle}
-                    onSkipInterval={handleSkipInterval}
-                    onSetTimerPhase={setTimerPhase}
                     revisionQueue={revisionQueue}
                     onCompleteRevision={handleCompleteRevision}
                     onAddRevisionItem={handleAddRevisionItem}

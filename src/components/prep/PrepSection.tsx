@@ -9,7 +9,6 @@ import {
 } from "../../types";
 import { SyllabusTab } from "./SyllabusTab";
 import { StudyPlanTab } from "./StudyPlanTab";
-import { StudyTrackerTab } from "./StudyTrackerTab";
 import { SpacedRevisionTab } from "./SpacedRevisionTab";
 import { RevisionNotesTab } from "./RevisionNotesTab";
 import { PYQTab } from "./PYQTab";
@@ -18,7 +17,6 @@ import { QuickThoughtsModal } from "./QuickThoughtsModal";
 import {
   BookOpen,
   Flag,
-  Clock,
   RotateCcw,
   HelpCircle,
   StickyNote,
@@ -55,12 +53,6 @@ interface PrepSectionProps {
   onAddSessionLog: (log: StudySessionLog) => void;
   onDeleteSessionLog: (id: string) => void;
   onResetDefaultSessionLogs?: () => void;
-  timerRunning: boolean;
-  timerSeconds: number;
-  onToggleTimer: () => void;
-  onResetTimer: () => void;
-  dailyGoalHours: number;
-  onUpdateDailyGoal: (hours: number) => void;
   revisionQueue: RevisionItem[];
   onCompleteRevision: (itemId: string) => void;
   onAddRevisionItem?: (item: RevisionItem) => void;
@@ -71,14 +63,6 @@ interface PrepSectionProps {
   onDeletePYQ?: (id: string) => void;
   onResetDefaultPYQs?: () => void;
   onOpenAIEvaluator: (question: string) => void;
-  timerConfig?: import("../../types").FocusTimerConfig;
-  onUpdateTimerConfig?: (
-    config: import("../../types").FocusTimerConfig
-  ) => void;
-  timerPhase?: import("../../types").TimerPhase;
-  currentCycle?: number;
-  onSkipInterval?: () => void;
-  onSetTimerPhase?: (phase: import("../../types").TimerPhase) => void;
 }
 
 export const PrepSection: React.FC<PrepSectionProps> = ({
@@ -101,12 +85,6 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
   onAddSessionLog,
   onDeleteSessionLog,
   onResetDefaultSessionLogs,
-  timerRunning,
-  timerSeconds,
-  onToggleTimer,
-  onResetTimer,
-  dailyGoalHours,
-  onUpdateDailyGoal,
   revisionQueue,
   onCompleteRevision,
   onAddRevisionItem,
@@ -117,12 +95,6 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
   onDeletePYQ,
   onResetDefaultPYQs,
   onOpenAIEvaluator,
-  timerConfig,
-  onUpdateTimerConfig,
-  timerPhase,
-  currentCycle,
-  onSkipInterval,
-  onSetTimerPhase,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [showQuickLogModal, setShowQuickLogModal] = useState<boolean>(false);
@@ -162,14 +134,6 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
       icon: Flag,
       badge: "4 Phases",
       color: "bg-indigo-50 text-indigo-600 border-indigo-200",
-    },
-    {
-      key: "tracker",
-      label: "Study Tracker & Focus Timer",
-      description: "Live focus stopwatch & daily session analytics",
-      icon: Clock,
-      badge: "Live Focus",
-      color: "bg-emerald-50 text-emerald-600 border-emerald-200",
     },
     {
       key: "revision",
@@ -331,28 +295,6 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
           onAddMilestone={onAddMilestone}
           onDeleteMilestone={onDeleteMilestone}
           onResetDefaultStudyPlan={onResetDefaultStudyPlan}
-        />
-      )}
-
-      {activeSubTab === "tracker" && (
-        <StudyTrackerTab
-          sessionLogs={sessionLogs}
-          onAddSessionLog={onAddSessionLog}
-          onDeleteSessionLog={onDeleteSessionLog}
-          onResetDefaultSessionLogs={onResetDefaultSessionLogs}
-          timerRunning={timerRunning}
-          timerSeconds={timerSeconds}
-          onToggleTimer={onToggleTimer}
-          onResetTimer={onResetTimer}
-          dailyGoalHours={dailyGoalHours}
-          onUpdateDailyGoal={onUpdateDailyGoal}
-          timerConfig={timerConfig}
-          onUpdateTimerConfig={onUpdateTimerConfig}
-          timerPhase={timerPhase}
-          currentCycle={currentCycle}
-          onSkipInterval={onSkipInterval}
-          onSetTimerPhase={onSetTimerPhase}
-          syllabus={syllabus}
         />
       )}
 

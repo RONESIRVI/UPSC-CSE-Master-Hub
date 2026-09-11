@@ -365,70 +365,61 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              {/* Jot Thought / Doubt Scratchpad Trigger */}
+              {/* Quick Thought / Scratchpad */}
               <button
-                id="tracker-quick-thought-btn"
                 type="button"
                 onClick={() => setShowQuickThoughtsModal(true)}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 border-2 border-amber-200 hover:border-amber-300 text-amber-900 text-xs font-bold shadow-2xs transition cursor-pointer"
-                title="Jot down a fleeting doubt, formula, or thought without stopping your study workflow"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 text-xs font-semibold shadow-sm transition"
               >
-                <Lightbulb className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                <span>💡 Scratchpad</span>
+                <Lightbulb className="w-3.5 h-3.5 text-amber-600" />
+                <span>Scratchpad</span>
               </button>
 
-              {/* Configure Timer Intervals Button */}
+              {/* Timer Settings */}
               <button
-                id="open-timer-config-btn"
                 onClick={() => setShowConfigModal(true)}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 text-xs font-bold shadow-2xs transition cursor-pointer"
-                title="Configure Focus & Break Intervals"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-indigo-50 border border-slate-200 text-slate-700 text-xs font-semibold shadow-sm transition"
               >
                 <Sliders className="w-3.5 h-3.5 text-indigo-600" />
-                <span>⚙️ Settings</span>
+                <span>Settings</span>
               </button>
 
+              {/* Manual Log Entry */}
               <button
                 onClick={() => setShowQuickLogModal(true)}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-xs transition cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-sm transition"
               >
-                <Plus className="w-3.5 h-3.5 shrink-0" />
-                <span>+ Log Session</span>
+                <Plus className="w-3.5 h-3.5" />
+                <span>Offline Log</span>
               </button>
-
-              {/* Export to CSV Button in Header */}
-              <button
-                id="header-export-csv-btn"
-                onClick={() => handleExportCsv(sessionLogs, "all")}
-                disabled={sessionLogs.length === 0}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-200 hover:border-emerald-300 text-emerald-800 text-xs font-bold shadow-2xs transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                title="Export all study session logs to CSV for Excel / Google Sheets"
-              >
-                <Download className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-                <span>Export CSV</span>
-              </button>
-
-              {onResetDefaultSessionLogs && (
-                <button
-                  onClick={() => {
-                    if (
-                      confirm("Restore standard sample study session logs?")
-                    ) {
-                      onResetDefaultSessionLogs();
-                    }
-                  }}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition cursor-pointer"
-                  title="Restore Sample Study Session Logs"
-                >
-                  <RotateCcw className="w-3.5 h-3.5 shrink-0" />
-                  <span>Restore Logs</span>
-                </button>
-              )}
             </div>
           </div>
 
-          {/* Quick Preset Selection Strip */}
-          <div className="bg-slate-50 p-2 rounded-2xl border border-slate-200 flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+          {/* Active Context Display (New Feature) */}
+          {timerPhase === "focus" && (
+            <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-4 rounded-2xl border border-indigo-100/50 flex items-start gap-4">
+              <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center shrink-0">
+                <BookOpen className="w-5 h-5 text-indigo-600" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider mb-0.5">Currently Studying</p>
+                <h3 className="text-sm font-bold text-indigo-950 truncate">
+                  {currentStudySession.subject || "General Study"}
+                </h3>
+                <p className="text-xs text-indigo-700 truncate mt-0.5">
+                  {currentStudySession.topic || "Open session / No specific topic"}
+                </p>
+              </div>
+              <div className="shrink-0">
+                <span className="px-2 py-1 bg-white text-indigo-600 text-[10px] font-bold rounded-lg border border-indigo-100 uppercase">
+                  {currentStudySession.taskType.replace("_", " ")}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Cleaned Presets Selection */}
+          <div className="flex flex-wrap items-center gap-2">
             <span className="text-[10px] font-extrabold uppercase text-slate-400 px-2 shrink-0">
               Presets:
             </span>
@@ -499,17 +490,16 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
             </button>
           </div>
 
-          {/* Big Digital Timer Display with Phase Indicator */}
-          <div className="relative py-7 px-6 bg-slate-950 rounded-3xl border border-slate-800 shadow-2xl text-center space-y-4 overflow-hidden">
+          <div className="relative py-10 px-6 bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl text-center space-y-5 overflow-hidden">
             {/* Ambient Background Glow for Active Sessions */}
             {timerRunning && (
               <div
-                className={`absolute inset-0 opacity-15 blur-2xl pointer-events-none transition-colors duration-700 ${
+                className={`absolute inset-0 opacity-20 blur-[60px] pointer-events-none transition-colors duration-1000 ${
                   timerPhase === "focus"
-                    ? "bg-amber-500"
+                    ? "bg-amber-500/40"
                     : timerPhase === "short_break"
-                    ? "bg-emerald-500"
-                    : "bg-blue-500"
+                    ? "bg-emerald-500/40"
+                    : "bg-blue-500/40"
                 }`}
               />
             )}

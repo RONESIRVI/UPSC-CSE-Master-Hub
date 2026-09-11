@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { TopperSubTab, BookItem, TopperRoutine, TopperProfile } from "../../types";
+import { TopperSubTab, TopperRoutine, TopperProfile } from "../../types";
 import { TopperStrategyTab } from "./TopperStrategyTab";
 import { TopperStrategySetupTab } from "./TopperStrategySetupTab";
 import { TopperRoutineTab } from "./TopperRoutineTab";

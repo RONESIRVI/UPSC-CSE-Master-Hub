@@ -103,12 +103,12 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
   const totalMocks = mockLogs.length;
   const avgMockScore =
     totalMocks > 0
-      ? (mockLogs.reduce((acc, m) => acc + m.score, 0) / totalMocks).toFixed(1)
+      ? (mockLogs.reduce((acc, m) => acc + m.marksObtained, 0) / totalMocks).toFixed(1)
       : "0.0";
   const avgNegativeMarks =
     totalMocks > 0
       ? (
-          mockLogs.reduce((acc, m) => acc + m.negativeMarks, 0) / totalMocks
+          mockLogs.reduce((acc, m) => acc + ((m.incorrectCount || 0) * 0.66), 0) / totalMocks
         ).toFixed(1)
       : "0.0";
 
@@ -880,15 +880,15 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                         <td className="p-2 font-bold text-slate-900">
                           {m.testName}
                         </td>
-                        <td className="p-2">{m.paper}</td>
+                        <td className="p-2">{m.type}</td>
                         <td className="p-2 font-mono font-bold text-indigo-700">
-                          {m.score}/{m.totalMarks}
+                          {m.marksObtained}/{m.totalMarks}
                         </td>
                         <td className="p-2 font-mono font-bold text-emerald-700">
-                          {m.accuracy}%
+                          {m.accuracyRate}%
                         </td>
                         <td className="p-2 font-mono font-bold text-rose-600">
-                          -{m.negativeMarks} pts
+                          -{m.negativeMarks || 0} pts
                         </td>
                       </tr>
                     ))}

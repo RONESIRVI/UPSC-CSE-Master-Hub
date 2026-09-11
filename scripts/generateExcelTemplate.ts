@@ -1,5 +1,5 @@
 import * as XLSX from 'xlsx';
-import { TOPPERS_PROFILES, TOPPER_BOOKS, TOPPER_ROUTINES } from '../src/data/toppersData';
+import { TOPPERS_PROFILES, STRATEGY_SETUP, TOPPER_ROUTINES } from '../src/data/toppersData';
 
 const wb = XLSX.utils.book_new();
 
@@ -30,18 +30,15 @@ const strategyData = TOPPERS_PROFILES.map(t => ({
 const wsStrategy = XLSX.utils.json_to_sheet(strategyData);
 XLSX.utils.book_append_sheet(wb, wsStrategy, "Strategy");
 
-// 2. Books Sheet
-const booksData = TOPPER_BOOKS.map(b => ({
-  id: b.id,
-  title: b.title,
-  author: b.author,
-  subject: b.subject,
-  coverUrl: b.coverUrl,
-  category: b.category,
-  buyUrl: b.buyUrl || ''
+// 2. Strategy Setup Sheet
+const strategySetupData = STRATEGY_SETUP.map(s => ({
+  id: s.id,
+  title: s.title,
+  content: s.content,
+  ...s.extraData
 }));
-const wsBooks = XLSX.utils.json_to_sheet(booksData);
-XLSX.utils.book_append_sheet(wb, wsBooks, "Books");
+const wsStrategySetup = XLSX.utils.json_to_sheet(strategySetupData);
+XLSX.utils.book_append_sheet(wb, wsStrategySetup, "Strategy Setup");
 
 // 3. Routines Sheet
 const routinesData: any[] = [];
@@ -49,8 +46,6 @@ TOPPER_ROUTINES.forEach(r => {
   r.schedule.forEach(s => {
     routinesData.push({
       routineId: r.id,
-      topperName: r.topperName,
-      profileType: r.profileType,
       time: s.time,
       activity: s.activity,
       category: s.category

@@ -15,12 +15,14 @@ interface PerformanceTabProps {
   mockLogs: MockTestLog[];
   onAddMockLog: (log: MockTestLog) => void;
   onDeleteMockLog: (id: string) => void;
+  onOpenExportReport?: () => void;
 }
 
 export const PerformanceTab: React.FC<PerformanceTabProps> = ({
   mockLogs,
   onAddMockLog,
   onDeleteMockLog,
+  onOpenExportReport,
 }) => {
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
   const [testName, setTestName] = useState("");

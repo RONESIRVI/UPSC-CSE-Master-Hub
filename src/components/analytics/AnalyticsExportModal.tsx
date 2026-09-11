@@ -888,7 +888,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                           {m.accuracyRate}%
                         </td>
                         <td className="p-2 font-mono font-bold text-rose-600">
-                          -{m.negativeMarks || 0} pts
+                          -{((m.incorrectCount || 0) * 0.66).toFixed(1)} pts
                         </td>
                       </tr>
                     ))}

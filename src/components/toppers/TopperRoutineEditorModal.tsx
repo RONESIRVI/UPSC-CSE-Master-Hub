@@ -74,7 +74,7 @@ export const TopperRoutineEditorModal: React.FC<TopperRoutineEditorModalProps> =
                   value={item.category}
                   onChange={(e) => {
                     const newSchedule = [...formData.schedule];
-                    newSchedule[idx].category = e.target.value;
+                    newSchedule[idx].category = e.target.value as "GS" | "Break / Health" | "Current Affairs" | "Optional" | "CSAT / Revision" | "Answer Writing";
                     setFormData({ ...formData, schedule: newSchedule });
                   }}
                   className="w-1/3 bg-slate-50 border border-slate-200 text-sm rounded-lg px-2 py-1"
@@ -84,8 +84,7 @@ export const TopperRoutineEditorModal: React.FC<TopperRoutineEditorModalProps> =
                   <option value="Current Affairs">Current Affairs</option>
                   <option value="Answer Writing">Answer Writing</option>
                   <option value="CSAT / Revision">CSAT / Revision</option>
-                  <option value="Break">Break</option>
-                  <option value="Sleep">Sleep</option>
+                  <option value="Break / Health">Break / Health</option>
                 </select>
                 <button
                   onClick={() => {
@@ -102,7 +101,7 @@ export const TopperRoutineEditorModal: React.FC<TopperRoutineEditorModalProps> =
               onClick={() => {
                 setFormData({
                   ...formData,
-                  schedule: [...formData.schedule, { time: "", activity: "", icon: "Sun", category: "GS" }]
+                  schedule: [...formData.schedule, { time: "", activity: "", category: "GS", description: "" }]
                 });
               }}
               className="text-sm font-bold text-indigo-600 flex items-center gap-1"

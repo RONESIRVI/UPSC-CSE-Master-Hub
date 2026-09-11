@@ -30,7 +30,7 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
     subject: "भारत का इतिहास",
     module: "प्राचीन, मध्यकालीन व आधुनिक भारत",
     title: "भारत का इतिहास",
-    yield: "Medium Yield",
+    yield: "⭐ Medium Yield",
     weightagePercentage: 10.0,
     pyqFrequencyLast5Years: 0,
     status: "not_started",
@@ -119,7 +119,7 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
     subject: "विज्ञान एवं प्रौद्योगिकी",
     module: "सामान्य विज्ञान",
     title: "विज्ञान एवं प्रौद्योगिकी",
-    yield: "Medium Yield",
+    yield: "⭐ Medium Yield",
     weightagePercentage: 10.0,
     pyqFrequencyLast5Years: 0,
     status: "not_started",
@@ -170,7 +170,7 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
   // --- MAINS (मुख्य परीक्षा) ---
   {
     id: "ras-mains-1",
-    paper: "Mains Paper I",
+    paper: "Mains GS1",
     subject: "सामान्य अध्ययन- I",
     module: "इतिहास, अर्थव्यवस्था एवं समाजशास्त्र",
     title: "सामान्य अध्ययन- I: इतिहास, अर्थव्यवस्था, समाजशास्त्र, प्रबंधन, लेखांकन",
@@ -192,7 +192,7 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
   },
   {
     id: "ras-mains-2",
-    paper: "Mains Paper II",
+    paper: "Mains GS2",
     subject: "सामान्य अध्ययन- II",
     module: "नीतिशास्त्र, विज्ञान एवं भूगोल",
     title: "सामान्य अध्ययन- II: प्रशासनिक नीतिशास्त्र, विज्ञान, पृथ्वी विज्ञान",
@@ -209,7 +209,7 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
   },
   {
     id: "ras-mains-3",
-    paper: "Mains Paper III",
+    paper: "Mains GS3",
     subject: "सामान्य अध्ययन- III",
     module: "राज व्यवस्था, लोक प्रशासन एवं विधि",
     title: "सामान्य अध्ययन- III: राज व्यवस्था, शासन, लोक प्रशासन, व्यवहार एवं विधि",
@@ -227,7 +227,7 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
   },
   {
     id: "ras-mains-4",
-    paper: "Mains Paper IV",
+    paper: "Mains GS4",
     subject: "सामान्य हिंदी एवं सामान्य अंग्रेजी",
     module: "भाषा",
     title: "सामान्य हिंदी एवं सामान्य अंग्रेजी",

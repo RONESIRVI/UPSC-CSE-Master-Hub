@@ -122,7 +122,7 @@ export const PYQTab: React.FC<PYQTabProps> = ({
             eliminationTechnique: formElimination.trim() || undefined,
           }
         : {
-            marks: formMarks || 10,
+            marks: (formMarks || 10) as 10 | 15 | 20 | 125 | 250,
             modelAnswerOutline:
               formModelOutline.trim() ||
               "Introduction -> Key Body Points -> Conclusion",

@@ -942,7 +942,7 @@ export default function App() {
         />
 
         {/* Footer */}
-        <footer className="border-t border-slate-200 bg-white py-6 text-slate-500 text-xs text-center mt-12 shadow-sm">
+        <footer className="border-t border-slate-200 bg-white pt-6 pb-24 lg:pb-6 text-slate-500 text-xs text-center mt-12 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <span className="w-5 h-5 rounded-md bg-indigo-600 text-white font-bold flex items-center justify-center text-[10px]">

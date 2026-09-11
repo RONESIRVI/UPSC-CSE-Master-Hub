@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { AppIcon } from "./components/AppIcon";
 import { LocalNotifications } from '@capacitor/local-notifications';
@@ -150,29 +150,40 @@ export default function App() {
     };
   }, []);
 
+  // Maintain a stable ref of the current state so we don't need to detach/reattach the native listener
+  const backStateRef = useRef({ isUpdateModalOpen, searchOpen, aiModalOpen, activeTab });
+  useEffect(() => {
+    backStateRef.current = { isUpdateModalOpen, searchOpen, aiModalOpen, activeTab };
+  }, [isUpdateModalOpen, searchOpen, aiModalOpen, activeTab]);
+
   // Handle Hardware Back Button for Android
   useEffect(() => {
     if (!Capacitor.isNativePlatform()) return;
 
-    const handleBackButton = () => {
-      if (isUpdateModalOpen) {
-        setIsUpdateModalOpen(false);
-      } else if (searchOpen) {
-        setSearchOpen(false);
-      } else if (aiModalOpen) {
-        setAiModalOpen(false);
-      } else if (activeTab !== "home") {
-        setActiveTab("home");
-      } else {
-        CapacitorApp.exitApp();
-      }
+    let listener: any = null;
+    const registerListener = async () => {
+      listener = await CapacitorApp.addListener('backButton', () => {
+        const state = backStateRef.current;
+        if (state.isUpdateModalOpen) {
+          setIsUpdateModalOpen(false);
+        } else if (state.searchOpen) {
+          setSearchOpen(false);
+        } else if (state.aiModalOpen) {
+          setAiModalOpen(false);
+        } else if (state.activeTab !== "home") {
+          setActiveTab("home");
+        } else {
+          CapacitorApp.exitApp();
+        }
+      });
     };
+    
+    registerListener();
 
-    const listener = CapacitorApp.addListener('backButton', handleBackButton);
     return () => {
-      listener.then(l => l.remove());
+      if (listener) listener.remove();
     };
-  }, [isUpdateModalOpen, searchOpen, aiModalOpen, activeTab]);
+  }, []); // Run exactly once
 
   // Expose test function to window for debugging
   useEffect(() => {

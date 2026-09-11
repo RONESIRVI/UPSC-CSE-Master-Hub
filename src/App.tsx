@@ -150,41 +150,6 @@ export default function App() {
     };
   }, []);
 
-  // Maintain a stable ref of the current state so we don't need to detach/reattach the native listener
-  const backStateRef = useRef({ isUpdateModalOpen, searchOpen, aiModalOpen, activeTab });
-  useEffect(() => {
-    backStateRef.current = { isUpdateModalOpen, searchOpen, aiModalOpen, activeTab };
-  }, [isUpdateModalOpen, searchOpen, aiModalOpen, activeTab]);
-
-  // Handle Hardware Back Button for Android
-  useEffect(() => {
-    if (!Capacitor.isNativePlatform()) return;
-
-    let listener: any = null;
-    const registerListener = async () => {
-      listener = await CapacitorApp.addListener('backButton', () => {
-        const state = backStateRef.current;
-        if (state.isUpdateModalOpen) {
-          setIsUpdateModalOpen(false);
-        } else if (state.searchOpen) {
-          setSearchOpen(false);
-        } else if (state.aiModalOpen) {
-          setAiModalOpen(false);
-        } else if (state.activeTab !== "home") {
-          setActiveTab("home");
-        } else {
-          CapacitorApp.exitApp();
-        }
-      });
-    };
-    
-    registerListener();
-
-    return () => {
-      if (listener) listener.remove();
-    };
-  }, []); // Run exactly once
-
   // Expose test function to window for debugging
   useEffect(() => {
     (window as any).testUpdateModal = () => {
@@ -344,6 +309,41 @@ export default function App() {
   >("evaluate");
   const [aiModalQuestion, setAiModalQuestion] = useState<string>("");
   const [aiModalTopic, setAiModalTopic] = useState<string>("");
+
+  // Maintain a stable ref of the current state so we don't need to detach/reattach the native listener
+  const backStateRef = useRef({ isUpdateModalOpen, searchOpen, aiModalOpen, activeTab });
+  useEffect(() => {
+    backStateRef.current = { isUpdateModalOpen, searchOpen, aiModalOpen, activeTab };
+  }, [isUpdateModalOpen, searchOpen, aiModalOpen, activeTab]);
+
+  // Handle Hardware Back Button for Android
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+
+    let listener: any = null;
+    const registerListener = async () => {
+      listener = await CapacitorApp.addListener('backButton', () => {
+        const state = backStateRef.current;
+        if (state.isUpdateModalOpen) {
+          setIsUpdateModalOpen(false);
+        } else if (state.searchOpen) {
+          setSearchOpen(false);
+        } else if (state.aiModalOpen) {
+          setAiModalOpen(false);
+        } else if (state.activeTab !== "home") {
+          setActiveTab("home");
+        } else {
+          CapacitorApp.exitApp();
+        }
+      });
+    };
+    
+    registerListener();
+
+    return () => {
+      if (listener) listener.remove();
+    };
+  }, []); // Run exactly once
 
   // Sync to LocalStorage
   useEffect(() => {

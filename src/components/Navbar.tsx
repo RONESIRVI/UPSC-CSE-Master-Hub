@@ -161,17 +161,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
 
 
-            {/* AI Mains Mentor & Evaluator Button - Premium Glowing VIP Look */}
-            <button
-              id="ai-mentor-btn"
-              onClick={onOpenAIMentor}
-              className="group relative flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 text-white font-black text-[10px] sm:text-xs shadow-lg shadow-indigo-500/40 transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer shrink-0 whitespace-nowrap overflow-hidden bg-[length:200%_auto] hover:bg-right"
-            >
-              <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <Sparkles className="w-3.5 h-3.5 shrink-0 text-amber-300 drop-shadow-md animate-pulse" />
-              <span className="hidden sm:inline drop-shadow-md tracking-wider">AI UPSC MENTOR</span>
-              <span className="sm:hidden drop-shadow-md tracking-wider">AI MENTOR</span>
-            </button>
           </div>
         </div>
       </div>

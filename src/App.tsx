@@ -47,28 +47,11 @@ import {
   WeakAreaItem,
   TopperRoutine,
   PYQQuestion,
-  FocusTimerConfig,
-  TimerPhase,
-  TimerMode,
   DailyTask,
   PreparationHealth,
   TopperProfile,
   AudioNote,
 } from "./types";
-import { playTimerChime } from "./utils/audioAlert";
-import { triggerTimerEndNotification } from "./utils/browserNotifications";
-
-const DEFAULT_TIMER_CONFIG: FocusTimerConfig = {
-  mode: "pomodoro_25",
-  focusMinutes: 25,
-  shortBreakMinutes: 5,
-  longBreakMinutes: 15,
-  cyclesBeforeLongBreak: 4,
-  autoStartBreaks: false,
-  autoStartNextFocus: false,
-  soundAlertsEnabled: true,
-  nativeNotificationsEnabled: true,
-};
 
 import { UpdateModal } from "./components/ui/UpdateModal";
 
@@ -214,7 +197,6 @@ export default function App() {
   // Splash Screen State
   const [showSplash, setShowSplash] = useState<boolean>(true);
 
-  // App Level Forms State (Lifted from Timer)
   const [currentStudySession, setCurrentStudySession] = useState<{
     subject: string;
     topic: string;
@@ -224,11 +206,6 @@ export default function App() {
     topic: "",
     taskType: "study",
   });
-
-  const currentStudySessionRef = useRef(currentStudySession);
-  useEffect(() => {
-    currentStudySessionRef.current = currentStudySession;
-  }, [currentStudySession]);
 
   // Core Data States with LocalStorage Hydration
   const [books, setBooks] = useState<BookItem[]>(() => {

@@ -116,7 +116,7 @@ export const PYQTab: React.FC<PYQTabProps> = ({
               { label: "C", text: formOptC.trim() || "Option C" },
               { label: "D", text: formOptD.trim() || "Option D" },
             ],
-            correctOption: formCorrectOpt,
+            correctOption: formCorrectOpt as "A" | "B" | "C" | "D",
             explanation:
               formExplanation.trim() || "Refer to standard reference sources.",
             eliminationTechnique: formElimination.trim() || undefined,

@@ -4,7 +4,7 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
   // --- PRELIMS (प्रारंभिक परीक्षा) ---
   {
     id: "ras-pre-1",
-    paper: "Prelims",
+    paper: "Prelims GS1",
     subject: "राजस्थान का इतिहास, कला, संस्कृति, साहित्य, परंपरा एवं विरासत",
     module: "राजस्थान का इतिहास व कला",
     title: "राजस्थान का इतिहास, कला, संस्कृति, साहित्य, परंपरा एवं विरासत",
@@ -26,7 +26,7 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
   },
   {
     id: "ras-pre-2",
-    paper: "Prelims",
+    paper: "Prelims GS1",
     subject: "भारत का इतिहास",
     module: "प्राचीन, मध्यकालीन व आधुनिक भारत",
     title: "भारत का इतिहास",
@@ -44,7 +44,7 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
   },
   {
     id: "ras-pre-3",
-    paper: "Prelims",
+    paper: "Prelims GS1",
     subject: "विश्व एवं भारत का भूगोल",
     module: "विश्व, भारत व राजस्थान का भूगोल",
     title: "विश्व एवं भारत का भूगोल",
@@ -61,7 +61,7 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
   },
   {
     id: "ras-pre-4",
-    paper: "Prelims",
+    paper: "Prelims GS1",
     subject: "भारतीय संविधान, राजनीतिक व्यवस्था और शासन",
     module: "राज व्यवस्था",
     title: "भारतीय संविधान एवं राजनीतिक व्यवस्था",
@@ -79,7 +79,7 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
   },
   {
     id: "ras-pre-5",
-    paper: "Prelims",
+    paper: "Prelims GS1",
     subject: "राजस्थान की राजनीतिक एवं प्रशासनिक व्यवस्था",
     module: "राजस्थान प्रशासन",
     title: "राजस्थान की राजनीतिक एवं प्रशासनिक व्यवस्था",
@@ -97,7 +97,7 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
   },
   {
     id: "ras-pre-6",
-    paper: "Prelims",
+    paper: "Prelims GS1",
     subject: "आर्थिक अवधारणाएँ एवं अर्थव्यवस्था",
     module: "भारत एवं राजस्थान अर्थव्यवस्था",
     title: "आर्थिक अवधारणाएँ एवं भारतीय तथा राजस्थान अर्थव्यवस्था",
@@ -115,7 +115,7 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
   },
   {
     id: "ras-pre-7",
-    paper: "Prelims",
+    paper: "Prelims GS1",
     subject: "विज्ञान एवं प्रौद्योगिकी",
     module: "सामान्य विज्ञान",
     title: "विज्ञान एवं प्रौद्योगिकी",
@@ -133,7 +133,7 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
   },
   {
     id: "ras-pre-8",
-    paper: "Prelims",
+    paper: "Prelims GS1",
     subject: "तार्किक विवेचन एवं मानसिक योग्यता",
     module: "रीज़निंग एवं गणित",
     title: "तार्किक विवेचन एवं मानसिक योग्यता",
@@ -150,7 +150,7 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
   },
   {
     id: "ras-pre-9",
-    paper: "Prelims",
+    paper: "Prelims GS1",
     subject: "समसामयिक घटनाएँ (Current Affairs)",
     module: "Current Affairs",
     title: "समसामयिक घटनाएँ एवं मुद्दे",

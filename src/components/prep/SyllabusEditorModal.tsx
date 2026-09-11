@@ -62,11 +62,11 @@ export const SyllabusEditorModal: React.FC<SyllabusEditorModalProps> = ({
               <button
                 onClick={() => setEditingTopic({
                   id: `topic-${Date.now()}`,
-                  paper: "Prelims",
+                  paper: "Prelims GS1",
                   subject: "",
                   module: "",
                   title: "",
-                  yield: "Medium Yield",
+                  yield: "⭐ Medium Yield",
                   weightagePercentage: 5,
                   pyqFrequencyLast5Years: 0,
                   status: "not_started",

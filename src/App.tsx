@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { AppIcon } from "./components/AppIcon";
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { Capacitor } from '@capacitor/core';
+import { App as CapacitorApp } from '@capacitor/app';
 import { CapacitorUpdater } from '@capgo/capacitor-updater';
 import { Navbar } from "./components/Navbar";
 import { GlobalSearchModal } from "./components/GlobalSearchModal";
@@ -148,6 +149,30 @@ export default function App() {
       LocalNotifications.removeAllListeners();
     };
   }, []);
+
+  // Handle Hardware Back Button for Android
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+
+    const handleBackButton = () => {
+      if (isUpdateModalOpen) {
+        setIsUpdateModalOpen(false);
+      } else if (searchOpen) {
+        setSearchOpen(false);
+      } else if (aiModalOpen) {
+        setAiModalOpen(false);
+      } else if (activeTab !== "home") {
+        setActiveTab("home");
+      } else {
+        CapacitorApp.exitApp();
+      }
+    };
+
+    const listener = CapacitorApp.addListener('backButton', handleBackButton);
+    return () => {
+      listener.then(l => l.remove());
+    };
+  }, [isUpdateModalOpen, searchOpen, aiModalOpen, activeTab]);
 
   // Expose test function to window for debugging
   useEffect(() => {

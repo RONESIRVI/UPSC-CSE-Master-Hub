@@ -6,17 +6,22 @@ echo =======================================================
 echo     UPSC CSE Master Hub - Auto GitHub Push Script
 echo =======================================================
 echo.
-echo [1/3] Adding new Excel updates...
+echo [1/4] Generating App Data from Excel...
 cd ..
+node scripts/parseExcel.js
+
+echo.
+echo [2/4] Adding new updates...
 git add "Update_App_Data/upsc_toppers_data.xlsx"
+git add "src/data/generatedToppersData.json"
 git add .
 
 echo.
-echo [2/3] Saving changes...
+echo [3/4] Saving changes...
 git commit -m "Update App Content via Excel"
 
 echo.
-echo [3/3] Pushing to GitHub (Please wait)...
+echo [4/4] Pushing to GitHub (Please wait)...
 git push origin main
 
 echo.

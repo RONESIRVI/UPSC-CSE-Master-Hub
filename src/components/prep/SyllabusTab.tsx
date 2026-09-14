@@ -26,7 +26,7 @@ interface SyllabusTabProps {
     topicId: string,
     nextStatus: SyllabusTopic["status"]
   ) => void;
-  onOpenTopicAI: (topic: SyllabusTopic) => void;
+
   onAddTopic?: (topic: SyllabusTopic) => void;
   onDeleteTopic?: (topicId: string) => void;
   onResetDefaultSyllabus?: () => void;
@@ -36,7 +36,7 @@ interface SyllabusTabProps {
 export const SyllabusTab: React.FC<SyllabusTabProps> = ({
   syllabus,
   onUpdateTopicStatus,
-  onOpenTopicAI,
+
   onAddTopic,
   onDeleteTopic,
   onResetDefaultSyllabus,
@@ -527,14 +527,6 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                     </span>
                   </button>
 
-                  {/* AI Explain Topic Button */}
-                  <button
-                    onClick={() => onOpenTopicAI(topic)}
-                    className="p-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-100 text-indigo-600 transition shadow-xs cursor-pointer"
-                    title="AI Concept Explainer & Mindmap"
-                  >
-                    <Sparkles className="w-4 h-4 shrink-0" />
-                  </button>
 
                   {/* Delete Topic (if custom) */}
                   {onDeleteTopic && (

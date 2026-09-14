@@ -12,6 +12,7 @@ node scripts/parseExcel.js
 
 echo.
 echo [2/4] Adding new updates...
+git add "Update_App_Data/Toppers Strategy & Interviews.xlsx"
 git add "Update_App_Data/upsc_toppers_data.xlsx"
 git add "src/data/generatedToppersData.json"
 git add .

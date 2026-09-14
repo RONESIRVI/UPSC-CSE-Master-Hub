@@ -9,10 +9,15 @@ const __dirname = path.dirname(__filename);
 console.log('Parsing Excel Data...');
 
 try {
-  const excelPath = path.join(__dirname, '../Update_App_Data/upsc_toppers_data.xlsx');
+  let excelPath = path.join(__dirname, '../Update_App_Data/Toppers Strategy & Interviews.xlsx');
   
   if (!fs.existsSync(excelPath)) {
-    console.log('No upsc_toppers_data.xlsx found. Skipping parsing and using default data.');
+    // Fallback to old name just in case it hasn't been renamed yet
+    excelPath = path.join(__dirname, '../Update_App_Data/upsc_toppers_data.xlsx');
+  }
+
+  if (!fs.existsSync(excelPath)) {
+    console.log('No Toppers Strategy & Interviews.xlsx found. Skipping parsing and using default data.');
     process.exit(0);
   }
 

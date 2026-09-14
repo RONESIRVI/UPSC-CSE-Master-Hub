@@ -267,7 +267,6 @@ export default function App() {
     const saved = localStorage.getItem("ras_audio_notes_v2");
     return saved ? JSON.parse(saved) : [];
   });
-  const [isAIMentorOpen, setIsAIMentorOpen] = useState(false);
   const [studyStreak, setStudyStreak] = useState<number>(0);
 
   // Modals State

@@ -164,8 +164,7 @@ export const PYQTab: React.FC<PYQTabProps> = ({
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed mt-1">
               Test your conceptual elimination techniques on genuine UPSC
-              Prelims questions and dissect high-scoring Mains model structures
-              with AI-assisted answer evaluation.
+              Prelims questions and dissect high-scoring Mains model structures.
             </p>
           </div>
 

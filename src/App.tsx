@@ -68,13 +68,7 @@ export default function App() {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [updateProgress, setUpdateProgress] = useState<number | null>(null);
 
-  const [activeTab, setActiveTab] = useState<MainTab>("home");
-  const [searchOpen, setSearchOpen] = useState(false);
 
-  // Data State (Syncing with Firestore)
-  const [toppers, setToppers] = useState<TopperProfile[]>(TOPPERS_PROFILES);
-  const [strategies, setStrategies] = useState<StrategySetupItem[]>(STRATEGY_SETUP);
-  const [topperRoutines, setTopperRoutines] = useState<TopperRoutine[]>(TOPPER_ROUTINES);
 
   useEffect(() => {
     if (fsToppers.length > 0) setToppers(fsToppers);

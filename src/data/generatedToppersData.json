@@ -1,5 +1,39 @@
 {
-  "TOPPERS_PROFILES": [],
+  "TOPPERS_PROFILES": [
+    {
+      "id": "shruti-sharma",
+      "rank": 2,
+      "year": 2021,
+      "optional": "History",
+      "attempt": 2,
+      "background": "St. Stephen's College & JNU (History)",
+      "avatar": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80",
+      "quote": "Own your notes. Making your own consolidated handwritten notes provides an unmatched mental index during the intense 3-hour Mains papers.",
+      "keyStrategy": "Prepared self-made digital and handwritten notes directly aligned with UPSC syllabus headings. Extensive answer writing practice at Jamia RCA, focusing on clarity, structure, and subheadings.",
+      "gsStrategy": {
+        "gs1": "Deep historiographical perspectives for History; map-based geography; sociological case studies for Society.",
+        "gs2": "Structured answers into Constitutional provisions, Statutory backing, Institutional bottlenecks, and Way Forward.",
+        "gs3": "Point-wise presentation with data bullets, committee quotes, and clean schematic diagrams.",
+        "gs4": "Prepared definitions of all GS4 terms in 1-2 lines with 2 personal and 2 administrative examples."
+      },
+      "essayStrategy": "Addressed philosophical topics through varied lenses: individual, societal, administrative, national, and global.",
+      "optionalStrategy": "History optional requires historiography, archaeological evidence, and high-quality historical site maps.",
+      "prelimsStrategy": "Solved previous 15 years UPSC Prelims papers multiple times to decode UPSC's question drafting mindset.",
+      "csatStrategy": "Regular practice of English comprehension and logical syllogisms.",
+      "interviewScore": 173,
+      "mainsScore": 932,
+      "goldenRules": [
+        "Consolidate your own notes for every single line of the syllabus.",
+        "PYQs are the best teacher: study the options that UPSC eliminated in previous years.",
+        "Write answer copies in the actual UPSC format with margins.",
+        "Keep answers balanced, objective, and constructive."
+      ],
+      "extraData": {
+        "Ranker": "Shruti Sharma",
+        "Advaice": "Kuch Nhi  123123"
+      }
+    }
+  ],
   "STRATEGY_SETUP": [
     {
       "id": "shruti-sharma",

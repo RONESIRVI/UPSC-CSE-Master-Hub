@@ -217,20 +217,9 @@ export default function App() {
   const [dailyGoalHours] = useState<number>(8);
 
   // Core Data States with LocalStorage Hydration
-  const [strategies, setStrategies] = useState<StrategySetupItem[]>(() => {
-    const saved = localStorage.getItem("upsc_strategies");
-    return saved ? JSON.parse(saved) : STRATEGY_SETUP;
-  });
-
-  const [toppers, setToppers] = useState<TopperProfile[]>(() => {
-    const saved = localStorage.getItem("upsc_toppers_v1");
-    return saved ? JSON.parse(saved) : TOPPERS_PROFILES;
-  });
-
-  const [topperRoutines, setTopperRoutines] = useState<TopperRoutine[]>(() => {
-    const saved = localStorage.getItem("upsc_topper_routines_v1");
-    return saved ? JSON.parse(saved) : TOPPER_ROUTINES;
-  });
+  const [strategies, setStrategies] = useState<StrategySetupItem[]>(STRATEGY_SETUP);
+  const [toppers, setToppers] = useState<TopperProfile[]>(TOPPERS_PROFILES);
+  const [topperRoutines, setTopperRoutines] = useState<TopperRoutine[]>(TOPPER_ROUTINES);
 
   const [syllabus, setSyllabus] = useState<SyllabusTopic[]>(() => {
     const saved = localStorage.getItem("ras_syllabus_v2");

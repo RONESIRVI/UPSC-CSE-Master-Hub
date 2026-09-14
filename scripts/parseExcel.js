@@ -57,11 +57,11 @@ try {
   }
   
   // 1. Strategy & Blueprints (TopperProfiles)
-  const strategySheet = wb.Sheets['TopperProfiles'];
+  const strategySheet = wb.Sheets['TopperProfiles'] || wb.Sheets['Strategy'];
   const strategyData = strategySheet ? parseTransposedSheet(strategySheet) : [];
   
   // 2. Strategy Setup (replaces Books)
-  const strategySetupSheet = wb.Sheets['Strategy'];
+  const strategySetupSheet = wb.Sheets['Strategy'] || wb.Sheets['Books'];
   const strategySetupDataRaw = strategySetupSheet ? parseTransposedSheet(strategySetupSheet) : [];
   const strategySetupData = strategySetupDataRaw.map(s => ({
     id: s.id || `strategy-${Date.now()}-${Math.random()}`,

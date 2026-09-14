@@ -39,13 +39,11 @@ interface PrepSectionProps {
     topicId: string,
     nextStatus: SyllabusTopic["status"]
   ) => void;
-  onOpenTopicAI: (topic: SyllabusTopic) => void;
   onAddTopic?: (topic: SyllabusTopic) => void;
   onDeleteTopic?: (topicId: string) => void;
   onResetDefaultSyllabus?: () => void;
   phases: StudyPlanPhase[];
   onToggleMilestone: (phaseId: string, milestoneId: string) => void;
-  onOpenAIStrategy: () => void;
   onAddMilestone?: (phaseId: string, title: string, targetDate: string) => void;
   onDeleteMilestone?: (phaseId: string, milestoneId: string) => void;
   onResetDefaultStudyPlan?: () => void;
@@ -62,7 +60,6 @@ interface PrepSectionProps {
   onAddPYQ?: (pyq: PYQQuestion) => void;
   onDeletePYQ?: (id: string) => void;
   onResetDefaultPYQs?: () => void;
-  onOpenAIEvaluator: (question: string) => void;
 }
 
 export const PrepSection: React.FC<PrepSectionProps> = ({
@@ -71,13 +68,11 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
   syllabus,
   setSyllabus,
   onUpdateTopicStatus,
-  onOpenTopicAI,
   onAddTopic,
   onDeleteTopic,
   onResetDefaultSyllabus,
   phases,
   onToggleMilestone,
-  onOpenAIStrategy,
   onAddMilestone,
   onDeleteMilestone,
   onResetDefaultStudyPlan,
@@ -94,7 +89,6 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
   onAddPYQ,
   onDeletePYQ,
   onResetDefaultPYQs,
-  onOpenAIEvaluator,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [showQuickLogModal, setShowQuickLogModal] = useState<boolean>(false);
@@ -284,14 +278,14 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
       )}
 
       {activeSubTab === "notes" && (
-        <RevisionNotesTab syllabus={syllabus} onOpenTopicAI={onOpenTopicAI} />
+        <RevisionNotesTab syllabus={syllabus} />
       )}
 
       {activeSubTab === "study-plan" && (
         <StudyPlanTab
           phases={phases}
           onToggleMilestone={onToggleMilestone}
-          onOpenAIStrategy={onOpenAIStrategy}
+
           onAddMilestone={onAddMilestone}
           onDeleteMilestone={onDeleteMilestone}
           onResetDefaultStudyPlan={onResetDefaultStudyPlan}
@@ -311,7 +305,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
       {activeSubTab === "pyq" && (
         <PYQTab
           pyqs={pyqs}
-          onOpenAIEvaluator={onOpenAIEvaluator}
+
           onAddPYQ={onAddPYQ}
           onDeletePYQ={onDeletePYQ}
           onResetDefaultPYQs={onResetDefaultPYQs}

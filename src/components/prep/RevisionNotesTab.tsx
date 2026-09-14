@@ -21,14 +21,10 @@ import {
 
 interface RevisionNotesTabProps {
   syllabus: SyllabusTopic[];
-  onOpenTopicAI: (topic: SyllabusTopic) => void;
-  onOpenAIMentorWithPrompt?: (prompt: string) => void;
 }
 
 export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
   syllabus,
-  onOpenTopicAI,
-  onOpenAIMentorWithPrompt,
 }) => {
   // LocalStorage state for notes
   const [notes, setNotes] = useState<QuickRevisionNote[]>(() => {

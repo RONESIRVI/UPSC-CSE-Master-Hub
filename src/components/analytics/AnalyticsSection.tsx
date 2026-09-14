@@ -35,7 +35,6 @@ interface AnalyticsSectionProps {
   onAddMockLog: (log: MockTestLog) => void;
   onDeleteMockLog: (id: string) => void;
   weakAreas: WeakAreaItem[];
-  onOpenExplainTopic: (topic: string) => void;
 }
 
 export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
@@ -48,7 +47,6 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
   onAddMockLog,
   onDeleteMockLog,
   weakAreas,
-  onOpenExplainTopic,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [showExportModal, setShowExportModal] = useState<boolean>(false);
@@ -294,7 +292,6 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
       {activeSubTab === "weak-areas" && (
         <WeakAreasTab
           weakAreas={weakAreas}
-          onOpenExplainTopic={onOpenExplainTopic}
           syllabus={syllabus}
           mockLogs={mockLogs}
           onOpenExportReport={() => setShowExportModal(true)}

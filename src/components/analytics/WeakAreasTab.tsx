@@ -24,7 +24,7 @@ import {
 
 interface WeakAreasTabProps {
   weakAreas: WeakAreaItem[];
-  onOpenExplainTopic: (topic: string) => void;
+
   syllabus?: SyllabusTopic[];
   mockLogs?: MockTestLog[];
   onOpenExportReport?: () => void;
@@ -32,7 +32,7 @@ interface WeakAreasTabProps {
 
 export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
   weakAreas,
-  onOpenExplainTopic,
+
   syllabus = [],
   mockLogs = [],
   onOpenExportReport,
@@ -517,16 +517,7 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                   </div>
                 </div>
 
-                {/* AI Clarity Action Button */}
-                <div className="pt-2">
-                  <button
-                    onClick={() => onOpenExplainTopic(selectedTopic.topic)}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-sm transition cursor-pointer active:scale-98"
-                  >
-                    <Sparkles className="w-4 h-4" />
-                    <span>Ask AI Mentor to Explain This Topic</span>
-                  </button>
-                </div>
+
               </div>
             ) : (
               <div className="p-8 text-center bg-white border-2 border-slate-200 rounded-3xl text-slate-500 text-xs">
@@ -628,16 +619,7 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                   </div>
                 </div>
 
-                {/* AI Remedy Button */}
-                <div className="pt-3 border-t border-slate-100 flex justify-end">
-                  <button
-                    onClick={() => onOpenExplainTopic(item.topic)}
-                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-bold transition cursor-pointer"
-                  >
-                    <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
-                    <span>AI Concept Clarity on "{item.topic}"</span>
-                  </button>
-                </div>
+
               </div>
             );
           })}

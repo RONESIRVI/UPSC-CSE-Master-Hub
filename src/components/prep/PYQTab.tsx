@@ -18,7 +18,7 @@ import {
 
 interface PYQTabProps {
   pyqs?: PYQQuestion[];
-  onOpenAIEvaluator: (question: string) => void;
+
   onAddPYQ?: (pyq: PYQQuestion) => void;
   onDeletePYQ?: (id: string) => void;
   onResetDefaultPYQs?: () => void;
@@ -26,7 +26,7 @@ interface PYQTabProps {
 
 export const PYQTab: React.FC<PYQTabProps> = ({
   pyqs = PYQ_DATABASE,
-  onOpenAIEvaluator,
+
   onAddPYQ,
   onDeletePYQ,
   onResetDefaultPYQs,
@@ -447,19 +447,10 @@ export const PYQTab: React.FC<PYQTabProps> = ({
                       </div>
                     )}
 
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-slate-100">
+                    <div className="pt-2 border-t border-slate-100">
                       <span className="text-xs text-slate-500 font-medium">
-                        Practice writing a 150/250-word answer on paper, then
-                        evaluate with AI.
+                        Practice writing a 150/250-word answer on paper.
                       </span>
-
-                      <button
-                        onClick={() => onOpenAIEvaluator(pyq.questionText)}
-                        className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-sm transition cursor-pointer"
-                      >
-                        <Sparkles className="w-4 h-4 fill-white" />
-                        <span>AI Answer Evaluator</span>
-                      </button>
                     </div>
                   </div>
                 )}

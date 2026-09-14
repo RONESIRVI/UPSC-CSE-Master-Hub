@@ -10,7 +10,7 @@ import { HomeSection } from "./components/home/HomeSection";
 import { ToppersSection } from "./components/toppers/ToppersSection";
 import { PrepSection } from "./components/prep/PrepSection";
 import { AnalyticsSection } from "./components/analytics/AnalyticsSection";
-import { AIMentorModal } from "./components/ai/AIMentorModal";
+
 import { SmartExtractorTab } from "./components/prep/SmartExtractorTab";
 import { SplashScreen } from "./components/SplashScreen";
 import {
@@ -283,18 +283,12 @@ export default function App() {
 
   // Modals State
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
-  const [aiModalOpen, setAiModalOpen] = useState<boolean>(false);
-  const [aiModalInitialMode, setAiModalInitialMode] = useState<
-    "evaluate" | "strategy" | "explain"
-  >("evaluate");
-  const [aiModalQuestion, setAiModalQuestion] = useState<string>("");
-  const [aiModalTopic, setAiModalTopic] = useState<string>("");
 
   // Maintain a stable ref of the current state so we don't need to detach/reattach the native listener
-  const backStateRef = useRef({ isUpdateModalOpen, searchOpen, aiModalOpen, activeTab });
+  const backStateRef = useRef({ isUpdateModalOpen, searchOpen, activeTab });
   useEffect(() => {
-    backStateRef.current = { isUpdateModalOpen, searchOpen, aiModalOpen, activeTab };
-  }, [isUpdateModalOpen, searchOpen, aiModalOpen, activeTab]);
+    backStateRef.current = { isUpdateModalOpen, searchOpen, activeTab };
+  }, [isUpdateModalOpen, searchOpen, activeTab]);
 
   // Handle Hardware Back Button for Android
   useEffect(() => {
@@ -308,8 +302,6 @@ export default function App() {
           setIsUpdateModalOpen(false);
         } else if (state.searchOpen) {
           setSearchOpen(false);
-        } else if (state.aiModalOpen) {
-          setAiModalOpen(false);
         } else if (state.activeTab !== "home") {
           setActiveTab("home");
         } else {
@@ -553,29 +545,7 @@ export default function App() {
     localStorage.setItem("upsc_pyqs", JSON.stringify(PYQ_DATABASE));
   };
 
-  // Handlers for AI Modal Launchers
-  const handleOpenAIEvaluator = (question: string) => {
-    setAiModalInitialMode("evaluate");
-    setAiModalQuestion(question);
-    setAiModalOpen(true);
-  };
 
-  const handleOpenTopicAI = (topic: SyllabusTopic) => {
-    setAiModalInitialMode("explain");
-    setAiModalTopic(topic.title);
-    setAiModalOpen(true);
-  };
-
-  const handleOpenExplainTopic = (topicName: string) => {
-    setAiModalInitialMode("explain");
-    setAiModalTopic(topicName);
-    setAiModalOpen(true);
-  };
-
-  const handleOpenAIStrategy = () => {
-    setAiModalInitialMode("strategy");
-    setAiModalOpen(true);
-  };
 
   const handleAdoptRoutine = (routine: TopperRoutine) => {
     // Convert TopperRoutine schedule to DailyTasks
@@ -616,10 +586,7 @@ export default function App() {
             activeTab={activeTab}
             setActiveTab={setActiveTab}
             onOpenSearch={() => setSearchOpen(true)}
-            onOpenAIMentor={() => {
-              setAiModalInitialMode("evaluate");
-              setAiModalOpen(true);
-            }}
+
             studyStreak={studyStreak}
             timerRunning={false}
             timerSeconds={0}
@@ -701,13 +668,11 @@ export default function App() {
                     syllabus={syllabus}
                     setSyllabus={setSyllabus}
                     onUpdateTopicStatus={handleUpdateTopicStatus}
-                    onOpenTopicAI={handleOpenTopicAI}
                     onAddTopic={handleAddTopic}
                     onDeleteTopic={handleDeleteTopic}
                     onResetDefaultSyllabus={handleResetDefaultSyllabus}
                     phases={studyPlanPhases}
                     onToggleMilestone={handleToggleMilestone}
-                    onOpenAIStrategy={handleOpenAIStrategy}
                     onAddMilestone={handleAddMilestone}
                     onDeleteMilestone={handleDeleteMilestone}
                     onResetDefaultStudyPlan={handleResetDefaultStudyPlan}
@@ -726,7 +691,6 @@ export default function App() {
                     onAddPYQ={handleAddPYQ}
                     onDeletePYQ={handleDeletePYQ}
                     onResetDefaultPYQs={handleResetDefaultPYQs}
-                    onOpenAIEvaluator={handleOpenAIEvaluator}
                   />
                 )}
 
@@ -742,7 +706,6 @@ export default function App() {
                     onAddMockLog={handleAddMockLog}
                     onDeleteMockLog={handleDeleteMockLog}
                     weakAreas={weakAreas}
-                    onOpenExplainTopic={handleOpenExplainTopic}
                   />
                 )}
 
@@ -851,14 +814,7 @@ export default function App() {
         />
 
 
-        {/* AI Mains Mentor & Evaluator Modal */}
-        <AIMentorModal
-          isOpen={aiModalOpen}
-          onClose={() => setAiModalOpen(false)}
-          initialMode={aiModalInitialMode}
-          initialQuestion={aiModalQuestion}
-          initialTopic={aiModalTopic}
-        />
+
 
         {/* Footer */}
         <footer className="border-t border-slate-200 bg-white pt-6 pb-24 lg:pb-6 text-slate-500 text-xs text-center mt-12 shadow-sm">

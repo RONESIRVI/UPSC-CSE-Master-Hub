@@ -16,7 +16,7 @@ import {
 interface StudyPlanTabProps {
   phases: StudyPlanPhase[];
   onToggleMilestone: (phaseId: string, milestoneId: string) => void;
-  onOpenAIStrategy: () => void;
+
   onAddMilestone?: (phaseId: string, title: string, targetDate: string) => void;
   onDeleteMilestone?: (phaseId: string, milestoneId: string) => void;
   onResetDefaultStudyPlan?: () => void;
@@ -25,7 +25,7 @@ interface StudyPlanTabProps {
 export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
   phases,
   onToggleMilestone,
-  onOpenAIStrategy,
+
   onAddMilestone,
   onDeleteMilestone,
   onResetDefaultStudyPlan,
@@ -118,13 +118,7 @@ export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
               </button>
             )}
 
-            <button
-              onClick={onOpenAIStrategy}
-              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 text-xs font-bold transition cursor-pointer"
-            >
-              <Sparkles className="w-3.5 h-3.5 shrink-0" />
-              <span>AI Roadmap Advisor</span>
-            </button>
+
           </div>
         </div>
 

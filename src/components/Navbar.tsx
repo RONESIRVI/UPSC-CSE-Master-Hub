@@ -18,7 +18,6 @@ interface NavbarProps {
   activeTab: MainTab;
   setActiveTab: (tab: MainTab) => void;
   onOpenSearch: () => void;
-  onOpenAIMentor: () => void;
   studyStreak: number;
   timerRunning: boolean;
   timerSeconds: number;
@@ -31,7 +30,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   activeTab,
   setActiveTab,
   onOpenSearch,
-  onOpenAIMentor,
   studyStreak,
   timerRunning,
   timerSeconds,

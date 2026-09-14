@@ -64,7 +64,7 @@ interface StudyTrackerTabProps {
   onSkipInterval?: () => void;
   onSetTimerPhase?: (phase: TimerPhase) => void;
   syllabus?: SyllabusTopic[];
-  onOpenAIMentorWithPrompt?: (prompt: string) => void;
+
   currentStudySession?: {
     subject: string;
     topic: string;
@@ -99,7 +99,7 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
   onSkipInterval,
   onSetTimerPhase,
   syllabus = [],
-  onOpenAIMentorWithPrompt,
+
   currentStudySession = {
     subject: "Indian Polity",
     topic: "",
@@ -1040,7 +1040,7 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
         isOpen={showQuickThoughtsModal}
         onClose={() => setShowQuickThoughtsModal(false)}
         syllabus={syllabus}
-        onOpenAIMentorWithPrompt={onOpenAIMentorWithPrompt}
+
       />
     </div>
   );

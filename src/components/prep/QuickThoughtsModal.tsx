@@ -23,7 +23,7 @@ interface QuickThoughtsModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSaveNote?: (note: QuickRevisionNote) => void;
-  onOpenAIMentorWithPrompt?: (prompt: string) => void;
+
   onAddToSpacedRevision?: (item: {
     title: string;
     paper: string;
@@ -37,7 +37,7 @@ export const QuickThoughtsModal: React.FC<QuickThoughtsModalProps> = ({
   isOpen,
   onClose,
   onSaveNote,
-  onOpenAIMentorWithPrompt,
+
   onAddToSpacedRevision,
   syllabus = [],
 }) => {
@@ -185,14 +185,6 @@ export const QuickThoughtsModal: React.FC<QuickThoughtsModalProps> = ({
     }
   };
 
-  const handleAskAIMentor = () => {
-    if (!topicTitle.trim() && !markdownContent.trim()) return;
-    const promptText = `Explain and resolve this UPSC doubt/concept clearly:\nTopic: ${topicTitle}\nSubject: ${subject} (${paper})\nDetails:\n${markdownContent}`;
-    if (onOpenAIMentorWithPrompt) {
-      onOpenAIMentorWithPrompt(promptText);
-      onClose();
-    }
-  };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -610,19 +602,6 @@ export const QuickThoughtsModal: React.FC<QuickThoughtsModalProps> = ({
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
-              {/* Ask AI Mentor Button */}
-              {onOpenAIMentorWithPrompt && (
-                <button
-                  type="button"
-                  onClick={handleAskAIMentor}
-                  disabled={!topicTitle.trim() && !markdownContent.trim()}
-                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 text-xs font-bold transition cursor-pointer disabled:opacity-40"
-                  title="Ask AI Mentor to clarify this doubt or concept immediately"
-                >
-                  <Bot className="w-4 h-4 text-purple-600" />
-                  <span>Ask AI to Solve / Clarify</span>
-                </button>
-              )}
 
               <div className="flex items-center gap-2 ml-auto">
                 <button

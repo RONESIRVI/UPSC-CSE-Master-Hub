@@ -580,20 +580,40 @@ export default function App() {
             timerSeconds={0}
             onToggleTimer={() => {}}
             hasUpdate={true} // Always show green animation for Sync Data based on user request
-            onOpenUpdateModal={() => {
-              // Reset / Sync Latest Data from Excel (generatedToppersData.json)
+            onOpenUpdateModal={async () => {
+              // 1. First sync Excel data immediately
               setTopperRoutines(TOPPER_ROUTINES);
-              localStorage.setItem("upsc_topper_routines_v1", JSON.stringify(TOPPER_ROUTINES));
               setToppers(TOPPERS_PROFILES);
-              localStorage.setItem("upsc_toppers_v1", JSON.stringify(TOPPERS_PROFILES));
               setStrategies(STRATEGY_SETUP);
-              localStorage.setItem("upsc_strategies", JSON.stringify(STRATEGY_SETUP));
-              
-              // If there's an actual Capacitor update, trigger that too
-              if (updateInfo) {
-                setIsUpdateModalOpen(true);
+
+              // 2. If on Android, force-fetch and apply latest GitHub release
+              if (Capacitor.isNativePlatform()) {
+                try {
+                  alert("🔄 Checking for latest update from GitHub...");
+                  const res = await fetch(
+                    "https://api.github.com/repos/RONESIRVI/UPSC-CSE-Master-Hub/releases/latest"
+                  );
+                  const data = await res.json();
+                  const asset = data?.assets?.find((a: any) => a.name === "dist.zip");
+
+                  if (asset) {
+                    alert(`📥 Downloading latest version: ${data.tag_name}. App will restart automatically.`);
+                    const version = await CapacitorUpdater.download({
+                      url: asset.browser_download_url,
+                      version: data.tag_name,
+                    });
+                    localStorage.setItem("app_version", data.tag_name);
+                    await CapacitorUpdater.set({ id: version.id });
+                  } else {
+                    alert("✅ Data synced! No new app update found.");
+                  }
+                } catch (e) {
+                  alert("✅ Excel Data Synced! (App update check failed - check internet)");
+                }
               } else {
-                alert("✓ Excel Data Synced Successfully!");
+                // Web version - just reload page to get fresh assets
+                alert("✅ Data synced! Reloading to apply latest changes...");
+                setTimeout(() => window.location.reload(), 500);
               }
             }}
           />

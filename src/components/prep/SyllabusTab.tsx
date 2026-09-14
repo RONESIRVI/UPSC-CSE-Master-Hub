@@ -195,8 +195,7 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed mt-1">
               Track official UPSC syllabus micro-topics or add your own custom
-              optional/mains subjects. Cycle your revisions and generate AI
-              concept mindmaps.
+              optional/mains subjects. Cycle your revisions and track your mastery.
             </p>
           </div>
 
@@ -606,14 +605,6 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                         </button>
                       )}
                     </div>
-
-                    <button
-                      onClick={() => onOpenTopicAI(topic)}
-                      className="text-indigo-600 hover:text-indigo-800 hover:underline font-bold flex items-center gap-1 cursor-pointer"
-                    >
-                      <Sparkles className="w-3.5 h-3.5 shrink-0" />
-                      <span>Generate AI Notes for this Topic</span>
-                    </button>
                   </div>
                 </div>
               )}

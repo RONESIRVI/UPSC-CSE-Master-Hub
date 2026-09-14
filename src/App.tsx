@@ -54,15 +54,39 @@ import {
 
 import { UpdateModal } from "./components/ui/UpdateModal";
 import { usePushNotifications } from "./hooks/usePushNotifications";
+import { useFirestoreData } from "./hooks/useFirestoreData";
 
 export default function App() {
   // Initialize Push Notifications
   usePushNotifications();
 
+  // Initialize Realtime Database
+  const { toppers: fsToppers, strategies: fsStrategies, routines: fsRoutines } = useFirestoreData();
+
   // Update System State
   const [updateInfo, setUpdateInfo] = useState<{ version: string; body: string; url: string } | null>(null);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [updateProgress, setUpdateProgress] = useState<number | null>(null);
+
+  const [activeTab, setActiveTab] = useState<MainTab>("home");
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  // Data State (Syncing with Firestore)
+  const [toppers, setToppers] = useState<TopperProfile[]>(TOPPERS_PROFILES);
+  const [strategies, setStrategies] = useState<StrategySetupItem[]>(STRATEGY_SETUP);
+  const [topperRoutines, setTopperRoutines] = useState<TopperRoutine[]>(TOPPER_ROUTINES);
+
+  useEffect(() => {
+    if (fsToppers.length > 0) setToppers(fsToppers);
+  }, [fsToppers]);
+
+  useEffect(() => {
+    if (fsStrategies.length > 0) setStrategies(fsStrategies);
+  }, [fsStrategies]);
+
+  useEffect(() => {
+    if (fsRoutines.length > 0) setTopperRoutines(fsRoutines);
+  }, [fsRoutines]);
 
   // Silent Auto-Update Engine on App Open
   useEffect(() => {

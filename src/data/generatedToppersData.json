@@ -32,6 +32,36 @@
         "Ranker": "Shruti Sharma",
         "Advaice": "Kuch Nhi  123123"
       }
+    },
+    {
+      "id": "Aariz",
+      "rank": 45,
+      "year": 2028,
+      "optional": "Pub Add",
+      "attempt": "",
+      "background": "",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "Ias",
+      "keyStrategy": "I am am ias officer",
+      "gsStrategy": {
+        "gs1": "De;ta Nrpv ",
+        "gs2": "DD ",
+        "gs3": "e",
+        "gs4": "Topper talk"
+      },
+      "essayStrategy": "Kuch nhi old book jo bhi ho",
+      "optionalStrategy": "muskan khurana",
+      "prelimsStrategy": "I tack tes ",
+      "csatStrategy": "Prection",
+      "interviewScore": 175,
+      "mainsScore": 865,
+      "goldenRules": [
+        "only prep for ias"
+      ],
+      "extraData": {
+        "Ranker": "Aariz Mansuri",
+        "Advaice": "ham bnenge ias"
+      }
     }
   ],
   "STRATEGY_SETUP": [
@@ -42,6 +72,15 @@
       "extraData": {
         "Ranker": "Shruti Sharma",
         "Advaice": "Kuch Nhi  123123"
+      }
+    },
+    {
+      "id": "Aariz",
+      "title": "Aditya's Plan",
+      "content": "",
+      "extraData": {
+        "Ranker": "Aariz Mansuri",
+        "Advaice": "ham bnenge ias"
       }
     }
   ],

@@ -37,6 +37,9 @@ const uploadData = async () => {
     console.log("Uploading INTERVIEW_TRANSCRIPTS...");
     await setDoc(doc(db, "appData", "INTERVIEW_TRANSCRIPTS"), { data: data.INTERVIEW_TRANSCRIPTS || [] });
 
+    console.log("Uploading TOPPER_NOTES...");
+    await setDoc(doc(db, "appData", "TOPPER_NOTES"), { data: data.TOPPER_NOTES || [] });
+
     console.log("✅ All data successfully uploaded to Firestore!");
     process.exit(0);
   } catch (error) {

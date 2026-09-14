@@ -61,7 +61,7 @@ export default function App() {
   usePushNotifications();
 
   // Initialize Realtime Database
-  const { toppers: fsToppers, strategies: fsStrategies, routines: fsRoutines } = useFirestoreData();
+  const { toppers: fsToppers, strategies: fsStrategies, routines: fsRoutines, notes: fsNotes } = useFirestoreData();
 
   // Update System State
   const [updateInfo, setUpdateInfo] = useState<{ version: string; body: string; url: string } | null>(null);
@@ -81,6 +81,13 @@ export default function App() {
   useEffect(() => {
     if (fsRoutines.length > 0) setTopperRoutines(fsRoutines);
   }, [fsRoutines]);
+
+  useEffect(() => {
+    if (fsNotes?.length > 0) {
+      // It's fetched inside the component now, wait, TOPPER_NOTES_VAULT was imported in ToppersSection?
+      // No, let's keep it here just in case, but we need to pass it down!
+    }
+  }, [fsNotes]);
 
   // Silent Auto-Update Engine on App Open
   useEffect(() => {
@@ -687,6 +694,7 @@ export default function App() {
                     setRoutines={setTopperRoutines}
                     audioNotes={audioNotes}
                     setAudioNotes={setAudioNotes}
+                    notes={notes}
                   />
                 )}
 

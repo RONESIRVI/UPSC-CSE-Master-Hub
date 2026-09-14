@@ -12,9 +12,15 @@ import {
   BookOpen,
 } from "lucide-react";
 
-export const TopperNotesTab: React.FC = () => {
+interface TopperNotesTabProps {
+  notes?: NoteItem[];
+}
+
+export const TopperNotesTab: React.FC<TopperNotesTabProps> = ({ notes }) => {
+  const vaultData = notes && notes.length > 0 ? notes : TOPPER_NOTES_VAULT;
+  
   const [selectedNote, setSelectedNote] = useState<NoteItem>(
-    TOPPER_NOTES_VAULT[0]
+    vaultData[0] || TOPPER_NOTES_VAULT[0]
   );
   const [filterType, setFilterType] = useState<string>("All");
 
@@ -25,7 +31,7 @@ export const TopperNotesTab: React.FC = () => {
     "Diagram / Mindmap",
   ];
 
-  const filteredNotes = TOPPER_NOTES_VAULT.filter((n) => {
+  const filteredNotes = vaultData.filter((n) => {
     if (filterType === "All") return true;
     return n.type === filterType;
   });

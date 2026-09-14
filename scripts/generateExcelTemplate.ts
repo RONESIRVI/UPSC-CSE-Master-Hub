@@ -1,5 +1,5 @@
 import * as XLSX from 'xlsx';
-import { TOPPERS_PROFILES, STRATEGY_SETUP, TOPPER_ROUTINES } from '../src/data/toppersData';
+import { TOPPERS_PROFILES, STRATEGY_SETUP, TOPPER_ROUTINES, TOPPER_NOTES_VAULT } from '../src/data/toppersData.ts';
 
 const wb = XLSX.utils.book_new();
 
@@ -70,6 +70,22 @@ interviewsData.push({
 });
 const wsInterviews = XLSX.utils.json_to_sheet(interviewsData);
 XLSX.utils.book_append_sheet(wb, wsInterviews, "Interviews");
+
+// 5. Notes & Mindmaps Sheet
+const notesData = TOPPER_NOTES_VAULT.map(n => ({
+  id: n.id,
+  title: n.title,
+  subject: n.subject,
+  paper: n.paper,
+  topperSource: n.topperSource,
+  type: n.type,
+  summary: n.summary,
+  keyPoints: n.keyPoints.join(' | '),
+  diagramDescription: n.diagramDescription || '',
+  svgDiagramType: n.svgDiagramType || ''
+}));
+const wsNotes = XLSX.utils.json_to_sheet(notesData);
+XLSX.utils.book_append_sheet(wb, wsNotes, "Notes");
 
 XLSX.writeFile(wb, 'upsc_toppers_data.xlsx');
 console.log('Successfully generated upsc_toppers_data.xlsx');

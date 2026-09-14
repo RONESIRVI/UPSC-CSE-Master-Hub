@@ -167,11 +167,28 @@ try {
     extraData: t.extraData
   }));
 
+  // 5. Notes & Mindmaps
+  const notesSheet = wb.Sheets['Notes'];
+  const notesDataRaw = notesSheet ? XLSX.utils.sheet_to_json(notesSheet) : [];
+  const notesData = notesDataRaw.map(n => ({
+    id: n.id || `note-${Date.now()}-${Math.random()}`,
+    title: n.title || 'Topper Note',
+    subject: n.subject || '',
+    paper: n.paper || '',
+    topperSource: n.topperSource || '',
+    type: n.type || 'Mindmap',
+    summary: n.summary || '',
+    keyPoints: typeof n.keyPoints === 'string' ? n.keyPoints.split('|').map(s => s.trim()) : [],
+    diagramDescription: n.diagramDescription || '',
+    svgDiagramType: n.svgDiagramType || ''
+  }));
+
   const finalData = {
     TOPPERS_PROFILES: formattedProfiles,
     STRATEGY_SETUP: strategySetupData,
     TOPPER_ROUTINES: routinesData,
-    INTERVIEW_TRANSCRIPTS: interviewsData
+    INTERVIEW_TRANSCRIPTS: interviewsData,
+    TOPPER_NOTES: notesData
   };
 
   const outputPath = path.join(__dirname, '../src/data/generatedToppersData.json');

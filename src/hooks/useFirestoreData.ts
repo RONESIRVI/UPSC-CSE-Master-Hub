@@ -11,6 +11,7 @@ export const useFirestoreData = () => {
   const [strategies, setStrategies] = useState<StrategySetupItem[]>(fallbackData.STRATEGY_SETUP as StrategySetupItem[]);
   const [routines, setRoutines] = useState<TopperRoutine[]>(fallbackData.TOPPER_ROUTINES as TopperRoutine[]);
   const [interviews, setInterviews] = useState<InterviewTranscript[]>(fallbackData.INTERVIEW_TRANSCRIPTS as InterviewTranscript[]);
+  const [notes, setNotes] = useState<any[]>(fallbackData.TOPPER_NOTES || []);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,6 +37,12 @@ export const useFirestoreData = () => {
       if (docSnap.exists() && docSnap.data().data) {
         setInterviews(docSnap.data().data);
       }
+    });
+
+    const unsubNotes = onSnapshot(doc(db, "appData", "TOPPER_NOTES"), (docSnap) => {
+      if (docSnap.exists() && docSnap.data().data) {
+        setNotes(docSnap.data().data);
+      }
       setLoading(false);
     });
 
@@ -44,8 +51,9 @@ export const useFirestoreData = () => {
       unsubStrategies();
       unsubRoutines();
       unsubInterviews();
+      unsubNotes();
     };
   }, []);
 
-  return { toppers, strategies, routines, interviews, loading };
+  return { toppers, strategies, routines, interviews, notes, loading };
 };

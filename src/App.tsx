@@ -624,8 +624,23 @@ export default function App() {
             timerRunning={false}
             timerSeconds={0}
             onToggleTimer={() => {}}
-            hasUpdate={!!updateInfo}
-            onOpenUpdateModal={() => setIsUpdateModalOpen(true)}
+            hasUpdate={true} // Always show green animation for Sync Data based on user request
+            onOpenUpdateModal={() => {
+              // Reset / Sync Latest Data from Excel (generatedToppersData.json)
+              setTopperRoutines(TOPPER_ROUTINES);
+              localStorage.setItem("upsc_topper_routines_v1", JSON.stringify(TOPPER_ROUTINES));
+              setToppers(TOPPERS_PROFILES);
+              localStorage.setItem("upsc_toppers_v1", JSON.stringify(TOPPERS_PROFILES));
+              setStrategies(STRATEGY_SETUP);
+              localStorage.setItem("upsc_strategies", JSON.stringify(STRATEGY_SETUP));
+              
+              // If there's an actual Capacitor update, trigger that too
+              if (updateInfo) {
+                setIsUpdateModalOpen(true);
+              } else {
+                alert("✓ Excel Data Synced Successfully!");
+              }
+            }}
           />
 
           {/* Core Content Canvas */}

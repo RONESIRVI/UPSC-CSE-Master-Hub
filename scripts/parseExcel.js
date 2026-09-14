@@ -72,7 +72,7 @@ try {
 
   // 3. Routines
   const routinesSheet = wb.Sheets['Routines'];
-  const routinesDataRaw = routinesSheet ? parseTransposedSheet(routinesSheet) : [];
+  const routinesDataRaw = routinesSheet ? XLSX.utils.sheet_to_json(routinesSheet) : [];
   
   // Convert flat routines to nested structure
   const routinesMap = new Map();
@@ -102,7 +102,7 @@ try {
 
   // 4. Interviews
   const interviewsSheet = wb.Sheets['Interviews'];
-  const interviewsDataRaw = interviewsSheet ? parseTransposedSheet(interviewsSheet) : [];
+  const interviewsDataRaw = interviewsSheet ? XLSX.utils.sheet_to_json(interviewsSheet) : [];
   
   const interviewsMap = new Map();
   interviewsDataRaw.forEach((row) => {

@@ -13,90 +13,144 @@
   ],
   "TOPPER_ROUTINES": [
     {
-      "id": "topperName",
-      "title": "Routine for Working Professional",
-      "type": "Working Professional (5-6h)",
-      "topperRef": "Various",
+      "id": "Working Professionals Model - Shruti Modi Style",
+      "title": "Routine for Shruti Modi",
+      "type": "Working Professional",
+      "topperRef": "Shruti Modi",
       "totalStudyHours": 6,
       "wakeUpTime": "06:00 AM",
       "sleepTime": "11:00 PM",
       "schedule": [
         {
-          "time": "00:00",
-          "activity": "Study",
-          "category": "GS",
+          "time": "05:30 AM - 08:00 AM",
+          "activity": "Heavy static GS subjects without phone distractions",
+          "category": "Morning Slot",
+          "description": ""
+        },
+        {
+          "time": "Commute & Lunch (1 hr)",
+          "activity": "Current affairs magazine, editorial podcasts, and short notes revision",
+          "category": "Micro-Slots",
+          "description": ""
+        },
+        {
+          "time": "08:00 PM - 10:30 PM",
+          "activity": "Optional subject prep and daily 1-2 Mains answer writing",
+          "category": "Evening Slot",
+          "description": ""
+        },
+        {
+          "time": "Saturday & Sunday (10-12 hrs)",
+          "activity": "Full-length Prelims/Mains tests, mistake analysis, and backlog revision",
+          "category": "Weekend Marathon",
           "description": ""
         }
       ],
       "tips": []
     },
     {
-      "id": "profileType",
-      "title": "Routine for Working Professional",
-      "type": "Working Professional (5-6h)",
-      "topperRef": "Various",
+      "id": "Harshita Goyal - 4-Block Target Model (AIR 2, UPSC CSE)",
+      "title": "Routine for Harshita Goyal",
+      "type": "AIR 2 Model",
+      "topperRef": "Harshita Goyal",
       "totalStudyHours": 6,
       "wakeUpTime": "06:00 AM",
       "sleepTime": "11:00 PM",
       "schedule": [
         {
-          "time": "00:00",
-          "activity": "Study",
-          "category": "GS",
+          "time": "Morning (0.5 - 1 hr)",
+          "activity": "Passive reading of The Indian Express without making notes",
+          "category": "Warm-up",
+          "description": ""
+        },
+        {
+          "time": "2.5 - 3 hrs",
+          "activity": "Core GS subjects (Polity, Economy, Geography) with direct book highlighting",
+          "category": "Peak Energy Slot",
+          "description": ""
+        },
+        {
+          "time": "2.5 - 3 hrs",
+          "activity": "Optional subject deep preparation (Thinkers, theory, syllabus)",
+          "category": "Focus Slot",
+          "description": ""
+        },
+        {
+          "time": "1.5 - 2 hrs",
+          "activity": "Last 5 years PYQ solving and end-of-day Black-pen active recall",
+          "category": "Application & Active Recall",
           "description": ""
         }
       ],
       "tips": []
     },
     {
-      "id": "time",
-      "title": "Routine for Working Professional",
-      "type": "Working Professional (5-6h)",
-      "topperRef": "Various",
+      "id": "First-Attempt / Full-Time Model - Sadaf Choudhary & Naomi Satam",
+      "title": "Routine for Sadaf Choudhary / Naomi Satam",
+      "type": "First-Attempt / Full-Time",
+      "topperRef": "Sadaf Choudhary / Naomi Satam",
       "totalStudyHours": 6,
       "wakeUpTime": "06:00 AM",
       "sleepTime": "11:00 PM",
       "schedule": [
         {
-          "time": "00:00",
-          "activity": "Study",
-          "category": "GS",
+          "time": "08:00 AM - 12:00 PM",
+          "activity": "Standard books, NCERTs, and syllabus mapping (3.5 hrs study + 30 min break)",
+          "category": "Morning Session",
+          "description": ""
+        },
+        {
+          "time": "02:00 PM - 05:30 PM",
+          "activity": "Optional Paper 1 & 2 conceptual clarity and topic-wise PYQs",
+          "category": "Afternoon Session",
+          "description": ""
+        },
+        {
+          "time": "06:30 PM - 08:30 PM",
+          "activity": "Mains answer writing, value addition (quotes, data, case studies), toppers' copies",
+          "category": "Evening Session",
+          "description": ""
+        },
+        {
+          "time": "09:30 PM - 10:30 PM",
+          "activity": "Daily current affairs, daily mental recall, and next-day goal setting",
+          "category": "Night Session",
           "description": ""
         }
       ],
       "tips": []
     },
     {
-      "id": "activity",
-      "title": "Routine for Working Professional",
-      "type": "Working Professional (5-6h)",
-      "topperRef": "Various",
+      "id": "Universal Master Topper Framework - 4 Pillars of Success",
+      "title": "Routine for Universal Framework",
+      "type": "Master Model",
+      "topperRef": "Universal Framework",
       "totalStudyHours": 6,
       "wakeUpTime": "06:00 AM",
       "sleepTime": "11:00 PM",
       "schedule": [
         {
-          "time": "00:00",
-          "activity": "Study",
-          "category": "GS",
+          "time": "3 - 3.5 hrs (Morning)",
+          "activity": "Difficult static & core GS subjects (Polity, History, Economy)",
+          "category": "Pillar 01: Cognitive Heavy Lifting",
           "description": ""
-        }
-      ],
-      "tips": []
-    },
-    {
-      "id": "category",
-      "title": "Routine for Working Professional",
-      "type": "Working Professional (5-6h)",
-      "topperRef": "Various",
-      "totalStudyHours": 6,
-      "wakeUpTime": "06:00 AM",
-      "sleepTime": "11:00 PM",
-      "schedule": [
+        },
         {
-          "time": "00:00",
-          "activity": "Study",
-          "category": "GS",
+          "time": "2.5 - 3 hrs (Afternoon)",
+          "activity": "Optional theories, thinkers, and core syllabus",
+          "category": "Pillar 02: Optional Mastery",
+          "description": ""
+        },
+        {
+          "time": "1.5 - 2 hrs (Evening)",
+          "activity": "PYQ solving, answer writing, flowcharts, and mock tests",
+          "category": "Pillar 03: Output & Simulation",
+          "description": ""
+        },
+        {
+          "time": "1 - 1.5 hrs (Night)",
+          "activity": "Current affairs, black-pen active recall, and planning",
+          "category": "Pillar 04: Consolidation & Review",
           "description": ""
         }
       ],
@@ -105,16 +159,23 @@
   ],
   "INTERVIEW_TRANSCRIPTS": [
     {
-      "id": "interview-unknown",
-      "candidateName": "Unknown",
+      "id": "interview-aditya srivastava",
+      "candidateName": "Aditya Srivastava",
       "year": 2023,
       "rank": 1,
-      "boardChairperson": "UPSC Board",
+      "boardChairperson": "Manoj Soni Board",
       "score": 200,
       "durationMinutes": 30,
       "background": "",
       "dafHighlights": [],
-      "qaExcerpts": [],
+      "qaExcerpts": [
+        {
+          "question": "Why did you leave Goldman Sachs for Civil Services?",
+          "askedBy": "Member",
+          "answer": "While corporate life offered financial growth, I wanted to work on larger societal impact...",
+          "analysis": ""
+        }
+      ],
       "keyTakeaways": []
     }
   ]

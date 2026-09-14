@@ -33,41 +33,41 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
 
   const results = useMemo(() => {
     if (!searchQuery.trim())
-      return { toppers: [], books: [], syllabus: [], pyqs: [], notes: [] };
+      return { toppers: [], strategies: [], syllabus: [], pyqs: [], notes: [] };
     const q = searchQuery.toLowerCase();
 
     const toppers = TOPPERS_PROFILES.filter(
       (t) =>
-        t.name.toLowerCase().includes(q) ||
-        t.optional.toLowerCase().includes(q) ||
-        t.keyStrategy.toLowerCase().includes(q)
+        (t.name || "").toLowerCase().includes(q) ||
+        (t.optional || "").toLowerCase().includes(q) ||
+        (t.keyStrategy || "").toLowerCase().includes(q)
     ).slice(0, 3);
 
     const strategies = STRATEGY_SETUP.filter(
       (s) =>
-        s.title.toLowerCase().includes(q) ||
-        s.content.toLowerCase().includes(q)
+        (s.title || "").toLowerCase().includes(q) ||
+        (s.content || "").toLowerCase().includes(q)
     ).slice(0, 3);
 
     const syllabus = DEFAULT_SYLLABUS.filter(
       (s) =>
-        s.title.toLowerCase().includes(q) ||
-        s.subject.toLowerCase().includes(q) ||
-        s.subtopics.some((sub) => sub.toLowerCase().includes(q))
+        (s.title || "").toLowerCase().includes(q) ||
+        (s.subject || "").toLowerCase().includes(q) ||
+        (s.subtopics || []).some((sub) => (sub || "").toLowerCase().includes(q))
     ).slice(0, 4);
 
     const pyqs = PYQ_DATABASE.filter(
       (p) =>
-        p.questionText.toLowerCase().includes(q) ||
-        p.topic.toLowerCase().includes(q) ||
-        p.subject.toLowerCase().includes(q)
+        (p.questionText || "").toLowerCase().includes(q) ||
+        (p.topic || "").toLowerCase().includes(q) ||
+        (p.subject || "").toLowerCase().includes(q)
     ).slice(0, 3);
 
     const notes = TOPPER_NOTES_VAULT.filter(
       (n) =>
-        n.title.toLowerCase().includes(q) ||
-        n.subject.toLowerCase().includes(q) ||
-        n.summary.toLowerCase().includes(q)
+        (n.title || "").toLowerCase().includes(q) ||
+        (n.subject || "").toLowerCase().includes(q) ||
+        (n.summary || "").toLowerCase().includes(q)
     ).slice(0, 3);
 
     return { toppers, strategies, syllabus, pyqs, notes };

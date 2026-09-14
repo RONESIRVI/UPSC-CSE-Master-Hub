@@ -53,8 +53,12 @@ import {
 } from "./types";
 
 import { UpdateModal } from "./components/ui/UpdateModal";
+import { usePushNotifications } from "./hooks/usePushNotifications";
 
 export default function App() {
+  // Initialize Push Notifications
+  usePushNotifications();
+
   // Update System State
   const [updateInfo, setUpdateInfo] = useState<{ version: string; body: string; url: string } | null>(null);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);

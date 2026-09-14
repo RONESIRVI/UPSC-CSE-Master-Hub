@@ -137,14 +137,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
       badge: `${revisionQueue.length} Due`,
       color: "bg-teal-50 text-teal-600 border-teal-200",
     },
-    {
-      key: "pyq",
-      label: "PYQs & Model Keys",
-      description: "Past year Prelims MCQs & Mains model answers",
-      icon: HelpCircle,
-      badge: "Exam Vault",
-      color: "bg-purple-50 text-purple-600 border-purple-200",
-    },
+
   ];
 
   const currentOption =
@@ -301,15 +294,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
         />
       )}
 
-      {activeSubTab === "pyq" && (
-        <PYQTab
-          pyqs={pyqs}
 
-          onAddPYQ={onAddPYQ}
-          onDeletePYQ={onDeletePYQ}
-          onResetDefaultPYQs={onResetDefaultPYQs}
-        />
-      )}
 
       {setSyllabus && (
         <SyllabusEditorModal

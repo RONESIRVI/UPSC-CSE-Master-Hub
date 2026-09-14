@@ -269,7 +269,6 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
         <SyllabusTab
           syllabus={syllabus}
           onUpdateTopicStatus={onUpdateTopicStatus}
-          onOpenTopicAI={onOpenTopicAI}
           onAddTopic={onAddTopic}
           onDeleteTopic={onDeleteTopic}
           onResetDefaultSyllabus={onResetDefaultSyllabus}

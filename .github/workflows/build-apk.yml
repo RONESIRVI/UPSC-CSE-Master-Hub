@@ -32,12 +32,8 @@ jobs:
           node-version: 22
 
       - name: 🤖 Setup Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          packages: |
-            platforms;android-35
-            build-tools;35.0.0
-            cmdline-tools;latest
+        run: |
+          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - name: 📦 Install Project Dependencies
         run: |

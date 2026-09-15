@@ -296,11 +296,6 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
         />
       )}
 
-      <div className="fixed bottom-20 lg:bottom-6 right-4 sm:right-6 z-40 flex items-center gap-2 sm:gap-2.5 animate-in slide-in-from-bottom-5 duration-300">
-
-
-
-
     </div>
   );
 };

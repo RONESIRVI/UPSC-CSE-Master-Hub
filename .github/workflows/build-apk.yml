@@ -1,5 +1,7 @@
 name: Build Android APK
 
+permissions:
+  contents: write
 on:
   push:
     branches:
@@ -64,9 +66,9 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add android/gradle_build.log
-          git commit -m "chore: upload gradle log"
-          git push
+          git add android/gradle_build.log || true
+          git commit -m "chore: upload gradle log [skip ci]" || true
+          git push || true
 
       - name: 🔍 Locate Built APK
         id: find_apk

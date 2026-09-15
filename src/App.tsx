@@ -381,20 +381,20 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem("upsc_strategies", JSON.stringify(strategies));
     localStorage.setItem("upsc_toppers", JSON.stringify(toppers));
-    localStorage.setItem("ras_syllabus_v1", JSON.stringify(syllabus));
+    localStorage.setItem("ras_syllabus_v2", JSON.stringify(syllabus));
     localStorage.setItem(
       "ras_study_plan_v1",
       JSON.stringify(studyPlanPhases)
     );
-    localStorage.setItem("upsc_study_logs", JSON.stringify(sessionLogs));
-    localStorage.setItem("upsc_mock_logs", JSON.stringify(mockLogs));
+    localStorage.setItem("upsc_session_logs_v2", JSON.stringify(sessionLogs));
+    localStorage.setItem("upsc_mock_logs_v2", JSON.stringify(mockLogs));
     localStorage.setItem(
-      "upsc_revision_queue",
+      "upsc_revision_queue_v2",
       JSON.stringify(revisionQueue)
     );
-    localStorage.setItem("upsc_pyqs", JSON.stringify(pyqs));
-    localStorage.setItem("upsc_weak_areas", JSON.stringify(weakAreas));
-    localStorage.setItem("ras_audio_notes", JSON.stringify(audioNotes));
+    localStorage.setItem("upsc_pyqs_v2", JSON.stringify(pyqs));
+    localStorage.setItem("upsc_weak_areas_v2", JSON.stringify(weakAreas));
+    localStorage.setItem("ras_audio_notes_v2", JSON.stringify(audioNotes));
   }, [
     strategies,
     toppers,

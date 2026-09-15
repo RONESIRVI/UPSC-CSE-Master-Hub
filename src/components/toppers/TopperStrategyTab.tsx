@@ -1,18 +1,14 @@
 import React, { useState } from "react";
 import { TopperProfile } from "../../types";
-import { TopperFormModal } from "./TopperFormModal";
 import {
   Trophy,
-  BookOpen,
   Award,
   CheckCircle2,
   ChevronRight,
-  Sparkles,
   Flame,
   GraduationCap,
   Filter,
-  Plus,
-  Edit2,
+  FileText,
 } from "lucide-react";
 
 interface TopperStrategyTabProps {
@@ -22,16 +18,10 @@ interface TopperStrategyTabProps {
 
 export const TopperStrategyTab: React.FC<TopperStrategyTabProps> = ({
   toppers,
-  setToppers,
 }) => {
   const [selectedTopper, setSelectedTopper] = useState<TopperProfile>(
     toppers[0]
   );
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingTopper, setEditingTopper] = useState<TopperProfile | undefined>();
-  const [activeStrategyPaper, setActiveStrategyPaper] = useState<
-    "gs1" | "gs2" | "gs3" | "gs4" | "essay" | "optional" | "prelims" | "csat"
-  >("gs1");
   const [optionalFilter, setOptionalFilter] = useState<string>("All");
 
   const optionals = [
@@ -44,14 +34,15 @@ export const TopperStrategyTab: React.FC<TopperStrategyTabProps> = ({
     return t.optional === optionalFilter;
   });
 
-  const handleSaveTopper = (savedTopper: TopperProfile) => {
-    if (editingTopper) {
-      setToppers(prev => prev.map(t => t.id === savedTopper.id ? savedTopper : t));
-      if (selectedTopper.id === savedTopper.id) setSelectedTopper(savedTopper);
-    } else {
-      setToppers(prev => [savedTopper, ...prev]);
-    }
-  };
+  const marksFields = [
+    { key: "prelimsGsMarks", label: "प्रेलिम्स GS Marks", color: "text-blue-600", bg: "bg-blue-50", border: "border-blue-200" },
+    { key: "prelimsCsatMarks", label: "प्रेलिम्स CSAT Marks", color: "text-sky-600", bg: "bg-sky-50", border: "border-sky-200" },
+    { key: "essayMarks", label: "Essay (P-I)", color: "text-violet-600", bg: "bg-violet-50", border: "border-violet-200" },
+    { key: "gs1Marks", label: "GS-I (P-II)", color: "text-emerald-600", bg: "bg-emerald-50", border: "border-emerald-200" },
+    { key: "gs2Marks", label: "GS-II (P-III)", color: "text-amber-600", bg: "bg-amber-50", border: "border-amber-200" },
+    { key: "gs3Marks", label: "GS-III (P-IV)", color: "text-rose-600", bg: "bg-rose-50", border: "border-rose-200" },
+    { key: "gs4Marks", label: "GS-IV (P-V)", color: "text-indigo-600", bg: "bg-indigo-50", border: "border-indigo-200" },
+  ];
 
   return (
     <div className="space-y-6">
@@ -77,9 +68,8 @@ export const TopperStrategyTab: React.FC<TopperStrategyTabProps> = ({
           </p>
         </div>
 
-        {/* Actions Area - Mobile friendly */}
+        {/* Filter Row */}
         <div className="flex flex-col gap-2 w-full md:w-auto md:self-start md:shrink-0">
-          {/* Filter Row */}
           <div className="flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-xl border border-slate-200 shadow-sm w-full">
             <Filter className="w-4 h-4 text-indigo-600 shrink-0" />
             <label className="text-xs text-slate-600 font-bold shrink-0">Optional:</label>
@@ -95,17 +85,6 @@ export const TopperStrategyTab: React.FC<TopperStrategyTabProps> = ({
               ))}
             </select>
           </div>
-          {/* Add Topper Button - full width on mobile */}
-          <button
-            onClick={() => {
-              setEditingTopper(undefined);
-              setIsModalOpen(true);
-            }}
-            className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white text-sm font-bold shadow-md transition w-full cursor-pointer"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Add Topper</span>
-          </button>
         </div>
       </div>
 
@@ -172,19 +151,6 @@ export const TopperStrategyTab: React.FC<TopperStrategyTabProps> = ({
                       )}
                     </div>
                   )}
-                  {isSelected && (
-                     <button
-                       onClick={(e) => {
-                         e.stopPropagation();
-                         setEditingTopper(topper);
-                         setIsModalOpen(true);
-                       }}
-                       className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition self-start ml-2"
-                       title="Edit Topper"
-                     >
-                       <Edit2 className="w-4 h-4" />
-                     </button>
-                  )}
                 </div>
               </div>
 
@@ -207,6 +173,7 @@ export const TopperStrategyTab: React.FC<TopperStrategyTabProps> = ({
                   className="mt-5 pt-5 border-t border-slate-200 cursor-default animate-in fade-in slide-in-from-top-2 duration-300 space-y-6"
                   onClick={(e) => e.stopPropagation()}
                 >
+                  {/* Quote Section */}
                   <p className="text-sm text-slate-600 italic font-medium leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
                     "{topper.quote}"
                   </p>
@@ -216,153 +183,60 @@ export const TopperStrategyTab: React.FC<TopperStrategyTabProps> = ({
                     {topper.background}
                   </div>
 
+                  {/* Main Details - Marks Section */}
+                  <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 shadow-sm">
+                    <div className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5 mb-4">
+                      <FileText className="w-4 h-4 text-indigo-600" />
+                      <span>Main Details — Exam Marks</span>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                      {marksFields.map((field) => {
+                        const value = topper.mainDetails?.[field.key as keyof NonNullable<TopperProfile['mainDetails']>] || '—';
+                        return (
+                          <div
+                            key={field.key}
+                            className={`${field.bg} ${field.border} border rounded-xl p-3 text-center shadow-xs`}
+                          >
+                            <div className="text-[10px] uppercase font-bold text-slate-500 mb-1 leading-tight">
+                              {field.label}
+                            </div>
+                            <div className={`text-lg font-extrabold ${field.color}`}>
+                              {value}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
                   {/* Golden Rules Bento Box */}
-                  <div className="bg-indigo-50/70 border border-indigo-100 rounded-xl p-5">
-                    <div className="text-xs font-bold uppercase tracking-wider text-indigo-800 flex items-center gap-1.5 mb-3">
-                      <Flame className="w-4 h-4 text-indigo-600 fill-indigo-600" />
-                      <span>Core Golden Rules by {topper.name}</span>
+                  {topper.goldenRules.length > 0 && (
+                    <div className="bg-indigo-50/70 border border-indigo-100 rounded-xl p-5">
+                      <div className="text-xs font-bold uppercase tracking-wider text-indigo-800 flex items-center gap-1.5 mb-3">
+                        <Flame className="w-4 h-4 text-indigo-600 fill-indigo-600" />
+                        <span>Core Golden Rules by {topper.name}</span>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {topper.goldenRules.map((rule, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-start gap-2.5 text-xs text-slate-700 bg-white p-3 rounded-lg border border-indigo-100 shadow-xs"
+                          >
+                            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                            <span className="leading-relaxed font-medium">
+                              {rule}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {topper.goldenRules.map((rule, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-start gap-2.5 text-xs text-slate-700 bg-white p-3 rounded-lg border border-indigo-100 shadow-xs"
-                        >
-                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                          <span className="leading-relaxed font-medium">
-                            {rule}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  )}
 
-                  {/* Paper-Wise Strategy Bento Area */}
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h4 className="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
-                        <BookOpen className="w-4 h-4 text-indigo-600" />
-                        <span>Subject-Wise Blueprint</span>
-                      </h4>
-                    </div>
-
-                    <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar scroll-smooth pb-1">
-                      {[
-                        { key: "gs1", label: "GS1" },
-                        { key: "gs2", label: "GS2" },
-                        { key: "gs3", label: "GS3" },
-                        { key: "gs4", label: "GS4" },
-                        { key: "essay", label: "Essay" },
-                        {
-                          key: "optional",
-                          label: `Optional (${topper.optional})`,
-                        },
-                        { key: "prelims", label: "Prelims GS1" },
-                        { key: "csat", label: "CSAT" },
-                      ].map((tab) => (
-                        <button
-                          key={tab.key}
-                          onClick={() => setActiveStrategyPaper(tab.key as any)}
-                          className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer shrink-0 ${
-                            activeStrategyPaper === tab.key
-                              ? "bg-indigo-600 text-white shadow-xs"
-                              : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                          }`}
-                        >
-                          {tab.label}
-                        </button>
-                      ))}
-                    </div>
-
-                    <div className="bg-slate-50 border-2 border-slate-200 rounded-2xl p-5 sm:p-6 shadow-xs space-y-3">
-                      {activeStrategyPaper === "gs1" && (
-                        <div>
-                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">
-                            GS1 Strategy (History, Geography, Society)
-                          </div>
-                          <p className="text-sm leading-relaxed text-slate-700 font-medium">
-                            {topper.gsStrategy.gs1}
-                          </p>
-                        </div>
-                      )}
-                      {activeStrategyPaper === "gs2" && (
-                        <div>
-                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">
-                            GS2 Strategy (Polity, Governance, IR)
-                          </div>
-                          <p className="text-sm leading-relaxed text-slate-700 font-medium">
-                            {topper.gsStrategy.gs2}
-                          </p>
-                        </div>
-                      )}
-                      {activeStrategyPaper === "gs3" && (
-                        <div>
-                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">
-                            GS3 Strategy (Economy, Sci-Tech, Environment)
-                          </div>
-                          <p className="text-sm leading-relaxed text-slate-700 font-medium">
-                            {topper.gsStrategy.gs3}
-                          </p>
-                        </div>
-                      )}
-                      {activeStrategyPaper === "gs4" && (
-                        <div>
-                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">
-                            GS4 Strategy (Ethics, Case Studies)
-                          </div>
-                          <p className="text-sm leading-relaxed text-slate-700 font-medium">
-                            {topper.gsStrategy.gs4}
-                          </p>
-                        </div>
-                      )}
-                      {activeStrategyPaper === "essay" && (
-                        <div>
-                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">
-                            Essay Writing Methodology
-                          </div>
-                          <p className="text-sm leading-relaxed text-slate-700 font-medium">
-                            {topper.essayStrategy}
-                          </p>
-                        </div>
-                      )}
-                      {activeStrategyPaper === "optional" && (
-                        <div>
-                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">
-                            Optional Strategy
-                          </div>
-                          <p className="text-sm leading-relaxed text-slate-700 font-medium">
-                            {topper.optionalStrategy}
-                          </p>
-                        </div>
-                      )}
-                      {activeStrategyPaper === "prelims" && (
-                        <div>
-                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">
-                            Prelims GS Paper 1 Strategy
-                          </div>
-                          <p className="text-sm leading-relaxed text-slate-700 font-medium">
-                            {topper.prelimsStrategy}
-                          </p>
-                        </div>
-                      )}
-                      {activeStrategyPaper === "csat" && (
-                        <div>
-                          <div className="text-xs font-bold text-indigo-700 uppercase tracking-widest mb-2">
-                            CSAT Strategy
-                          </div>
-                          <p className="text-sm leading-relaxed text-slate-700 font-medium">
-                            {topper.csatStrategy}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  
                   {/* Dynamic Extra Data Rendering */}
                   {topper.extraData && Object.keys(topper.extraData).length > 0 && (
                     <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 mt-4">
                       <div className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5 mb-4">
-                        <Sparkles className="w-4 h-4 text-indigo-600" />
+                        <Award className="w-4 h-4 text-indigo-600" />
                         <span>Additional Info</span>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -381,13 +255,6 @@ export const TopperStrategyTab: React.FC<TopperStrategyTabProps> = ({
           );
         })}
       </div>
-
-      <TopperFormModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSave={handleSaveTopper}
-        editingTopper={editingTopper}
-      />
     </div>
   );
 };

@@ -35,7 +35,7 @@ try {
     for (let col = 1; col < numCols; col++) {
       const obj = {};
       const extraData = {};
-      const coreKeys = ['id', 'name', 'rank', 'year', 'optional', 'attempt', 'background', 'avatar', 'quote', 'keyStrategy', 'gs1', 'gs2', 'gs3', 'gs4', 'essayStrategy', 'optionalStrategy', 'prelimsStrategy', 'csatStrategy', 'interviewScore', 'mainsScore', 'goldenRules', 'title', 'authorOrPublication', 'subject', 'paper', 'priority', 'recommendedBy', 'keyChapters', 'tipsForReading', 'status', 'routineId', 'topperName', 'profileType', 'totalStudyHours', 'wakeUpTime', 'sleepTime', 'time', 'activity', 'category', 'description', 'tips', 'candidate', 'board', 'score', 'duration', 'dafHighlights', 'question', 'askedBy', 'answer', 'analysis', 'keyTakeaways'];
+      const coreKeys = ['id', 'name', 'rank', 'year', 'optional', 'attempt', 'background', 'avatar', 'quote', 'keyStrategy', 'gs1', 'gs2', 'gs3', 'gs4', 'essayStrategy', 'optionalStrategy', 'prelimsStrategy', 'csatStrategy', 'interviewScore', 'mainsScore', 'goldenRules', 'prelimsGsMarks', 'prelimsCsatMarks', 'essayMarks', 'gs1Marks', 'gs2Marks', 'gs3Marks', 'gs4Marks', 'title', 'authorOrPublication', 'subject', 'paper', 'priority', 'recommendedBy', 'keyChapters', 'tipsForReading', 'status', 'routineId', 'topperName', 'profileType', 'totalStudyHours', 'wakeUpTime', 'sleepTime', 'time', 'activity', 'category', 'description', 'tips', 'candidate', 'board', 'score', 'duration', 'dafHighlights', 'question', 'askedBy', 'answer', 'analysis', 'keyTakeaways'];
       
       for (let row = 0; row < rows.length; row++) {
         const rawKey = rows[row][0];
@@ -207,6 +207,15 @@ try {
       interviewScore: typeof t.interviewScore === 'number' ? t.interviewScore : (parseInt((t.interviewScore || '').toString().replace(/\\D/g, '')) || undefined),
       mainsScore: typeof t.mainsScore === 'number' ? t.mainsScore : (parseInt((t.mainsScore || '').toString().replace(/\\D/g, '')) || undefined),
       goldenRules: typeof t.goldenRules === 'string' ? t.goldenRules.split('|').map(r => r.trim()) : [],
+      mainDetails: {
+        prelimsGsMarks: t.prelimsGsMarks || '',
+        prelimsCsatMarks: t.prelimsCsatMarks || '',
+        essayMarks: t.essayMarks || '',
+        gs1Marks: t.gs1Marks || '',
+        gs2Marks: t.gs2Marks || '',
+        gs3Marks: t.gs3Marks || '',
+        gs4Marks: t.gs4Marks || ''
+      },
       extraData: t.extraData
     };
   });

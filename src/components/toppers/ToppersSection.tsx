@@ -255,7 +255,7 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
       <div className="pt-2">
         {activeSubTab === "strategy" && <TopperStrategyTab toppers={toppers} setToppers={setToppers} />}
         {activeSubTab === "books" && (
-          <TopperStrategySetupTab strategies={strategies} />
+          <TopperStrategySetupTab strategies={strategies} toppers={toppers} />
         )}
         {activeSubTab === "routine" && (
           <TopperRoutineTab onAdoptRoutine={onAdoptRoutine} routines={routines} setRoutines={setRoutines} />

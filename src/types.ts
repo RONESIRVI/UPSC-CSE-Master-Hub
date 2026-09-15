@@ -44,6 +44,15 @@ export interface TopperProfile {
   interviewScore?: number;
   mainsScore?: number;
   goldenRules: string[];
+  mainDetails?: {
+    prelimsGsMarks?: string;
+    prelimsCsatMarks?: string;
+    essayMarks?: string;
+    gs1Marks?: string;
+    gs2Marks?: string;
+    gs3Marks?: string;
+    gs4Marks?: string;
+  };
   extraData?: Record<string, string>;
 }
 

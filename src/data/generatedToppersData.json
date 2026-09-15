@@ -6,29 +6,43 @@
       "rank": 1,
       "year": 2024,
       "optional": "PSIR (280 अंक)",
-      "attempt": 1,
+      "attempt": 5,
       "background": "PCB (Bio) पृष्ठभूमि",
-      "avatar": "\"किताबें तो पढ़ ली हैं बहुत, बट उनको हटा के नई लगाने में वक्त लगेगा अभी।\" | \"सपने आपके अपने होते हैं; यदि आप उन्हें पूरा करने के लिए 100% प्रयास दे रहे हैं, तो सफलता निश्चित है।\"",
-      "quote": "Smart Work > Brute Force। एक विषय – एक किताब। दिसंबर तक Mains Ready (Optional, Ethics, Essay, 1-page GS Notes)। थीम-बेस्ड करंट अफेयर्स नोट्स (GS 1-4 कीवर्ड्स अनुसार)। दैनिक 8-10 घंटे को 4 स्लॉट में बाँटना।",
-      "keyStrategy": "अंक: 112 | इतिहास: TN Board Cl-11 NCERT + Spectrum/Bipin Chandra | भूगोल: Cl-11,12 NCERTs + Atlas | समाज: उत्कर्ष द्विवेदी टेम्पलेट + NCERT + NFHS/ASER डेटा | विश्व इतिहास: Vision IAS बुकलेट + PYQs।",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "\"किताबें तो पढ़ ली हैं बहुत, बट उनको हटा के नई लगाने में वक्त लगेगा अभी।\" | \"सपने आपके अपने होते हैं; यदि आप उन्हें पूरा करने के लिए 100% प्रयास दे रहे हैं, तो सफलता निश्चित है।\"",
+      "keyStrategy": "",
       "gsStrategy": {
-        "gs1": "अंक: 125 | पॉलिटी: Laxmikanth (Margin Notes) + Abhay Kumar 500 MCQs | शासन: 2nd ARC, सुप्रीम कोर्ट निर्णय | IR: PSIR Optional नोट्स का ओवरलैप + करंट (BRICS, SCO, G20, BIMSTEC) | सामाजिक न्याय: उत्कर्ष टेम्पलेट + SHG/NABARD डेटा।",
-        "gs2": "अंक: 86 | अर्थव्यवस्था: Shriram IAS Notes + Budget/Eco Survey (Jayant Sir) + Shivin Sir GS3 Template | आंतरिक सुरक्षा: Shivin Sir Template + अद्यतन डेटा | आपदा: NDMA Template (Utkarsh Dwivedi) | Environment & S&T: Annual Mains Compilations।",
-        "gs3": "अंक: 141 (देश में सर्वोच्च में से एक, बिना कोचिंग) | 100 कीवर्ड्स (Syllabus 25-30 + PYQs 50-60) | हर कीवर्ड: परिभाषा + Quote + सिविल सेवक उदाहरण + केस स्टडी | Prahar Magazine बुकलेट + The Better India | दार्शनिक: Aristotle, Plato, Kant, Hannah Arendt | समय: Section A → 1h15m, Case Studies → 1h45m।",
-        "gs4": "अंक: 100 | प्रति निबंध 1.5 घंटा (20-30 मिनट माइंड-मैप, 1 घंटा लेखन) | 15-16 बहु-आयामी GS आयाम | दोनों निबंधों का ढाँचा अलग | Haidt की 'The Anxious Generation' जैसे साहित्यिक संदर्भ।"
+        "gs1": "",
+        "gs2": "",
+        "gs3": "",
+        "gs4": ""
       },
-      "essayStrategy": "PSIR 280 अंक (2023: 230 → 2024: 280) | IGNOU सामग्री + Shriram/Vajiram नोट्स | सितंबर तक Syllabus + PYQs पूरे | 40% दैनिक समय | विचारक + खंडन एकसाथ | IR Paper 2B में करंट इंटीग्रेट।",
-      "optionalStrategy": "अंक: 82 (Cutoff: 75) | नया पैटर्न + Shock Absorption माइंडसेट | PYQ थीम एनालिसिस (Art. 19, 21, 32 जैसे हाई-फ्रीक्वेंसी) | Jan-Feb: रिवीजन 1, Mar-15Apr: रिवीजन 2 | 3-इटरेशन पेपर सॉल्विंग | सबसे मज़बूत विषय (Polity) से शुरू।",
-      "prelimsStrategy": "अंक: 75 | PCB बैकग्राउंड, 10वीं के बाद Maths नहीं | RC: 25-28 प्रश्न (उच्च सटीकता) | Reasoning: 10-15 प्रश्न | Quant: Time-Work, SDT, Percentage, Number System | कुल 45-50 प्रश्न टार्गेट।",
-      "csatStrategy": "200 / 275",
-      "mainsScore": 1,
+      "essayStrategy": "",
+      "optionalStrategy": "",
+      "prelimsStrategy": "",
+      "csatStrategy": "",
+      "interviewScore": 175,
+      "mainsScore": 380,
       "goldenRules": [
-        "पहला प्रयास सबसे गंभीरता से दें",
-        "असफलता पर Knowledge/Strategy Gap खोजें",
-        "Interview में प्रामाणिकता + तटस्थ प्रशासनिक दृष्टिकोण",
-        "2-3 गंभीर प्रयासों के बाद Plan B खुले रखें।"
+        "1. दिसंबर तक Mains Ready",
+        "2. एक विषय – एक पुस्तक, 3-4 बार रिवीजन",
+        "3. Active Recall (किताब बंद कर याद करें)",
+        "4. 10-15 पेज की Factbook (डेटा, समितियाँ, निर्णय)",
+        "5. अखबार: 1-1.5 घंटे, केवल Explained Page",
+        "6. Essay+Ethics+Optional पर 50%+ ध्यान।"
       ],
-      "extraData": {}
+      "mainDetails": {
+        "prelimsGsMarks": "",
+        "prelimsCsatMarks": "",
+        "essayMarks": "",
+        "gs1Marks": "",
+        "gs2Marks": "",
+        "gs3Marks": "",
+        "gs4Marks": ""
+      },
+      "extraData": {
+        "Advaice": "पहला प्रयास सबसे गंभीरता से दें | असफलता पर Knowledge/Strategy Gap खोजें | Interview में प्रामाणिकता + तटस्थ प्रशासनिक दृष्टिकोण | 2-3 गंभीर प्रयासों के बाद Plan B खुले रखें।"
+      }
     },
     {
       "id": "harshita-goyal",
@@ -36,29 +50,42 @@
       "rank": 2,
       "year": 2024,
       "optional": "PSIR",
-      "attempt": 32,
+      "attempt": 3,
       "background": "CA पृष्ठभूमि",
-      "avatar": "\"Suffer the pain of discipline or suffer the pain of regret.\" | \"Ordinary efforts done in a consistent manner lead to extraordinary results.\"",
-      "quote": "4-ब्लॉक Target Model (8-9 घंटे गुणवत्ता अध्ययन) | Integrated Approach (Prelims+Mains+Interview एकसाथ) | PYQs को सर्वश्रेष्ठ मित्र बनाना | 5+1+1 नियम (5 पढ़ाई + 1 Buffer + 1 Revision)।",
-      "keyStrategy": "भूगोल: Cl-11,12 NCERTs + Maps अभ्यास | इतिहास: Spectrum/PW Udaan (Modern) + पुरानी NCERTs (Ancient/Medieval) | Art & Culture: NCERTs + Stick Figures (नटराज आदि) | प्रतिदिन 30 मिनट Modern History।",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "\"Suffer the pain of discipline or suffer the pain of regret.\" | \"Ordinary efforts done in a consistent manner lead to extraordinary results.\"",
+      "keyStrategy": "",
       "gsStrategy": {
-        "gs1": "पॉलिटी: Vision IAS Foundation Notes (Amirul Hasan Sir) + Laxmikanth (Margin में नोट्स) | IR: PSIR Optional से भारी ओवरलैप | Governance: Indian Express पैसिव रीडिंग।",
-        "gs2": "Economy+Environment+Security: Vision IAS Mains 365 | Budget: 2 पेज क्रिस्प नोट्स | Eco Survey: 3 पेज | Environment Mains 365: 6 पेज | Visual Presentation: Trend Graphs, Flowcharts, Infographics।",
-        "gs3": "पसंदीदा विषय | Case Studies: Hub & Spoke Model (Stakeholders) + Pros/Cons Table | समय: Theory → 1h15m, Case Studies → शेष | किसी rigid structure के बिना व्यक्तित्व दिखाएँ।",
-        "gs4": "अंक: 144 | 5 मिनट Timer → रफ पेज पर सभी आयाम (PESTEL) + Quotes | Anecdote/Quote से आकर्षक शुरुआत | Topper copies से Example Bank तैयार।"
+        "gs1": "",
+        "gs2": "",
+        "gs3": "",
+        "gs4": ""
       },
-      "essayStrategy": "PSIR | PYQs: 2013-2023 Topic-Wise | हर Topic: 2-4 Thinkers (पक्ष+विपक्ष) | तकनीकी शब्दावली | GS2 IR से भारी ओवरलैप।",
-      "optionalStrategy": "2024 में 98 प्रश्न अटेम्प्ट | Vajiram Power Up Test Series (CA) + Vision IAS Abhyas Tests | Calculated Risk: 30-35 sure-shot + 50-50 elimination | अंतिम 27 दिन: कोई नया रिसोर्स नहीं, केवल नोट्स + PYQs।",
-      "prelimsStrategy": "2nd Attempt में CSAT fail → 3rd में विशेष ध्यान | NDA, CDS, CPSC के पिछले 3 साल के CSAT Papers | RC: प्रश्न पहले पढ़ें → Extreme Options तुरंत खारिज | 27-28 RC में से 22+ सही टार्गेट।",
-      "csatStrategy": "187 / 275",
-      "mainsScore": 1,
+      "essayStrategy": "",
+      "optionalStrategy": "",
+      "prelimsStrategy": "",
+      "csatStrategy": "",
+      "interviewScore": 205,
+      "mainsScore": 450,
       "goldenRules": [
-        "Internal Drive से पढ़ें, बाहरी दबाव नहीं",
-        "शुरुआत में Plan B का Comfort Zone से बचें",
-        "परिस्थितियों को बहाना न बनने दें (Typhoid के बावजूद Mains दिया)",
-        "UPSC केवल परीक्षा नहीं, व्यक्तित्व विकास है।"
+        "1. घंटे नहीं, Target गिनें (8-9 घंटे गुणवत्ता)",
+        "2. PYQs को रीढ़ बनाएँ",
+        "3. सीमित स्रोत + अधिकतम Revision",
+        "4. 5+1+1 Time-Table Model",
+        "5. सकारात्मक मानसिकता + 7-8 घंटे नींद।"
       ],
-      "extraData": {}
+      "mainDetails": {
+        "prelimsGsMarks": "",
+        "prelimsCsatMarks": "",
+        "essayMarks": "",
+        "gs1Marks": "",
+        "gs2Marks": "",
+        "gs3Marks": "",
+        "gs4Marks": ""
+      },
+      "extraData": {
+        "Advaice": "Internal Drive से पढ़ें, बाहरी दबाव नहीं | शुरुआत में Plan B का Comfort Zone से बचें | परिस्थितियों को बहाना न बनने दें (Typhoid के बावजूद Mains दिया) | UPSC केवल परीक्षा नहीं, व्यक्तित्व विकास है।"
+      }
     },
     {
       "id": "shatakshi-sinha",
@@ -68,25 +95,38 @@
       "optional": "Sociology (290 अंक: P1-153, P2-137)",
       "attempt": 4,
       "background": "स्रोत में उल्लेखित नहीं",
-      "avatar": "\"I never felt like giving up... even had I not cleared this time, I would have given the exam again.\"",
-      "quote": "सीमित स्रोत + 4 Register में Consolidated Notes + 7-8 बार Revision | Topper Copies (Aditya Srivastava, Maidan Ji) से Answer Structuring + Cross-fertilization | PYQs पर केंद्रित।",
-      "keyStrategy": "विभिन्न GS Papers के ज्ञान को Cross-fertilize करके उत्तर लिखे | 2-3 पेज Concise Notes प्रति विषय।",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "\"I never felt like giving up... even had I not cleared this time, I would have given the exam again.\"",
+      "keyStrategy": "",
       "gsStrategy": {
-        "gs1": "GS1-GS4 Cross-fertilization | 2-3 पेज नोट्स | Committee Recommendations + Articles का समावेश।",
-        "gs2": "2-3 पेज नोट्स | Prelims में एकत्र ज्ञान/तथ्य Google Docs में सहेजकर Mains में प्रयोग।",
-        "gs3": "Case Studies: सामान्य सुझावों के बजाय स्पष्ट व्यावहारिक समाधान | Essay: रोजाना एक विषय पर Brainstorming Notes।",
-        "gs4": "रोजाना एक दार्शनिक विषय पर Brainstorming Notes | Philosophical Essays में गहरी वैचारिक संरचना।"
+        "gs1": "",
+        "gs2": "",
+        "gs3": "",
+        "gs4": ""
       },
-      "essayStrategy": "Sociology 290 अंक | 4 मुख्य Register + 4 छोटे Handouts (अंतिम समय हेतु) | Durkheim के सिद्धांत → वर्तमान उदाहरण से जोड़ना | Thinkers को Current Affairs से Link।",
-      "optionalStrategy": "फरवरी से प्रतिदिन 50 MCQs + सप्ताह में 2-3 Mock Tests | परीक्षा से 1 महीना पहले Mock बंद → केवल PYQs | The Hindu + Monthly Magazines (3-4 बार Revision) | CA के अलग नोट्स नहीं।",
-      "prelimsStrategy": "स्रोत में विशिष्ट उल्लेख नहीं।",
-      "csatStrategy": "स्रोत में उल्लेखित नहीं | Mock Interviews से Stage Fear दूर | IR + Newspapers पर विशेष ध्यान।",
+      "essayStrategy": "",
+      "optionalStrategy": "",
+      "prelimsStrategy": "",
+      "csatStrategy": "",
+      "interviewScore": 156,
+      "mainsScore": 350,
       "goldenRules": [
-        "10-अंक प्रश्न: 10-12 Points; 15-अंक: 15-17 Points",
-        "4 Registers में Consolidated Notes, 7-8 बार Revision",
-        "PYQs सबसे पहले।"
+        "नए अभ्यर्थी सबसे पहले PYQs देखें",
+        "दैनिक कम से कम 8 घंटे गुणवत्तापूर्ण पढ़ाई",
+        "कभी हार न मानें।"
       ],
-      "extraData": {}
+      "mainDetails": {
+        "prelimsGsMarks": "",
+        "prelimsCsatMarks": "",
+        "essayMarks": "",
+        "gs1Marks": "",
+        "gs2Marks": "",
+        "gs3Marks": "",
+        "gs4Marks": ""
+      },
+      "extraData": {
+        "Advaice": "10-अंक प्रश्न: 10-12 Points; 15-अंक: 15-17 Points | 4 Registers में Consolidated Notes, 7-8 बार Revision | PYQs सबसे पहले।"
+      }
     },
     {
       "id": "rupal-rana",
@@ -96,25 +136,38 @@
       "optional": "PSIR",
       "attempt": 4,
       "background": "स्रोत में उल्लेखित नहीं",
-      "avatar": "\"There is a way out of this exam... learn from your mistakes.\"",
-      "quote": "सीमित किताबें + बहुस्तरीय Revision + गलतियों का सूक्ष्म विश्लेषण | Spectrum को 25 ऑनलाइन पेजों में Condense किया।",
-      "keyStrategy": "History: Modern → Spectrum (25 pages में condense) + NCERTs (R.S. Sharma, Satish Chandra, Bipan Chandra) | Society: Smriti Ma'am Notes | Comparative Charts: राष्ट्रपति vs राज्यपाल आदि।",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "\"There is a way out of this exam... learn from your mistakes.\"",
+      "keyStrategy": "",
       "gsStrategy": {
-        "gs1": "Polity: Laxmikanth + 11th NCERT (Constitution at Work) | IR: Shubhra Ranjan + ORF + Indian Express + The Hindu + Jaishankar Speeches | Governance: Committee Recommendations।",
-        "gs2": "GS3: Science & Tech + Environment → Mains 365 | Internal Security → Shivin Sir Notes।",
-        "gs3": "Ethics: Ansari Sir (Lukman IAS) Notes | 'The Better India' से Real Examples | Ramayana/Mahabharata से नैतिक पाठ | Topper Copies (Shruti Ma'am, Vishakha Ma'am)।",
-        "gs4": "PYQs से मुख्य Themes (Problems, Causes, Solutions, Way Forward) पहचाने।"
+        "gs1": "",
+        "gs2": "",
+        "gs3": "",
+        "gs4": ""
       },
-      "essayStrategy": "PSIR: Shubhra Ranjan 80% Base | ORF, Indian Express, The Hindu, Jaishankar Interviews से Value Addition।",
-      "optionalStrategy": "4th Attempt: 90+ प्रश्न हल किए (पहले 3 में 71-78 से Fail) | Source List: Polity-Laxmikanth+11NCERT, History-Spectrum, Economy-Vivek Singh, Environment-Shankar+PT365, Geography-Rishikesh Notes+11/12 NCERT | Comparative Tables।",
-      "prelimsStrategy": "स्रोत में विशिष्ट उल्लेख नहीं।",
-      "csatStrategy": "201 / 275",
+      "essayStrategy": "",
+      "optionalStrategy": "",
+      "prelimsStrategy": "",
+      "csatStrategy": "",
+      "interviewScore": 180,
+      "mainsScore": 450,
       "goldenRules": [
-        "Attempt बढ़ाएँ (90+)",
-        "Limited Sources को बार-बार Revise करें",
-        "Monthly Break लें।"
+        "खुद की रणनीति पर भरोसा रखें",
+        "महीने में 1-2 दिन पूर्ण Break (Burnout से बचाव)",
+        "Multiple Revisions of Limited Sources।"
       ],
-      "extraData": {}
+      "mainDetails": {
+        "prelimsGsMarks": "",
+        "prelimsCsatMarks": "",
+        "essayMarks": "",
+        "gs1Marks": "",
+        "gs2Marks": "",
+        "gs3Marks": "",
+        "gs4Marks": ""
+      },
+      "extraData": {
+        "Advaice": "Attempt बढ़ाएँ (90+) | Limited Sources को बार-बार Revise करें | Monthly Break लें।"
+      }
     },
     {
       "id": "tanya-singh",
@@ -124,25 +177,38 @@
       "optional": "Economics",
       "attempt": 2,
       "background": "स्रोत में उल्लेखित नहीं",
-      "avatar": "\"There will be days and weeks when nothing happens, and then there will be weeks when decades happen.\"",
-      "quote": "असीमित सामग्री से बचना | AI Tools (ChatGPT/Gemini) का सारांश व उदाहरण के लिए उपयोग | Monthly/Yearly Magazines के Index Page पर Concise Notes।",
-      "keyStrategy": "समाचार पत्र की जगह Monthly/Yearly Magazines के Index Page पर Short Notes + बार-बार Revision।",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "\"There will be days and weeks when nothing happens, and then there will be weeks when decades happen.\"",
+      "keyStrategy": "",
       "gsStrategy": {
-        "gs1": "प्रत्येक GS Paper: केवल 30-35 Pages के Short Notes | Pointer Format: 10-अंक → 8-10 Points, 15-अंक → 12-13 Points।",
-        "gs2": "30-35 पेज Short Notes | Committee Names, Data, Schemes का समावेश।",
-        "gs3": "Ethics: प्रत्येक उत्तर में कम से कम एक Indian/Western Philosopher का उल्लेख | Case Studies: 3-4 Pre-set Templates (Stakeholder Approach, Values Approach)।",
-        "gs4": "प्रत्येक GS Paper: 30-35 पेज Short Notes | PESTEL दृष्टिकोण।"
+        "gs1": "",
+        "gs2": "",
+        "gs3": "",
+        "gs4": ""
       },
-      "essayStrategy": "Economics: Paper 2 को GS3 Indian Economy से Integrate किया | Arjun Gupta Sir के Topper Notes।",
-      "optionalStrategy": "जनवरी से ऑफलाइन Mock Tests + कमज़ोर विषयों का विश्लेषण | Monthly/Yearly Magazine Index पर Notes | CSAT: केवल PYQs।",
-      "prelimsStrategy": "Comprehension के लिए केवल UPSC PYQs को मुख्य आधार।",
-      "csatStrategy": "स्रोत में उल्लेखित नहीं।",
+      "essayStrategy": "",
+      "optionalStrategy": "",
+      "prelimsStrategy": "",
+      "csatStrategy": "",
+      "interviewScore": 198,
+      "mainsScore": 558,
       "goldenRules": [
-        "अपनी तैयारी और Mentorship पर भरोसा",
-        "Resources सीमित",
-        "आत्मविश्वास न खोएँ।"
+        "AI Tools का उपयोग करें (उदाहरण + सारांश)",
+        "अपने Notes पर भरोसा",
+        "Resources सीमित रखें।"
       ],
-      "extraData": {}
+      "mainDetails": {
+        "prelimsGsMarks": "",
+        "prelimsCsatMarks": "",
+        "essayMarks": "",
+        "gs1Marks": "",
+        "gs2Marks": "",
+        "gs3Marks": "",
+        "gs4Marks": ""
+      },
+      "extraData": {
+        "Advaice": "अपनी तैयारी और Mentorship पर भरोसा | Resources सीमित | आत्मविश्वास न खोएँ।"
+      }
     },
     {
       "id": "swati-sharma",
@@ -152,25 +218,38 @@
       "optional": "PSIR",
       "attempt": 3,
       "background": "स्रोत में उल्लेखित नहीं",
-      "avatar": "एकल स्रोत + बहुस्तरीय Revision (One Source, Multiple Revisions)।",
-      "quote": "One Source – Multiple Revisions | फरवरी से Sectional Tests फिर FLTs | PYQs के चारों विकल्पों का गहन विश्लेषण।",
-      "keyStrategy": "इतिहास/भूगोल के कठिन प्रश्नों में Maps + Diagrams बनाकर अंक खींचे | PYQs (2013 के बाद) के चारों Options का गहन विश्लेषण।",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "एकल स्रोत + बहुस्तरीय Revision (One Source, Multiple Revisions)।",
+      "keyStrategy": "",
       "gsStrategy": {
-        "gs1": "Articles + Committee Recommendations समावेश + Pointwise | Supreme Court Judgements का उल्लेख।",
-        "gs2": "स्रोत में विशिष्ट GS3 विवरण नहीं, सीमित स्रोत + Revision।",
-        "gs3": "Ethics: पहले 10-अंकीय प्रश्न, फिर Case Studies, अंत में Quotation-based प्रश्न हल किए।",
-        "gs4": "PYQ Analysis + Toppers की Answer Copies से Structuring।"
+        "gs1": "",
+        "gs2": "",
+        "gs3": "",
+        "gs4": ""
       },
-      "essayStrategy": "PSIR: O.P. Gauba, Andrew Heywood (Global Politics) | 20 व 15 अंक वाले प्रश्नों को प्राथमिकता।",
-      "optionalStrategy": "फरवरी से Sectional Tests → FLTs | 2013 के बाद के PYQs के चारों विकल्पों का विश्लेषण।",
-      "prelimsStrategy": "CSAT: गणितीय कमज़ोरी पहचानकर Number System, Average, Calendar जैसे High-Yield Topics के लिए Crash Course + अभ्यास।",
-      "csatStrategy": "स्रोत में उल्लेखित नहीं।",
+      "essayStrategy": "",
+      "optionalStrategy": "",
+      "prelimsStrategy": "",
+      "csatStrategy": "",
+      "interviewScore": 150,
+      "mainsScore": 482,
       "goldenRules": [
-        "गलतियों से सीखें",
-        "CSAT की गणितीय कमज़ोरी पहले पहचानें",
-        "फरवरी से Mock शुरू करें।"
+        "One Source – Multiple Revisions",
+        "गलतियों से सीखें, कमज़ोर क्षेत्रों का विश्लेषण",
+        "Maps/Diagrams से Bouncers में अंक।"
       ],
-      "extraData": {}
+      "mainDetails": {
+        "prelimsGsMarks": "",
+        "prelimsCsatMarks": "",
+        "essayMarks": "",
+        "gs1Marks": "",
+        "gs2Marks": "",
+        "gs3Marks": "",
+        "gs4Marks": ""
+      },
+      "extraData": {
+        "Advaice": "गलतियों से सीखें | CSAT की गणितीय कमज़ोरी पहले पहचानें | फरवरी से Mock शुरू करें।"
+      }
     },
     {
       "id": "riya-saini",
@@ -180,24 +259,38 @@
       "optional": "Political Science / Sociology",
       "attempt": 3,
       "background": "स्रोत में उल्लेखित नहीं",
-      "avatar": "PYQs से थीम्स निकालकर Short Notes + High-ROI विषयों पर महारत।",
-      "quote": "PYQ Mapping से Themes निकालना | छोटे High-Return विषयों (Internal Security, Disaster Management, Social Justice) पर Special Focus | Prelims ज्ञान → Google Docs → Mains में प्रयोग।",
-      "keyStrategy": "PYQs से Themes → Short Notes | Core (Polity, Economy) + Science & Tech + Environment पर महारत।",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "PYQs से थीम्स निकालकर Short Notes + High-ROI विषयों पर महारत।",
+      "keyStrategy": "",
       "gsStrategy": {
-        "gs1": "Polity + Governance + IR → PYQ Theme Analysis | Prelims के तथ्य → Google Docs → Mains उत्तर।",
-        "gs2": "Internal Security: Vajiram Yellow Book | Disaster Management: Google का विस्तृत उपयोग | High-ROI Small Subjects पर विशेष ध्यान।",
-        "gs3": "Essay: स्वामी विवेकानंद के विचार, INA Trial, 'Tryst with Destiny' जैसे ऐतिहासिक संदर्भ।",
-        "gs4": "Essay: स्वामी विवेकानंद + INA Trial + Tryst with Destiny जैसे ऐतिहासिक संदर्भ | Multi-dimensional दृष्टिकोण।"
+        "gs1": "",
+        "gs2": "",
+        "gs3": "",
+        "gs4": ""
       },
-      "essayStrategy": "Political Science/Sociology | PYQ-based तैयारी।",
-      "optionalStrategy": "PYQs से Themes निकालकर Short Notes | Core + Sci&Tech + Environment में बढ़त (Bouncer प्रश्नों में लाभ)।",
-      "prelimsStrategy": "स्रोत में विशिष्ट उल्लेख नहीं।",
-      "csatStrategy": "206 / 275",
+      "essayStrategy": "",
+      "optionalStrategy": "",
+      "prelimsStrategy": "",
+      "csatStrategy": "",
+      "interviewScore": 175,
+      "mainsScore": 395,
       "goldenRules": [
-        "Prelims ज्ञान को Google Docs में Save करके Mains में उपयोग करें",
-        "High-ROI Small Subjects पर विशेष ध्यान।"
+        "Prelims + Mains की एकीकृत तैयारी",
+        "Small High-ROI Topics (Disaster Mgmt, Int. Security) को Priority",
+        "Prelims ज्ञान को Mains में Integrate करें।"
       ],
-      "extraData": {}
+      "mainDetails": {
+        "prelimsGsMarks": "",
+        "prelimsCsatMarks": "",
+        "essayMarks": "",
+        "gs1Marks": "",
+        "gs2Marks": "",
+        "gs3Marks": "",
+        "gs4Marks": ""
+      },
+      "extraData": {
+        "Advaice": "Prelims ज्ञान को Google Docs में Save करके Mains में उपयोग करें | High-ROI Small Subjects पर विशेष ध्यान।"
+      }
     },
     {
       "id": "yashvi-jain",
@@ -207,24 +300,38 @@
       "optional": "स्रोत में उल्लेखित नहीं",
       "attempt": 2,
       "background": "स्रोत में उल्लेखित नहीं",
-      "avatar": "\"Less is More\" — नोट्स को अत्यधिक Condense करना।",
-      "quote": "'Less is More' — Notes को Maximum Condense | GS1-GS4 को Interlink करके पढ़ना | गणितीय दृष्टिकोण से Essay को 5Ws में तोड़ना।",
-      "keyStrategy": "GS विषयों को आपस में Interlink करके पढ़ें | Condensed Notes।",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "\"Less is More\" — नोट्स को अत्यधिक Condense करना।",
+      "keyStrategy": "",
       "gsStrategy": {
-        "gs1": "GS1-GS4 Interlinking Strategy।",
-        "gs2": "GS1-GS4 Interlinking + Condensed Notes।",
-        "gs3": "स्रोत में विशिष्ट GS4 विवरण नहीं।",
-        "gs4": "Essay को 5Ws (How, What, Why, When, Who) में तोड़कर Structure | गणितीय दृष्टिकोण से रूपरेखा।"
+        "gs1": "",
+        "gs2": "",
+        "gs3": "",
+        "gs4": ""
       },
-      "essayStrategy": "स्रोत में विशिष्ट Optional Strategy नहीं।",
-      "optionalStrategy": "Risk Management: 90-95 प्रश्न हल करने का लक्ष्य | 30 प्रश्न गलत के Margin के बाद भी 100+ Net Positive।",
-      "prelimsStrategy": "स्रोत में विशिष्ट उल्लेख नहीं।",
-      "csatStrategy": "स्रोत में उल्लेखित नहीं।",
+      "essayStrategy": "",
+      "optionalStrategy": "",
+      "prelimsStrategy": "",
+      "csatStrategy": "",
+      "interviewScore": 180,
+      "mainsScore": 546,
       "goldenRules": [
-        "नोट्स को Mental रूप से Condense करते जाएँ",
-        "GS1-GS4 को अलग-अलग नहीं, Interlinked पढ़ें।"
+        "Less is More — Content को Condense करें",
+        "GS विषयों को Interlink करके पढ़ें",
+        "Calculated Risk लें (90-95 Attempts)।"
       ],
-      "extraData": {}
+      "mainDetails": {
+        "prelimsGsMarks": "",
+        "prelimsCsatMarks": "",
+        "essayMarks": "",
+        "gs1Marks": "",
+        "gs2Marks": "",
+        "gs3Marks": "",
+        "gs4Marks": ""
+      },
+      "extraData": {
+        "Advaice": "नोट्स को Mental रूप से Condense करते जाएँ | GS1-GS4 को अलग-अलग नहीं, Interlinked पढ़ें।"
+      }
     },
     {
       "id": "garima-jain",
@@ -234,25 +341,38 @@
       "optional": "स्रोत में उल्लेखित नहीं",
       "attempt": 1,
       "background": "स्रोत में उल्लेखित नहीं",
-      "avatar": "FOMO से बचने के लिए बुनियादी NCERTs और Laxmikanth तक सीमित।",
-      "quote": "FOMO से बचाव — केवल NCERT + Laxmikanth | PYQs Brainstorming → Topper Copies से Matching | Interview: Personality + Clear Communication।",
-      "keyStrategy": "NCERT + Basic Sources — FOMO से बचते हुए।",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "FOMO से बचने के लिए बुनियादी NCERTs और Laxmikanth तक सीमित।",
+      "keyStrategy": "",
       "gsStrategy": {
-        "gs1": "Laxmikanth + NCERT | PYQ Brainstorming + Topper Copy Matching।",
-        "gs2": "Limited Sources + PYQ Analysis।",
-        "gs3": "PYQ Brainstorming + Model Answer Comparison।",
-        "gs4": "PYQs Brainstorming → Topper Copies से Matching।"
+        "gs1": "",
+        "gs2": "",
+        "gs3": "",
+        "gs4": ""
       },
-      "essayStrategy": "स्रोत में विशिष्ट Optional Strategy नहीं।",
-      "optionalStrategy": "FOMO से बचाव — केवल NCERT + Laxmikanth तक सीमित | CSAT: बिना नागा रोजाना अभ्यास + PYQs।",
-      "prelimsStrategy": "बिना नागा रोजाना प्रश्न अभ्यास | Comprehension के लिए केवल PYQs।",
-      "csatStrategy": "स्रोत में उल्लेखित नहीं।",
+      "essayStrategy": "",
+      "optionalStrategy": "",
+      "prelimsStrategy": "",
+      "csatStrategy": "",
+      "interviewScore": 165,
+      "mainsScore": 516,
       "goldenRules": [
-        "FOMO से बचें",
-        "Basic Sources पर विश्वास",
-        "Interview के लिए Balanced Personality विकसित करें।"
+        "Basic Sources पर टिके रहें (FOMO से बचें)",
+        "Personality, Clear Communication, Balanced Thinking",
+        "Interview में Subject Knowledge से ज़्यादा Personality।"
       ],
-      "extraData": {}
+      "mainDetails": {
+        "prelimsGsMarks": "",
+        "prelimsCsatMarks": "",
+        "essayMarks": "",
+        "gs1Marks": "",
+        "gs2Marks": "",
+        "gs3Marks": "",
+        "gs4Marks": ""
+      },
+      "extraData": {
+        "Advaice": "FOMO से बचें | Basic Sources पर विश्वास | Interview के लिए Balanced Personality विकसित करें।"
+      }
     },
     {
       "id": "komal-mavi",
@@ -262,25 +382,38 @@
       "optional": "स्रोत में उल्लेखित नहीं",
       "attempt": 2,
       "background": "स्रोत में उल्लेखित नहीं",
-      "avatar": "\"अंतिम 30 दिनों में कोई नया स्रोत न छुएँ।\"",
-      "quote": "PYQs (2013 से) को Daily Mock की तरह हल करना | Limited Sources + Minimal Newspaper Notes | अंतिम 30 दिन: No New Source।",
-      "keyStrategy": "History: Spectrum | Art & Culture: NCERTs।",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "\"अंतिम 30 दिनों में कोई नया स्रोत न छुएँ।\"",
+      "keyStrategy": "",
       "gsStrategy": {
-        "gs1": "Polity: 11th NCERTs (Political Theory + Constitution at Work) + Laxmikanth | IR: Current-based।",
-        "gs2": "Economy: Vivek Singh + Budget & Economic Survey Summary।",
-        "gs3": "स्रोत में विशिष्ट GS4 विवरण नहीं।",
-        "gs4": "Limited Sources + Revision।"
+        "gs1": "",
+        "gs2": "",
+        "gs3": "",
+        "gs4": ""
       },
-      "essayStrategy": "स्रोत में विशिष्ट Optional Strategy नहीं।",
-      "optionalStrategy": "2013 के बाद के PYQs को दैनिक 25 प्रश्नों के Mock की तरह हल किया | Polity: 11th NCERTs + Laxmikanth | Economy: Vivek Singh + Budget | History: Spectrum।",
-      "prelimsStrategy": "स्रोत में विशिष्ट उल्लेख नहीं।",
-      "csatStrategy": "216 / 275 (Suman Sharma Board)",
+      "essayStrategy": "",
+      "optionalStrategy": "",
+      "prelimsStrategy": "",
+      "csatStrategy": "",
+      "interviewScore": 185,
+      "mainsScore": 458,
       "goldenRules": [
-        "अंतिम 30 दिन: No New Source",
-        "PYQs को Daily Mock की तरह लें",
-        "Newspaper Notes Minimal रखें।"
+        "Newspaper के विस्तृत Notes में समय बर्बाद न करें",
+        "केवल महत्वपूर्ण Data/Examples नोट करें",
+        "परीक्षा के अंतिम 30 दिनों में कोई नया स्रोत नहीं।"
       ],
-      "extraData": {}
+      "mainDetails": {
+        "prelimsGsMarks": "",
+        "prelimsCsatMarks": "",
+        "essayMarks": "",
+        "gs1Marks": "",
+        "gs2Marks": "",
+        "gs3Marks": "",
+        "gs4Marks": ""
+      },
+      "extraData": {
+        "Advaice": "अंतिम 30 दिन: No New Source | PYQs को Daily Mock की तरह लें | Newspaper Notes Minimal रखें।"
+      }
     },
     {
       "id": "tripti-kalhans",
@@ -288,27 +421,39 @@
       "rank": 199,
       "year": 2023,
       "optional": "Anthropology (Public Administration से बदलाव)",
-      "attempt": 54,
+      "attempt": 5,
       "background": "स्रोत में उल्लेखित नहीं",
-      "avatar": "\"दूसरों की रणनीति अंधाधुंध Copy न करें, अपनी रणनीति बनाएँ।\"",
-      "quote": "4th Attempt: बिना किसी Coaching Mock के केवल 10 वर्षों (2014 से) के PYQs का गहन विश्लेषण | Optional बदलकर Anthropology + 1 साल का Break लेकर Mains मज़बूत किया।",
-      "keyStrategy": "PYQ गहन विश्लेषण पर आधारित।",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "\"दूसरों की रणनीति अंधाधुंध Copy न करें, अपनी रणनीति बनाएँ।\"",
+      "keyStrategy": "",
       "gsStrategy": {
-        "gs1": "PYQ गहन विश्लेषण + Limited Sources।",
-        "gs2": "PYQ गहन विश्लेषण।",
-        "gs3": "Mains के लिए 6-7 माह समर्पित।",
-        "gs4": "Mains के लिए Dedicated 6-7 माह (Prelims से पहले)।"
+        "gs1": "",
+        "gs2": "",
+        "gs3": "",
+        "gs4": ""
       },
-      "essayStrategy": "Anthropology (Public Administration से Switch) | 1 साल का Break लेकर Mains को मज़बूत किया।",
-      "optionalStrategy": "4th Attempt: बिना Coaching Mock के, केवल पिछले 10 वर्षों (2014 से) के PYQs का गहन विश्लेषण।",
-      "prelimsStrategy": "R.S. Aggarwal पुस्तक + नियमित अभ्यास।",
-      "csatStrategy": "180 / 275 (Sanjay Verma Board)",
+      "essayStrategy": "",
+      "optionalStrategy": "",
+      "prelimsStrategy": "",
+      "csatStrategy": "",
+      "interviewScore": 195,
+      "mainsScore": 545,
       "goldenRules": [
-        "Optional बदलने से मत डरें",
-        "PYQs ही सबसे बड़ा हथियार",
-        "Dedicated Mains Preparation Period रखें।"
+        "Toppers की रणनीति अंधाधुंध Copy न करें",
+        "अपनी Strength-Weakness समझें और खुद की Strategy बनाएँ।"
       ],
-      "extraData": {}
+      "mainDetails": {
+        "prelimsGsMarks": "",
+        "prelimsCsatMarks": "",
+        "essayMarks": "",
+        "gs1Marks": "",
+        "gs2Marks": "",
+        "gs3Marks": "",
+        "gs4Marks": ""
+      },
+      "extraData": {
+        "Advaice": "Optional बदलने से मत डरें | PYQs ही सबसे बड़ा हथियार | Dedicated Mains Preparation Period रखें।"
+      }
     },
     {
       "id": "ritu-yadav",
@@ -318,24 +463,38 @@
       "optional": "Sociology (284 अंक)",
       "attempt": 6,
       "background": "स्रोत में उल्लेखित नहीं",
-      "avatar": "\"Treat Mains as a strategic board exam.\"",
-      "quote": "50% Content + 50% Presentation | Bullets, Committee Names, Flowcharts, Maps | कठिन पेपर में घबराने के बजाय 65 मज़बूत प्रश्न चुनना।",
-      "keyStrategy": "50% Content + 50% Presentation | Maps, Diagrams का प्रयोग।",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "\"Treat Mains as a strategic board exam.\"",
+      "keyStrategy": "",
       "gsStrategy": {
-        "gs1": "Bullet Points + Committee Names + Constitutional Articles।",
-        "gs2": "Flowcharts, Maps, Diagrams से Presentation।",
-        "gs3": "Practical Solutions + Clear Framework।",
-        "gs4": "Multi-dimensional दृष्टिकोण + Diagrams।"
+        "gs1": "",
+        "gs2": "",
+        "gs3": "",
+        "gs4": ""
       },
-      "essayStrategy": "Sociology: 284 अंक | Thinkers → Current Examples से Link।",
-      "optionalStrategy": "2023 के कठिन पेपर में घबराए नहीं | 65 मज़बूत प्रश्न पहले चुने → 88 प्रश्न हल किए।",
-      "prelimsStrategy": "स्रोत में विशिष्ट उल्लेख नहीं।",
-      "csatStrategy": "187 / 275",
+      "essayStrategy": "",
+      "optionalStrategy": "",
+      "prelimsStrategy": "",
+      "csatStrategy": "",
+      "interviewScore": 220,
+      "mainsScore": 656,
       "goldenRules": [
-        "कठिन पेपर में घबराएँ नहीं, Strategic प्रश्न चयन करें",
-        "Presentation को Content जितना महत्व दें।"
+        "Mains = 50% Content + 50% Presentation",
+        "Bullets, Diagrams, Committees, Maps से Presentation",
+        "Strategic प्रश्न चयन।"
       ],
-      "extraData": {}
+      "mainDetails": {
+        "prelimsGsMarks": "",
+        "prelimsCsatMarks": "",
+        "essayMarks": "",
+        "gs1Marks": "",
+        "gs2Marks": "",
+        "gs3Marks": "",
+        "gs4Marks": ""
+      },
+      "extraData": {
+        "Advaice": "कठिन पेपर में घबराएँ नहीं, Strategic प्रश्न चयन करें | Presentation को Content जितना महत्व दें।"
+      }
     },
     {
       "id": "preeti-kumari",
@@ -345,25 +504,38 @@
       "optional": "स्रोत में उल्लेखित नहीं",
       "attempt": 5,
       "background": "स्रोत में उल्लेखित नहीं",
-      "avatar": "\"Understand Prelims depth via PYQs.\"",
-      "quote": "27 साल के PYQs की Theme-wise Compilation | 99 प्रश्न Attempt | Answer Writing Simulation + Daily Writing।",
-      "keyStrategy": "27 साल के PYQs से Themes + Answer Writing।",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "\"Understand Prelims depth via PYQs.\"",
+      "keyStrategy": "",
       "gsStrategy": {
-        "gs1": "PYQ Theme Analysis + Daily Writing।",
-        "gs2": "PYQ-based Preparation + Daily Answer Writing।",
-        "gs3": "Daily Writing Practice।",
-        "gs4": "Daily Answer Writing + PYQ Simulation।"
+        "gs1": "",
+        "gs2": "",
+        "gs3": "",
+        "gs4": ""
       },
-      "essayStrategy": "स्रोत में विशिष्ट Optional Strategy नहीं।",
-      "optionalStrategy": "27 साल के PYQs की Theme-wise Compilation | 99 प्रश्न Attempt।",
-      "prelimsStrategy": "स्रोत में विशिष्ट उल्लेख नहीं।",
-      "csatStrategy": "198 / 275",
-      "mainsScore": 27,
+      "essayStrategy": "",
+      "optionalStrategy": "",
+      "prelimsStrategy": "",
+      "csatStrategy": "",
+      "interviewScore": 200,
+      "mainsScore": 846,
       "goldenRules": [
-        "PYQs को थीम-वार Compile करें",
-        "Daily Answer Writing अनिवार्य।"
+        "27 साल के PYQs Theme-wise हल करें",
+        "Daily Answer Writing",
+        "Prelims की गहराई PYQs से समझें।"
       ],
-      "extraData": {}
+      "mainDetails": {
+        "prelimsGsMarks": "",
+        "prelimsCsatMarks": "",
+        "essayMarks": "",
+        "gs1Marks": "",
+        "gs2Marks": "",
+        "gs3Marks": "",
+        "gs4Marks": ""
+      },
+      "extraData": {
+        "Advaice": "PYQs को थीम-वार Compile करें | Daily Answer Writing अनिवार्य।"
+      }
     },
     {
       "id": "shobhika-pathak",
@@ -371,29 +543,42 @@
       "rank": 37,
       "year": 2024,
       "optional": "Sociology",
-      "attempt": 52020,
+      "attempt": 5,
       "background": "B.Tech Electrical Engineering",
-      "avatar": "\"I don't believe in giving up. If you are honest with your preparation, you will get there.\" | \"कम पढ़ें पर बार-बार Revise करें।\"",
-      "quote": "Less is More (सीमित स्रोत, 3-4 बार Revision) | Consolidated Notes (A4 Sheets पर: NCERTs + Static + PYQs + Test Synopsis) | FLTs Only (2-3 Coaching के Full Length Tests) | पेपर पूरा करना अनिवार्य।",
-      "keyStrategy": "अंक: 110+ (लगातार) | इतिहास (Modern): Spectrum → Short Notes + Revision | इतिहास (Ancient/Medieval): TN Board Cl-11, Cl-12 Themes in Indian History | भूगोल: 11-12 NCERTs + PMF IAS Selective + YouTube (Dr. Shivin, Sleepy Classes) | Society: Sociology Optional का ओवरलैप + PYQ Themes + Model Answers।",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "\"I don't believe in giving up. If you are honest with your preparation, you will get there.\" | \"कम पढ़ें पर बार-बार Revise करें।\"",
+      "keyStrategy": "",
       "gsStrategy": {
-        "gs1": "अंक: ~118 | Polity: Laxmikanth (Highlight + बार-बार पढ़ना) + 11th NCERT Political Theory | Governance: 2nd ARC, Mallimath Committee + Constitutional Articles + Health/Education Frameworks (ASER, TSR Subramanian) | IR: Next IAS (Deepin Sir) Notes — 5-6 बार Revision | Social Justice: PYQ Themes।",
-        "gs2": "अर्थव्यवस्था: Budget + Eco Survey से Data/Graphs + Mrunal Sir Free Lectures (YouTube) | कृषि: Ministry Schemes + Dryland Farming + PYQs + Crop Map | S&T: PT365/Mains365 + Blockchain/IoT/Nuclear | Disaster Management: 2013-2024 सभी PYQs Model Format में | Environment: ISFR, UNEP Reports + Current Facts।",
-        "gs3": "अंक: 129 | Section A: Ready-made Frameworks/Templates (Personal/Professional/Social, Concentric Circles) + Diverse Examples (Bhagavad Gita, IPS CAA Protest, Zomato Delivery Boy) + Sakshi Ma'am Mentorship (Vajiram) | Case Studies: Stakeholder के लिए Creative Diagrams (Forest Cutting में Tree Drawing) + Clear Option Selection + Positive Conclusion।",
-        "gs4": "अंक: 138 (2020 में) | Organic & Simple लेखन (रटे-रटाए Formula से बचना) | Structure: Main Theme → पक्ष → 2 Para विपक्ष → Futuristic Conclusion | Framework 1: Individual→Family→Society→Nation→World | Framework 2: Ancient→Medieval→Modern→AI Age | बाहरी Feedback (माता-पिता, Prof.) लेना।"
+        "gs1": "",
+        "gs2": "",
+        "gs3": "",
+        "gs4": ""
       },
-      "essayStrategy": "Sociology: 277 अंक (2020) | B.Tech Background पर GS/Essay/Ethics Overlap | Sources: NCERT 11-12 + IGNOU BA | Value Addition: Tusharanshu Sir + Nitin Sangwan (Essential Sociology) + Ritzer (Selective) + LevelUp IAS + Shankar IAS Test Series | Integrated Notes (Paper 1+2 समान Topics) | Humanities Prof. शैली में Paragraph Format + 1-3 Thinkers प्रति उत्तर।",
-      "optionalStrategy": "Less is More — 3 बार Revision | केवल 15+ Full Length Tests (Vision, Forum, Vajiram) | PYQs (2013 से): सभी Options का गहन विश्लेषण + Notes में समाहित | 2021: 100 प्रश्न → <1 अंक से Fail → Calculated Risk (80-95 प्रश्न) | Current Affairs: PT365 + Newspaper 30 मिनट (Ethics/Essay Examples)।",
-      "prelimsStrategy": "पिछले 5 साल के PYQs → 2 घंटे Time-bound | Formula Sheet (1 Page): Mathematical Formulas, Tricks, Reasoning Rules → GS1-GS2 Break में Revise | 53 Maths/Reasoning में से 27-28 Easy + Comprehension ध्यान से।",
-      "csatStrategy": "195 / 275 (2020: 160 → 2024: 195)",
-      "mainsScore": 1,
+      "essayStrategy": "",
+      "optionalStrategy": "",
+      "prelimsStrategy": "",
+      "csatStrategy": "",
+      "interviewScore": 195,
+      "mainsScore": 541,
       "goldenRules": [
-        "तैयारी को नौकरी की तरह लें (8-10 घंटे)",
-        "Social Media/New Material से बचें",
-        "अपने Resources पर विश्वास",
-        "विफलता से सीखें (Over-Attempt Analysis)।"
+        "1. Consolidation: 10 किताबें नहीं, 1 Booklet 3-4 बार",
+        "2. PYQs ही Source Code हैं",
+        "3. FLTs से Generalist Mindset",
+        "4. समय व स्थान प्रबंधन (Exam Hall जैसा)",
+        "5. सकारात्मकता + मानसिक मजबूती।"
       ],
-      "extraData": {}
+      "mainDetails": {
+        "prelimsGsMarks": "",
+        "prelimsCsatMarks": "",
+        "essayMarks": "",
+        "gs1Marks": "",
+        "gs2Marks": "",
+        "gs3Marks": "",
+        "gs4Marks": ""
+      },
+      "extraData": {
+        "Advaice": "तैयारी को नौकरी की तरह लें (8-10 घंटे) | Social Media/New Material से बचें | अपने Resources पर विश्वास | विफलता से सीखें (Over-Attempt Analysis)।"
+      }
     },
     {
       "id": "gamini-singla",
@@ -401,27 +586,40 @@
       "rank": 3,
       "year": 2021,
       "optional": "Sociology",
-      "attempt": 1,
+      "attempt": 5,
       "background": "घर पर Self-Study (कोई Coaching Hub नहीं)",
-      "avatar": "\"Please have faith in your preparation and trust yourself.\"",
-      "quote": "घर पर तैयारी (बिना Coaching Hub) | सुबह 5 बजे से कड़ा Daily Routine | Self-Discipline + Family Support।",
-      "keyStrategy": "Laxmikanth (Polity) + Basic History NCERTs।",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "\"Please have faith in your preparation and trust yourself.\"",
+      "keyStrategy": "",
       "gsStrategy": {
-        "gs1": "The Hindu / Indian Express + Drishti Daily News Analysis।",
-        "gs2": "Newspaper Reading + Basic NCERTs का एकीकरण।",
-        "gs3": "Case Studies अभ्यास + Daily Events से Critical Thinking।",
-        "gs4": "Quotes की जगह Real Stories/Case Studies से शुरुआत | 15-16 निबंध लिखे | Multi-dimensional दृष्टिकोण।"
+        "gs1": "",
+        "gs2": "",
+        "gs3": "",
+        "gs4": ""
       },
-      "essayStrategy": "Sociology: उपलब्धता + रुचि के आधार पर चयन।",
-      "optionalStrategy": "1991 से PYQs Solve | अंतिम 2 माह: Daily Mock Tests | घर पर Exam जैसा माहौल।",
-      "prelimsStrategy": "रोजाना 15-20 मिनट Logical Reasoning + Quant अभ्यास।",
-      "csatStrategy": "स्रोत में उल्लेखित नहीं।",
+      "essayStrategy": "",
+      "optionalStrategy": "",
+      "prelimsStrategy": "",
+      "csatStrategy": "",
+      "interviewScore": 189,
+      "mainsScore": 350,
       "goldenRules": [
-        "तैयारी की कमान खुद संभालें",
-        "अपने निर्णयों पर भरोसा",
-        "Social Media Delete करें।"
+        "Discipline > Motivation",
+        "Social Media से पूरी दूरी",
+        "Family Support पर विश्वास।"
       ],
-      "extraData": {}
+      "mainDetails": {
+        "prelimsGsMarks": "",
+        "prelimsCsatMarks": "",
+        "essayMarks": "",
+        "gs1Marks": "",
+        "gs2Marks": "",
+        "gs3Marks": "",
+        "gs4Marks": ""
+      },
+      "extraData": {
+        "Advaice": "तैयारी की कमान खुद संभालें | अपने निर्णयों पर भरोसा | Social Media Delete करें।"
+      }
     },
     {
       "id": "shruti-rajalakshmi",
@@ -429,27 +627,40 @@
       "rank": 25,
       "year": 2021,
       "optional": "Sociology/Maths",
-      "attempt": 1,
+      "attempt": 3,
       "background": "Goldman Sachs की High-Salary Job छोड़कर Full-Time Preparation",
-      "avatar": "\"If you have really put in your efforts as a serious candidate, you will definitely achieve success with UPSC.\"",
-      "quote": "Goldman Sachs छोड़कर Full-Time Preparation | अनुशासित रहना + Self-Doubt से उबरना | Daily Current Affairs Notes | 1.5 माह पहले Daily Mock।",
-      "keyStrategy": "Geography: NCERTs (Mandatory) | History: NCERTs (Ancient/Medieval)।",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "\"If you have really put in your efforts as a serious candidate, you will definitely achieve success with UPSC.\"",
+      "keyStrategy": "",
       "gsStrategy": {
-        "gs1": "Polity: Laxmikanth।",
-        "gs2": "Economy: बार-बार पढ़कर महारत (शुरुआत में कठिन था)।",
-        "gs3": "स्रोत में विशिष्ट GS4 Strategy नहीं।",
-        "gs4": "Prelims के बाद 6-7 Tests (कुल 12-14 निबंध) लिखे।"
+        "gs1": "",
+        "gs2": "",
+        "gs3": "",
+        "gs4": ""
       },
-      "essayStrategy": "Sociology/Maths: Notes बनाना + PYQs पर विशेष जोर।",
-      "optionalStrategy": "Daily Current Affairs Notes | Prelims से 1.5 माह पहले रोज़ एक Mock Test।",
-      "prelimsStrategy": "Mental Ability + Maths पर भरोसा + पुराने Papers Solve।",
-      "csatStrategy": "स्रोत में उल्लेखित नहीं।",
+      "essayStrategy": "",
+      "optionalStrategy": "",
+      "prelimsStrategy": "",
+      "csatStrategy": "",
+      "interviewScore": 185,
+      "mainsScore": 356,
       "goldenRules": [
-        "रुकें नहीं, निरंतर प्रयास",
-        "अपनी क्षमता पर विश्वास",
-        "Daily Exercise से Mental Fitness।"
+        "रोज़ Exercise/Jogging (Stress Buster)",
+        "Social Media Apps Delete",
+        "Family से संवाद।"
       ],
-      "extraData": {}
+      "mainDetails": {
+        "prelimsGsMarks": "",
+        "prelimsCsatMarks": "",
+        "essayMarks": "",
+        "gs1Marks": "",
+        "gs2Marks": "",
+        "gs3Marks": "",
+        "gs4Marks": ""
+      },
+      "extraData": {
+        "Advaice": "रुकें नहीं, निरंतर प्रयास | अपनी क्षमता पर विश्वास | Daily Exercise से Mental Fitness।"
+      }
     },
     {
       "id": "anoushka-sharma",
@@ -459,25 +670,38 @@
       "optional": "Economics (286 अंक)",
       "attempt": 3,
       "background": "BA Economics (CUNY New York), UN Secretariat में 3 माह",
-      "avatar": "\"UPSC is just an examination, treat it as one... it's not your life, it's just a part of your life.\"",
-      "quote": "5-Page Fact Sheets (प्रति Subject) | 3-Round Paper Solving | 35 Mock Tests (गहन Revision) | Limited Sources।",
-      "keyStrategy": "History: TN Board 11th + Old NCERTs + CC Leong | Society: Vision Notes।",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "\"UPSC is just an examination, treat it as one... it's not your life, it's just a part of your life.\"",
+      "keyStrategy": "",
       "gsStrategy": {
-        "gs1": "Polity: Laxmikanth + Mains 365 | MEA Statements + Committee Recommendations | IR: Current।",
-        "gs2": "Economy: Optional से Covered | S&T: Mains 365 | Security: Notes + Maps/Diagrams।",
-        "gs3": "DK Balaji Sir Book | Quotes/Definitions Notes | Section A: 1.5h, Case Studies: 1.5h।",
-        "gs4": "Multi-dimensional दृष्टिकोण | Quotes + Examples।"
+        "gs1": "",
+        "gs2": "",
+        "gs3": "",
+        "gs4": ""
       },
-      "essayStrategy": "Economics: 144+142 = 286 अंक | H.L. Ahuja, Salvatore, Jhingan | Economic Survey + Budget।",
-      "optionalStrategy": "35 Mock Tests (गहन Revision) | 5-Page Fact Sheets (प्रति Subject) | 3 Rounds में Paper Solve।",
-      "prelimsStrategy": "English में Comfortable (30 प्रश्न) | Maths/Reasoning में Selective।",
-      "csatStrategy": "204 / 275 (Manoj Soni Board)",
+      "essayStrategy": "",
+      "optionalStrategy": "",
+      "prelimsStrategy": "",
+      "csatStrategy": "",
+      "interviewScore": 199,
+      "mainsScore": 486,
       "goldenRules": [
-        "असफलता से सीखें",
-        "Sources सीमित रखें",
-        "Revision + Mock Tests पर Focus।"
+        "Hobbies न छोड़ें (Music, Walk, Reading)",
+        "Fact Sheets बनाएँ",
+        "Multiple Revisions।"
       ],
-      "extraData": {}
+      "mainDetails": {
+        "prelimsGsMarks": "",
+        "prelimsCsatMarks": "",
+        "essayMarks": "",
+        "gs1Marks": "",
+        "gs2Marks": "",
+        "gs3Marks": "",
+        "gs4Marks": ""
+      },
+      "extraData": {
+        "Advaice": "असफलता से सीखें | Sources सीमित रखें | Revision + Mock Tests पर Focus।"
+      }
     },
     {
       "id": "pari-bishnoi",
@@ -485,315 +709,330 @@
       "rank": 30,
       "year": 2024,
       "optional": "स्रोत में उल्लेखित नहीं",
-      "attempt": 216,
+      "attempt": 2,
       "background": "स्रोत में उल्लेखित नहीं",
-      "avatar": "\"Motivation is a lie, discipline is real.\" | \"Rank is merely a number until given meaning through dedicated service.\" | \"नदी को किनारे खड़े होकर देखते रहने से नदी पार नहीं होती, प्रयास करना पड़ता है।\"",
-      "quote": "Discipline > Motivation | 80/20 नियम: 80% प्रश्न 20% Core Syllabus से | सीमित स्रोत, 3-4 बार Revision | Syllabus + PYQs को Guide बनाना।",
-      "keyStrategy": "Ancient/Medieval: Old NCERT/R.S. Sharma | Art & Culture: 11th Fine Arts NCERT।",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "quote": "\"Motivation is a lie, discipline is real.\" | \"Rank is merely a number until given meaning through dedicated service.\" | \"नदी को किनारे खड़े होकर देखते रहने से नदी पार नहीं होती, प्रयास करना पड़ता है।\"",
+      "keyStrategy": "",
       "gsStrategy": {
-        "gs1": "Polity: Laxmikanth (5-6 बार Revision) | Parliament, Judiciary, FRs, DPSPs पर विशेष ध्यान | Supreme Court Cases + Articles।",
-        "gs2": "Economy: Shankar Ganesh (150 pages) / Mrunal Notes + Budget & Eco Survey।",
-        "gs3": "Syllabus Keywords की परिभाषाएँ + व्यावहारिक उदाहरण (2-3 Page Sheet)।",
-        "gs4": "PESTLE Dimensions से Essay Link | 10-15 मिनट Brainstorming + Outline | Anecdote/Quotes से शुरुआत | Way Forward पर Positive Conclusion।"
+        "gs1": "",
+        "gs2": "",
+        "gs3": "",
+        "gs4": ""
       },
-      "essayStrategy": "Optional चयन के 4 पैमाने: Background/Interest + Syllabus Vastness + Competition Level + Guidance Availability।",
-      "optionalStrategy": "1st Attempt Prelims Fail → 6 माह केवल Prelims Focus | एक विषय 10 दिन → Test (Vision/Insights) → 2 दिन Revision → अगला विषय।",
-      "prelimsStrategy": "Logical Elimination + 50-50 वाले प्रश्नों में Net Positive Strategy।",
-      "csatStrategy": "1st: 176 अंक | 2nd: 200 अंक",
+      "essayStrategy": "",
+      "optionalStrategy": "",
+      "prelimsStrategy": "",
+      "csatStrategy": "",
+      "interviewScore": 200,
+      "mainsScore": 684,
       "goldenRules": [
-        "College 1st-2nd Year: Personality Development + Newspaper आदत",
-        "College Gaps में Library/Hostel में Standard Books पढ़ें।"
+        "कम पढ़ें, बार-बार दोहराएँ",
+        "Mind Mapping + Active Recall",
+        "Test Series से Assess करें",
+        "Sustainable Routine (Yoga, Badminton)।"
       ],
-      "extraData": {}
+      "mainDetails": {
+        "prelimsGsMarks": "",
+        "prelimsCsatMarks": "",
+        "essayMarks": "",
+        "gs1Marks": "",
+        "gs2Marks": "",
+        "gs3Marks": "",
+        "gs4Marks": ""
+      },
+      "extraData": {
+        "Advaice": "College 1st-2nd Year: Personality Development + Newspaper आदत | College Gaps में Library/Hostel में Standard Books पढ़ें।"
+      }
     }
   ],
   "STRATEGY_SETUP": [
     {
       "id": "strategy-shakti-dubey",
       "title": "Shakti Dubey की रणनीति",
-      "content": "अंक: 112 | इतिहास: TN Board Cl-11 NCERT + Spectrum/Bipin Chandra | भूगोल: Cl-11,12 NCERTs + Atlas | समाज: उत्कर्ष द्विवेदी टेम्पलेट + NCERT + NFHS/ASER डेटा | विश्व इतिहास: Vision IAS बुकलेट + PYQs।",
+      "content": "",
       "extraData": {
         "Ranker": "Shakti Dubey",
-        "GS1 Strategy": "अंक: 125 | पॉलिटी: Laxmikanth (Margin Notes) + Abhay Kumar 500 MCQs | शासन: 2nd ARC, सुप्रीम कोर्ट निर्णय | IR: PSIR Optional नोट्स का ओवरलैप + करंट (BRICS, SCO, G20, BIMSTEC) | सामाजिक न्याय: उत्कर्ष टेम्पलेट + SHG/NABARD डेटा।",
-        "GS2 Strategy": "अंक: 86 | अर्थव्यवस्था: Shriram IAS Notes + Budget/Eco Survey (Jayant Sir) + Shivin Sir GS3 Template | आंतरिक सुरक्षा: Shivin Sir Template + अद्यतन डेटा | आपदा: NDMA Template (Utkarsh Dwivedi) | Environment & S&T: Annual Mains Compilations।",
-        "GS3 Strategy": "अंक: 141 (देश में सर्वोच्च में से एक, बिना कोचिंग) | 100 कीवर्ड्स (Syllabus 25-30 + PYQs 50-60) | हर कीवर्ड: परिभाषा + Quote + सिविल सेवक उदाहरण + केस स्टडी | Prahar Magazine बुकलेट + The Better India | दार्शनिक: Aristotle, Plato, Kant, Hannah Arendt | समय: Section A → 1h15m, Case Studies → 1h45m।",
-        "GS4 Strategy": "अंक: 100 | प्रति निबंध 1.5 घंटा (20-30 मिनट माइंड-मैप, 1 घंटा लेखन) | 15-16 बहु-आयामी GS आयाम | दोनों निबंधों का ढाँचा अलग | Haidt की 'The Anxious Generation' जैसे साहित्यिक संदर्भ।",
-        "Essay Strategy": "PSIR 280 अंक (2023: 230 → 2024: 280) | IGNOU सामग्री + Shriram/Vajiram नोट्स | सितंबर तक Syllabus + PYQs पूरे | 40% दैनिक समय | विचारक + खंडन एकसाथ | IR Paper 2B में करंट इंटीग्रेट।",
-        "Optional Strategy": "अंक: 82 (Cutoff: 75) | नया पैटर्न + Shock Absorption माइंडसेट | PYQ थीम एनालिसिस (Art. 19, 21, 32 जैसे हाई-फ्रीक्वेंसी) | Jan-Feb: रिवीजन 1, Mar-15Apr: रिवीजन 2 | 3-इटरेशन पेपर सॉल्विंग | सबसे मज़बूत विषय (Polity) से शुरू।",
-        "Prelims Strategy": "अंक: 75 | PCB बैकग्राउंड, 10वीं के बाद Maths नहीं | RC: 25-28 प्रश्न (उच्च सटीकता) | Reasoning: 10-15 प्रश्न | Quant: Time-Work, SDT, Percentage, Number System | कुल 45-50 प्रश्न टार्गेट।",
-        "Golden Rules": "पहला प्रयास सबसे गंभीरता से दें | असफलता पर Knowledge/Strategy Gap खोजें | Interview में प्रामाणिकता + तटस्थ प्रशासनिक दृष्टिकोण | 2-3 गंभीर प्रयासों के बाद Plan B खुले रखें।"
+        "GS1 Strategy": "",
+        "GS2 Strategy": "",
+        "GS3 Strategy": "",
+        "GS4 Strategy": "",
+        "Essay Strategy": "",
+        "Optional Strategy": "",
+        "Prelims Strategy": "",
+        "Golden Rules": "1. दिसंबर तक Mains Ready | 2. एक विषय – एक पुस्तक, 3-4 बार रिवीजन | 3. Active Recall (किताब बंद कर याद करें) | 4. 10-15 पेज की Factbook (डेटा, समितियाँ, निर्णय) | 5. अखबार: 1-1.5 घंटे, केवल Explained Page | 6. Essay+Ethics+Optional पर 50%+ ध्यान।"
       }
     },
     {
       "id": "strategy-harshita-goyal",
       "title": "Harshita Goyal की रणनीति",
-      "content": "भूगोल: Cl-11,12 NCERTs + Maps अभ्यास | इतिहास: Spectrum/PW Udaan (Modern) + पुरानी NCERTs (Ancient/Medieval) | Art & Culture: NCERTs + Stick Figures (नटराज आदि) | प्रतिदिन 30 मिनट Modern History।",
+      "content": "",
       "extraData": {
         "Ranker": "Harshita Goyal",
-        "GS1 Strategy": "पॉलिटी: Vision IAS Foundation Notes (Amirul Hasan Sir) + Laxmikanth (Margin में नोट्स) | IR: PSIR Optional से भारी ओवरलैप | Governance: Indian Express पैसिव रीडिंग।",
-        "GS2 Strategy": "Economy+Environment+Security: Vision IAS Mains 365 | Budget: 2 पेज क्रिस्प नोट्स | Eco Survey: 3 पेज | Environment Mains 365: 6 पेज | Visual Presentation: Trend Graphs, Flowcharts, Infographics।",
-        "GS3 Strategy": "पसंदीदा विषय | Case Studies: Hub & Spoke Model (Stakeholders) + Pros/Cons Table | समय: Theory → 1h15m, Case Studies → शेष | किसी rigid structure के बिना व्यक्तित्व दिखाएँ।",
-        "GS4 Strategy": "अंक: 144 | 5 मिनट Timer → रफ पेज पर सभी आयाम (PESTEL) + Quotes | Anecdote/Quote से आकर्षक शुरुआत | Topper copies से Example Bank तैयार।",
-        "Essay Strategy": "PSIR | PYQs: 2013-2023 Topic-Wise | हर Topic: 2-4 Thinkers (पक्ष+विपक्ष) | तकनीकी शब्दावली | GS2 IR से भारी ओवरलैप।",
-        "Optional Strategy": "2024 में 98 प्रश्न अटेम्प्ट | Vajiram Power Up Test Series (CA) + Vision IAS Abhyas Tests | Calculated Risk: 30-35 sure-shot + 50-50 elimination | अंतिम 27 दिन: कोई नया रिसोर्स नहीं, केवल नोट्स + PYQs।",
-        "Prelims Strategy": "2nd Attempt में CSAT fail → 3rd में विशेष ध्यान | NDA, CDS, CPSC के पिछले 3 साल के CSAT Papers | RC: प्रश्न पहले पढ़ें → Extreme Options तुरंत खारिज | 27-28 RC में से 22+ सही टार्गेट।",
-        "Golden Rules": "Internal Drive से पढ़ें, बाहरी दबाव नहीं | शुरुआत में Plan B का Comfort Zone से बचें | परिस्थितियों को बहाना न बनने दें (Typhoid के बावजूद Mains दिया) | UPSC केवल परीक्षा नहीं, व्यक्तित्व विकास है।"
+        "GS1 Strategy": "",
+        "GS2 Strategy": "",
+        "GS3 Strategy": "",
+        "GS4 Strategy": "",
+        "Essay Strategy": "",
+        "Optional Strategy": "",
+        "Prelims Strategy": "",
+        "Golden Rules": "1. घंटे नहीं, Target गिनें (8-9 घंटे गुणवत्ता) | 2. PYQs को रीढ़ बनाएँ | 3. सीमित स्रोत + अधिकतम Revision | 4. 5+1+1 Time-Table Model | 5. सकारात्मक मानसिकता + 7-8 घंटे नींद।"
       }
     },
     {
       "id": "strategy-shatakshi-sinha",
       "title": "Shatakshi Sinha की रणनीति",
-      "content": "विभिन्न GS Papers के ज्ञान को Cross-fertilize करके उत्तर लिखे | 2-3 पेज Concise Notes प्रति विषय।",
+      "content": "",
       "extraData": {
         "Ranker": "Shatakshi Sinha",
-        "GS1 Strategy": "GS1-GS4 Cross-fertilization | 2-3 पेज नोट्स | Committee Recommendations + Articles का समावेश।",
-        "GS2 Strategy": "2-3 पेज नोट्स | Prelims में एकत्र ज्ञान/तथ्य Google Docs में सहेजकर Mains में प्रयोग।",
-        "GS3 Strategy": "Case Studies: सामान्य सुझावों के बजाय स्पष्ट व्यावहारिक समाधान | Essay: रोजाना एक विषय पर Brainstorming Notes।",
-        "GS4 Strategy": "रोजाना एक दार्शनिक विषय पर Brainstorming Notes | Philosophical Essays में गहरी वैचारिक संरचना।",
-        "Essay Strategy": "Sociology 290 अंक | 4 मुख्य Register + 4 छोटे Handouts (अंतिम समय हेतु) | Durkheim के सिद्धांत → वर्तमान उदाहरण से जोड़ना | Thinkers को Current Affairs से Link।",
-        "Optional Strategy": "फरवरी से प्रतिदिन 50 MCQs + सप्ताह में 2-3 Mock Tests | परीक्षा से 1 महीना पहले Mock बंद → केवल PYQs | The Hindu + Monthly Magazines (3-4 बार Revision) | CA के अलग नोट्स नहीं।",
-        "Prelims Strategy": "स्रोत में विशिष्ट उल्लेख नहीं।",
-        "Golden Rules": "10-अंक प्रश्न: 10-12 Points; 15-अंक: 15-17 Points | 4 Registers में Consolidated Notes, 7-8 बार Revision | PYQs सबसे पहले।"
+        "GS1 Strategy": "",
+        "GS2 Strategy": "",
+        "GS3 Strategy": "",
+        "GS4 Strategy": "",
+        "Essay Strategy": "",
+        "Optional Strategy": "",
+        "Prelims Strategy": "",
+        "Golden Rules": "नए अभ्यर्थी सबसे पहले PYQs देखें | दैनिक कम से कम 8 घंटे गुणवत्तापूर्ण पढ़ाई | कभी हार न मानें।"
       }
     },
     {
       "id": "strategy-rupal-rana",
       "title": "Rupal Rana की रणनीति",
-      "content": "History: Modern → Spectrum (25 pages में condense) + NCERTs (R.S. Sharma, Satish Chandra, Bipan Chandra) | Society: Smriti Ma'am Notes | Comparative Charts: राष्ट्रपति vs राज्यपाल आदि।",
+      "content": "",
       "extraData": {
         "Ranker": "Rupal Rana",
-        "GS1 Strategy": "Polity: Laxmikanth + 11th NCERT (Constitution at Work) | IR: Shubhra Ranjan + ORF + Indian Express + The Hindu + Jaishankar Speeches | Governance: Committee Recommendations।",
-        "GS2 Strategy": "GS3: Science & Tech + Environment → Mains 365 | Internal Security → Shivin Sir Notes।",
-        "GS3 Strategy": "Ethics: Ansari Sir (Lukman IAS) Notes | 'The Better India' से Real Examples | Ramayana/Mahabharata से नैतिक पाठ | Topper Copies (Shruti Ma'am, Vishakha Ma'am)।",
-        "GS4 Strategy": "PYQs से मुख्य Themes (Problems, Causes, Solutions, Way Forward) पहचाने।",
-        "Essay Strategy": "PSIR: Shubhra Ranjan 80% Base | ORF, Indian Express, The Hindu, Jaishankar Interviews से Value Addition।",
-        "Optional Strategy": "4th Attempt: 90+ प्रश्न हल किए (पहले 3 में 71-78 से Fail) | Source List: Polity-Laxmikanth+11NCERT, History-Spectrum, Economy-Vivek Singh, Environment-Shankar+PT365, Geography-Rishikesh Notes+11/12 NCERT | Comparative Tables।",
-        "Prelims Strategy": "स्रोत में विशिष्ट उल्लेख नहीं।",
-        "Golden Rules": "Attempt बढ़ाएँ (90+) | Limited Sources को बार-बार Revise करें | Monthly Break लें।"
+        "GS1 Strategy": "",
+        "GS2 Strategy": "",
+        "GS3 Strategy": "",
+        "GS4 Strategy": "",
+        "Essay Strategy": "",
+        "Optional Strategy": "",
+        "Prelims Strategy": "",
+        "Golden Rules": "खुद की रणनीति पर भरोसा रखें | महीने में 1-2 दिन पूर्ण Break (Burnout से बचाव) | Multiple Revisions of Limited Sources।"
       }
     },
     {
       "id": "strategy-tanya-singh",
       "title": "Tanya Singh की रणनीति",
-      "content": "समाचार पत्र की जगह Monthly/Yearly Magazines के Index Page पर Short Notes + बार-बार Revision।",
+      "content": "",
       "extraData": {
         "Ranker": "Tanya Singh",
-        "GS1 Strategy": "प्रत्येक GS Paper: केवल 30-35 Pages के Short Notes | Pointer Format: 10-अंक → 8-10 Points, 15-अंक → 12-13 Points।",
-        "GS2 Strategy": "30-35 पेज Short Notes | Committee Names, Data, Schemes का समावेश।",
-        "GS3 Strategy": "Ethics: प्रत्येक उत्तर में कम से कम एक Indian/Western Philosopher का उल्लेख | Case Studies: 3-4 Pre-set Templates (Stakeholder Approach, Values Approach)।",
-        "GS4 Strategy": "प्रत्येक GS Paper: 30-35 पेज Short Notes | PESTEL दृष्टिकोण।",
-        "Essay Strategy": "Economics: Paper 2 को GS3 Indian Economy से Integrate किया | Arjun Gupta Sir के Topper Notes।",
-        "Optional Strategy": "जनवरी से ऑफलाइन Mock Tests + कमज़ोर विषयों का विश्लेषण | Monthly/Yearly Magazine Index पर Notes | CSAT: केवल PYQs।",
-        "Prelims Strategy": "Comprehension के लिए केवल UPSC PYQs को मुख्य आधार।",
-        "Golden Rules": "अपनी तैयारी और Mentorship पर भरोसा | Resources सीमित | आत्मविश्वास न खोएँ।"
+        "GS1 Strategy": "",
+        "GS2 Strategy": "",
+        "GS3 Strategy": "",
+        "GS4 Strategy": "",
+        "Essay Strategy": "",
+        "Optional Strategy": "",
+        "Prelims Strategy": "",
+        "Golden Rules": "AI Tools का उपयोग करें (उदाहरण + सारांश) | अपने Notes पर भरोसा | Resources सीमित रखें।"
       }
     },
     {
       "id": "strategy-swati-sharma",
       "title": "Swati Sharma की रणनीति",
-      "content": "इतिहास/भूगोल के कठिन प्रश्नों में Maps + Diagrams बनाकर अंक खींचे | PYQs (2013 के बाद) के चारों Options का गहन विश्लेषण।",
+      "content": "",
       "extraData": {
         "Ranker": "Swati Sharma",
-        "GS1 Strategy": "Articles + Committee Recommendations समावेश + Pointwise | Supreme Court Judgements का उल्लेख।",
-        "GS2 Strategy": "स्रोत में विशिष्ट GS3 विवरण नहीं, सीमित स्रोत + Revision।",
-        "GS3 Strategy": "Ethics: पहले 10-अंकीय प्रश्न, फिर Case Studies, अंत में Quotation-based प्रश्न हल किए।",
-        "GS4 Strategy": "PYQ Analysis + Toppers की Answer Copies से Structuring।",
-        "Essay Strategy": "PSIR: O.P. Gauba, Andrew Heywood (Global Politics) | 20 व 15 अंक वाले प्रश्नों को प्राथमिकता।",
-        "Optional Strategy": "फरवरी से Sectional Tests → FLTs | 2013 के बाद के PYQs के चारों विकल्पों का विश्लेषण।",
-        "Prelims Strategy": "CSAT: गणितीय कमज़ोरी पहचानकर Number System, Average, Calendar जैसे High-Yield Topics के लिए Crash Course + अभ्यास।",
-        "Golden Rules": "गलतियों से सीखें | CSAT की गणितीय कमज़ोरी पहले पहचानें | फरवरी से Mock शुरू करें।"
+        "GS1 Strategy": "",
+        "GS2 Strategy": "",
+        "GS3 Strategy": "",
+        "GS4 Strategy": "",
+        "Essay Strategy": "",
+        "Optional Strategy": "",
+        "Prelims Strategy": "",
+        "Golden Rules": "One Source – Multiple Revisions | गलतियों से सीखें, कमज़ोर क्षेत्रों का विश्लेषण | Maps/Diagrams से Bouncers में अंक।"
       }
     },
     {
       "id": "strategy-riya-saini",
       "title": "Riya Saini की रणनीति",
-      "content": "PYQs से Themes → Short Notes | Core (Polity, Economy) + Science & Tech + Environment पर महारत।",
+      "content": "",
       "extraData": {
         "Ranker": "Riya Saini",
-        "GS1 Strategy": "Polity + Governance + IR → PYQ Theme Analysis | Prelims के तथ्य → Google Docs → Mains उत्तर।",
-        "GS2 Strategy": "Internal Security: Vajiram Yellow Book | Disaster Management: Google का विस्तृत उपयोग | High-ROI Small Subjects पर विशेष ध्यान।",
-        "GS3 Strategy": "Essay: स्वामी विवेकानंद के विचार, INA Trial, 'Tryst with Destiny' जैसे ऐतिहासिक संदर्भ।",
-        "GS4 Strategy": "Essay: स्वामी विवेकानंद + INA Trial + Tryst with Destiny जैसे ऐतिहासिक संदर्भ | Multi-dimensional दृष्टिकोण।",
-        "Essay Strategy": "Political Science/Sociology | PYQ-based तैयारी।",
-        "Optional Strategy": "PYQs से Themes निकालकर Short Notes | Core + Sci&Tech + Environment में बढ़त (Bouncer प्रश्नों में लाभ)।",
-        "Prelims Strategy": "स्रोत में विशिष्ट उल्लेख नहीं।",
-        "Golden Rules": "Prelims ज्ञान को Google Docs में Save करके Mains में उपयोग करें | High-ROI Small Subjects पर विशेष ध्यान।"
+        "GS1 Strategy": "",
+        "GS2 Strategy": "",
+        "GS3 Strategy": "",
+        "GS4 Strategy": "",
+        "Essay Strategy": "",
+        "Optional Strategy": "",
+        "Prelims Strategy": "",
+        "Golden Rules": "Prelims + Mains की एकीकृत तैयारी | Small High-ROI Topics (Disaster Mgmt, Int. Security) को Priority | Prelims ज्ञान को Mains में Integrate करें।"
       }
     },
     {
       "id": "strategy-yashvi-jain",
       "title": "Yashvi Jain की रणनीति",
-      "content": "GS विषयों को आपस में Interlink करके पढ़ें | Condensed Notes।",
+      "content": "",
       "extraData": {
         "Ranker": "Yashvi Jain",
-        "GS1 Strategy": "GS1-GS4 Interlinking Strategy।",
-        "GS2 Strategy": "GS1-GS4 Interlinking + Condensed Notes।",
-        "GS3 Strategy": "स्रोत में विशिष्ट GS4 विवरण नहीं।",
-        "GS4 Strategy": "Essay को 5Ws (How, What, Why, When, Who) में तोड़कर Structure | गणितीय दृष्टिकोण से रूपरेखा।",
-        "Essay Strategy": "स्रोत में विशिष्ट Optional Strategy नहीं।",
-        "Optional Strategy": "Risk Management: 90-95 प्रश्न हल करने का लक्ष्य | 30 प्रश्न गलत के Margin के बाद भी 100+ Net Positive।",
-        "Prelims Strategy": "स्रोत में विशिष्ट उल्लेख नहीं।",
-        "Golden Rules": "नोट्स को Mental रूप से Condense करते जाएँ | GS1-GS4 को अलग-अलग नहीं, Interlinked पढ़ें।"
+        "GS1 Strategy": "",
+        "GS2 Strategy": "",
+        "GS3 Strategy": "",
+        "GS4 Strategy": "",
+        "Essay Strategy": "",
+        "Optional Strategy": "",
+        "Prelims Strategy": "",
+        "Golden Rules": "Less is More — Content को Condense करें | GS विषयों को Interlink करके पढ़ें | Calculated Risk लें (90-95 Attempts)।"
       }
     },
     {
       "id": "strategy-garima-jain",
       "title": "Garima Jain की रणनीति",
-      "content": "NCERT + Basic Sources — FOMO से बचते हुए।",
+      "content": "",
       "extraData": {
         "Ranker": "Garima Jain",
-        "GS1 Strategy": "Laxmikanth + NCERT | PYQ Brainstorming + Topper Copy Matching।",
-        "GS2 Strategy": "Limited Sources + PYQ Analysis।",
-        "GS3 Strategy": "PYQ Brainstorming + Model Answer Comparison।",
-        "GS4 Strategy": "PYQs Brainstorming → Topper Copies से Matching।",
-        "Essay Strategy": "स्रोत में विशिष्ट Optional Strategy नहीं।",
-        "Optional Strategy": "FOMO से बचाव — केवल NCERT + Laxmikanth तक सीमित | CSAT: बिना नागा रोजाना अभ्यास + PYQs।",
-        "Prelims Strategy": "बिना नागा रोजाना प्रश्न अभ्यास | Comprehension के लिए केवल PYQs।",
-        "Golden Rules": "FOMO से बचें | Basic Sources पर विश्वास | Interview के लिए Balanced Personality विकसित करें।"
+        "GS1 Strategy": "",
+        "GS2 Strategy": "",
+        "GS3 Strategy": "",
+        "GS4 Strategy": "",
+        "Essay Strategy": "",
+        "Optional Strategy": "",
+        "Prelims Strategy": "",
+        "Golden Rules": "Basic Sources पर टिके रहें (FOMO से बचें) | Personality, Clear Communication, Balanced Thinking | Interview में Subject Knowledge से ज़्यादा Personality।"
       }
     },
     {
       "id": "strategy-komal-mavi",
       "title": "Komal Mavi की रणनीति",
-      "content": "History: Spectrum | Art & Culture: NCERTs।",
+      "content": "",
       "extraData": {
         "Ranker": "Komal Mavi",
-        "GS1 Strategy": "Polity: 11th NCERTs (Political Theory + Constitution at Work) + Laxmikanth | IR: Current-based।",
-        "GS2 Strategy": "Economy: Vivek Singh + Budget & Economic Survey Summary।",
-        "GS3 Strategy": "स्रोत में विशिष्ट GS4 विवरण नहीं।",
-        "GS4 Strategy": "Limited Sources + Revision।",
-        "Essay Strategy": "स्रोत में विशिष्ट Optional Strategy नहीं।",
-        "Optional Strategy": "2013 के बाद के PYQs को दैनिक 25 प्रश्नों के Mock की तरह हल किया | Polity: 11th NCERTs + Laxmikanth | Economy: Vivek Singh + Budget | History: Spectrum।",
-        "Prelims Strategy": "स्रोत में विशिष्ट उल्लेख नहीं।",
-        "Golden Rules": "अंतिम 30 दिन: No New Source | PYQs को Daily Mock की तरह लें | Newspaper Notes Minimal रखें।"
+        "GS1 Strategy": "",
+        "GS2 Strategy": "",
+        "GS3 Strategy": "",
+        "GS4 Strategy": "",
+        "Essay Strategy": "",
+        "Optional Strategy": "",
+        "Prelims Strategy": "",
+        "Golden Rules": "Newspaper के विस्तृत Notes में समय बर्बाद न करें | केवल महत्वपूर्ण Data/Examples नोट करें | परीक्षा के अंतिम 30 दिनों में कोई नया स्रोत नहीं।"
       }
     },
     {
       "id": "strategy-tripti-kalhans",
       "title": "Tripti Kalhans की रणनीति",
-      "content": "PYQ गहन विश्लेषण पर आधारित।",
+      "content": "",
       "extraData": {
         "Ranker": "Tripti Kalhans",
-        "GS1 Strategy": "PYQ गहन विश्लेषण + Limited Sources।",
-        "GS2 Strategy": "PYQ गहन विश्लेषण।",
-        "GS3 Strategy": "Mains के लिए 6-7 माह समर्पित।",
-        "GS4 Strategy": "Mains के लिए Dedicated 6-7 माह (Prelims से पहले)।",
-        "Essay Strategy": "Anthropology (Public Administration से Switch) | 1 साल का Break लेकर Mains को मज़बूत किया।",
-        "Optional Strategy": "4th Attempt: बिना Coaching Mock के, केवल पिछले 10 वर्षों (2014 से) के PYQs का गहन विश्लेषण।",
-        "Prelims Strategy": "R.S. Aggarwal पुस्तक + नियमित अभ्यास।",
-        "Golden Rules": "Optional बदलने से मत डरें | PYQs ही सबसे बड़ा हथियार | Dedicated Mains Preparation Period रखें।"
+        "GS1 Strategy": "",
+        "GS2 Strategy": "",
+        "GS3 Strategy": "",
+        "GS4 Strategy": "",
+        "Essay Strategy": "",
+        "Optional Strategy": "",
+        "Prelims Strategy": "",
+        "Golden Rules": "Toppers की रणनीति अंधाधुंध Copy न करें | अपनी Strength-Weakness समझें और खुद की Strategy बनाएँ।"
       }
     },
     {
       "id": "strategy-ritu-yadav",
       "title": "Ritu Yadav की रणनीति",
-      "content": "50% Content + 50% Presentation | Maps, Diagrams का प्रयोग।",
+      "content": "",
       "extraData": {
         "Ranker": "Ritu Yadav",
-        "GS1 Strategy": "Bullet Points + Committee Names + Constitutional Articles।",
-        "GS2 Strategy": "Flowcharts, Maps, Diagrams से Presentation।",
-        "GS3 Strategy": "Practical Solutions + Clear Framework।",
-        "GS4 Strategy": "Multi-dimensional दृष्टिकोण + Diagrams।",
-        "Essay Strategy": "Sociology: 284 अंक | Thinkers → Current Examples से Link।",
-        "Optional Strategy": "2023 के कठिन पेपर में घबराए नहीं | 65 मज़बूत प्रश्न पहले चुने → 88 प्रश्न हल किए।",
-        "Prelims Strategy": "स्रोत में विशिष्ट उल्लेख नहीं।",
-        "Golden Rules": "कठिन पेपर में घबराएँ नहीं, Strategic प्रश्न चयन करें | Presentation को Content जितना महत्व दें।"
+        "GS1 Strategy": "",
+        "GS2 Strategy": "",
+        "GS3 Strategy": "",
+        "GS4 Strategy": "",
+        "Essay Strategy": "",
+        "Optional Strategy": "",
+        "Prelims Strategy": "",
+        "Golden Rules": "Mains = 50% Content + 50% Presentation | Bullets, Diagrams, Committees, Maps से Presentation | Strategic प्रश्न चयन।"
       }
     },
     {
       "id": "strategy-preeti-kumari",
       "title": "Preeti Kumari की रणनीति",
-      "content": "27 साल के PYQs से Themes + Answer Writing।",
+      "content": "",
       "extraData": {
         "Ranker": "Preeti Kumari",
-        "GS1 Strategy": "PYQ Theme Analysis + Daily Writing।",
-        "GS2 Strategy": "PYQ-based Preparation + Daily Answer Writing।",
-        "GS3 Strategy": "Daily Writing Practice।",
-        "GS4 Strategy": "Daily Answer Writing + PYQ Simulation।",
-        "Essay Strategy": "स्रोत में विशिष्ट Optional Strategy नहीं।",
-        "Optional Strategy": "27 साल के PYQs की Theme-wise Compilation | 99 प्रश्न Attempt।",
-        "Prelims Strategy": "स्रोत में विशिष्ट उल्लेख नहीं।",
-        "Golden Rules": "PYQs को थीम-वार Compile करें | Daily Answer Writing अनिवार्य।"
+        "GS1 Strategy": "",
+        "GS2 Strategy": "",
+        "GS3 Strategy": "",
+        "GS4 Strategy": "",
+        "Essay Strategy": "",
+        "Optional Strategy": "",
+        "Prelims Strategy": "",
+        "Golden Rules": "27 साल के PYQs Theme-wise हल करें | Daily Answer Writing | Prelims की गहराई PYQs से समझें।"
       }
     },
     {
       "id": "strategy-shobhika-pathak",
       "title": "Shobhika Pathak की रणनीति",
-      "content": "अंक: 110+ (लगातार) | इतिहास (Modern): Spectrum → Short Notes + Revision | इतिहास (Ancient/Medieval): TN Board Cl-11, Cl-12 Themes in Indian History | भूगोल: 11-12 NCERTs + PMF IAS Selective + YouTube (Dr. Shivin, Sleepy Classes) | Society: Sociology Optional का ओवरलैप + PYQ Themes + Model Answers।",
+      "content": "",
       "extraData": {
         "Ranker": "Shobhika Pathak",
-        "GS1 Strategy": "अंक: ~118 | Polity: Laxmikanth (Highlight + बार-बार पढ़ना) + 11th NCERT Political Theory | Governance: 2nd ARC, Mallimath Committee + Constitutional Articles + Health/Education Frameworks (ASER, TSR Subramanian) | IR: Next IAS (Deepin Sir) Notes — 5-6 बार Revision | Social Justice: PYQ Themes।",
-        "GS2 Strategy": "अर्थव्यवस्था: Budget + Eco Survey से Data/Graphs + Mrunal Sir Free Lectures (YouTube) | कृषि: Ministry Schemes + Dryland Farming + PYQs + Crop Map | S&T: PT365/Mains365 + Blockchain/IoT/Nuclear | Disaster Management: 2013-2024 सभी PYQs Model Format में | Environment: ISFR, UNEP Reports + Current Facts।",
-        "GS3 Strategy": "अंक: 129 | Section A: Ready-made Frameworks/Templates (Personal/Professional/Social, Concentric Circles) + Diverse Examples (Bhagavad Gita, IPS CAA Protest, Zomato Delivery Boy) + Sakshi Ma'am Mentorship (Vajiram) | Case Studies: Stakeholder के लिए Creative Diagrams (Forest Cutting में Tree Drawing) + Clear Option Selection + Positive Conclusion।",
-        "GS4 Strategy": "अंक: 138 (2020 में) | Organic & Simple लेखन (रटे-रटाए Formula से बचना) | Structure: Main Theme → पक्ष → 2 Para विपक्ष → Futuristic Conclusion | Framework 1: Individual→Family→Society→Nation→World | Framework 2: Ancient→Medieval→Modern→AI Age | बाहरी Feedback (माता-पिता, Prof.) लेना।",
-        "Essay Strategy": "Sociology: 277 अंक (2020) | B.Tech Background पर GS/Essay/Ethics Overlap | Sources: NCERT 11-12 + IGNOU BA | Value Addition: Tusharanshu Sir + Nitin Sangwan (Essential Sociology) + Ritzer (Selective) + LevelUp IAS + Shankar IAS Test Series | Integrated Notes (Paper 1+2 समान Topics) | Humanities Prof. शैली में Paragraph Format + 1-3 Thinkers प्रति उत्तर।",
-        "Optional Strategy": "Less is More — 3 बार Revision | केवल 15+ Full Length Tests (Vision, Forum, Vajiram) | PYQs (2013 से): सभी Options का गहन विश्लेषण + Notes में समाहित | 2021: 100 प्रश्न → <1 अंक से Fail → Calculated Risk (80-95 प्रश्न) | Current Affairs: PT365 + Newspaper 30 मिनट (Ethics/Essay Examples)।",
-        "Prelims Strategy": "पिछले 5 साल के PYQs → 2 घंटे Time-bound | Formula Sheet (1 Page): Mathematical Formulas, Tricks, Reasoning Rules → GS1-GS2 Break में Revise | 53 Maths/Reasoning में से 27-28 Easy + Comprehension ध्यान से।",
-        "Golden Rules": "तैयारी को नौकरी की तरह लें (8-10 घंटे) | Social Media/New Material से बचें | अपने Resources पर विश्वास | विफलता से सीखें (Over-Attempt Analysis)।"
+        "GS1 Strategy": "",
+        "GS2 Strategy": "",
+        "GS3 Strategy": "",
+        "GS4 Strategy": "",
+        "Essay Strategy": "",
+        "Optional Strategy": "",
+        "Prelims Strategy": "",
+        "Golden Rules": "1. Consolidation: 10 किताबें नहीं, 1 Booklet 3-4 बार | 2. PYQs ही Source Code हैं | 3. FLTs से Generalist Mindset | 4. समय व स्थान प्रबंधन (Exam Hall जैसा) | 5. सकारात्मकता + मानसिक मजबूती।"
       }
     },
     {
       "id": "strategy-gamini-singla",
       "title": "Gamini Singla की रणनीति",
-      "content": "Laxmikanth (Polity) + Basic History NCERTs।",
+      "content": "",
       "extraData": {
         "Ranker": "Gamini Singla",
-        "GS1 Strategy": "The Hindu / Indian Express + Drishti Daily News Analysis।",
-        "GS2 Strategy": "Newspaper Reading + Basic NCERTs का एकीकरण।",
-        "GS3 Strategy": "Case Studies अभ्यास + Daily Events से Critical Thinking।",
-        "GS4 Strategy": "Quotes की जगह Real Stories/Case Studies से शुरुआत | 15-16 निबंध लिखे | Multi-dimensional दृष्टिकोण।",
-        "Essay Strategy": "Sociology: उपलब्धता + रुचि के आधार पर चयन।",
-        "Optional Strategy": "1991 से PYQs Solve | अंतिम 2 माह: Daily Mock Tests | घर पर Exam जैसा माहौल।",
-        "Prelims Strategy": "रोजाना 15-20 मिनट Logical Reasoning + Quant अभ्यास।",
-        "Golden Rules": "तैयारी की कमान खुद संभालें | अपने निर्णयों पर भरोसा | Social Media Delete करें।"
+        "GS1 Strategy": "",
+        "GS2 Strategy": "",
+        "GS3 Strategy": "",
+        "GS4 Strategy": "",
+        "Essay Strategy": "",
+        "Optional Strategy": "",
+        "Prelims Strategy": "",
+        "Golden Rules": "Discipline > Motivation | Social Media से पूरी दूरी | Family Support पर विश्वास।"
       }
     },
     {
       "id": "strategy-shruti-rajalakshmi",
       "title": "Shruti Rajalakshmi की रणनीति",
-      "content": "Geography: NCERTs (Mandatory) | History: NCERTs (Ancient/Medieval)।",
+      "content": "",
       "extraData": {
         "Ranker": "Shruti Rajalakshmi",
-        "GS1 Strategy": "Polity: Laxmikanth।",
-        "GS2 Strategy": "Economy: बार-बार पढ़कर महारत (शुरुआत में कठिन था)।",
-        "GS3 Strategy": "स्रोत में विशिष्ट GS4 Strategy नहीं।",
-        "GS4 Strategy": "Prelims के बाद 6-7 Tests (कुल 12-14 निबंध) लिखे।",
-        "Essay Strategy": "Sociology/Maths: Notes बनाना + PYQs पर विशेष जोर।",
-        "Optional Strategy": "Daily Current Affairs Notes | Prelims से 1.5 माह पहले रोज़ एक Mock Test।",
-        "Prelims Strategy": "Mental Ability + Maths पर भरोसा + पुराने Papers Solve।",
-        "Golden Rules": "रुकें नहीं, निरंतर प्रयास | अपनी क्षमता पर विश्वास | Daily Exercise से Mental Fitness।"
+        "GS1 Strategy": "",
+        "GS2 Strategy": "",
+        "GS3 Strategy": "",
+        "GS4 Strategy": "",
+        "Essay Strategy": "",
+        "Optional Strategy": "",
+        "Prelims Strategy": "",
+        "Golden Rules": "रोज़ Exercise/Jogging (Stress Buster) | Social Media Apps Delete | Family से संवाद।"
       }
     },
     {
       "id": "strategy-anoushka-sharma",
       "title": "Anoushka Sharma की रणनीति",
-      "content": "History: TN Board 11th + Old NCERTs + CC Leong | Society: Vision Notes।",
+      "content": "",
       "extraData": {
         "Ranker": "Anoushka Sharma",
-        "GS1 Strategy": "Polity: Laxmikanth + Mains 365 | MEA Statements + Committee Recommendations | IR: Current।",
-        "GS2 Strategy": "Economy: Optional से Covered | S&T: Mains 365 | Security: Notes + Maps/Diagrams।",
-        "GS3 Strategy": "DK Balaji Sir Book | Quotes/Definitions Notes | Section A: 1.5h, Case Studies: 1.5h।",
-        "GS4 Strategy": "Multi-dimensional दृष्टिकोण | Quotes + Examples।",
-        "Essay Strategy": "Economics: 144+142 = 286 अंक | H.L. Ahuja, Salvatore, Jhingan | Economic Survey + Budget।",
-        "Optional Strategy": "35 Mock Tests (गहन Revision) | 5-Page Fact Sheets (प्रति Subject) | 3 Rounds में Paper Solve।",
-        "Prelims Strategy": "English में Comfortable (30 प्रश्न) | Maths/Reasoning में Selective।",
-        "Golden Rules": "असफलता से सीखें | Sources सीमित रखें | Revision + Mock Tests पर Focus।"
+        "GS1 Strategy": "",
+        "GS2 Strategy": "",
+        "GS3 Strategy": "",
+        "GS4 Strategy": "",
+        "Essay Strategy": "",
+        "Optional Strategy": "",
+        "Prelims Strategy": "",
+        "Golden Rules": "Hobbies न छोड़ें (Music, Walk, Reading) | Fact Sheets बनाएँ | Multiple Revisions।"
       }
     },
     {
       "id": "strategy-pari-bishnoi",
       "title": "Pari Bishnoi की रणनीति",
-      "content": "Ancient/Medieval: Old NCERT/R.S. Sharma | Art & Culture: 11th Fine Arts NCERT।",
+      "content": "",
       "extraData": {
         "Ranker": "Pari Bishnoi",
-        "GS1 Strategy": "Polity: Laxmikanth (5-6 बार Revision) | Parliament, Judiciary, FRs, DPSPs पर विशेष ध्यान | Supreme Court Cases + Articles।",
-        "GS2 Strategy": "Economy: Shankar Ganesh (150 pages) / Mrunal Notes + Budget & Eco Survey।",
-        "GS3 Strategy": "Syllabus Keywords की परिभाषाएँ + व्यावहारिक उदाहरण (2-3 Page Sheet)।",
-        "GS4 Strategy": "PESTLE Dimensions से Essay Link | 10-15 मिनट Brainstorming + Outline | Anecdote/Quotes से शुरुआत | Way Forward पर Positive Conclusion।",
-        "Essay Strategy": "Optional चयन के 4 पैमाने: Background/Interest + Syllabus Vastness + Competition Level + Guidance Availability।",
-        "Optional Strategy": "1st Attempt Prelims Fail → 6 माह केवल Prelims Focus | एक विषय 10 दिन → Test (Vision/Insights) → 2 दिन Revision → अगला विषय।",
-        "Prelims Strategy": "Logical Elimination + 50-50 वाले प्रश्नों में Net Positive Strategy।",
-        "Golden Rules": "College 1st-2nd Year: Personality Development + Newspaper आदत | College Gaps में Library/Hostel में Standard Books पढ़ें।"
+        "GS1 Strategy": "",
+        "GS2 Strategy": "",
+        "GS3 Strategy": "",
+        "GS4 Strategy": "",
+        "Essay Strategy": "",
+        "Optional Strategy": "",
+        "Prelims Strategy": "",
+        "Golden Rules": "कम पढ़ें, बार-बार दोहराएँ | Mind Mapping + Active Recall | Test Series से Assess करें | Sustainable Routine (Yoga, Badminton)।"
       }
     }
   ],

@@ -58,7 +58,7 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
   }[] = [
     {
       key: "strategy",
-      label: "Strategy & Blueprints",
+      label: "Toppers प्रोफ़ाइल",
       description:
         "AIR 1 preparation roadmaps, phase breakdown & paper-wise blueprints",
       icon: Trophy,
@@ -67,7 +67,7 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
     },
     {
       key: "books",
-      label: "Strategy Setup",
+      label: "Strategy & Blueprints",
       description: "Standard Prelims & Mains booklist recommended by toppers",
       icon: BookOpen,
       badge: `${strategies.length} Strategies`,

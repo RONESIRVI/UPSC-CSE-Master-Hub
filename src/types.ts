@@ -318,11 +318,15 @@ export interface MockTestLog {
   id: string;
   testSeriesName: string; // e.g. "Vision IAS FLT 1", "ForumIAS SFG"
   testName?: string;
+  testType?: "Full Length" | "Topic Wise";
+  subject?: string;
+  topic?: string;
   date: string;
   type: "Prelims GS1" | "Prelims CSAT" | "Mains GS";
   totalMarks: number;
   marksObtained: number;
   cutoffScore: number;
+  totalQuestions?: number;
   questionsAttempted?: number;
   correctCount?: number;
   incorrectCount?: number;

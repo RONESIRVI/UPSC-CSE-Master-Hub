@@ -613,8 +613,10 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                         return (
                           <div
                             key={index}
-                            className={`flex items-start gap-2 text-xs p-2.5 rounded-xl border transition-all shadow-xs font-medium cursor-pointer ${
-                              sub.status === "mastered" ? "border-emerald-200 bg-emerald-50/50" : "bg-white border-slate-200 hover:border-indigo-300"
+                            className={`flex items-start gap-2 text-xs p-2.5 rounded-xl border transition-all duration-200 shadow-sm hover:shadow-md font-medium cursor-pointer active:scale-[0.97] ${
+                              sub.status === "not_started" 
+                                ? "bg-white border-slate-200 hover:border-indigo-200" 
+                                : microStatus.color
                             }`}
                             onClick={() => {
                               if (onUpdateMicroTopicStatus) {
@@ -623,9 +625,9 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                             }}
                           >
                             <span className={microStatus.color.split(' ')[1] + " font-bold shrink-0 mt-0.5"}>
-                              {sub.status === "mastered" ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Circle className="w-3.5 h-3.5" />}
+                              {sub.status === "mastered" ? <CheckCircle2 className="w-4 h-4" /> : <Circle className="w-4 h-4" />}
                             </span>
-                            <span className={`flex-1 ${sub.status === "mastered" ? "text-emerald-900 line-through opacity-70" : "text-slate-700"}`}>
+                            <span className={`flex-1 ${sub.status === "mastered" ? "line-through opacity-70" : ""}`}>
                               {sub.title}
                             </span>
                           </div>

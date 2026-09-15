@@ -36,7 +36,7 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
     } catch (e) {
       console.error("Failed to parse quick notes", e);
     }
-    return DEFAULT_QUICK_REVISION_NOTES;
+    return [];
   });
 
   // Sync to localStorage & listen for quick thoughts updates

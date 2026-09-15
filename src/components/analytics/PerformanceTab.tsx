@@ -35,7 +35,11 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
   const [accuracyPct, setAccuracyPct] = useState<number>(75);
   const [cutoffMarks, setCutoffMarks] = useState<number>(88);
   const [analysisNotes, setAnalysisNotes] = useState("");
-
+  const [subject, setSubject] = useState("Polity");
+  const [mockTestType, setMockTestType] = useState<"Full Length" | "Topic Wise">("Full Length");
+  const [totalQuestions, setTotalQuestions] = useState<number>(100);
+  const [questionsAttempted, setQuestionsAttempted] = useState<number>(0);
+  const [correctCount, setCorrectCount] = useState<number>(0);
   const prelimsLogs = mockLogs.filter((m) => m.type === "Prelims GS1");
   const avgPrelimsScore =
     prelimsLogs.length > 0
@@ -51,12 +55,18 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
       id: `mock-${Date.now()}`,
       testSeriesName: `${seriesName}: ${testName.trim() || "Full Mock Test"}`,
       testName: testName.trim() || "Full Mock Test",
+      testType: mockTestType,
+      subject: subject,
       date: new Date().toISOString().split("T")[0],
       type: testType,
       marksObtained: score,
       totalMarks,
       cutoffScore: cutoffMarks,
-      accuracyRate: accuracyPct,
+      totalQuestions,
+      questionsAttempted,
+      correctCount,
+      incorrectCount: questionsAttempted - correctCount,
+      accuracyRate: questionsAttempted > 0 ? Math.round((correctCount / questionsAttempted) * 100) : accuracyPct,
       analysisNotes:
         analysisNotes ||
         "Good attempt. Need faster elimination in science & tech.",
@@ -65,6 +75,8 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
     setShowAddModal(false);
     setTestName("");
     setAnalysisNotes("");
+    setQuestionsAttempted(0);
+    setCorrectCount(0);
   };
 
   return (
@@ -275,14 +287,65 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
                     Type
                   </label>
                   <select
-                    value={testType}
-                    onChange={(e) => setTestType(e.target.value as any)}
+                    value={mockTestType}
+                    onChange={(e) => setMockTestType(e.target.value as any)}
                     className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
                   >
-                    <option value="Prelims GS1">Prelims GS1</option>
-                    <option value="Prelims CSAT">Prelims CSAT</option>
-                    <option value="Mains GS">Mains GS</option>
+                    <option value="Full Length">Full Length</option>
+                    <option value="Topic Wise">Topic Wise</option>
                   </select>
+                </div>
+              </div>
+
+              {mockTestType === "Topic Wise" && (
+                <div>
+                  <label className="text-xs font-bold text-slate-700 block mb-1">
+                    Subject / Topic
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Fundamental Rights"
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
+                  />
+                </div>
+              )}
+
+              <div className="grid grid-cols-3 gap-2">
+                <div>
+                  <label className="text-[10px] font-bold text-slate-700 block mb-1">
+                    Total Q's
+                  </label>
+                  <input
+                    type="number"
+                    value={totalQuestions}
+                    onChange={(e) => setTotalQuestions(parseInt(e.target.value) || 0)}
+                    className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-slate-700 block mb-1">
+                    Attempted
+                  </label>
+                  <input
+                    type="number"
+                    value={questionsAttempted}
+                    onChange={(e) => setQuestionsAttempted(parseInt(e.target.value) || 0)}
+                    className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-slate-700 block mb-1">
+                    Correct
+                  </label>
+                  <input
+                    type="number"
+                    value={correctCount}
+                    onChange={(e) => setCorrectCount(parseInt(e.target.value) || 0)}
+                    className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
+                  />
                 </div>
               </div>
 

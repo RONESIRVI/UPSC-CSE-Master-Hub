@@ -41,8 +41,7 @@ import {
   Image as ImageIcon,
 } from "lucide-react";
 import { TimerConfigModal, PRESET_CONFIGS } from "./TimerConfigModal";
-import { QuickStudyLogModal } from "./QuickStudyLogModal";
-import { QuickThoughtsModal } from "./QuickThoughtsModal";
+
 import { playTimerChime } from "../../utils/audioAlert";
 import { exportStudyLogsToCsv } from "../../utils/csvExporter";
 
@@ -310,7 +309,7 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
       topicCovered:
         currentStudySession.topic.trim() ||
         `Focus Session (${timerConfig.mode.replace("_", " ").toUpperCase()})`,
-      taskType: currentStudySession.taskType,
+      taskType: currentStudySession.taskType as "notes" | "study" | "revision" | "pyq" | "answer_writing",
       qualityRating: focusRating,
       notes: sessionNotes.trim(),
     };
@@ -1026,22 +1025,6 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
           onClose={() => setShowConfigModal(false)}
         />
       )}
-
-      {/* Quick Study Session Log Modal */}
-      <QuickStudyLogModal
-        isOpen={showQuickLogModal}
-        onClose={() => setShowQuickLogModal(false)}
-        onAddSessionLog={onAddSessionLog}
-        syllabus={syllabus}
-      />
-
-      {/* Quick Thoughts & Doubts Scratchpad Modal */}
-      <QuickThoughtsModal
-        isOpen={showQuickThoughtsModal}
-        onClose={() => setShowQuickThoughtsModal(false)}
-        syllabus={syllabus}
-
-      />
     </div>
   );
 };

@@ -88,6 +88,7 @@ export const DEFAULT_WEAK_AREAS: WeakAreaItem[] = [
     accuracyInMocks: 35,
     severity: "Critical",
     recommendedAction: "Revise Spectrum Chapters 12-18",
+    priorityBook: "Spectrum",
   },
   {
     id: "wa-2",
@@ -98,6 +99,7 @@ export const DEFAULT_WEAK_AREAS: WeakAreaItem[] = [
     accuracyInMocks: 55,
     severity: "Moderate",
     recommendedAction: "Laxmikanth Ch 7 & 8 MCQ Practice",
+    priorityBook: "M. Laxmikanth",
   },
   {
     id: "wa-3",
@@ -106,8 +108,9 @@ export const DEFAULT_WEAK_AREAS: WeakAreaItem[] = [
     paper: "GS3",
     failedQuestionsCount: 3,
     accuracyInMocks: 72,
-    severity: "Mild",
+    severity: "Minor",
     recommendedAction: "Review Mrunal Handout on Banking",
+    priorityBook: "Mrunal PCB Notes",
   },
 ];
 

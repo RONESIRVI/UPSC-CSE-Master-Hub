@@ -248,7 +248,7 @@ export default function App() {
     const local = saved ? JSON.parse(saved) : [];
     if (!saved || local.length === 0) return STRATEGY_SETUP;
     const localMap = new Map(local.map((item: StrategySetupItem) => [item.id, item]));
-    const merged = STRATEGY_SETUP.map(item => localMap.has(item.id) ? { ...item, ...localMap.get(item.id) } : item);
+    const merged = STRATEGY_SETUP.map(item => { const localItem = localMap.get(item.id); return localItem ? Object.assign({}, item, localItem) : item; });
     const remoteIds = new Set(STRATEGY_SETUP.map(item => item.id));
     local.forEach((item: StrategySetupItem) => { if (!remoteIds.has(item.id)) merged.push(item); });
     return merged;
@@ -259,7 +259,7 @@ export default function App() {
     const local = saved ? JSON.parse(saved) : [];
     if (!saved || local.length === 0) return TOPPERS_PROFILES;
     const localMap = new Map(local.map((item: TopperProfile) => [item.id, item]));
-    const merged = TOPPERS_PROFILES.map(item => localMap.has(item.id) ? { ...item, ...localMap.get(item.id) } : item);
+    const merged = TOPPERS_PROFILES.map(item => { const localItem = localMap.get(item.id); return localItem ? Object.assign({}, item, localItem) : item; });
     const remoteIds = new Set(TOPPERS_PROFILES.map(item => item.id));
     local.forEach((item: TopperProfile) => { if (!remoteIds.has(item.id)) merged.push(item); });
     return merged;
@@ -270,7 +270,7 @@ export default function App() {
     const local = saved ? JSON.parse(saved) : [];
     if (!saved || local.length === 0) return TOPPER_ROUTINES;
     const localMap = new Map(local.map((item: TopperRoutine) => [item.id, item]));
-    const merged = TOPPER_ROUTINES.map(item => localMap.has(item.id) ? { ...item, ...localMap.get(item.id) } : item);
+    const merged = TOPPER_ROUTINES.map(item => { const localItem = localMap.get(item.id); return localItem ? Object.assign({}, item, localItem) : item; });
     const remoteIds = new Set(TOPPER_ROUTINES.map(item => item.id));
     local.forEach((item: TopperRoutine) => { if (!remoteIds.has(item.id)) merged.push(item); });
     return merged;
@@ -682,7 +682,7 @@ export default function App() {
               // 1. First sync Excel data immediately
               setTopperRoutines(prev => {
                 const localMap = new Map(prev.map(item => [item.id, item]));
-                const merged = TOPPER_ROUTINES.map(item => localMap.has(item.id) ? { ...item, ...localMap.get(item.id) } : item);
+                const merged = TOPPER_ROUTINES.map(item => { const localItem = localMap.get(item.id); return localItem ? Object.assign({}, item, localItem) : item; });
                 const remoteIds = new Set(TOPPER_ROUTINES.map(item => item.id));
                 prev.forEach(item => { if (!remoteIds.has(item.id)) merged.push(item); });
                 return merged;
@@ -690,7 +690,7 @@ export default function App() {
               
               setToppers(prev => {
                 const localMap = new Map(prev.map(item => [item.id, item]));
-                const merged = TOPPERS_PROFILES.map(item => localMap.has(item.id) ? { ...item, ...localMap.get(item.id) } : item);
+                const merged = TOPPERS_PROFILES.map(item => { const localItem = localMap.get(item.id); return localItem ? Object.assign({}, item, localItem) : item; });
                 const remoteIds = new Set(TOPPERS_PROFILES.map(item => item.id));
                 prev.forEach(item => { if (!remoteIds.has(item.id)) merged.push(item); });
                 return merged;
@@ -698,7 +698,7 @@ export default function App() {
 
               setStrategies(prev => {
                 const localMap = new Map(prev.map(item => [item.id, item]));
-                const merged = STRATEGY_SETUP.map(item => localMap.has(item.id) ? { ...item, ...localMap.get(item.id) } : item);
+                const merged = STRATEGY_SETUP.map(item => { const localItem = localMap.get(item.id); return localItem ? Object.assign({}, item, localItem) : item; });
                 const remoteIds = new Set(STRATEGY_SETUP.map(item => item.id));
                 prev.forEach(item => { if (!remoteIds.has(item.id)) merged.push(item); });
                 return merged;

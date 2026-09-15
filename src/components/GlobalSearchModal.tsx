@@ -53,7 +53,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
       (s) =>
         (s.title || "").toLowerCase().includes(q) ||
         (s.subject || "").toLowerCase().includes(q) ||
-        (s.subtopics || []).some((sub) => (sub || "").toLowerCase().includes(q))
+        (s.subtopics || []).some((sub) => (sub.title || "").toLowerCase().includes(q))
     ).slice(0, 4);
 
     const pyqs = PYQ_DATABASE.filter(

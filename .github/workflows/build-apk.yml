@@ -60,13 +60,13 @@ jobs:
         continue-on-error: true
         run: |
           cd android
-          ./gradlew assembleDebug --no-daemon > gradle_build.log 2>&1
+          ./gradlew assembleDebug --no-daemon > gradle_build.txt 2>&1
 
       - name: 📝 Commit Gradle Log for debugging
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add android/gradle_build.log || true
+          git add -f android/gradle_build.txt || true
           git commit -m "chore: upload gradle log [skip ci]" || true
           git push || true
 

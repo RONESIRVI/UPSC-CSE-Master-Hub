@@ -873,6 +873,47 @@ export default function App() {
           </main>
         </div>
 
+        {/* Floating Active Timer Widget */}
+        {(timerRunning || timerSeconds > 0) && (
+          <div className="fixed bottom-24 right-4 lg:bottom-8 lg:right-8 z-[100] bg-slate-900/95 backdrop-blur-md border border-slate-700 text-white rounded-3xl p-4 shadow-2xl flex items-center gap-5 animate-in slide-in-from-bottom-5 duration-300">
+            <div className="flex flex-col min-w-[120px]">
+              <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest mb-1 flex items-center gap-1.5">
+                <span className="relative flex h-2 w-2">
+                  <span className={`${timerRunning ? 'animate-ping' : ''} absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75`}></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                </span>
+                Active Focus
+              </span>
+              <span className="font-mono text-3xl font-black text-white leading-none tracking-tighter">
+                {Math.floor(timerSeconds / 3600).toString().padStart(2, "0")}:
+                {Math.floor((timerSeconds % 3600) / 60).toString().padStart(2, "0")}:
+                {(timerSeconds % 60).toString().padStart(2, "0")}
+              </span>
+              <span className="text-xs font-bold text-slate-400 mt-1.5 truncate max-w-[160px]">
+                {currentStudySession.topic || currentStudySession.subject || "General Session"}
+              </span>
+            </div>
+            <div className="flex flex-col gap-2">
+              <button 
+                onClick={() => setTimerRunning(!timerRunning)}
+                className={`w-[72px] h-10 rounded-xl flex items-center justify-center transition-all border ${timerRunning ? 'bg-amber-500/10 text-amber-500 border-amber-500/30 hover:bg-amber-500/20' : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/30 hover:bg-emerald-500/20'}`}
+              >
+                <span className="text-xs font-black tracking-wider uppercase">{timerRunning ? 'Pause' : 'Resume'}</span>
+              </button>
+              <button 
+                onClick={() => {
+                   setTimerRunning(false);
+                   setTimerSeconds(0);
+                   alert("Session saved (Demo)");
+                }}
+                className="w-[72px] h-10 rounded-xl bg-rose-500/10 text-rose-500 border border-rose-500/30 flex items-center justify-center hover:bg-rose-500/20 transition-all"
+              >
+                <span className="text-xs font-black tracking-wider uppercase">End</span>
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Mobile Floating Bottom App Bar (Native Android App Experience) */}
         <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-lg border-t border-slate-200 shadow-xl safe-bottom px-2 py-1.5 flex items-center justify-around">
           <button

@@ -331,21 +331,37 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
                 Choose a specific topic from <strong className="text-indigo-600">{currentStudySession.subject}</strong> to start your session.
               </p>
               
-              {syllabus.filter(s => s.subject === currentStudySession.subject).map(topic => (
-                <button
-                  key={topic.id}
-                  onClick={() => {
-                    if (setCurrentStudySession) {
-                      setCurrentStudySession({...currentStudySession, topic: topic.title, triggerTimerStart: false});
-                    }
-                    if (onStartTimer) onStartTimer();
-                  }}
-                  className="w-full text-left p-4 rounded-2xl border-2 border-slate-100 hover:border-indigo-400 hover:bg-indigo-50/50 hover:shadow-md transition-all group flex justify-between items-center"
-                >
-                  <span className="font-bold text-slate-700 group-hover:text-indigo-900">{topic.title}</span>
-                  <Play className="w-4 h-4 text-slate-300 group-hover:text-indigo-500 fill-current" />
-                </button>
-              ))}
+              {syllabus.filter(s => s.subject === currentStudySession.subject).map(topic => {
+                let statusColor = "bg-slate-100 text-slate-500 border-slate-200";
+                let statusText = "Not Started";
+                if (topic.status === "in_progress") { statusColor = "bg-amber-100 text-amber-700 border-amber-200"; statusText = "In Process"; }
+                if (topic.status === "revised_1x") { statusColor = "bg-blue-100 text-blue-700 border-blue-200"; statusText = "Revise 1x"; }
+                if (topic.status === "revised_2x") { statusColor = "bg-indigo-100 text-indigo-700 border-indigo-200"; statusText = "Revise 2x"; }
+                if (topic.status === "revised_3x") { statusColor = "bg-purple-100 text-purple-700 border-purple-200"; statusText = "Revise 3x"; }
+                if (topic.status === "revised_4x") { statusColor = "bg-pink-100 text-pink-700 border-pink-200"; statusText = "Revise 4x"; }
+                if (topic.status === "mastered") { statusColor = "bg-emerald-100 text-emerald-700 border-emerald-200"; statusText = "Mastered"; }
+
+                return (
+                  <button
+                    key={topic.id}
+                    onClick={() => {
+                      if (setCurrentStudySession) {
+                        setCurrentStudySession({...currentStudySession, topic: topic.title, triggerTimerStart: false});
+                      }
+                      if (onStartTimer) onStartTimer();
+                    }}
+                    className="w-full text-left p-3 rounded-2xl border-2 border-slate-100 hover:border-indigo-400 hover:bg-indigo-50/50 hover:shadow-md transition-all group flex flex-col gap-2"
+                  >
+                    <div className="flex justify-between items-center w-full">
+                      <span className="font-bold text-sm text-slate-700 group-hover:text-indigo-900 leading-snug pr-2">{topic.title}</span>
+                      <Play className="w-4 h-4 text-slate-300 group-hover:text-indigo-500 fill-current shrink-0" />
+                    </div>
+                    <div className={`self-start px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${statusColor}`}>
+                      {statusText}
+                    </div>
+                  </button>
+                );
+              })}
 
               {syllabus.filter(s => s.subject === currentStudySession.subject).length === 0 && (
                 <div className="text-center p-6 bg-slate-50 rounded-2xl border border-dashed border-slate-200">

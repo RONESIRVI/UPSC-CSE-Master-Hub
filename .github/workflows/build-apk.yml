@@ -55,9 +55,18 @@ jobs:
           chmod +x gradlew
 
       - name: 🚀 Build Android Debug APK
+        continue-on-error: true
         run: |
           cd android
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew assembleDebug --no-daemon > gradle_build.log 2>&1
+
+      - name: 📝 Commit Gradle Log for debugging
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add android/gradle_build.log
+          git commit -m "chore: upload gradle log"
+          git push
 
       - name: 🔍 Locate Built APK
         id: find_apk

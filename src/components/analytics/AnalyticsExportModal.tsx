@@ -8,6 +8,7 @@ import {
 import {
   GAP_ANALYSIS_METRICS,
   HISTORICAL_CUTOFFS,
+  DEFAULT_WEAK_AREAS,
 } from "../../data/analyticsDefaults";
 import {
   exportAnalyticsDocument,
@@ -637,7 +638,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                 </div>
 
                 <div className="grid grid-cols-3 gap-3">
-                  {weakAreas.map((item) => {
+                  {(weakAreas.length > 0 ? weakAreas : DEFAULT_WEAK_AREAS).map((item) => {
                     const failedCount =
                       item.failedQuestionsCount ||
                       (item.severity === "Critical"

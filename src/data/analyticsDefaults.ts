@@ -78,9 +78,65 @@ export const HISTORICAL_CUTOFFS: CutoffBenchmark[] = [
 export const DEFAULT_MOCKS: MockTestLog[] = [];
 export const DEFAULT_MOCK_LOGS = DEFAULT_MOCKS;
 
-export const DEFAULT_WEAK_AREAS: WeakAreaItem[] = [];
+export const DEFAULT_WEAK_AREAS: WeakAreaItem[] = [
+  {
+    id: "wa-1",
+    topic: "Modern Indian History (Post-1857)",
+    subject: "History",
+    paper: "GS1",
+    failedQuestionsCount: 8,
+    accuracyInMocks: 35,
+    severity: "Critical",
+    recommendedAction: "Revise Spectrum Chapters 12-18",
+  },
+  {
+    id: "wa-2",
+    topic: "Fundamental Rights & DPSP",
+    subject: "Polity",
+    paper: "GS2",
+    failedQuestionsCount: 5,
+    accuracyInMocks: 55,
+    severity: "Moderate",
+    recommendedAction: "Laxmikanth Ch 7 & 8 MCQ Practice",
+  },
+  {
+    id: "wa-3",
+    topic: "Monetary Policy & RBI",
+    subject: "Economy",
+    paper: "GS3",
+    failedQuestionsCount: 3,
+    accuracyInMocks: 72,
+    severity: "Mild",
+    recommendedAction: "Review Mrunal Handout on Banking",
+  },
+];
 
-export const DEFAULT_GAP_ANALYSIS: TimeVsWeightageGap[] = [];
+export const DEFAULT_GAP_ANALYSIS: TimeVsWeightageGap[] = [
+  {
+    subject: "History & Art/Culture",
+    idealWeightagePercent: 18,
+    actualTimePercent: 12,
+    deltaPercent: -6,
+    status: "Under-Allocated",
+    recommendation: "Increase daily hours for History.",
+  },
+  {
+    subject: "Indian Polity",
+    idealWeightagePercent: 15,
+    actualTimePercent: 25,
+    deltaPercent: 10,
+    status: "Over-Allocated",
+    recommendation: "Reduce Polity time, shift to Economy.",
+  },
+  {
+    subject: "Geography & Environment",
+    idealWeightagePercent: 22,
+    actualTimePercent: 20,
+    deltaPercent: -2,
+    status: "Balanced",
+    recommendation: "Maintain current effort levels.",
+  },
+];
 export const GAP_ANALYSIS_METRICS = DEFAULT_GAP_ANALYSIS;
 
 export const DEFAULT_REVISION_QUEUE: RevisionItem[] = [];

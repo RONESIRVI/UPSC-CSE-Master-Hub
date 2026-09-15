@@ -168,32 +168,35 @@ try {
   const interviewsData = Array.from(interviewsMap.values());
 
   // Format Profiles
-  const formattedProfiles = strategyData.map(t => ({
-    id: t.id,
-    name: t.name,
-    rank: t.rank,
-    year: t.year,
-    optional: t.optional,
-    attempt: t.attempt,
-    background: t.background,
-    avatar: t.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-    quote: t.quote,
-    keyStrategy: t.keyStrategy,
-    gsStrategy: {
-      gs1: t.gs1 || '',
-      gs2: t.gs2 || '',
-      gs3: t.gs3 || '',
-      gs4: t.gs4 || ''
-    },
-    essayStrategy: t.essayStrategy,
-    optionalStrategy: t.optionalStrategy,
-    prelimsStrategy: t.prelimsStrategy,
-    csatStrategy: t.csatStrategy,
-    interviewScore: t.interviewScore,
-    mainsScore: t.mainsScore,
-    goldenRules: typeof t.goldenRules === 'string' ? t.goldenRules.split('|').map(r => r.trim()) : [],
-    extraData: t.extraData
-  }));
+  const formattedProfiles = strategyData.map(t => {
+    const topperName = t.name || (t.extraData && t.extraData.Ranker) || t.id;
+    return {
+      id: t.id,
+      name: topperName,
+      rank: typeof t.rank === 'number' ? t.rank : (parseInt((t.rank || '').toString().replace(/\D/g, '')) || 1),
+      year: typeof t.year === 'number' ? t.year : (parseInt((t.year || '').toString().replace(/\D/g, '')) || 2024),
+      optional: t.optional,
+      attempt: typeof t.attempt === 'number' ? t.attempt : (parseInt((t.attempt || '').toString().replace(/\D/g, '')) || 1),
+      background: t.background,
+      avatar: t.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+      quote: t.quote,
+      keyStrategy: t.keyStrategy,
+      gsStrategy: {
+        gs1: t.gs1 || '',
+        gs2: t.gs2 || '',
+        gs3: t.gs3 || '',
+        gs4: t.gs4 || ''
+      },
+      essayStrategy: t.essayStrategy,
+      optionalStrategy: t.optionalStrategy,
+      prelimsStrategy: t.prelimsStrategy,
+      csatStrategy: t.csatStrategy,
+      interviewScore: typeof t.interviewScore === 'number' ? t.interviewScore : (parseInt((t.interviewScore || '').toString().replace(/\\D/g, '')) || undefined),
+      mainsScore: typeof t.mainsScore === 'number' ? t.mainsScore : (parseInt((t.mainsScore || '').toString().replace(/\\D/g, '')) || undefined),
+      goldenRules: typeof t.goldenRules === 'string' ? t.goldenRules.split('|').map(r => r.trim()) : [],
+      extraData: t.extraData
+    };
+  });
 
   // 5. Notes & Mindmaps
   const notesSheet = wb.Sheets['Notes'];

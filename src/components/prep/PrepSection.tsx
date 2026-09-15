@@ -13,7 +13,7 @@ import { SpacedRevisionTab } from "./SpacedRevisionTab";
 import { RevisionNotesTab } from "./RevisionNotesTab";
 import { PYQTab } from "./PYQTab";
 import { QuickStudyLogModal } from "./QuickStudyLogModal";
-import { QuickThoughtsModal } from "./QuickThoughtsModal";
+
 import {
   BookOpen,
   Flag,
@@ -92,8 +92,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [showQuickLogModal, setShowQuickLogModal] = useState<boolean>(false);
-  const [showQuickThoughtsModal, setShowQuickThoughtsModal] =
-    useState<boolean>(false);
+
   const [isSyllabusEditorOpen, setIsSyllabusEditorOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -235,15 +234,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
-            <button
-              id="prep-header-quick-jot-btn"
-              type="button"
-              onClick={() => setShowQuickThoughtsModal(true)}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-xs font-bold transition shadow-2xs cursor-pointer"
-            >
-              <Lightbulb className="w-4 h-4 text-amber-600 shrink-0" />
-              <span className="hidden sm:inline">Jot Thought</span>
-            </button>
+
 
             {activeSubTab === "syllabus" && setSyllabus && (
               <button
@@ -306,19 +297,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
       )}
 
       <div className="fixed bottom-20 lg:bottom-6 right-4 sm:right-6 z-40 flex items-center gap-2 sm:gap-2.5 animate-in slide-in-from-bottom-5 duration-300">
-        <button
-          id="fab-quick-thought-btn"
-          type="button"
-          onClick={() => setShowQuickThoughtsModal(true)}
-          className="group flex items-center gap-2 px-3.5 py-2.5 sm:px-4 sm:py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-white font-extrabold text-xs sm:text-sm shadow-xl shadow-amber-500/25 border-2 border-amber-300/40 transition-all cursor-pointer hover:shadow-2xl"
-          title="Jot down a fleeting thought or doubt as a Markdown revision item"
-        >
-          <div className="p-1 rounded-lg bg-amber-600/80 group-hover:scale-110 transition">
-            <Lightbulb className="w-4 h-4 text-white stroke-[2.5]" />
-          </div>
-          <span className="tracking-wide hidden sm:inline">Jot Thought</span>
-          <span className="sm:hidden text-xs">Note</span>
-        </button>
+
 
         {/* FAB 2: Quick Study Session Log */}
         <button
@@ -346,27 +325,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
         syllabus={syllabus}
       />
 
-      {/* Quick Fleeting Thoughts & Doubts Scratchpad Mini-Modal */}
-      <QuickThoughtsModal
-        isOpen={showQuickThoughtsModal}
-        onClose={() => setShowQuickThoughtsModal(false)}
-        syllabus={syllabus}
-        onAddToSpacedRevision={(item) => {
-          onAddRevisionItem({
-            id: `rev-${Date.now()}`,
-            topicId: `topic-${Date.now()}`,
-            topicTitle: item.title,
-            subject: item.subject,
-            paper: item.paper,
-            lastStudiedDate: new Date().toISOString(),
-            intervalStage: 1,
-            nextDueDate: new Date(Date.now() + 86400000).toISOString(),
-            isOverdue: false,
-            quickSummary: item.keyPoints,
-            flashcardQuestions: []
-          });
-        }}
-      />
+
     </div>
   );
 };

@@ -83,10 +83,7 @@ export default function App() {
   }, [fsRoutines]);
 
   useEffect(() => {
-    if (fsNotes?.length > 0) {
-      // It's fetched inside the component now, wait, TOPPER_NOTES_VAULT was imported in ToppersSection?
-      // No, let's keep it here just in case, but we need to pass it down!
-    }
+    if (fsNotes?.length > 0) setNotes(fsNotes);
   }, [fsNotes]);
 
   // Silent Auto-Update Engine on App Open
@@ -249,6 +246,7 @@ export default function App() {
   const [strategies, setStrategies] = useState<StrategySetupItem[]>(STRATEGY_SETUP);
   const [toppers, setToppers] = useState<TopperProfile[]>(TOPPERS_PROFILES);
   const [topperRoutines, setTopperRoutines] = useState<TopperRoutine[]>(TOPPER_ROUTINES);
+  const [notes, setNotes] = useState<any[]>(fsNotes || []);
 
   const [syllabus, setSyllabus] = useState<SyllabusTopic[]>(() => {
     const saved = localStorage.getItem("ras_syllabus_v2");

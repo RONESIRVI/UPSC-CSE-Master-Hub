@@ -65,15 +65,43 @@ try {
   const strategySheet = wb.Sheets['TopperProfiles'] || wb.Sheets['Strategy'];
   const strategyData = strategySheet ? parseTransposedSheet(strategySheet) : [];
   
-  // 2. Strategy Setup (replaces Books)
-  const strategySetupSheet = wb.Sheets['Strategy'] || wb.Sheets['Books'];
-  const strategySetupDataRaw = strategySetupSheet ? parseTransposedSheet(strategySetupSheet) : [];
-  const strategySetupData = strategySetupDataRaw.map(s => ({
-    id: s.id || `strategy-${Date.now()}-${Math.random()}`,
-    title: s.title || 'Aditya\'s Plan',
-    content: s.content || '',
-    extraData: s.extraData
-  }));
+  // 2. Strategy Setup - Use dedicated sheet or auto-generate from Toppers profiles
+  const strategySetupSheet = wb.Sheets['Strategy Setup'];
+  let strategySetupData = [];
+
+  if (strategySetupSheet) {
+    // Dedicated sheet exists - use it
+    const strategySetupDataRaw = XLSX.utils.sheet_to_json(strategySetupSheet);
+    strategySetupData = strategySetupDataRaw.map(s => ({
+      id: s.id || `strategy-${Math.random()}`,
+      title: s.title || 'Strategy',
+      content: s.content || '',
+      extraData: {}
+    }));
+  } else {
+    // Auto-generate Strategy Setup cards from Toppers profiles
+    strategySetupData = strategyData
+      .filter(t => t.id && (t.name || t.extraData?.Ranker))
+      .map(t => {
+        const topperName = t.name || t.extraData?.Ranker || t.id;
+        return {
+          id: `strategy-${topperName}`.toLowerCase().replace(/\s+/g, '-'),
+          title: `${topperName} की रणनीति`,
+          content: t.keyStrategy || '',
+          extraData: {
+            'Ranker': topperName,
+            'GS1 Strategy': t.gs1 || '',
+            'GS2 Strategy': t.gs2 || '',
+            'GS3 Strategy': t.gs3 || '',
+            'GS4 Strategy': t.gs4 || '',
+            'Essay Strategy': t.essayStrategy || '',
+            'Optional Strategy': t.optionalStrategy || '',
+            'Prelims Strategy': t.prelimsStrategy || '',
+            'Golden Rules': t.goldenRules || ''
+          }
+        };
+      });
+  }
 
   // 3. Routines
   const routinesSheet = wb.Sheets['Routines'];

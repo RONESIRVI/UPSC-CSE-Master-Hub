@@ -77,15 +77,16 @@ export const TopperStrategyTab: React.FC<TopperStrategyTabProps> = ({
           </p>
         </div>
 
-        {/* Actions Area */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 self-start md:self-auto shrink-0">
-          <div className="flex items-center gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200 shadow-sm w-full sm:w-auto">
-            <Filter className="w-4 h-4 text-indigo-600" />
-            <label className="text-xs text-slate-600 font-bold">Optional:</label>
+        {/* Actions Area - Mobile friendly */}
+        <div className="flex flex-col gap-2 w-full md:w-auto md:self-start md:shrink-0">
+          {/* Filter Row */}
+          <div className="flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-xl border border-slate-200 shadow-sm w-full">
+            <Filter className="w-4 h-4 text-indigo-600 shrink-0" />
+            <label className="text-xs text-slate-600 font-bold shrink-0">Optional:</label>
             <select
               value={optionalFilter}
               onChange={(e) => setOptionalFilter(e.target.value)}
-              className="bg-white border border-slate-200 text-slate-800 text-xs rounded-lg px-3 py-1.5 font-bold focus:ring-2 focus:ring-indigo-500 outline-none cursor-pointer flex-1"
+              className="bg-white border border-slate-200 text-slate-800 text-xs rounded-lg px-2 py-1.5 font-bold focus:ring-2 focus:ring-indigo-500 outline-none cursor-pointer flex-1 min-w-0"
             >
               {optionals.map((opt) => (
                 <option key={opt} value={opt}>
@@ -94,12 +95,13 @@ export const TopperStrategyTab: React.FC<TopperStrategyTabProps> = ({
               ))}
             </select>
           </div>
+          {/* Add Topper Button - full width on mobile */}
           <button
             onClick={() => {
               setEditingTopper(undefined);
               setIsModalOpen(true);
             }}
-            className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold shadow-md transition w-full sm:w-auto cursor-pointer"
+            className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white text-sm font-bold shadow-md transition w-full cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Add Topper</span>

@@ -800,7 +800,6 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
 
                 <div className="grid grid-cols-2 gap-3">
                   {Array.from(new Set(syllabus.map((s) => s.subject)))
-                    .slice(0, 6)
                     .map((subject, idx) => {
                       const topics = syllabus.filter(
                         (s) => s.subject === subject

@@ -142,12 +142,6 @@ export const TopperRoutineTab: React.FC<TopperRoutineTabProps> = ({
             <h3 className="text-2xl font-bold text-slate-900 mt-0.5">
               {selectedRoutine.title}
             </h3>
-            <p className="text-xs text-slate-500 mt-1 font-medium">
-              Practiced by:{" "}
-              <span className="text-slate-800 font-bold">
-                {selectedRoutine.topperRef}
-              </span>
-            </p>
           </div>
 
           <div className="flex items-center gap-3">
@@ -205,7 +199,7 @@ export const TopperRoutineTab: React.FC<TopperRoutineTabProps> = ({
                 key={index}
                 className="p-3.5 rounded-xl bg-white border border-slate-200 hover:border-indigo-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition shadow-xs"
               >
-                <div className="flex items-start sm:items-center gap-3 flex-1 min-w-0">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 flex-1 min-w-0">
                   <span className="font-mono text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-lg border border-indigo-100 shrink-0">
                     {slot.time}
                   </span>

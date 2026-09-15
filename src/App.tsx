@@ -323,7 +323,10 @@ export default function App() {
     const saved = localStorage.getItem("ras_audio_notes_v2");
     return saved ? JSON.parse(saved) : [];
   });
-  const [studyStreak, setStudyStreak] = useState<number>(0);
+  const [studyStreak, setStudyStreak] = useState<number>(() => {
+    const saved = localStorage.getItem("upsc_study_streak_v1");
+    return saved ? JSON.parse(saved) : 0;
+  });
 
   // Modals State
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
@@ -395,6 +398,8 @@ export default function App() {
     localStorage.setItem("upsc_pyqs_v2", JSON.stringify(pyqs));
     localStorage.setItem("upsc_weak_areas_v2", JSON.stringify(weakAreas));
     localStorage.setItem("ras_audio_notes_v2", JSON.stringify(audioNotes));
+    localStorage.setItem("upsc_daily_tasks_v2", JSON.stringify(dailyTasks));
+    localStorage.setItem("upsc_study_streak_v1", JSON.stringify(studyStreak));
   }, [
     strategies,
     toppers,
@@ -406,6 +411,8 @@ export default function App() {
     pyqs,
     weakAreas,
     audioNotes,
+    dailyTasks,
+    studyStreak,
   ]);
 
   // Keyboard shortcut for Global Search (Ctrl+K or Cmd+K)

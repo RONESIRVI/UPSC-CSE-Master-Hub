@@ -279,7 +279,16 @@ export default function App() {
 
   const [syllabus, setSyllabus] = useState<SyllabusTopic[]>(() => {
     const saved = localStorage.getItem("ras_syllabus_v2");
-    return saved ? JSON.parse(saved) : DEFAULT_SYLLABUS;
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      return parsed.map((topic: any) => ({
+        ...topic,
+        subtopics: topic.subtopics.map((sub: any) => 
+          typeof sub === 'string' ? { title: sub, status: "not_started" } : sub
+        )
+      }));
+    }
+    return DEFAULT_SYLLABUS;
   });
 
   const [studyPlanPhases, setStudyPlanPhases] = useState<StudyPlanPhase[]>(
@@ -435,7 +444,33 @@ export default function App() {
     setSyllabus((prev) =>
       prev.map((t) => {
         if (t.id === topicId) {
-          return { ...t, status: nextStatus };
+          const newSubtopics = t.subtopics.map(sub => ({ ...sub, status: nextStatus }));
+          return { ...t, status: nextStatus, subtopics: newSubtopics };
+        }
+        return t;
+      })
+    );
+  };
+
+  const handleUpdateMicroTopicStatus = (
+    topicId: string,
+    subtopicIndex: number,
+    nextStatus: SyllabusTopic["status"]
+  ) => {
+    setSyllabus((prev) =>
+      prev.map((t) => {
+        if (t.id === topicId) {
+          const newSubtopics = [...t.subtopics];
+          newSubtopics[subtopicIndex] = { ...newSubtopics[subtopicIndex], status: nextStatus };
+          
+          let newParentStatus = t.status;
+          const allMastered = newSubtopics.every(sub => sub.status === "mastered");
+          const anyInProgress = newSubtopics.some(sub => sub.status !== "not_started");
+          
+          if (allMastered && newSubtopics.length > 0) newParentStatus = "mastered";
+          else if (anyInProgress && t.status === "not_started") newParentStatus = "in_progress";
+
+          return { ...t, subtopics: newSubtopics, status: newParentStatus };
         }
         return t;
       })
@@ -760,6 +795,7 @@ export default function App() {
                     syllabus={syllabus}
                     setSyllabus={setSyllabus}
                     onUpdateTopicStatus={handleUpdateTopicStatus}
+                    onUpdateMicroTopicStatus={handleUpdateMicroTopicStatus}
                     onAddTopic={handleAddTopic}
                     onDeleteTopic={handleDeleteTopic}
                     onResetDefaultSyllabus={handleResetDefaultSyllabus}

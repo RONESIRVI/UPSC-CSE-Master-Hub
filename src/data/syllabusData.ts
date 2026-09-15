@@ -14,14 +14,14 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
     status: "not_started",
     notes: "",
     subtopics: [
-      "राजस्थान के प्रागैतिहासिक स्थल",
-      "राजस्थान इतिहास के स्रोत",
-      "राजस्थान के मुख्य राजवंशों के प्रमुख शासक",
-      "18वीं-19वीं शताब्दी में राजनीतिक और सामाजिक स्थिति",
-      "राजस्थान की स्थापत्य परंपराएँ",
-      "भाषा एवं साहित्य",
-      "राजस्थान में सामाजिक जीवन",
-      "राजस्थान के प्रमुख व्यक्तित्व"
+      { title: "राजस्थान के प्रागैतिहासिक स्थल", status: "not_started" },
+      { title: "राजस्थान इतिहास के स्रोत", status: "not_started" },
+      { title: "राजस्थान के मुख्य राजवंशों के प्रमुख शासक", status: "not_started" },
+      { title: "18वीं-19वीं शताब्दी में राजनीतिक और सामाजिक स्थिति", status: "not_started" },
+      { title: "राजस्थान की स्थापत्य परंपराएँ", status: "not_started" },
+      { title: "भाषा एवं साहित्य", status: "not_started" },
+      { title: "राजस्थान में सामाजिक जीवन", status: "not_started" },
+      { title: "राजस्थान के प्रमुख व्यक्तित्व", status: "not_started" }
     ],
   },
   {
@@ -36,10 +36,10 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
     status: "not_started",
     notes: "",
     subtopics: [
-      "प्राचीनकाल एवं मध्यकाल",
-      "आधुनिक काल (प्रारंभिक 19वीं शताब्दी से 2000 तक)",
-      "स्वतंत्रता संग्राम और भारतीय राष्ट्रीय आंदोलन",
-      "स्वातंत्र्योत्तर राष्ट्र निर्माण (2000 तक)"
+      { title: "प्राचीनकाल एवं मध्यकाल", status: "not_started" },
+      { title: "आधुनिक काल (प्रारंभिक 19वीं शताब्दी से 2000 तक)", status: "not_started" },
+      { title: "स्वतंत्रता संग्राम और भारतीय राष्ट्रीय आंदोलन", status: "not_started" },
+      { title: "स्वातंत्र्योत्तर राष्ट्र निर्माण (2000 तक)", status: "not_started" }
     ],
   },
   {
@@ -54,9 +54,9 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
     status: "not_started",
     notes: "",
     subtopics: [
-      "विश्व का भूगोल (भौतिक स्वरूप, कृषि, परिवहन, पर्यावरण)",
-      "भारत का भूगोल (भौतिक विभाग, जलवायु, खनिज, कृषि)",
-      "राजस्थान का भूगोल (भौतिक विभाग, नदियाँ, जलवायु, जनसंख्या)"
+      { title: "विश्व का भूगोल (भौतिक स्वरूप, कृषि, परिवहन, पर्यावरण)", status: "not_started" },
+      { title: "भारत का भूगोल (भौतिक विभाग, जलवायु, खनिज, कृषि)", status: "not_started" },
+      { title: "राजस्थान का भूगोल (भौतिक विभाग, नदियाँ, जलवायु, जनसंख्या)", status: "not_started" }
     ],
   },
   {
@@ -71,10 +71,10 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
     status: "not_started",
     notes: "",
     subtopics: [
-      "संविधान का निर्माण, उद्देशिका, नागरिकता",
-      "संघीय सरकार एवं आपातकालीन प्रावधान",
-      "शहरी और ग्रामीण स्थानीय सरकार",
-      "विभिन्न आयोग (चुनाव आयोग, UPSC, मानवाधिकार आयोग आदि)"
+      { title: "संविधान का निर्माण, उद्देशिका, नागरिकता", status: "not_started" },
+      { title: "संघीय सरकार एवं आपातकालीन प्रावधान", status: "not_started" },
+      { title: "शहरी और ग्रामीण स्थानीय सरकार", status: "not_started" },
+      { title: "विभिन्न आयोग (चुनाव आयोग, UPSC, मानवाधिकार आयोग आदि)", status: "not_started" }
     ],
   },
   {
@@ -89,10 +89,10 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
     status: "not_started",
     notes: "",
     subtopics: [
-      "राज्यपाल, मुख्यमंत्री एवं मंत्रिपरिषद",
-      "मुख्य सचिव, जिला कलेक्टर, पुलिस अधीक्षक",
-      "राजस्थान लोक सेवा आयोग एवं अन्य आयोग",
-      "पंचायती राज एवं नगर पालिका"
+      { title: "राज्यपाल, मुख्यमंत्री एवं मंत्रिपरिषद", status: "not_started" },
+      { title: "मुख्य सचिव, जिला कलेक्टर, पुलिस अधीक्षक", status: "not_started" },
+      { title: "राजस्थान लोक सेवा आयोग एवं अन्य आयोग", status: "not_started" },
+      { title: "पंचायती राज एवं नगर पालिका", status: "not_started" }
     ],
   },
   {
@@ -107,10 +107,10 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
     status: "not_started",
     notes: "",
     subtopics: [
-      "आर्थिक संवृद्धि और विकास के मापक",
-      "राजकोषीय संघवाद एवं बजट",
-      "राजस्थान का वृहत् परिदृश्य और राज्य बजट",
-      "राजस्थान सरकार की मुख्य कल्याणकारी योजनाएँ"
+      { title: "आर्थिक संवृद्धि और विकास के मापक", status: "not_started" },
+      { title: "राजकोषीय संघवाद एवं बजट", status: "not_started" },
+      { title: "राजस्थान का वृहत् परिदृश्य और राज्य बजट", status: "not_started" },
+      { title: "राजस्थान सरकार की मुख्य कल्याणकारी योजनाएँ", status: "not_started" }
     ],
   },
   {
@@ -125,10 +125,10 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
     status: "not_started",
     notes: "",
     subtopics: [
-      "कम्प्यूटर्स एवं सूचना प्रौद्योगिकी",
-      "रक्षा एवं अंतरिक्ष प्रौद्योगिकी",
-      "पर्यावरणीय तथा पारिस्थितिकी परिवर्तन",
-      "मानव स्वास्थ्य देखभाल एवं पोषण"
+      { title: "कम्प्यूटर्स एवं सूचना प्रौद्योगिकी", status: "not_started" },
+      { title: "रक्षा एवं अंतरिक्ष प्रौद्योगिकी", status: "not_started" },
+      { title: "पर्यावरणीय तथा पारिस्थितिकी परिवर्तन", status: "not_started" },
+      { title: "मानव स्वास्थ्य देखभाल एवं पोषण", status: "not_started" }
     ],
   },
   {
@@ -143,9 +143,9 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
     status: "not_started",
     notes: "",
     subtopics: [
-      "तार्किक दक्षता (कथन एवं निष्कर्ष आदि)",
-      "मानसिक योग्यता (दिशा, कोडिंग, रैंकिंग)",
-      "आधारभूत संख्यात्मक दक्षता (अनुपात, प्रतिशत, ब्याज)"
+      { title: "तार्किक दक्षता (कथन एवं निष्कर्ष आदि)", status: "not_started" },
+      { title: "मानसिक योग्यता (दिशा, कोडिंग, रैंकिंग)", status: "not_started" },
+      { title: "आधारभूत संख्यात्मक दक्षता (अनुपात, प्रतिशत, ब्याज)", status: "not_started" }
     ],
   },
   {
@@ -160,10 +160,10 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
     status: "not_started",
     notes: "",
     subtopics: [
-      "महत्वपूर्ण व्यक्तित्व, स्थान और समसामयिक मुद्दे",
-      "कल्याणकारी नई योजनाएँ",
-      "खेल और क्रीड़ा घटनाएँ",
-      "राजस्थान सार्वजनिक परीक्षा अधिनियम"
+      { title: "महत्वपूर्ण व्यक्तित्व, स्थान और समसामयिक मुद्दे", status: "not_started" },
+      { title: "कल्याणकारी नई योजनाएँ", status: "not_started" },
+      { title: "खेल और क्रीड़ा घटनाएँ", status: "not_started" },
+      { title: "राजस्थान सार्वजनिक परीक्षा अधिनियम", status: "not_started" }
     ],
   },
 
@@ -180,14 +180,14 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
     status: "not_started",
     notes: "",
     subtopics: [
-      "राजस्थान का इतिहास, कला, संस्कृति",
-      "भारतीय इतिहास एवं संस्कृति",
-      "आधुनिक विश्व का इतिहास (1991 ईस्वी तक)",
-      "भारत एवं वैश्विक अर्थव्यवस्था",
-      "राजस्थान की अर्थव्यवस्था",
-      "समाजशास्त्र",
-      "प्रबंधन",
-      "लेखांकन एवं अंकेक्षण"
+      { title: "राजस्थान का इतिहास, कला, संस्कृति", status: "not_started" },
+      { title: "भारतीय इतिहास एवं संस्कृति", status: "not_started" },
+      { title: "आधुनिक विश्व का इतिहास (1991 ईस्वी तक)", status: "not_started" },
+      { title: "भारत एवं वैश्विक अर्थव्यवस्था", status: "not_started" },
+      { title: "राजस्थान की अर्थव्यवस्था", status: "not_started" },
+      { title: "समाजशास्त्र", status: "not_started" },
+      { title: "प्रबंधन", status: "not_started" },
+      { title: "लेखांकन एवं अंकेक्षण", status: "not_started" }
     ],
   },
   {
@@ -202,9 +202,9 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
     status: "not_started",
     notes: "",
     subtopics: [
-      "प्रशासनिक नीतिशास्त्र (नीतिशास्त्र एवं मानवीय मूल्य)",
-      "दैनिक जीवन में सामान्य विज्ञान एवं प्रौद्योगिकी",
-      "पृथ्वी विज्ञान (विश्व, भारत एवं राजस्थान का भूगोल)"
+      { title: "प्रशासनिक नीतिशास्त्र (नीतिशास्त्र एवं मानवीय मूल्य)", status: "not_started" },
+      { title: "दैनिक जीवन में सामान्य विज्ञान एवं प्रौद्योगिकी", status: "not_started" },
+      { title: "पृथ्वी विज्ञान (विश्व, भारत एवं राजस्थान का भूगोल)", status: "not_started" }
     ],
   },
   {
@@ -219,10 +219,10 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
     status: "not_started",
     notes: "",
     subtopics: [
-      "भारतीय राज व्यवस्था, भारत एवं अंतर्राष्ट्रीय मामले",
-      "लोक प्रशासन की अवधारणाएँ",
-      "व्यवहार एवं विधि",
-      "राजस्थान में महत्वपूर्ण भूमि विधियाँ"
+      { title: "भारतीय राज व्यवस्था, भारत एवं अंतर्राष्ट्रीय मामले", status: "not_started" },
+      { title: "लोक प्रशासन की अवधारणाएँ", status: "not_started" },
+      { title: "व्यवहार एवं विधि", status: "not_started" },
+      { title: "राजस्थान में महत्वपूर्ण भूमि विधियाँ", status: "not_started" }
     ],
   },
   {
@@ -237,9 +237,9 @@ export const DEFAULT_SYLLABUS: SyllabusTopic[] = [
     status: "not_started",
     notes: "",
     subtopics: [
-      "सामान्य हिंदी (व्याकरण, संक्षिप्तीकरण, पत्र-लेखन)",
-      "General English (Grammar, Comprehension, Letter Writing)",
-      "निबंध लेखन (Essay Writing)"
+      { title: "सामान्य हिंदी (व्याकरण, संक्षिप्तीकरण, पत्र-लेखन)", status: "not_started" },
+      { title: "General English (Grammar, Comprehension, Letter Writing)", status: "not_started" },
+      { title: "निबंध लेखन (Essay Writing)", status: "not_started" }
     ],
   },
 ];

@@ -26,6 +26,11 @@ interface SyllabusTabProps {
     topicId: string,
     nextStatus: SyllabusTopic["status"]
   ) => void;
+  onUpdateMicroTopicStatus?: (
+    topicId: string,
+    subtopicIndex: number,
+    nextStatus: SyllabusTopic["status"]
+  ) => void;
 
   onAddTopic?: (topic: SyllabusTopic) => void;
   onDeleteTopic?: (topicId: string) => void;
@@ -36,7 +41,7 @@ interface SyllabusTabProps {
 export const SyllabusTab: React.FC<SyllabusTabProps> = ({
   syllabus,
   onUpdateTopicStatus,
-
+  onUpdateMicroTopicStatus,
   onAddTopic,
   onDeleteTopic,
   onResetDefaultSyllabus,
@@ -78,7 +83,7 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
       const matchTitle = t.title.toLowerCase().includes(q);
       const matchSubject = t.subject.toLowerCase().includes(q);
       const matchSubtopics = t.subtopics.some((sub) =>
-        sub.toLowerCase().includes(q)
+        sub.title.toLowerCase().includes(q)
       );
       return matchTitle || matchSubject || matchSubtopics;
     }
@@ -90,7 +95,10 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
     (t) =>
       t.status === "in_progress" ||
       t.status === "revised_1" ||
-      t.status === "revised_2"
+      t.status === "revised_2" ||
+      t.status === "revised_3" ||
+      t.status === "revised_4" ||
+      t.status === "revised_5"
   ).length;
   const totalCount = syllabus.length;
   const completionPercentage =
@@ -106,6 +114,21 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
         return {
           label: "Mastered",
           color: "bg-emerald-50 text-emerald-700 border-emerald-200",
+        };
+      case "revised_5":
+        return {
+          label: "Revised (5x)",
+          color: "bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200",
+        };
+      case "revised_4":
+        return {
+          label: "Revised (4x)",
+          color: "bg-purple-50 text-purple-700 border-purple-200",
+        };
+      case "revised_3":
+        return {
+          label: "Revised (3x)",
+          color: "bg-blue-50 text-blue-700 border-blue-200",
         };
       case "revised_2":
         return {
@@ -136,7 +159,10 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
     if (current === "not_started") return "in_progress";
     if (current === "in_progress") return "revised_1";
     if (current === "revised_1") return "revised_2";
-    if (current === "revised_2") return "mastered";
+    if (current === "revised_2") return "revised_3";
+    if (current === "revised_3") return "revised_4";
+    if (current === "revised_4") return "revised_5";
+    if (current === "revised_5") return "mastered";
     return "not_started";
   };
 
@@ -160,7 +186,9 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
       pyqFrequencyLast5Years: 3,
       status: "not_started",
       notes: newNotes.trim() || undefined,
-      subtopics: subtopics.length > 0 ? subtopics : [newTitle.trim()],
+      subtopics: subtopics.length > 0 
+        ? subtopics.map(t => ({ title: t, status: "not_started" as const })) 
+        : [{ title: newTitle.trim(), status: "not_started" as const }],
     };
 
     if (onAddTopic) {
@@ -580,15 +608,29 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                      {topic.subtopics.map((sub, index) => (
-                        <div
-                          key={index}
-                          className="flex items-start gap-2 text-xs text-slate-700 bg-white p-2.5 rounded-xl border border-slate-200 shadow-xs font-medium"
-                        >
-                          <span className="text-indigo-600 font-bold">•</span>
-                          <span>{sub}</span>
-                        </div>
-                      ))}
+                      {topic.subtopics.map((sub, index) => {
+                        const microStatus = getStatusBadge(sub.status);
+                        return (
+                          <div
+                            key={index}
+                            className={`flex items-start gap-2 text-xs p-2.5 rounded-xl border transition-all shadow-xs font-medium cursor-pointer ${
+                              sub.status === "mastered" ? "border-emerald-200 bg-emerald-50/50" : "bg-white border-slate-200 hover:border-indigo-300"
+                            }`}
+                            onClick={() => {
+                              if (onUpdateMicroTopicStatus) {
+                                onUpdateMicroTopicStatus(topic.id, index, getNextStatus(sub.status));
+                              }
+                            }}
+                          >
+                            <span className={microStatus.color.split(' ')[1] + " font-bold shrink-0 mt-0.5"}>
+                              {sub.status === "mastered" ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Circle className="w-3.5 h-3.5" />}
+                            </span>
+                            <span className={`flex-1 ${sub.status === "mastered" ? "text-emerald-900 line-through opacity-70" : "text-slate-700"}`}>
+                              {sub.title}
+                            </span>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
 

@@ -168,9 +168,23 @@ export interface SyllabusTopic {
     | "in_progress"
     | "revised_1"
     | "revised_2"
+    | "revised_3"
+    | "revised_4"
+    | "revised_5"
     | "mastered";
   notes?: string;
-  subtopics: string[];
+  subtopics: {
+    title: string;
+    status:
+      | "not_started"
+      | "in_progress"
+      | "revised_1"
+      | "revised_2"
+      | "revised_3"
+      | "revised_4"
+      | "revised_5"
+      | "mastered";
+  }[];
   failedMockQuestions?: number;
 }
 

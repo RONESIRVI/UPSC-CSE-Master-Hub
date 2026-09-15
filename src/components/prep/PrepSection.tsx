@@ -39,6 +39,11 @@ interface PrepSectionProps {
     topicId: string,
     nextStatus: SyllabusTopic["status"]
   ) => void;
+  onUpdateMicroTopicStatus?: (
+    topicId: string,
+    subtopicIndex: number,
+    nextStatus: SyllabusTopic["status"]
+  ) => void;
   onAddTopic?: (topic: SyllabusTopic) => void;
   onDeleteTopic?: (topicId: string) => void;
   onResetDefaultSyllabus?: () => void;
@@ -68,6 +73,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
   syllabus,
   setSyllabus,
   onUpdateTopicStatus,
+  onUpdateMicroTopicStatus,
   onAddTopic,
   onDeleteTopic,
   onResetDefaultSyllabus,
@@ -253,6 +259,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
         <SyllabusTab
           syllabus={syllabus}
           onUpdateTopicStatus={onUpdateTopicStatus}
+          onUpdateMicroTopicStatus={onUpdateMicroTopicStatus}
           onAddTopic={onAddTopic}
           onDeleteTopic={onDeleteTopic}
           onResetDefaultSyllabus={onResetDefaultSyllabus}

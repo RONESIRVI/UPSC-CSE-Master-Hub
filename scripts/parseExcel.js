@@ -38,19 +38,32 @@ try {
       const coreKeys = ['id', 'name', 'rank', 'year', 'optional', 'attempt', 'background', 'avatar', 'quote', 'keyStrategy', 'gs1', 'gs2', 'gs3', 'gs4', 'essayStrategy', 'optionalStrategy', 'prelimsStrategy', 'csatStrategy', 'interviewScore', 'mainsScore', 'goldenRules', 'title', 'authorOrPublication', 'subject', 'paper', 'priority', 'recommendedBy', 'keyChapters', 'tipsForReading', 'status', 'routineId', 'topperName', 'profileType', 'totalStudyHours', 'wakeUpTime', 'sleepTime', 'time', 'activity', 'category', 'description', 'tips', 'candidate', 'board', 'score', 'duration', 'dafHighlights', 'question', 'askedBy', 'answer', 'analysis', 'keyTakeaways'];
       
       for (let row = 0; row < rows.length; row++) {
-        const key = rows[row][0];
+        const rawKey = rows[row][0];
         let val = rows[row][col];
         
-        if (!key) continue;
+        if (!rawKey) continue;
         if (val === undefined) val = '';
         
-        if (coreKeys.includes(key)) {
-          obj[key] = val;
+        let key = String(rawKey).trim();
+        let normalizedKey = key.charAt(0).toLowerCase() + key.slice(1);
+        if (key.toLowerCase() === 'ranker' || key.toLowerCase() === 'name') normalizedKey = 'name';
+        
+        if (coreKeys.includes(normalizedKey)) {
+          obj[normalizedKey] = val;
         } else {
           if (val !== '') {
             extraData[key] = val;
           }
         }
+      }
+      
+      if (!obj.name && obj.id) obj.name = obj.id;
+      if (!obj.name && extraData.Ranker) obj.name = extraData.Ranker;
+      
+      if (obj.name) {
+          obj.id = String(obj.name).toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      } else {
+          obj.id = `profile-${Date.now()}-${col}`;
       }
       
       if (Object.keys(obj).length > 0 || Object.keys(extraData).length > 0) {
@@ -112,7 +125,7 @@ try {
   routinesDataRaw.forEach((r) => {
     if (!routinesMap.has(r.routineId)) {
       routinesMap.set(r.routineId, {
-        id: r.routineId || `routine-${Date.now()}`,
+        id: r.routineId || `routine-${(r.topperName || 'default').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
         title: `Routine for ${r.topperName || 'Working Professional'}`,
         type: r.profileType || 'Working Professional (5-6h)',
         topperRef: r.topperName || 'Various',
@@ -202,7 +215,7 @@ try {
   const notesSheet = wb.Sheets['Notes'];
   const notesDataRaw = notesSheet ? XLSX.utils.sheet_to_json(notesSheet) : [];
   const notesData = notesDataRaw.map(n => ({
-    id: n.id || `note-${Date.now()}-${Math.random()}`,
+    id: n.id || `note-${(n.title || n.subject || 'default').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
     title: n.title || 'Topper Note',
     subject: n.subject || '',
     paper: n.paper || '',

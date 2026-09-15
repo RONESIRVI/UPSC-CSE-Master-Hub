@@ -243,9 +243,38 @@ export default function App() {
   const [dailyGoalHours] = useState<number>(8);
 
   // Core Data States with LocalStorage Hydration
-  const [strategies, setStrategies] = useState<StrategySetupItem[]>(STRATEGY_SETUP);
-  const [toppers, setToppers] = useState<TopperProfile[]>(TOPPERS_PROFILES);
-  const [topperRoutines, setTopperRoutines] = useState<TopperRoutine[]>(TOPPER_ROUTINES);
+  const [strategies, setStrategies] = useState<StrategySetupItem[]>(() => {
+    const saved = localStorage.getItem("upsc_strategies");
+    const local = saved ? JSON.parse(saved) : [];
+    if (!saved || local.length === 0) return STRATEGY_SETUP;
+    const localMap = new Map(local.map((item: StrategySetupItem) => [item.id, item]));
+    const merged = STRATEGY_SETUP.map(item => localMap.has(item.id) ? { ...item, ...localMap.get(item.id) } : item);
+    const remoteIds = new Set(STRATEGY_SETUP.map(item => item.id));
+    local.forEach((item: StrategySetupItem) => { if (!remoteIds.has(item.id)) merged.push(item); });
+    return merged;
+  });
+
+  const [toppers, setToppers] = useState<TopperProfile[]>(() => {
+    const saved = localStorage.getItem("upsc_toppers");
+    const local = saved ? JSON.parse(saved) : [];
+    if (!saved || local.length === 0) return TOPPERS_PROFILES;
+    const localMap = new Map(local.map((item: TopperProfile) => [item.id, item]));
+    const merged = TOPPERS_PROFILES.map(item => localMap.has(item.id) ? { ...item, ...localMap.get(item.id) } : item);
+    const remoteIds = new Set(TOPPERS_PROFILES.map(item => item.id));
+    local.forEach((item: TopperProfile) => { if (!remoteIds.has(item.id)) merged.push(item); });
+    return merged;
+  });
+
+  const [topperRoutines, setTopperRoutines] = useState<TopperRoutine[]>(() => {
+    const saved = localStorage.getItem("upsc_topper_routines_v1");
+    const local = saved ? JSON.parse(saved) : [];
+    if (!saved || local.length === 0) return TOPPER_ROUTINES;
+    const localMap = new Map(local.map((item: TopperRoutine) => [item.id, item]));
+    const merged = TOPPER_ROUTINES.map(item => localMap.has(item.id) ? { ...item, ...localMap.get(item.id) } : item);
+    const remoteIds = new Set(TOPPER_ROUTINES.map(item => item.id));
+    local.forEach((item: TopperRoutine) => { if (!remoteIds.has(item.id)) merged.push(item); });
+    return merged;
+  });
   const [notes, setNotes] = useState<any[]>(fsNotes || []);
 
   const [syllabus, setSyllabus] = useState<SyllabusTopic[]>(() => {
@@ -609,9 +638,29 @@ export default function App() {
             hasUpdate={true} // Always show green animation for Sync Data based on user request
             onOpenUpdateModal={async () => {
               // 1. First sync Excel data immediately
-              setTopperRoutines(TOPPER_ROUTINES);
-              setToppers(TOPPERS_PROFILES);
-              setStrategies(STRATEGY_SETUP);
+              setTopperRoutines(prev => {
+                const localMap = new Map(prev.map(item => [item.id, item]));
+                const merged = TOPPER_ROUTINES.map(item => localMap.has(item.id) ? { ...item, ...localMap.get(item.id) } : item);
+                const remoteIds = new Set(TOPPER_ROUTINES.map(item => item.id));
+                prev.forEach(item => { if (!remoteIds.has(item.id)) merged.push(item); });
+                return merged;
+              });
+              
+              setToppers(prev => {
+                const localMap = new Map(prev.map(item => [item.id, item]));
+                const merged = TOPPERS_PROFILES.map(item => localMap.has(item.id) ? { ...item, ...localMap.get(item.id) } : item);
+                const remoteIds = new Set(TOPPERS_PROFILES.map(item => item.id));
+                prev.forEach(item => { if (!remoteIds.has(item.id)) merged.push(item); });
+                return merged;
+              });
+
+              setStrategies(prev => {
+                const localMap = new Map(prev.map(item => [item.id, item]));
+                const merged = STRATEGY_SETUP.map(item => localMap.has(item.id) ? { ...item, ...localMap.get(item.id) } : item);
+                const remoteIds = new Set(STRATEGY_SETUP.map(item => item.id));
+                prev.forEach(item => { if (!remoteIds.has(item.id)) merged.push(item); });
+                return merged;
+              });
 
               // 2. If on Android, force-fetch and apply latest GitHub release
               if (Capacitor.isNativePlatform()) {

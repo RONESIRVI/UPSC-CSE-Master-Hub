@@ -1,7 +1,7 @@
 {
   "TOPPERS_PROFILES": [
     {
-      "id": "Shakti Dubey",
+      "id": "shakti-dubey",
       "name": "Shakti Dubey",
       "rank": 1,
       "year": 2024,
@@ -28,12 +28,10 @@
         "Interview में प्रामाणिकता + तटस्थ प्रशासनिक दृष्टिकोण",
         "2-3 गंभीर प्रयासों के बाद Plan B खुले रखें।"
       ],
-      "extraData": {
-        "Ranker": "Shakti Dubey"
-      }
+      "extraData": {}
     },
     {
-      "id": "Harshita Goyal",
+      "id": "harshita-goyal",
       "name": "Harshita Goyal",
       "rank": 2,
       "year": 2024,
@@ -60,12 +58,10 @@
         "परिस्थितियों को बहाना न बनने दें (Typhoid के बावजूद Mains दिया)",
         "UPSC केवल परीक्षा नहीं, व्यक्तित्व विकास है।"
       ],
-      "extraData": {
-        "Ranker": "Harshita Goyal"
-      }
+      "extraData": {}
     },
     {
-      "id": "Shatakshi Sinha",
+      "id": "shatakshi-sinha",
       "name": "Shatakshi Sinha",
       "rank": 204,
       "year": 2024,
@@ -90,12 +86,10 @@
         "4 Registers में Consolidated Notes, 7-8 बार Revision",
         "PYQs सबसे पहले।"
       ],
-      "extraData": {
-        "Ranker": "Shatakshi Sinha"
-      }
+      "extraData": {}
     },
     {
-      "id": "Rupal Rana",
+      "id": "rupal-rana",
       "name": "Rupal Rana",
       "rank": 26,
       "year": 2023,
@@ -120,12 +114,10 @@
         "Limited Sources को बार-बार Revise करें",
         "Monthly Break लें।"
       ],
-      "extraData": {
-        "Ranker": "Rupal Rana"
-      }
+      "extraData": {}
     },
     {
-      "id": "Tanya Singh",
+      "id": "tanya-singh",
       "name": "Tanya Singh",
       "rank": 200,
       "year": 2025,
@@ -150,12 +142,10 @@
         "Resources सीमित",
         "आत्मविश्वास न खोएँ।"
       ],
-      "extraData": {
-        "Ranker": "Tanya Singh"
-      }
+      "extraData": {}
     },
     {
-      "id": "Swati Sharma",
+      "id": "swati-sharma",
       "name": "Swati Sharma",
       "rank": 17,
       "year": 2023,
@@ -180,12 +170,10 @@
         "CSAT की गणितीय कमज़ोरी पहले पहचानें",
         "फरवरी से Mock शुरू करें।"
       ],
-      "extraData": {
-        "Ranker": "Swati Sharma"
-      }
+      "extraData": {}
     },
     {
-      "id": "Riya Saini",
+      "id": "riya-saini",
       "name": "Riya Saini",
       "rank": 22,
       "year": 2024,
@@ -209,12 +197,10 @@
         "Prelims ज्ञान को Google Docs में Save करके Mains में उपयोग करें",
         "High-ROI Small Subjects पर विशेष ध्यान।"
       ],
-      "extraData": {
-        "Ranker": "Riya Saini"
-      }
+      "extraData": {}
     },
     {
-      "id": "Yashvi Jain",
+      "id": "yashvi-jain",
       "name": "Yashvi Jain",
       "rank": 97,
       "year": 2024,
@@ -238,12 +224,10 @@
         "नोट्स को Mental रूप से Condense करते जाएँ",
         "GS1-GS4 को अलग-अलग नहीं, Interlinked पढ़ें।"
       ],
-      "extraData": {
-        "Ranker": "Yashvi Jain"
-      }
+      "extraData": {}
     },
     {
-      "id": "Garima Jain",
+      "id": "garima-jain",
       "name": "Garima Jain",
       "rank": 118,
       "year": 20241,
@@ -268,12 +252,10 @@
         "Basic Sources पर विश्वास",
         "Interview के लिए Balanced Personality विकसित करें।"
       ],
-      "extraData": {
-        "Ranker": "Garima Jain"
-      }
+      "extraData": {}
     },
     {
-      "id": "Komal Mavi",
+      "id": "komal-mavi",
       "name": "Komal Mavi",
       "rank": 1,
       "year": 2024,
@@ -298,12 +280,10 @@
         "PYQs को Daily Mock की तरह लें",
         "Newspaper Notes Minimal रखें।"
       ],
-      "extraData": {
-        "Ranker": "Komal Mavi"
-      }
+      "extraData": {}
     },
     {
-      "id": "Tripti Kalhans",
+      "id": "tripti-kalhans",
       "name": "Tripti Kalhans",
       "rank": 199,
       "year": 2023,
@@ -328,12 +308,10 @@
         "PYQs ही सबसे बड़ा हथियार",
         "Dedicated Mains Preparation Period रखें।"
       ],
-      "extraData": {
-        "Ranker": "Tripti Kalhans"
-      }
+      "extraData": {}
     },
     {
-      "id": "Ritu Yadav",
+      "id": "ritu-yadav",
       "name": "Ritu Yadav",
       "rank": 1,
       "year": 2024,
@@ -357,12 +335,10 @@
         "कठिन पेपर में घबराएँ नहीं, Strategic प्रश्न चयन करें",
         "Presentation को Content जितना महत्व दें।"
       ],
-      "extraData": {
-        "Ranker": "Ritu Yadav"
-      }
+      "extraData": {}
     },
     {
-      "id": "Preeti Kumari",
+      "id": "preeti-kumari",
       "name": "Preeti Kumari",
       "rank": 130,
       "year": 2022,
@@ -387,12 +363,10 @@
         "PYQs को थीम-वार Compile करें",
         "Daily Answer Writing अनिवार्य।"
       ],
-      "extraData": {
-        "Ranker": "Preeti Kumari"
-      }
+      "extraData": {}
     },
     {
-      "id": "Shobhika Pathak",
+      "id": "shobhika-pathak",
       "name": "Shobhika Pathak",
       "rank": 37,
       "year": 2024,
@@ -419,12 +393,10 @@
         "अपने Resources पर विश्वास",
         "विफलता से सीखें (Over-Attempt Analysis)।"
       ],
-      "extraData": {
-        "Ranker": "Shobhika Pathak"
-      }
+      "extraData": {}
     },
     {
-      "id": "Gamini Singla",
+      "id": "gamini-singla",
       "name": "Gamini Singla",
       "rank": 3,
       "year": 2021,
@@ -449,12 +421,10 @@
         "अपने निर्णयों पर भरोसा",
         "Social Media Delete करें।"
       ],
-      "extraData": {
-        "Ranker": "Gamini Singla"
-      }
+      "extraData": {}
     },
     {
-      "id": "Shruti Rajalakshmi",
+      "id": "shruti-rajalakshmi",
       "name": "Shruti Rajalakshmi",
       "rank": 25,
       "year": 2021,
@@ -479,12 +449,10 @@
         "अपनी क्षमता पर विश्वास",
         "Daily Exercise से Mental Fitness।"
       ],
-      "extraData": {
-        "Ranker": "Shruti Rajalakshmi"
-      }
+      "extraData": {}
     },
     {
-      "id": "Anoushka Sharma",
+      "id": "anoushka-sharma",
       "name": "Anoushka Sharma",
       "rank": 20,
       "year": 2022,
@@ -509,12 +477,10 @@
         "Sources सीमित रखें",
         "Revision + Mock Tests पर Focus।"
       ],
-      "extraData": {
-        "Ranker": "Anoushka Sharma"
-      }
+      "extraData": {}
     },
     {
-      "id": "Pari Bishnoi",
+      "id": "pari-bishnoi",
       "name": "Pari Bishnoi",
       "rank": 30,
       "year": 2024,
@@ -538,9 +504,7 @@
         "College 1st-2nd Year: Personality Development + Newspaper आदत",
         "College Gaps में Library/Hostel में Standard Books पढ़ें।"
       ],
-      "extraData": {
-        "Ranker": "Pari Bishnoi"
-      }
+      "extraData": {}
     }
   ],
   "STRATEGY_SETUP": [

@@ -234,13 +234,28 @@ export default function App() {
     subject: string;
     topic: string;
     taskType: "study" | "revision" | "pyq" | "notes" | "answer_writing";
+    triggerTimerStart?: boolean;
   }>({
     subject: "Indian Polity",
     topic: "",
     taskType: "study",
+    triggerTimerStart: false,
   });
 
   const [dailyGoalHours] = useState<number>(8);
+
+  const [timerRunning, setTimerRunning] = useState<boolean>(false);
+  const [timerSeconds, setTimerSeconds] = useState<number>(0);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (timerRunning) {
+      interval = setInterval(() => {
+        setTimerSeconds(s => s + 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [timerRunning]);
 
   // Core Data States with LocalStorage Hydration
   const [strategies, setStrategies] = useState<StrategySetupItem[]>(() => {
@@ -325,6 +340,15 @@ export default function App() {
 
   const [dailyTasks, setDailyTasks] = useState<DailyTask[]>(() => {
     const saved = localStorage.getItem("upsc_daily_tasks_v2");
+    const savedDate = localStorage.getItem("upsc_daily_tasks_date");
+    const today = new Date().toISOString().split("T")[0];
+    
+    if (savedDate !== today) {
+      localStorage.removeItem("upsc_daily_tasks_v2");
+      localStorage.setItem("upsc_daily_tasks_date", today);
+      return [];
+    }
+    
     return saved ? JSON.parse(saved) : [];
   });
 
@@ -634,6 +658,8 @@ export default function App() {
 
 
   const handleAdoptRoutine = (routine: TopperRoutine) => {
+    const today = new Date().toISOString().split("T")[0];
+    localStorage.setItem("upsc_daily_tasks_date", today);
     // Convert TopperRoutine schedule to DailyTasks
     const newTasks: DailyTask[] = routine.schedule.map((item, idx) => ({
       id: `adopted-task-${Date.now()}-${idx}`,
@@ -674,9 +700,9 @@ export default function App() {
             onOpenSearch={() => setSearchOpen(true)}
 
             studyStreak={studyStreak}
-            timerRunning={false}
-            timerSeconds={0}
-            onToggleTimer={() => {}}
+            timerRunning={timerRunning}
+            timerSeconds={timerSeconds}
+            onToggleTimer={() => setTimerRunning(!timerRunning)}
             hasUpdate={true} // Always show green animation for Sync Data based on user request
             onOpenUpdateModal={async () => {
               // 1. First sync Excel data immediately
@@ -819,6 +845,9 @@ export default function App() {
                     onAddPYQ={handleAddPYQ}
                     onDeletePYQ={handleDeletePYQ}
                     onResetDefaultPYQs={handleResetDefaultPYQs}
+                    currentStudySession={currentStudySession}
+                    setCurrentStudySession={setCurrentStudySession}
+                    onStartTimer={() => setTimerRunning(true)}
                   />
                 )}
 

@@ -242,7 +242,18 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
           <PersonalizedPlan
             tasks={dailyTasks}
             onToggleTask={handleToggleTask}
-            onNavigateToTracker={() => setActiveTab("prep")}
+            onNavigateToTracker={(taskId) => {
+              const task = dailyTasks.find((t) => t.id === taskId);
+              if (task) {
+                setCurrentStudySession({
+                  subject: task.subject || task.title,
+                  topic: task.title,
+                  taskType: task.type === "revision" ? "revision" : "study",
+                  triggerTimerStart: true,
+                });
+              }
+              setActiveTab("prep");
+            }}
           />
         </div>
       </div>

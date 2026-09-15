@@ -2,6 +2,7 @@ name: Build Android APK
 
 permissions:
   contents: write
+
 on:
   push:
     branches:
@@ -33,7 +34,9 @@ jobs:
         with:
           node-version: 22
 
-
+      - name: 📱 Install Android SDK 36
+        run: |
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;36.0.0" || true
 
       - name: 📦 Install Project Dependencies
         run: |
@@ -57,18 +60,9 @@ jobs:
           chmod +x gradlew
 
       - name: 🚀 Build Android Debug APK
-        continue-on-error: true
         run: |
           cd android
-          ./gradlew assembleDebug --no-daemon > gradle_build.txt 2>&1
-
-      - name: 📝 Commit Gradle Log for debugging
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add -f android/gradle_build.txt || true
-          git commit -m "chore: upload gradle log [skip ci]" || true
-          git push || true
+          ./gradlew assembleDebug --no-daemon
 
       - name: 🔍 Locate Built APK
         id: find_apk

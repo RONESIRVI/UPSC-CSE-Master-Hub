@@ -12,7 +12,7 @@ import { StudyPlanTab } from "./StudyPlanTab";
 import { SpacedRevisionTab } from "./SpacedRevisionTab";
 import { RevisionNotesTab } from "./RevisionNotesTab";
 import { PYQTab } from "./PYQTab";
-import { QuickStudyLogModal } from "./QuickStudyLogModal";
+
 
 import {
   BookOpen,
@@ -91,7 +91,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
   onResetDefaultPYQs,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
-  const [showQuickLogModal, setShowQuickLogModal] = useState<boolean>(false);
+
 
   const [isSyllabusEditorOpen, setIsSyllabusEditorOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -299,31 +299,6 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
       <div className="fixed bottom-20 lg:bottom-6 right-4 sm:right-6 z-40 flex items-center gap-2 sm:gap-2.5 animate-in slide-in-from-bottom-5 duration-300">
 
 
-        {/* FAB 2: Quick Study Session Log */}
-        <button
-          id="fab-quick-log-btn"
-          type="button"
-          onClick={() => setShowQuickLogModal(true)}
-          className="group flex items-center gap-2 px-3.5 py-2.5 sm:px-5 sm:py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-extrabold text-xs sm:text-sm shadow-xl shadow-indigo-600/30 border-2 border-indigo-400/40 transition-all cursor-pointer hover:shadow-2xl"
-          title="Quickly log a study session from any tab without losing your view"
-        >
-          <div className="p-1 rounded-lg bg-indigo-500/80 group-hover:scale-110 transition">
-            <Plus className="w-4 h-4 text-white stroke-[3]" />
-          </div>
-          <span className="tracking-wide">Quick Log</span>
-          <span className="hidden sm:inline-flex items-center justify-center text-[10px] px-1.5 py-0.5 rounded-md bg-indigo-700/80 text-indigo-100 font-mono font-bold">
-            +Study
-          </span>
-        </button>
-      </div>
-
-      {/* Quick Study Log Mini-Modal */}
-      <QuickStudyLogModal
-        isOpen={showQuickLogModal}
-        onClose={() => setShowQuickLogModal(false)}
-        onAddSessionLog={onAddSessionLog}
-        syllabus={syllabus}
-      />
 
 
     </div>

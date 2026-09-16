@@ -6,12 +6,14 @@ interface AudioRecorderModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (note: AudioNote) => void;
+  syllabus: any[];
 }
 
 export const AudioRecorderModal: React.FC<AudioRecorderModalProps> = ({
   isOpen,
   onClose,
   onSave,
+  syllabus,
 }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -186,23 +188,45 @@ export const AudioRecorderModal: React.FC<AudioRecorderModalProps> = ({
               <div className="space-y-3 pt-2">
                 <div>
                   <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Subject</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. History, Economy"
+                  <select
                     value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
+                    onChange={(e) => {
+                      setSubject(e.target.value);
+                      setTopic("");
+                    }}
+                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                  >
+                    <option value="">Select Subject</option>
+                    {Array.from(new Set(syllabus.map(t => t.subject).filter(Boolean))).map(s => (
+                      <option key={s as string} value={s as string}>{s as string}</option>
+                    ))}
+                  </select>
                 </div>
                 <div>
                   <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Topic Details</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Discussion on Inflation causes"
-                    value={topic}
-                    onChange={(e) => setTopic(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
+                  {subject ? (
+                    <select
+                      value={topic}
+                      onChange={(e) => setTopic(e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                    >
+                      <option value="">Select Topic</option>
+                      {syllabus
+                        .filter(t => t.subject === subject)
+                        .flatMap(t => t.subtopics || [])
+                        .map(sub => typeof sub === "string" ? sub : sub.title)
+                        .map(title => (
+                          <option key={title} value={title}>{title}</option>
+                        ))}
+                    </select>
+                  ) : (
+                    <input
+                      type="text"
+                      disabled
+                      placeholder="Select a subject first..."
+                      className="w-full bg-slate-100 border border-slate-200 text-slate-400 text-sm rounded-xl px-3 py-2 outline-none cursor-not-allowed"
+                    />
+                  )}
                 </div>
               </div>
             </div>

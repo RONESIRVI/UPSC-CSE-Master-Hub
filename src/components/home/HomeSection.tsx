@@ -158,13 +158,16 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
               <div>
                 <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">Subject / Paper</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Indian Polity"
+                <select
                   value={currentStudySession.subject}
-                  onChange={(e) => setCurrentStudySession(prev => ({ ...prev, subject: e.target.value }))}
-                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3.5 py-2.5 outline-none font-bold focus:ring-2 focus:ring-indigo-500"
-                />
+                  onChange={(e) => setCurrentStudySession(prev => ({ ...prev, subject: e.target.value, topic: "" }))}
+                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3.5 py-2.5 outline-none font-bold focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                >
+                  <option value="">Select Subject</option>
+                  {Array.from(new Set(syllabus.map(t => t.subject).filter(Boolean))).map(s => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
               </div>
 
               <div>
@@ -184,13 +187,29 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
 
               <div>
                 <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">Topic Name</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Fundamental Rights"
-                  value={currentStudySession.topic}
-                  onChange={(e) => setCurrentStudySession(prev => ({ ...prev, topic: e.target.value }))}
-                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3.5 py-2.5 outline-none font-medium focus:ring-2 focus:ring-indigo-500"
-                />
+                {currentStudySession.subject ? (
+                  <select
+                    value={currentStudySession.topic}
+                    onChange={(e) => setCurrentStudySession(prev => ({ ...prev, topic: e.target.value }))}
+                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3.5 py-2.5 outline-none font-medium focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                  >
+                    <option value="">Select Topic</option>
+                    {syllabus
+                      .filter(t => t.subject === currentStudySession.subject)
+                      .flatMap(t => t.subtopics || [])
+                      .map(sub => typeof sub === "string" ? sub : sub.title)
+                      .map(title => (
+                        <option key={title} value={title}>{title}</option>
+                      ))}
+                  </select>
+                ) : (
+                  <input
+                    type="text"
+                    disabled
+                    placeholder="Select a subject first..."
+                    className="w-full bg-slate-100 border border-slate-200 text-slate-400 text-xs rounded-xl px-3.5 py-2.5 outline-none font-medium cursor-not-allowed"
+                  />
+                )}
               </div>
             </div>
 
@@ -240,6 +259,7 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
         isOpen={isAudioModalOpen}
         onClose={() => setIsAudioModalOpen(false)}
         onSave={onSaveAudioNote}
+        syllabus={syllabus}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { RevisionItem } from "../../types";
+import { RevisionItem, SyllabusTopic } from "../../types";
 import {
   RotateCcw,
   CheckCircle2,
@@ -23,6 +23,7 @@ interface SpacedRevisionTabProps {
   onAddRevisionItem?: (item: RevisionItem) => void;
   onDeleteRevisionItem?: (itemId: string) => void;
   onResetDefaultRevisionQueue?: () => void;
+  syllabus: SyllabusTopic[];
 }
 
 export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
@@ -31,6 +32,7 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
   onAddRevisionItem,
   onDeleteRevisionItem,
   onResetDefaultRevisionQueue,
+  syllabus,
 }) => {
   const [activeCardIndex, setActiveCardIndex] = useState<number>(0);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
@@ -438,20 +440,6 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
             </div>
 
             <form onSubmit={handleCreateRevisionCard} className="space-y-3.5">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Topic Title *
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Basic Structure Doctrine & Kesavananda Bharati"
-                  value={formTopicTitle}
-                  onChange={(e) => setFormTopicTitle(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-900 outline-none focus:ring-2 focus:ring-indigo-500 font-medium"
-                />
-              </div>
-
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
@@ -460,7 +448,7 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
                   <select
                     value={formPaper}
                     onChange={(e) => setFormPaper(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-bold"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-bold cursor-pointer"
                   >
                     <option value="Prelims GS1">Prelims GS1</option>
                     <option value="Prelims CSAT">Prelims CSAT</option>
@@ -477,14 +465,50 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
                   <label className="block text-xs font-bold text-slate-700 mb-1">
                     Subject
                   </label>
+                  <select
+                    value={formSubject}
+                    onChange={(e) => {
+                      setFormSubject(e.target.value);
+                      setFormTopicTitle("");
+                    }}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-medium cursor-pointer"
+                  >
+                    <option value="">Select Subject</option>
+                    {Array.from(new Set(syllabus.map(t => t.subject).filter(Boolean))).map(s => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Topic Title *
+                </label>
+                {formSubject ? (
+                  <select
+                    required
+                    value={formTopicTitle}
+                    onChange={(e) => setFormTopicTitle(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-900 outline-none focus:ring-2 focus:ring-indigo-500 font-medium cursor-pointer"
+                  >
+                    <option value="">Select Topic</option>
+                    {syllabus
+                      .filter(t => t.subject === formSubject)
+                      .flatMap(t => t.subtopics || [])
+                      .map(sub => typeof sub === "string" ? sub : sub.title)
+                      .map(title => (
+                        <option key={title} value={title}>{title}</option>
+                      ))}
+                  </select>
+                ) : (
                   <input
                     type="text"
-                    placeholder="e.g. Indian Polity, Economy"
-                    value={formSubject}
-                    onChange={(e) => setFormSubject(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-medium"
+                    disabled
+                    placeholder="Select a subject first..."
+                    className="w-full bg-slate-100 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-400 outline-none cursor-not-allowed font-medium"
                   />
-                </div>
+                )}
               </div>
 
               <div>

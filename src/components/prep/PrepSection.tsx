@@ -307,6 +307,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
           onAddRevisionItem={onAddRevisionItem}
           onDeleteRevisionItem={onDeleteRevisionItem}
           onResetDefaultRevisionQueue={onResetDefaultRevisionQueue}
+          syllabus={syllabus}
         />
       )}
 

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Image as ImageIcon, Link as LinkIcon, ExternalLink, RefreshCw, FolderTree, AlertCircle, X, ZoomIn, LogOut } from "lucide-react";
+import { Image as ImageIcon, ExternalLink, RefreshCw, FolderTree, AlertCircle, X, ZoomIn } from "lucide-react";
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJXLIrt0DGiu8FGfmulRyvJPWK6agcu0TPeCII0Ee9d64stYjpNbiqsji-ESf3NgWg/exec";
+const MASTER_FOLDER_ID = "1TqXpQc1MPN5dgw41-X1rODhT3l71TeNB";
 
 interface DriveImage {
   id: string;
@@ -13,9 +16,6 @@ interface TopicFolder {
 }
 
 export const MindmapsGalleryTab: React.FC = () => {
-  const [scriptUrl, setScriptUrl] = useState<string>(() => localStorage.getItem("upsc_script_url") || "");
-  const [inputUrl, setInputUrl] = useState("");
-  
   const [topics, setTopics] = useState<TopicFolder[]>([]);
   const [selectedTopicId, setSelectedTopicId] = useState<string>("");
   
@@ -25,32 +25,15 @@ export const MindmapsGalleryTab: React.FC = () => {
   const [selectedImageId, setSelectedImageId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (scriptUrl) {
-      fetchData();
-    }
-  }, [scriptUrl]);
-
-  const handleSaveUrl = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (inputUrl.trim()) {
-      localStorage.setItem("upsc_script_url", inputUrl.trim());
-      setScriptUrl(inputUrl.trim());
-    }
-  };
-
-  const handleClearUrl = () => {
-    if (confirm("Are you sure you want to disconnect? You will need to paste the Live Link again.")) {
-      localStorage.removeItem("upsc_script_url");
-      setScriptUrl("");
-      setTopics([]);
-    }
-  };
+    fetchData();
+  }, []);
 
   const fetchData = async () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(scriptUrl);
+      // Added redirect: 'follow' to ensure Google Apps Script 302 redirects are handled correctly
+      const res = await fetch(SCRIPT_URL, { redirect: 'follow' });
       const result = await res.json();
       
       if (result.status === "error") {
@@ -65,7 +48,8 @@ export const MindmapsGalleryTab: React.FC = () => {
         setSelectedTopicId(fetchedTopics[0].id);
       }
     } catch (err: any) {
-      setError("Failed to fetch. Make sure your Script Link is correct and published to 'Anyone'.");
+      console.error(err);
+      setError("Failed to fetch mindmaps. There might be a connection issue or the folder is empty.");
     } finally {
       setLoading(false);
     }
@@ -76,58 +60,6 @@ export const MindmapsGalleryTab: React.FC = () => {
   };
 
   const currentTopic = topics.find(t => t.id === selectedTopicId);
-
-  // -------------------------------------------------------------
-  // SETUP SCREEN (If Script URL is missing)
-  // -------------------------------------------------------------
-  if (!scriptUrl) {
-    return (
-      <div className="bg-white border-2 border-slate-200 rounded-3xl p-8 md:p-12 shadow-sm max-w-2xl mx-auto my-8">
-        <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6">
-          <LinkIcon className="w-8 h-8" />
-        </div>
-        
-        <h2 className="text-2xl font-black text-slate-900 mb-3 tracking-tight">Connect Live Folder</h2>
-        <p className="text-slate-500 mb-8 leading-relaxed text-sm">
-          To automatically sync mindmaps from your Google Drive folder, you need to create a <strong>Google Apps Script Web App</strong> (Live Link).
-        </p>
-
-        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-8">
-          <h3 className="font-bold text-slate-800 text-sm mb-3">How to get your Live Link (2 Minutes):</h3>
-          <ol className="list-decimal pl-5 space-y-2 text-sm text-slate-600 font-medium">
-            <li>Go to <a href="https://script.google.com" target="_blank" rel="noreferrer" className="text-indigo-600 hover:underline">script.google.com</a> and click <strong>New Project</strong>.</li>
-            <li>Copy the code from the <code>drive_apps_script.js</code> file provided by the AI and paste it there.</li>
-            <li>Click <strong>Deploy</strong> {'>'} <strong>New deployment</strong> in the top right.</li>
-            <li>Select type: <strong>Web app</strong>.</li>
-            <li>Under "Who has access", select <strong>Anyone</strong>.</li>
-            <li>Click Deploy, authorize it, copy the <strong>Web app URL</strong>, and paste it below!</li>
-          </ol>
-        </div>
-
-        <form onSubmit={handleSaveUrl} className="space-y-4">
-          <div>
-            <label className="block text-xs font-bold text-slate-700 mb-2 uppercase tracking-wider">
-              Your Web App URL (Live Link)
-            </label>
-            <input
-              type="url"
-              required
-              placeholder="https://script.google.com/macros/s/.../exec"
-              value={inputUrl}
-              onChange={(e) => setInputUrl(e.target.value)}
-              className="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-sm shadow-md shadow-indigo-500/20 transition-all active:scale-95 cursor-pointer flex justify-center items-center gap-2"
-          >
-            Connect & Sync Drive
-          </button>
-        </form>
-      </div>
-    );
-  }
 
   // -------------------------------------------------------------
   // GALLERY SCREEN
@@ -144,14 +76,14 @@ export const MindmapsGalleryTab: React.FC = () => {
           <div className="flex items-center gap-2 mt-1.5">
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">
-              Live Sync Active (Apps Script)
+              Live Sync Active
             </p>
           </div>
         </div>
         
         <div className="flex items-center gap-2 w-full md:w-auto">
           <a
-            href={`https://drive.google.com/drive/folders/1TqXpQc1MPN5dgw41-X1rODhT3l71TeNB`}
+            href={`https://drive.google.com/drive/folders/${MASTER_FOLDER_ID}`}
             target="_blank"
             rel="noreferrer"
             className="flex-1 md:flex-none px-4 py-2 bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl hover:bg-slate-100 transition-colors flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
@@ -161,17 +93,11 @@ export const MindmapsGalleryTab: React.FC = () => {
           </a>
           <button
             onClick={fetchData}
-            className="p-2 bg-slate-50 border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-100 hover:text-indigo-600 transition-colors cursor-pointer"
+            className="px-4 py-2 bg-indigo-50 border border-indigo-100 text-indigo-600 font-bold rounded-xl hover:bg-indigo-100 transition-colors cursor-pointer flex items-center gap-2"
             title="Refresh Sync"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-          </button>
-          <button
-            onClick={handleClearUrl}
-            className="p-2 bg-slate-50 border border-slate-200 text-slate-400 rounded-xl hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 transition-colors cursor-pointer"
-            title="Disconnect Live Link"
-          >
-            <LogOut className="w-4 h-4" />
+            Sync Now
           </button>
         </div>
       </div>
@@ -230,7 +156,7 @@ export const MindmapsGalleryTab: React.FC = () => {
               >
                 {/* Image Thumbnail */}
                 <div 
-                  className="relative aspect-auto rounded-2xl overflow-hidden cursor-zoom-in bg-slate-100 flex-1"
+                  className="relative aspect-auto rounded-2xl overflow-hidden cursor-zoom-in bg-slate-100 flex-1 min-h-[150px]"
                   onClick={() => setSelectedImageId(file.id)}
                 >
                   <img 

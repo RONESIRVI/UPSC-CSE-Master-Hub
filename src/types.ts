@@ -5,6 +5,7 @@ export type TopperSubTab =
   | "books"
   | "routine"
   | "notes"
+  | "copies"
   | "interviews";
 export type PrepSubTab =
   | "syllabus"

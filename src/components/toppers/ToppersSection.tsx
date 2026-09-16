@@ -5,6 +5,7 @@ import { TopperStrategySetupTab } from "./TopperStrategySetupTab";
 import { TopperRoutineTab } from "./TopperRoutineTab";
 import { TopperNotesTab } from "./TopperNotesTab";
 import { MindmapsGalleryTab } from "../prep/MindmapsGalleryTab";
+import { TopperCopiesTab } from "./TopperCopiesTab";
 import { TopperInterviewsTab } from "./TopperInterviewsTab";
 import {
   Trophy,
@@ -91,6 +92,14 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
       icon: FileText,
       badge: "GS 1-4 Vault",
       color: "bg-emerald-50 text-emerald-600 border-emerald-200",
+    },
+    {
+      key: "copies",
+      label: "Topper Copies (PDFs)",
+      description: "Answer sheets & evaluated copies of Toppers directly from Drive",
+      icon: Layers,
+      badge: "PDF Gallery",
+      color: "bg-rose-50 text-rose-600 border-rose-200",
     },
     {
       key: "interviews",
@@ -262,6 +271,7 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
           <TopperRoutineTab onAdoptRoutine={onAdoptRoutine} routines={routines} setRoutines={setRoutines} />
         )}
         {activeSubTab === "notes" && <MindmapsGalleryTab />}
+        {activeSubTab === "copies" && <TopperCopiesTab />}
         {activeSubTab === "interviews" && <TopperInterviewsTab audioNotes={audioNotes} setAudioNotes={setAudioNotes} />}
       </div>
     </div>

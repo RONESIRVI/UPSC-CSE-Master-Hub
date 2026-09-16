@@ -126,25 +126,27 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
       if (timeParts.length < 2) continue;
       
       const [startStr, endStr] = timeParts;
-           if (!time || !ampm) return 0;
-           const [h, m] = time.split(":");
-           let hours = parseInt(h);
-           if (ampm === "PM" && hours !== 12) hours += 12;
-           if (ampm === "AM" && hours === 12) hours = 0;
-           return hours * 60 + parseInt(m);
-        };
-        const start = parseTime(startStr);
-        const end = parseTime(endStr);
-        
-        if (currentTimeMinutes >= start && currentTimeMinutes < end) {
-          activeTask = task;
-          break;
-        } else if (currentTimeMinutes < start && !nextTask) {
-          nextTask = { task, start };
-        }
+      
+      const parseTime = (timeStr: string) => {
+         const [time, ampm] = timeStr.trim().split(" ");
+         if (!time || !ampm) return 0;
+         const [h, m] = time.split(":");
+         let hours = parseInt(h);
+         if (ampm === "PM" && hours !== 12) hours += 12;
+         if (ampm === "AM" && hours === 12) hours = 0;
+         return hours * 60 + parseInt(m);
+      };
+      
+      const start = parseTime(startStr);
+      const end = parseTime(endStr);
+      
+      if (currentTimeMinutes >= start && currentTimeMinutes < end) {
+        activeTask = task;
+        break;
+      } else if (currentTimeMinutes < start && !nextTask) {
+        nextTask = { task, start };
       }
     }
-
     if (activeTask) {
       return {
         subject: activeTask.subject || "Study Session",

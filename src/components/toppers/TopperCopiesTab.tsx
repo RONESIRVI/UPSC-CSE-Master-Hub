@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FileText, ExternalLink, RefreshCw, FolderTree, AlertCircle, X, Maximize2 } from "lucide-react";
+import { FileText, RefreshCw, FolderTree, AlertCircle, X, Maximize2, Folder, ChevronRight, CornerUpLeft } from "lucide-react";
 
 // The hardcoded Live Link for PDFs
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbytEMFu6Fgw_rJZ0mmJMAXkPyj3m7MwQ-bBS_RsxDNLBsLb23zt0rW3xZq9JaqtSfYJ/exec";
@@ -10,15 +10,16 @@ interface DriveDocument {
   name: string;
 }
 
-interface TopicFolder {
+interface DriveFolder {
   id: string;
-  topic: string;
-  documents: DriveDocument[];
+  name: string;
+  folders: DriveFolder[];
+  files: DriveDocument[];
 }
 
 export const TopperCopiesTab: React.FC = () => {
-  const [topics, setTopics] = useState<TopicFolder[]>([]);
-  const [selectedTopicId, setSelectedTopicId] = useState<string>("");
+  const [rootFolder, setRootFolder] = useState<DriveFolder | null>(null);
+  const [currentPath, setCurrentPath] = useState<DriveFolder[]>([]);
   
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,15 +41,15 @@ export const TopperCopiesTab: React.FC = () => {
         throw new Error(result.message || "Failed to load data from script.");
       }
       
-      const fetchedTopics = result.data || [];
-      setTopics(fetchedTopics);
-      
-      if (fetchedTopics.length > 0 && !selectedTopicId) {
-        setSelectedTopicId(fetchedTopics[0].id);
+      const tree = result.data;
+      if (tree) {
+        setRootFolder(tree);
+        // Reset path to root
+        setCurrentPath([tree]);
       }
     } catch (err: any) {
       console.error(err);
-      setError(err.message || "Failed to fetch PDFs. Make sure your Script Link is correct and the folder exists.");
+      setError(err.message || "Failed to fetch PDFs. Please check Script Link and Folder Permissions.");
     } finally {
       setLoading(false);
     }
@@ -58,7 +59,25 @@ export const TopperCopiesTab: React.FC = () => {
     return `https://drive.google.com/file/d/${fileId}/preview`;
   };
 
-  const currentTopic = topics.find(t => t.id === selectedTopicId);
+  // The current active folder we are looking at
+  const currentFolder = currentPath[currentPath.length - 1];
+
+  // Navigate deeper into a folder
+  const handleOpenFolder = (folder: DriveFolder) => {
+    setCurrentPath(prev => [...prev, folder]);
+  };
+
+  // Navigate up to a specific breadcrumb
+  const handleCrumbClick = (index: number) => {
+    setCurrentPath(prev => prev.slice(0, index + 1));
+  };
+
+  // Navigate up one level
+  const handleGoBack = () => {
+    if (currentPath.length > 1) {
+      setCurrentPath(prev => prev.slice(0, -1));
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -108,65 +127,112 @@ export const TopperCopiesTab: React.FC = () => {
         </div>
       )}
 
-      {/* Topics (Subfolders) Tabs */}
-      {!error && topics.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2 pb-2">
-          {topics.map(topic => (
-            <button
-              key={topic.id}
-              onClick={() => setSelectedTopicId(topic.id)}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-                selectedTopicId === topic.id
-                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/20"
-                  : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
-              }`}
-            >
-              {topic.topic} ({topic.documents.length})
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Documents Grid */}
-      {!error && (
-        loading ? (
-          <div className="py-20 flex justify-center items-center">
-            <div className="animate-spin w-8 h-8 border-4 border-indigo-200 border-t-indigo-600 rounded-full"></div>
-          </div>
-        ) : (!currentTopic || currentTopic.documents.length === 0) ? (
-          <div className="bg-white border-2 border-slate-200 rounded-3xl p-12 text-center shadow-sm">
-            <div className="w-16 h-16 bg-slate-50 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <FileText className="w-8 h-8" />
-            </div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">No PDFs in this Topic</h3>
-            <p className="text-sm text-slate-500 max-w-sm mx-auto">
-              Upload PDF files inside this subfolder in your Google Drive and hit refresh.
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {currentTopic.documents.map((file) => (
-              <div 
-                key={file.id} 
-                onClick={() => setSelectedPdfId(file.id)}
-                className="bg-white rounded-2xl p-5 border-2 border-slate-100 hover:border-indigo-200 hover:shadow-lg transition-all duration-300 group cursor-pointer flex flex-col items-center text-center gap-4 relative overflow-hidden"
+      {/* File Explorer UI */}
+      {!error && rootFolder && currentFolder && (
+        <div className="bg-white border-2 border-slate-200 rounded-3xl shadow-sm overflow-hidden flex flex-col">
+          
+          {/* Breadcrumb Bar */}
+          <div className="bg-slate-50 border-b border-slate-200 p-3 flex flex-wrap items-center gap-1.5 overflow-x-auto scrollbar-hide">
+            {currentPath.length > 1 && (
+              <button 
+                onClick={handleGoBack}
+                className="p-1.5 mr-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors cursor-pointer shrink-0"
+                title="Go Back"
               >
-                {/* PDF Icon styling */}
-                <div className="w-16 h-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:bg-red-500 group-hover:text-white transition-all duration-300">
-                  <FileText className="w-8 h-8" />
+                <CornerUpLeft className="w-4 h-4" />
+              </button>
+            )}
+            
+            {currentPath.map((crumb, index) => {
+              const isLast = index === currentPath.length - 1;
+              return (
+                <div key={crumb.id} className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    onClick={() => handleCrumbClick(index)}
+                    className={`text-sm font-bold px-2 py-1 rounded-lg transition-colors cursor-pointer ${
+                      isLast 
+                        ? "text-indigo-700 bg-indigo-50" 
+                        : "text-slate-600 hover:bg-slate-200/50"
+                    }`}
+                  >
+                    {index === 0 ? "Root (All Copies)" : crumb.name}
+                  </button>
+                  {!isLast && <ChevronRight className="w-4 h-4 text-slate-300" />}
                 </div>
-                
-                <h3 className="text-sm font-bold text-slate-800 leading-snug break-words w-full line-clamp-3">
-                  {file.name.replace(/\.[^/.]+$/, "")}
-                </h3>
-
-                <div className="absolute top-3 right-3 text-slate-300 group-hover:text-indigo-500 transition-colors">
-                  <Maximize2 className="w-4 h-4" />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
-        )
+
+          {/* Explorer Content */}
+          <div className="p-5 min-h-[300px]">
+            {loading ? (
+              <div className="py-20 flex justify-center items-center">
+                <div className="animate-spin w-8 h-8 border-4 border-indigo-200 border-t-indigo-600 rounded-full"></div>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                
+                {/* Empty State */}
+                {currentFolder.folders.length === 0 && currentFolder.files.length === 0 && (
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 bg-slate-50 text-slate-300 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <Folder className="w-8 h-8" />
+                    </div>
+                    <h3 className="text-sm font-bold text-slate-700">This folder is empty</h3>
+                  </div>
+                )}
+
+                {/* Sub-Folders Grid */}
+                {currentFolder.folders.length > 0 && (
+                  <div>
+                    <h4 className="text-xs font-black text-slate-400 uppercase tracking-wider mb-3">Folders</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                      {currentFolder.folders.map(folder => (
+                        <button
+                          key={folder.id}
+                          onClick={() => handleOpenFolder(folder)}
+                          className="flex items-center gap-3 p-3 bg-white border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/50 rounded-xl transition-all text-left group cursor-pointer"
+                        >
+                          <Folder className="w-6 h-6 text-indigo-400 group-hover:text-indigo-600 fill-indigo-50 group-hover:fill-indigo-100 transition-colors shrink-0" />
+                          <span className="text-sm font-bold text-slate-700 group-hover:text-indigo-900 truncate">
+                            {folder.name}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* PDF Files Grid */}
+                {currentFolder.files.length > 0 && (
+                  <div>
+                    <h4 className="text-xs font-black text-slate-400 uppercase tracking-wider mb-3 mt-6">PDF Files</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                      {currentFolder.files.map(file => (
+                        <button
+                          key={file.id}
+                          onClick={() => setSelectedPdfId(file.id)}
+                          className="flex flex-col items-center gap-3 p-4 bg-white border border-slate-200 hover:border-rose-300 hover:shadow-lg rounded-2xl transition-all group cursor-pointer text-center relative"
+                        >
+                          <div className="w-12 h-12 bg-rose-50 text-rose-500 rounded-xl flex items-center justify-center group-hover:scale-110 group-hover:bg-rose-500 group-hover:text-white transition-all duration-300 shrink-0">
+                            <FileText className="w-6 h-6" />
+                          </div>
+                          <span className="text-xs font-bold text-slate-700 group-hover:text-rose-900 line-clamp-3">
+                            {file.name.replace(/\.[^/.]+$/, "")}
+                          </span>
+                          
+                          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-slate-400 hover:text-slate-600 transition-opacity">
+                            <Maximize2 className="w-3.5 h-3.5" />
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
       )}
 
       {/* Full Screen PDF Lightbox */}

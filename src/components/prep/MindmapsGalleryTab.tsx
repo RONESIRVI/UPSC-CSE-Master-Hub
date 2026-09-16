@@ -56,7 +56,8 @@ export const MindmapsGalleryTab: React.FC = () => {
   };
 
   const getDirectImageUrl = (fileId: string) => {
-    return `https://drive.google.com/uc?export=view&id=${fileId}`;
+    // Using thumbnail endpoint which is much more reliable for embedding public Drive images
+    return `https://drive.google.com/thumbnail?id=${fileId}&sz=w2000`;
   };
 
   const currentTopic = topics.find(t => t.id === selectedTopicId);

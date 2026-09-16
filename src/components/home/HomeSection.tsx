@@ -12,6 +12,7 @@ import {
   MockTestLog,
 } from "../../types";
 import { CommandCenter } from "./CommandCenter";
+import { ProfileCard3D } from "./ProfileCard3D";
 import { SmartAlerts } from "./SmartAlerts";
 import { PreparationHealthScore } from "./PreparationHealth";
 import { PersonalizedPlan } from "./PersonalizedPlan";
@@ -138,13 +139,16 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Top Main Command Center */}
-      <CommandCenter
-        studyStreak={studyStreak}
-        dailyGoalHours={dailyGoalHours}
-        totalStudyTime={totalStudyTimeToday}
-        completedTasks={completedTasksCount}
-        totalTasks={dailyTasks.length}
+      {/* Top Main 3D Profile Dashboard */}
+      <ProfileCard3D 
+        name="AARIZ MANSURI"
+        role="RAS Aspirant"
+        totalStudyHours={Math.floor(sessionLogs.reduce((acc, log) => acc + log.durationMinutes, 0) / 60)}
+        currentStreak={studyStreak}
+        completedTests={mockLogs.length}
+        targetExam="RAS CSE 2027"
+        progressPercent={healthScore.overallScore}
+        currentFocus={syllabus.filter(s => s.status === "in_progress").slice(0, 3).map(s => s.subject)}
       />
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">

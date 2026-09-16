@@ -233,7 +233,9 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
           >
             <option value="All">All Papers</option>
             <option value="Prelims GS1">Prelims (GK & GS)</option>
-            <option value=>Prelims CSAT</option>
+            <option value="Mains GS1">Mains Paper I</option>
+            <option value="Mains GS2">Mains Paper II</option>
+            <option value="Mains GS3">Mains Paper III</option>
             <option value="Mains GS4">Mains Paper IV (Hindi/Eng)</option>
           </select>
 

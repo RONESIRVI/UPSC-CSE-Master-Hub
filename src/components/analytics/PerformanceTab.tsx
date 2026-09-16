@@ -62,14 +62,9 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
     if (questionsAttempted > 0) {
       const incorrect = questionsAttempted - correctCount;
       let calcScore = 0;
-      
-      if (testType === ) {
-        calcScore = Math.max(0, (correctCount * 2.5) - (incorrect * 0.83));
-        setCutoffMarks(66.67);
-      } else {
-        calcScore = Math.max(0, (correctCount * 2) - (incorrect * 0.66));
-        setCutoffMarks(88);
-      }
+      // Standard calculation
+      calcScore = Math.max(0, (correctCount * 2) - (incorrect * 0.66));
+      setCutoffMarks(88);
       
       const calcAcc = Math.round((correctCount / questionsAttempted) * 100);
       
@@ -336,9 +331,9 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
                     className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
                   >
                     <option value="Prelims GS1">Prelims (GK & GS)</option>
-                    <option value=>Prelims CSAT</option>
+
                     <option value="Mains GS1">Mains Paper I</option>\n<option value="Mains GS2">Mains Paper II</option>\n<option value="Mains GS3">Mains Paper III</option>\n<option value="Mains GS4">Mains Paper IV (Hindi/Eng)</option>
-                    <option value=>Mains Essay</option>
+
                   </select>
                 </div>
               </div>

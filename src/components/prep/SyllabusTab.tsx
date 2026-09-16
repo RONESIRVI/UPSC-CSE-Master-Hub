@@ -365,12 +365,12 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-bold"
                   >
                     <option value="Prelims GS1">Prelims (GK & GS)</option>
-                    <option value=>Prelims CSAT</option>
+
                     <option value="Mains GS1">Mains Paper I</option>
                     <option value="Mains GS2">Mains Paper II</option>
                     <option value="Mains GS3">Mains Paper III</option>
                     <option value="Mains GS4">Mains Paper IV (Hindi/Eng)</option>
-                    <option value=>Mains Essay</option>
+
                   </select>
                 </div>
 

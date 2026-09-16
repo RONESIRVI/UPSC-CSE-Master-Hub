@@ -10,7 +10,6 @@ import {
 import { SyllabusTab } from "./SyllabusTab";
 import { StudyPlanTab } from "./StudyPlanTab";
 import { SpacedRevisionTab } from "./SpacedRevisionTab";
-import { MindmapsGalleryTab } from "./MindmapsGalleryTab";
 import { PYQTab } from "./PYQTab";
 
 
@@ -166,14 +165,6 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
       color: "bg-blue-50 text-blue-600 border-blue-200",
     },
     {
-      key: "mindmaps",
-      label: "Mindmaps Gallery",
-      description: "Visual notes & mindmaps synced from Google Drive",
-      icon: ImageIcon,
-      badge: "Gallery",
-      color: "bg-purple-50 text-purple-600 border-purple-200",
-    },
-    {
       key: "revision",
       label: "Spaced Repetition Queue",
       description: "Active recall flashcards on 1-3-7-15-30 cycles",
@@ -293,13 +284,10 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
           onAddTopic={onAddTopic}
           onDeleteTopic={onDeleteTopic}
           onResetDefaultSyllabus={onResetDefaultSyllabus}
-          onNavigateToNotes={() => setActiveSubTab("mindmaps")}
+          onNavigateToNotes={() => {}}
         />
       )}
 
-      {activeSubTab === "mindmaps" && (
-        <MindmapsGalleryTab syllabus={syllabus} />
-      )}
 
       {activeSubTab === "revision" && (
         <SpacedRevisionTab

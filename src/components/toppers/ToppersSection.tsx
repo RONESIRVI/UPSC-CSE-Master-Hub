@@ -4,6 +4,7 @@ import { TopperStrategyTab } from "./TopperStrategyTab";
 import { TopperStrategySetupTab } from "./TopperStrategySetupTab";
 import { TopperRoutineTab } from "./TopperRoutineTab";
 import { TopperNotesTab } from "./TopperNotesTab";
+import { MindmapsGalleryTab } from "../prep/MindmapsGalleryTab";
 import { TopperInterviewsTab } from "./TopperInterviewsTab";
 import {
   Trophy,
@@ -260,7 +261,7 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
         {activeSubTab === "routine" && (
           <TopperRoutineTab onAdoptRoutine={onAdoptRoutine} routines={routines} setRoutines={setRoutines} />
         )}
-        {activeSubTab === "notes" && <TopperNotesTab notes={notes} />}
+        {activeSubTab === "notes" && <MindmapsGalleryTab />}
         {activeSubTab === "interviews" && <TopperInterviewsTab audioNotes={audioNotes} setAudioNotes={setAudioNotes} />}
       </div>
     </div>

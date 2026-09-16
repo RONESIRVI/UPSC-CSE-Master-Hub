@@ -24,10 +24,7 @@ export const SmartRecommendationCard: React.FC<SmartRecommendationProps> = ({
     return () => clearInterval(interval);
   }, []);
 
-  const waitMinutes = recommendation.isFuture && recommendation.startTimeMinutes
-    ? recommendation.startTimeMinutes - currentTimeMinutes
-    : 0;
-
+  // waitMinutes calculation removed as requested
   return (
     <div className="bg-gradient-to-br from-indigo-50 to-white border-2 border-indigo-200 rounded-2xl p-5 shadow-sm relative overflow-hidden">
       {/* Background decoration */}
@@ -82,23 +79,13 @@ export const SmartRecommendationCard: React.FC<SmartRecommendationProps> = ({
           </ul>
         </div>
 
-        {waitMinutes > 0 ? (
-          <button
-            disabled
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-200 text-slate-500 font-black uppercase tracking-wider text-xs shadow-none cursor-not-allowed"
-          >
-            <Clock className="w-4 h-4" />
-            <span>Wait ({Math.floor(waitMinutes / 60)}h {waitMinutes % 60}m)</span>
-          </button>
-        ) : (
-          <button
-            onClick={onStartStudy}
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black uppercase tracking-wider text-xs shadow-md shadow-indigo-500/30 transition-all active:scale-95 cursor-pointer"
-          >
-            <span>Start Study</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        )}
+        <button
+          onClick={onStartStudy}
+          className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black uppercase tracking-wider text-xs shadow-md shadow-indigo-500/30 transition-all active:scale-95 cursor-pointer"
+        >
+          <span>Start Study</span>
+          <ArrowRight className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );

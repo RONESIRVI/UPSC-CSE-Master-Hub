@@ -120,10 +120,12 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
 
     for (const task of dailyTasks) {
       if (task.completed) continue;
-      const [startStr, endStr] = task.timeSlot.split(" - ");
-      if (startStr && endStr) {
-        const parseTime = (timeStr: string) => {
-           const [time, ampm] = timeStr.trim().split(" ");
+      if (!task.timeSlot) continue;
+      
+      const timeParts = task.timeSlot.split(" - ");
+      if (timeParts.length < 2) continue;
+      
+      const [startStr, endStr] = timeParts;
            if (!time || !ampm) return 0;
            const [h, m] = time.split(":");
            let hours = parseInt(h);

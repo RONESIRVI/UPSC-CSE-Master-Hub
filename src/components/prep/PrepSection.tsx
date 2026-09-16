@@ -173,14 +173,6 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
       color: "bg-amber-50 text-amber-600 border-amber-200",
     },
     {
-      key: "study-plan",
-      label: "Study Plan & Milestones",
-      description: "Phase-wise roadmap & strategic timeline",
-      icon: Flag,
-      badge: "4 Phases",
-      color: "bg-indigo-50 text-indigo-600 border-indigo-200",
-    },
-    {
       key: "revision",
       label: "Spaced Repetition Queue",
       description: "Active recall flashcards on 1-3-7-15-30 cycles",
@@ -306,17 +298,6 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
 
       {activeSubTab === "notes" && (
         <RevisionNotesTab syllabus={syllabus} />
-      )}
-
-      {activeSubTab === "study-plan" && (
-        <StudyPlanTab
-          phases={phases}
-          onToggleMilestone={onToggleMilestone}
-
-          onAddMilestone={onAddMilestone}
-          onDeleteMilestone={onDeleteMilestone}
-          onResetDefaultStudyPlan={onResetDefaultStudyPlan}
-        />
       )}
 
       {activeSubTab === "revision" && (

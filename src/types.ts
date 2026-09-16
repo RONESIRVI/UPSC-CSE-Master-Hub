@@ -8,7 +8,6 @@ export type TopperSubTab =
   | "interviews";
 export type PrepSubTab =
   | "syllabus"
-  | "study-plan"
   | "tracker"
   | "revision"
   | "notes"

@@ -153,8 +153,12 @@ export const ProfileCard3D: React.FC<ProfileCard3DProps> = ({
             </div>
             
             {/* View Details Button */}
-            <button className="hidden sm:flex ml-auto w-10 h-10 rounded-full bg-white/10 border border-white/20 items-center justify-center text-white transition-all hover:bg-white/20 hover:scale-110 shadow-lg">
-              <ChevronRight className="w-5 h-5" />
+            <button 
+              onClick={() => alert("Profile Settings & Detailed Analytics coming in the next update!")}
+              className="hidden sm:flex ml-auto px-4 py-2 rounded-full bg-white/10 border border-white/20 items-center justify-center text-white text-xs font-bold tracking-widest uppercase transition-all hover:bg-white/20 hover:scale-105 shadow-lg gap-2"
+            >
+              <span>View Profile</span>
+              <ChevronRight className="w-4 h-4" />
             </button>
           </div>
 
@@ -162,7 +166,10 @@ export const ProfileCard3D: React.FC<ProfileCard3DProps> = ({
       </div>
       
       {/* Mobile View Details Action (Visible only on mobile) */}
-      <div className="sm:hidden border-t border-[#2A3441] bg-[#0A0F1C]/80 px-6 py-3 flex items-center justify-between cursor-pointer active:bg-white/5">
+      <div 
+        onClick={() => alert("Profile Settings & Detailed Analytics coming in the next update!")}
+        className="sm:hidden border-t border-[#2A3441] bg-[#0A0F1C]/80 px-6 py-3 flex items-center justify-between cursor-pointer active:bg-white/5"
+      >
         <div className="flex items-center gap-2">
           <TrendingUp className="w-4 h-4 text-[#D4AF37]" />
           <span className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider">View Full Profile</span>

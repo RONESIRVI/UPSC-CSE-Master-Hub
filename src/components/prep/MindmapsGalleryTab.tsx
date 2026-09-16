@@ -1,151 +1,121 @@
 import React, { useState, useEffect } from "react";
-import { Image as ImageIcon, KeyRound, ExternalLink, RefreshCw, FolderTree, AlertCircle, X, ZoomIn, LogOut } from "lucide-react";
+import { Image as ImageIcon, Link as LinkIcon, ExternalLink, RefreshCw, FolderTree, AlertCircle, X, ZoomIn, LogOut } from "lucide-react";
 
-const MASTER_FOLDER_ID = "1TqXpQc1MPN5dgw41-X1rODhT3l71TeNB";
-
-interface DriveFile {
+interface DriveImage {
   id: string;
   name: string;
-  thumbnailLink?: string;
-  mimeType: string;
+}
+
+interface TopicFolder {
+  id: string;
+  topic: string;
+  images: DriveImage[];
 }
 
 export const MindmapsGalleryTab: React.FC = () => {
-  const [apiKey, setApiKey] = useState<string>(() => localStorage.getItem("upsc_drive_api_key") || "");
-  const [inputApiKey, setInputApiKey] = useState("");
+  const [scriptUrl, setScriptUrl] = useState<string>(() => localStorage.getItem("upsc_script_url") || "");
+  const [inputUrl, setInputUrl] = useState("");
   
-  const [topics, setTopics] = useState<DriveFile[]>([]);
+  const [topics, setTopics] = useState<TopicFolder[]>([]);
   const [selectedTopicId, setSelectedTopicId] = useState<string>("");
-  const [images, setImages] = useState<DriveFile[]>([]);
   
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
   const [selectedImageId, setSelectedImageId] = useState<string | null>(null);
 
-  // Initial fetch for folders (topics)
   useEffect(() => {
-    if (apiKey) {
-      fetchTopics();
+    if (scriptUrl) {
+      fetchData();
     }
-  }, [apiKey]);
+  }, [scriptUrl]);
 
-  // Fetch images when a topic is selected
-  useEffect(() => {
-    if (apiKey && selectedTopicId) {
-      fetchImages(selectedTopicId);
-    }
-  }, [selectedTopicId, apiKey]);
-
-  const handleSaveApiKey = (e: React.FormEvent) => {
+  const handleSaveUrl = (e: React.FormEvent) => {
     e.preventDefault();
-    if (inputApiKey.trim()) {
-      localStorage.setItem("upsc_drive_api_key", inputApiKey.trim());
-      setApiKey(inputApiKey.trim());
+    if (inputUrl.trim()) {
+      localStorage.setItem("upsc_script_url", inputUrl.trim());
+      setScriptUrl(inputUrl.trim());
     }
   };
 
-  const handleClearApiKey = () => {
-    if (confirm("Are you sure you want to disconnect Google Drive?")) {
-      localStorage.removeItem("upsc_drive_api_key");
-      setApiKey("");
+  const handleClearUrl = () => {
+    if (confirm("Are you sure you want to disconnect? You will need to paste the Live Link again.")) {
+      localStorage.removeItem("upsc_script_url");
+      setScriptUrl("");
       setTopics([]);
-      setImages([]);
     }
   };
 
-  const fetchTopics = async () => {
+  const fetchData = async () => {
     setLoading(true);
     setError(null);
     try {
-      const query = `q='${MASTER_FOLDER_ID}'+in+parents+and+mimeType='application/vnd.google-apps.folder'+and+trashed=false`;
-      const res = await fetch(`https://www.googleapis.com/drive/v3/files?${query}&key=${apiKey}&fields=files(id,name)`);
-      const data = await res.json();
+      const res = await fetch(scriptUrl);
+      const result = await res.json();
       
-      if (data.error) {
-        throw new Error(data.error.message || "Invalid API Key or Permission denied");
+      if (result.status === "error") {
+        throw new Error(result.message || "Failed to load data from script.");
       }
       
-      const fetchedTopics = data.files || [];
+      const fetchedTopics = result.data || [];
       setTopics(fetchedTopics);
       
+      // Auto-select first topic if none is selected and topics exist
       if (fetchedTopics.length > 0 && !selectedTopicId) {
         setSelectedTopicId(fetchedTopics[0].id);
       }
     } catch (err: any) {
-      setError(err.message);
-      if (err.message.includes("API key not valid")) {
-        localStorage.removeItem("upsc_drive_api_key");
-        setApiKey("");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchImages = async (folderId: string) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const query = `q='${folderId}'+in+parents+and+mimeType+contains+'image'+and+trashed=false`;
-      const res = await fetch(`https://www.googleapis.com/drive/v3/files?${query}&key=${apiKey}&fields=files(id,name,mimeType)`);
-      const data = await res.json();
-      
-      if (data.error) {
-        throw new Error(data.error.message);
-      }
-      
-      setImages(data.files || []);
-    } catch (err: any) {
-      setError(err.message);
+      setError("Failed to fetch. Make sure your Script Link is correct and published to 'Anyone'.");
     } finally {
       setLoading(false);
     }
   };
 
   const getDirectImageUrl = (fileId: string) => {
-    // We use the direct view link. Note: This requires the file to be public.
     return `https://drive.google.com/uc?export=view&id=${fileId}`;
   };
 
+  const currentTopic = topics.find(t => t.id === selectedTopicId);
+
   // -------------------------------------------------------------
-  // SETUP SCREEN (If API Key is missing)
+  // SETUP SCREEN (If Script URL is missing)
   // -------------------------------------------------------------
-  if (!apiKey) {
+  if (!scriptUrl) {
     return (
       <div className="bg-white border-2 border-slate-200 rounded-3xl p-8 md:p-12 shadow-sm max-w-2xl mx-auto my-8">
         <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6">
-          <KeyRound className="w-8 h-8" />
+          <LinkIcon className="w-8 h-8" />
         </div>
         
-        <h2 className="text-2xl font-black text-slate-900 mb-3 tracking-tight">Connect Google Drive</h2>
+        <h2 className="text-2xl font-black text-slate-900 mb-3 tracking-tight">Connect Live Folder</h2>
         <p className="text-slate-500 mb-8 leading-relaxed text-sm">
-          To automatically sync mindmaps from your fixed Drive folder (<strong>1TqX...TeNB</strong>), the app requires a Google Cloud API Key to read the folder contents.
+          To automatically sync mindmaps from your Google Drive folder, you need to create a <strong>Google Apps Script Web App</strong> (Live Link).
         </p>
 
         <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-8">
-          <h3 className="font-bold text-slate-800 text-sm mb-3">How to get your API Key (1 Minute):</h3>
+          <h3 className="font-bold text-slate-800 text-sm mb-3">How to get your Live Link (2 Minutes):</h3>
           <ol className="list-decimal pl-5 space-y-2 text-sm text-slate-600 font-medium">
-            <li>Go to the <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noreferrer" className="text-indigo-600 hover:underline">Google Cloud Console</a>.</li>
-            <li>Create a new Project (if you don't have one).</li>
-            <li>Click <strong>+ CREATE CREDENTIALS</strong> {'>'} <strong>API key</strong>.</li>
-            <li>Enable the <strong>Google Drive API</strong> for your project in the Library.</li>
-            <li>Copy the generated API Key and paste it below.</li>
+            <li>Go to <a href="https://script.google.com" target="_blank" rel="noreferrer" className="text-indigo-600 hover:underline">script.google.com</a> and click <strong>New Project</strong>.</li>
+            <li>Copy the code from the <code>drive_apps_script.js</code> file provided by the AI and paste it there.</li>
+            <li>Click <strong>Deploy</strong> {'>'} <strong>New deployment</strong> in the top right.</li>
+            <li>Select type: <strong>Web app</strong>.</li>
+            <li>Under "Who has access", select <strong>Anyone</strong>.</li>
+            <li>Click Deploy, authorize it, copy the <strong>Web app URL</strong>, and paste it below!</li>
           </ol>
         </div>
 
-        <form onSubmit={handleSaveApiKey} className="space-y-4">
+        <form onSubmit={handleSaveUrl} className="space-y-4">
           <div>
             <label className="block text-xs font-bold text-slate-700 mb-2 uppercase tracking-wider">
-              Your API Key
+              Your Web App URL (Live Link)
             </label>
             <input
-              type="text"
+              type="url"
               required
-              placeholder="AIzaSyB..."
-              value={inputApiKey}
-              onChange={(e) => setInputApiKey(e.target.value)}
-              className="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all font-mono"
+              placeholder="https://script.google.com/macros/s/.../exec"
+              value={inputUrl}
+              onChange={(e) => setInputUrl(e.target.value)}
+              className="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all"
             />
           </div>
           <button
@@ -174,14 +144,14 @@ export const MindmapsGalleryTab: React.FC = () => {
           <div className="flex items-center gap-2 mt-1.5">
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">
-              Live Sync Active
+              Live Sync Active (Apps Script)
             </p>
           </div>
         </div>
         
         <div className="flex items-center gap-2 w-full md:w-auto">
           <a
-            href={`https://drive.google.com/drive/folders/${MASTER_FOLDER_ID}`}
+            href={`https://drive.google.com/drive/folders/1TqXpQc1MPN5dgw41-X1rODhT3l71TeNB`}
             target="_blank"
             rel="noreferrer"
             className="flex-1 md:flex-none px-4 py-2 bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl hover:bg-slate-100 transition-colors flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
@@ -190,19 +160,16 @@ export const MindmapsGalleryTab: React.FC = () => {
             Open Drive Folder
           </a>
           <button
-            onClick={() => {
-              fetchTopics();
-              if (selectedTopicId) fetchImages(selectedTopicId);
-            }}
+            onClick={fetchData}
             className="p-2 bg-slate-50 border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-100 hover:text-indigo-600 transition-colors cursor-pointer"
             title="Refresh Sync"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
           <button
-            onClick={handleClearApiKey}
+            onClick={handleClearUrl}
             className="p-2 bg-slate-50 border border-slate-200 text-slate-400 rounded-xl hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 transition-colors cursor-pointer"
-            title="Disconnect API Key"
+            title="Disconnect Live Link"
           >
             <LogOut className="w-4 h-4" />
           </button>
@@ -232,7 +199,7 @@ export const MindmapsGalleryTab: React.FC = () => {
                   : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
               }`}
             >
-              {topic.name}
+              {topic.topic} ({topic.images.length})
             </button>
           ))}
         </div>
@@ -244,19 +211,19 @@ export const MindmapsGalleryTab: React.FC = () => {
           <div className="py-20 flex justify-center items-center">
             <div className="animate-spin w-8 h-8 border-4 border-indigo-200 border-t-indigo-600 rounded-full"></div>
           </div>
-        ) : images.length === 0 ? (
+        ) : (!currentTopic || currentTopic.images.length === 0) ? (
           <div className="bg-white border-2 border-slate-200 rounded-3xl p-12 text-center shadow-sm">
             <div className="w-16 h-16 bg-slate-50 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <ImageIcon className="w-8 h-8" />
             </div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">No Images Found</h3>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">No Images in this Topic</h3>
             <p className="text-sm text-slate-500 max-w-sm mx-auto">
               Upload images inside this subfolder in your Google Drive and hit refresh.
             </p>
           </div>
         ) : (
           <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
-            {images.map((file) => (
+            {currentTopic.images.map((file) => (
               <div 
                 key={file.id} 
                 className="break-inside-avoid bg-white rounded-3xl p-3 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 group relative overflow-hidden flex flex-col"

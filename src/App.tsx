@@ -99,7 +99,7 @@ export default function App() {
 
           // Check for GitHub Releases
           const res = await fetch(
-            "https://api.github.com/repos/RONESIRVI/RAS-CSE-Master-Hub/releases/latest"
+            "https://api.github.com/repos/RONESIRVI/UPSC-CSE-Master-Hub/releases/latest"
           );
           const data = await res.json();
 

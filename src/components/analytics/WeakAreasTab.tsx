@@ -179,33 +179,6 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
             </p>
           </div>
 
-          {/* Quick Metrics Bar */}
-          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 shrink-0">
-            <div className="bg-rose-50/80 border border-rose-200 rounded-2xl p-3 text-center min-w-[100px] shadow-2xs">
-              <span className="text-[10px] font-bold text-rose-700 uppercase tracking-wider block">
-                Failed MCQs
-              </span>
-              <span className="text-xl font-mono font-extrabold text-rose-700">
-                {totalFailedQuestions}
-              </span>
-            </div>
-            <div className="bg-amber-50/80 border border-amber-200 rounded-2xl p-3 text-center min-w-[100px] shadow-2xs">
-              <span className="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">
-                Marks Bleed
-              </span>
-              <span className="text-xl font-mono font-extrabold text-amber-700">
-                -{totalMarksLoss.toFixed(1)}
-              </span>
-            </div>
-            <div className="bg-indigo-50/80 border border-indigo-200 rounded-2xl p-3 text-center min-w-[100px] shadow-2xs">
-              <span className="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">
-                Critical Nodes
-              </span>
-              <span className="text-xl font-mono font-extrabold text-indigo-700">
-                {criticalCount}
-              </span>
-            </div>
-          </div>
         </div>
 
         {/* Heatmap Intensity Legend */}

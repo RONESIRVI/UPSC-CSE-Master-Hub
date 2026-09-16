@@ -106,6 +106,44 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
+  const [modalSubject, setModalSubject] = useState("");
+  const [modalTopic, setModalTopic] = useState("");
+  const [modalSubtopic, setModalSubtopic] = useState("");
+
+  const subjects = useMemo(() => {
+    return Array.from(new Set(syllabus.map((t) => t.subject).filter(Boolean)));
+  }, [syllabus]);
+
+  const topicsForSubject = useMemo(() => {
+    if (!modalSubject) return [];
+    return syllabus.filter((t) => t.subject === modalSubject);
+  }, [syllabus, modalSubject]);
+
+  const subtopicsForTopic = useMemo(() => {
+    if (!modalTopic) return [];
+    const topicObj = syllabus.find(
+      (t) => t.subject === modalSubject && (t.title === modalTopic || t.id === modalTopic)
+    );
+    if (!topicObj || !topicObj.subtopics) return [];
+    return topicObj.subtopics.map((sub: any) =>
+      typeof sub === "string" ? sub : sub.title
+    );
+  }, [syllabus, modalSubject, modalTopic]);
+
+  const handleStartSession = () => {
+    if (!modalSubject) return;
+    if (setCurrentStudySession) {
+      setCurrentStudySession({
+        subject: modalSubject,
+        topic: modalTopic,
+        subtopic: modalSubtopic,
+      });
+    }
+    if (onStartTimer) {
+      onStartTimer();
+    }
+  };
+
 
   const [isSyllabusEditorOpen, setIsSyllabusEditorOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -250,15 +288,6 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
           <div className="flex items-center gap-2 shrink-0">
 
 
-            {activeSubTab === "syllabus" && setSyllabus && (
-              <button
-                onClick={() => setIsSyllabusEditorOpen(true)}
-                className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-bold text-xs transition border border-indigo-200 shadow-sm"
-              >
-                <Edit2 className="w-4 h-4" />
-                <span>Edit</span>
-              </button>
-            )}
           </div>
         </div>
       </div>
@@ -317,7 +346,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
             <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-indigo-50/50">
               <div className="flex items-center gap-2">
                 <Clock className="w-5 h-5 text-indigo-600" />
-                <h3 className="font-bold text-slate-800 tracking-tight">Select Topic to Study</h3>
+                <h3 className="font-bold text-slate-800 tracking-tight">Select Session Topic</h3>
               </div>
               <button 
                 onClick={() => setCurrentStudySession && setCurrentStudySession({...currentStudySession, triggerTimerStart: false})}
@@ -326,58 +355,89 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
                 ✕
               </button>
             </div>
-            <div className="p-5 max-h-[60vh] overflow-y-auto space-y-3">
+            <div className="p-5 overflow-y-auto space-y-4">
               <p className="text-sm font-medium text-slate-500 mb-2">
-                Choose a specific topic from <strong className="text-indigo-600">{currentStudySession.subject}</strong> to start your session.
+                Configure your active study session context.
               </p>
               
-              {syllabus.filter(s => s.subject === currentStudySession.subject).map(topic => {
-                let statusColor = "bg-slate-100 text-slate-500 border-slate-200";
-                let statusText = "Not Started";
-                if (topic.status === "in_progress") { statusColor = "bg-amber-100 text-amber-700 border-amber-200"; statusText = "In Process"; }
-                if (topic.status === "revised_1x") { statusColor = "bg-blue-100 text-blue-700 border-blue-200"; statusText = "Revise 1x"; }
-                if (topic.status === "revised_2x") { statusColor = "bg-indigo-100 text-indigo-700 border-indigo-200"; statusText = "Revise 2x"; }
-                if (topic.status === "revised_3x") { statusColor = "bg-purple-100 text-purple-700 border-purple-200"; statusText = "Revise 3x"; }
-                if (topic.status === "revised_4x") { statusColor = "bg-pink-100 text-pink-700 border-pink-200"; statusText = "Revise 4x"; }
-                if (topic.status === "mastered") { statusColor = "bg-emerald-100 text-emerald-700 border-emerald-200"; statusText = "Mastered"; }
-
-                return (
-                  <button
-                    key={topic.id}
-                    onClick={() => {
-                      if (setCurrentStudySession) {
-                        setCurrentStudySession({...currentStudySession, topic: topic.title, triggerTimerStart: false});
-                      }
-                      if (onStartTimer) onStartTimer();
+              <div className="space-y-4">
+                {/* Subject Dropdown */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Subject</label>
+                  <select 
+                    value={modalSubject || currentStudySession.subject}
+                    onChange={(e) => {
+                      setModalSubject(e.target.value);
+                      setModalTopic("");
+                      setModalSubtopic("");
                     }}
-                    className="w-full text-left p-3 rounded-2xl border-2 border-slate-100 hover:border-indigo-400 hover:bg-indigo-50/50 hover:shadow-md transition-all group flex flex-col gap-2"
+                    className="w-full bg-slate-50 border border-slate-200 text-slate-700 rounded-xl p-3 font-medium outline-none focus:border-indigo-500 transition-colors"
                   >
-                    <div className="flex justify-between items-center w-full">
-                      <span className="font-bold text-sm text-slate-700 group-hover:text-indigo-900 leading-snug pr-2">{topic.title}</span>
-                      <Play className="w-4 h-4 text-slate-300 group-hover:text-indigo-500 fill-current shrink-0" />
-                    </div>
-                    <div className={`self-start px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${statusColor}`}>
-                      {statusText}
-                    </div>
-                  </button>
-                );
-              })}
-
-              {syllabus.filter(s => s.subject === currentStudySession.subject).length === 0 && (
-                <div className="text-center p-6 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-                   <p className="text-slate-500 text-sm font-medium mb-4">No specific topics found for this subject.</p>
-                   <button
-                     onClick={() => {
-                        if (setCurrentStudySession) setCurrentStudySession({...currentStudySession, triggerTimerStart: false});
-                        if (onStartTimer) onStartTimer();
-                     }}
-                     className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white rounded-xl font-bold uppercase tracking-wider text-xs shadow-lg shadow-indigo-500/30 transition-all flex items-center justify-center gap-2"
-                   >
-                     <Play className="w-4 h-4 fill-white" />
-                     Start General Session
-                   </button>
+                    <option value="">Select Subject</option>
+                    {Array.from(new Set(syllabus.map(s => s.subject))).map(subj => (
+                      <option key={subj} value={subj}>{subj}</option>
+                    ))}
+                  </select>
                 </div>
-              )}
+
+                {/* Topic Dropdown */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Topic</label>
+                  <select 
+                    value={modalTopic || currentStudySession.topic}
+                    onChange={(e) => {
+                      setModalTopic(e.target.value);
+                      setModalSubtopic("");
+                    }}
+                    disabled={!(modalSubject || currentStudySession.subject)}
+                    className="w-full bg-slate-50 border border-slate-200 text-slate-700 rounded-xl p-3 font-medium outline-none focus:border-indigo-500 transition-colors disabled:opacity-50"
+                  >
+                    <option value="">Select Topic</option>
+                    {syllabus.filter(s => s.subject === (modalSubject || currentStudySession.subject)).map(topic => (
+                      <option key={topic.id} value={topic.title}>{topic.title}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Sub-topic Dropdown */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Sub-topic</label>
+                  <select 
+                    value={modalSubtopic}
+                    onChange={(e) => setModalSubtopic(e.target.value)}
+                    disabled={!(modalTopic || currentStudySession.topic)}
+                    className="w-full bg-slate-50 border border-slate-200 text-slate-700 rounded-xl p-3 font-medium outline-none focus:border-indigo-500 transition-colors disabled:opacity-50"
+                  >
+                    <option value="">Select Sub-topic (Optional)</option>
+                    {syllabus.find(s => s.title === (modalTopic || currentStudySession.topic))?.subtopics.map(sub => (
+                      <option key={sub.title} value={sub.title}>{sub.title}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="pt-2">
+                <button
+                  onClick={() => {
+                    const finalSubject = modalSubject || currentStudySession.subject;
+                    const finalTopic = modalTopic || currentStudySession.topic;
+                    if (setCurrentStudySession) {
+                      setCurrentStudySession({
+                        ...currentStudySession, 
+                        subject: finalSubject,
+                        topic: modalSubtopic ? `${finalTopic} - ${modalSubtopic}` : finalTopic,
+                        triggerTimerStart: false
+                      });
+                    }
+                    if (onStartTimer) onStartTimer();
+                  }}
+                  disabled={!(modalSubject || currentStudySession.subject)}
+                  className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed active:scale-95 text-white rounded-xl font-black uppercase tracking-wider text-sm shadow-lg shadow-indigo-500/30 transition-all flex items-center justify-center gap-2"
+                >
+                  <Play className="w-4 h-4 fill-white" />
+                  Start Session
+                </button>
+              </div>
             </div>
           </div>
         </div>

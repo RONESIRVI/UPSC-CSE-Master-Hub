@@ -282,6 +282,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
 
       {activeSubTab === "performance" && (
         <PerformanceTab
+          syllabus={syllabus}
           mockLogs={mockLogs}
           onAddMockLog={onAddMockLog}
           onDeleteMockLog={onDeleteMockLog}

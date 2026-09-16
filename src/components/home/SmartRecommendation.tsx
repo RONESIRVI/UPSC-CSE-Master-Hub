@@ -1,5 +1,5 @@
-import React from "react";
-import { Sparkles, Brain, ArrowRight } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Sparkles, Brain, ArrowRight, Clock } from "lucide-react";
 import { SmartRecommendation } from "../../types";
 
 interface SmartRecommendationProps {
@@ -11,6 +11,23 @@ export const SmartRecommendationCard: React.FC<SmartRecommendationProps> = ({
   recommendation,
   onStartStudy,
 }) => {
+  const [currentTimeMinutes, setCurrentTimeMinutes] = useState(() => {
+    const now = new Date();
+    return now.getHours() * 60 + now.getMinutes();
+  });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      setCurrentTimeMinutes(now.getHours() * 60 + now.getMinutes());
+    }, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const waitMinutes = recommendation.isFuture && recommendation.startTimeMinutes
+    ? recommendation.startTimeMinutes - currentTimeMinutes
+    : 0;
+
   return (
     <div className="bg-gradient-to-br from-indigo-50 to-white border-2 border-indigo-200 rounded-2xl p-5 shadow-sm relative overflow-hidden">
       {/* Background decoration */}
@@ -42,7 +59,7 @@ export const SmartRecommendationCard: React.FC<SmartRecommendationProps> = ({
 
         <div className="bg-white/80 border border-indigo-100 rounded-xl p-3 mb-5">
           <div className="text-[10px] uppercase font-bold text-slate-500 mb-2">
-            Reason for recommendation:
+            Details:
           </div>
           <ul className="space-y-1.5">
             {recommendation.tags.map((tag, idx) => (
@@ -56,16 +73,32 @@ export const SmartRecommendationCard: React.FC<SmartRecommendationProps> = ({
                 {tag}
               </li>
             ))}
+            <li className="flex items-center gap-2 text-xs font-bold text-slate-700">
+                <span className="w-3 h-3 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-[8px]">
+                  ✓
+                </span>
+                {recommendation.reason}
+            </li>
           </ul>
         </div>
 
-        <button
-          onClick={onStartStudy}
-          className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black uppercase tracking-wider text-xs shadow-md shadow-indigo-500/30 transition-all active:scale-95"
-        >
-          <span>Start Study</span>
-          <ArrowRight className="w-4 h-4" />
-        </button>
+        {waitMinutes > 0 ? (
+          <button
+            disabled
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-200 text-slate-500 font-black uppercase tracking-wider text-xs shadow-none cursor-not-allowed"
+          >
+            <Clock className="w-4 h-4" />
+            <span>Wait ({Math.floor(waitMinutes / 60)}h {waitMinutes % 60}m)</span>
+          </button>
+        ) : (
+          <button
+            onClick={onStartStudy}
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black uppercase tracking-wider text-xs shadow-md shadow-indigo-500/30 transition-all active:scale-95 cursor-pointer"
+          >
+            <span>Start Study</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        )}
       </div>
     </div>
   );

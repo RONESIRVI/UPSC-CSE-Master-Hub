@@ -111,11 +111,6 @@ export const TopperRoutineTab: React.FC<TopperRoutineTabProps> = ({
                 </option>
               ))}
             </select>
-            {setRoutines && (
-              <button onClick={() => setIsEditorOpen(true)} className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition" title="Edit Schedule">
-                <Edit2 className="w-4 h-4" />
-              </button>
-            )}
           </div>
         </div>
 

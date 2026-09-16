@@ -131,7 +131,7 @@ const SyllabusForm: React.FC<{ initialData: SyllabusTopic, onSave: (data: Syllab
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div>
-          <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Paper (RAS)</label>
+          <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Subject Level (RAS)</label>
           <select 
             value={formData.paper} 
             onChange={e => handleChange('paper', e.target.value)} 

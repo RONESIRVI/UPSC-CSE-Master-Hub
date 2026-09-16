@@ -301,7 +301,7 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
             >
               {papers.map((p) => (
                 <option key={p} value={p}>
-                  {p === "All" ? "All Papers" : p}
+                  {p === "All" ? "All Subjects" : p}
                 </option>
               ))}
             </select>
@@ -356,8 +356,8 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Paper
+                  <label className="text-xs font-bold text-slate-700 block mb-1.5">
+                    Subject Level
                   </label>
                   <select
                     value={newPaper}

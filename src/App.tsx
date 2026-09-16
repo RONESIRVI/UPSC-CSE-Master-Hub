@@ -333,10 +333,92 @@ export default function App() {
     return saved ? JSON.parse(saved) : PYQ_DATABASE;
   });
 
-  const [weakAreas, setWeakAreas] = useState<WeakAreaItem[]>(() => {
-    const saved = localStorage.getItem("upsc_weak_areas_v2");
-    return saved ? JSON.parse(saved) : DEFAULT_WEAK_AREAS;
-  });
+  const weakAreas = useMemo<WeakAreaItem[]>(() => {
+    const topicStats: Record<string, {
+       subject: string;
+       topic: string;
+       tests: number;
+       totalMarksObtained: number;
+       totalMarks: number;
+       incorrectCount: number;
+       studyMinutes: number;
+    }> = {};
+
+    mockLogs.forEach(log => {
+      if (!log.subject || !log.topic) return;
+      const key = `${log.subject}-${log.topic}`;
+      if (!topicStats[key]) {
+        topicStats[key] = {
+           subject: log.subject,
+           topic: log.topic,
+           tests: 0,
+           totalMarksObtained: 0,
+           totalMarks: 0,
+           incorrectCount: 0,
+           studyMinutes: 0,
+        };
+      }
+      topicStats[key].tests += 1;
+      topicStats[key].totalMarksObtained += log.marksObtained;
+      topicStats[key].totalMarks += log.totalMarks;
+      topicStats[key].incorrectCount += (log.incorrectCount || 0);
+    });
+
+    sessionLogs.forEach(log => {
+      if (!log.subject || !log.topicCovered) return;
+      const key = `${log.subject}-${log.topicCovered}`;
+      if (!topicStats[key]) {
+        topicStats[key] = {
+           subject: log.subject,
+           topic: log.topicCovered,
+           tests: 0,
+           totalMarksObtained: 0,
+           totalMarks: 0,
+           incorrectCount: 0,
+           studyMinutes: 0,
+        };
+      }
+      topicStats[key].studyMinutes += log.durationMinutes;
+    });
+
+    const calculatedWeakAreas: WeakAreaItem[] = [];
+    Object.keys(topicStats).forEach((key, idx) => {
+       const stat = topicStats[key];
+       const percentage = stat.totalMarks > 0 ? (stat.totalMarksObtained / stat.totalMarks) * 100 : 0;
+       
+       let severity: "Critical" | "Moderate" | "Mild" = "Mild";
+       if (percentage < 40) severity = "Critical";
+       else if (percentage < 60) severity = "Moderate";
+       
+       let trend: "improving" | "declining" | "stagnant" = "stagnant";
+       if (percentage < 50) trend = "declining";
+       else if (percentage > 70) trend = "improving";
+       
+       if (stat.studyMinutes > 120 && trend === "declining") {
+          trend = "improving"; // Lots of study time might be turning it around
+       }
+
+       calculatedWeakAreas.push({
+         id: `dynamic-weak-${idx}`,
+         subject: stat.subject,
+         topic: stat.topic,
+         severity: severity,
+         failedQuestions: stat.incorrectCount,
+         negativeMarksLost: (stat.incorrectCount * 0.66),
+         trend: trend,
+         lastTestedDate: new Date().toISOString().split("T")[0],
+         remedyAction: stat.studyMinutes > 0 
+           ? `Revise your notes. You have studied this for ${Math.floor(stat.studyMinutes/60)}h ${stat.studyMinutes%60}m.`
+           : `Focus on ${stat.topic} core concepts and solve PYQs.`,
+       });
+    });
+    
+    return calculatedWeakAreas.sort((a, b) => {
+       if (a.severity === "Critical" && b.severity !== "Critical") return -1;
+       if (b.severity === "Critical" && a.severity !== "Critical") return 1;
+       return 0;
+    });
+  }, [mockLogs, sessionLogs]);
 
   const [dailyTasks, setDailyTasks] = useState<DailyTask[]>(() => {
     const saved = localStorage.getItem("upsc_daily_tasks_v2");
@@ -429,7 +511,6 @@ export default function App() {
       JSON.stringify(revisionQueue)
     );
     localStorage.setItem("upsc_pyqs_v2", JSON.stringify(pyqs));
-    localStorage.setItem("upsc_weak_areas_v2", JSON.stringify(weakAreas));
     localStorage.setItem("ras_audio_notes_v2", JSON.stringify(audioNotes));
     localStorage.setItem("upsc_daily_tasks_v2", JSON.stringify(dailyTasks));
     localStorage.setItem("upsc_study_streak_v1", JSON.stringify(studyStreak));
@@ -442,7 +523,6 @@ export default function App() {
     mockLogs,
     revisionQueue,
     pyqs,
-    weakAreas,
     audioNotes,
     dailyTasks,
     studyStreak,
@@ -903,8 +983,18 @@ export default function App() {
               <button 
                 onClick={() => {
                    setTimerRunning(false);
+                   handleAddSessionLog({
+                     id: Date.now().toString(),
+                     date: new Date().toISOString().split("T")[0],
+                     subject: currentStudySession.subject || "General Session",
+                     paper: "General", // Placeholder
+                     durationMinutes: Math.max(1, Math.floor(timerSeconds / 60)),
+                     topicCovered: currentStudySession.topic || "Self Study",
+                     qualityRating: 5,
+                     notes: currentStudySession.subtopic ? `Sub-topic: ${currentStudySession.subtopic}` : "",
+                   });
                    setTimerSeconds(0);
-                   alert("Session saved (Demo)");
+                   setCurrentStudySession({subject: "", topic: "", triggerTimerStart: false});
                 }}
                 className="w-[72px] h-10 rounded-xl bg-rose-500/10 text-rose-500 border border-rose-500/30 flex items-center justify-center hover:bg-rose-500/20 transition-all"
               >

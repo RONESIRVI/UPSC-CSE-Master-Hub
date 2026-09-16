@@ -1069,6 +1069,18 @@
           "activity": "Full-length Prelims/Mains tests, mistake analysis, and backlog revision",
           "category": "Weekend Marathon",
           "description": ""
+        },
+        {
+          "time": "06:30 PM - 08:30 PM",
+          "activity": "Mains answer writing, value addition (quotes, data, case studies), toppers' copies",
+          "category": "Evening Session",
+          "description": ""
+        },
+        {
+          "time": "01:30 AM - 02:00 AM",
+          "activity": "Heavy static GS subjects without phone distractions",
+          "category": "Morning Slot",
+          "description": ""
         }
       ],
       "tips": []

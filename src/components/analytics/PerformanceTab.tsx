@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 interface PerformanceTabProps {
+  syllabus: any[];
   mockLogs: MockTestLog[];
   onAddMockLog: (log: MockTestLog) => void;
   onDeleteMockLog: (id: string) => void;
@@ -19,6 +20,7 @@ interface PerformanceTabProps {
 }
 
 export const PerformanceTab: React.FC<PerformanceTabProps> = ({
+  syllabus,
   mockLogs,
   onAddMockLog,
   onDeleteMockLog,
@@ -26,7 +28,7 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
 }) => {
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
   const [testName, setTestName] = useState("");
-  const [seriesName, setSeriesName] = useState("VisionIAS");
+  const [seriesName, setSeriesName] = useState("Insight");
   const [testType, setTestType] = useState<
     "Prelims GS1" | "Prelims CSAT" | "Mains GS"
   >("Prelims GS1");
@@ -35,11 +37,18 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
   const [accuracyPct, setAccuracyPct] = useState<number>(75);
   const [cutoffMarks, setCutoffMarks] = useState<number>(88);
   const [analysisNotes, setAnalysisNotes] = useState("");
-  const [subject, setSubject] = useState("Polity");
-  const [mockTestType, setMockTestType] = useState<"Full Length" | "Topic Wise">("Full Length");
+  const [subject, setSubject] = useState("");
+  const [selectedSubtopics, setSelectedSubtopics] = useState<string[]>([]);
+  const [mockTestType, setMockTestType] = useState<"Full Length" | "Topic Wise">("Topic Wise");
   const [totalQuestions, setTotalQuestions] = useState<number>(100);
   const [questionsAttempted, setQuestionsAttempted] = useState<number>(0);
   const [correctCount, setCorrectCount] = useState<number>(0);
+  
+  const subjects = Array.from(new Set(syllabus.map((t: any) => t.subject).filter(Boolean)));
+  const subtopicsForSubject = syllabus
+    .filter((t: any) => t.subject === subject)
+    .flatMap((t: any) => t.subtopics || [])
+    .map((sub: any) => typeof sub === "string" ? sub : sub.title);
   const prelimsLogs = mockLogs.filter((m) => m.type === "Prelims GS1");
   const avgPrelimsScore =
     prelimsLogs.length > 0
@@ -51,12 +60,17 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
 
   const handleSaveMock = (e: React.FormEvent) => {
     e.preventDefault();
+    const autoTitle = mockTestType === "Topic Wise" && subject 
+       ? `${subject} — ${selectedSubtopics.join(", ")}` 
+       : testName.trim() || "Full Mock Test";
+
     const newLog: MockTestLog = {
       id: `mock-${Date.now()}`,
-      testSeriesName: `${seriesName}: ${testName.trim() || "Full Mock Test"}`,
-      testName: testName.trim() || "Full Mock Test",
+      testSeriesName: `${seriesName}: ${autoTitle}`,
+      testName: autoTitle,
       testType: mockTestType,
       subject: subject,
+      topic: selectedSubtopics.length > 0 ? selectedSubtopics.join(", ") : undefined,
       date: new Date().toISOString().split("T")[0],
       type: testType,
       marksObtained: score,
@@ -250,20 +264,6 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
             </h3>
 
             <form onSubmit={handleSaveMock} className="space-y-3.5">
-              <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">
-                  Test Title
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. VisionIAS Prelims Mock #5 (Polity Sectional)"
-                  value={testName}
-                  onChange={(e) => setTestName(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
-                />
-              </div>
-
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-bold text-slate-700 block mb-1">
@@ -274,11 +274,7 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
                     onChange={(e) => setSeriesName(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
                   >
-                    <option value="VisionIAS">VisionIAS</option>
-                    <option value="ForumIAS">ForumIAS</option>
-                    <option value="Vajiram & Ravi">Vajiram & Ravi</option>
-                    <option value="InsightsIAS">InsightsIAS</option>
-                    <option value="IASbaba">IASbaba</option>
+                    <option value="Insight">Insight</option>
                   </select>
                 </div>
 
@@ -291,23 +287,72 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
                     onChange={(e) => setMockTestType(e.target.value as any)}
                     className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
                   >
-                    <option value="Full Length">Full Length</option>
                     <option value="Topic Wise">Topic Wise</option>
+                    <option value="Full Length">Full Length</option>
                   </select>
                 </div>
               </div>
 
               {mockTestType === "Topic Wise" && (
+                <div className="space-y-3">
+                  <div>
+                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                      Subject
+                    </label>
+                    <select
+                      value={subject}
+                      onChange={(e) => {
+                        setSubject(e.target.value);
+                        setSelectedSubtopics([]);
+                      }}
+                      className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
+                    >
+                      <option value="">Select Subject</option>
+                      {subjects.map(s => <option key={s} value={s}>{s}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-xs font-bold text-slate-700 block mb-1">
+                      Sub-topics
+                    </label>
+                    <div className="max-h-24 overflow-y-auto bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 space-y-1">
+                      {subtopicsForSubject.length === 0 ? (
+                        <span className="text-xs text-slate-400">Select a subject first...</span>
+                      ) : (
+                        subtopicsForSubject.map((sub: string) => (
+                          <label key={sub} className="flex items-center gap-2 cursor-pointer">
+                            <input 
+                              type="checkbox" 
+                              checked={selectedSubtopics.includes(sub)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setSelectedSubtopics([...selectedSubtopics, sub]);
+                                } else {
+                                  setSelectedSubtopics(selectedSubtopics.filter(s => s !== sub));
+                                }
+                              }}
+                              className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-600"
+                            />
+                            <span className="text-xs text-slate-700">{sub}</span>
+                          </label>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {mockTestType === "Full Length" && (
                 <div>
                   <label className="text-xs font-bold text-slate-700 block mb-1">
-                    Subject / Topic
+                    Test Title
                   </label>
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Fundamental Rights"
-                    value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
+                    placeholder="e.g. Insight Prelims Mock #5"
+                    value={testName}
+                    onChange={(e) => setTestName(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
                   />
                 </div>

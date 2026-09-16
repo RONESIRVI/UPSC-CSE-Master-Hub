@@ -250,6 +250,9 @@ export interface SmartRecommendation {
   topic: string;
   reason: string;
   tags: string[];
+  taskId?: string;
+  isFuture?: boolean;
+  startTimeMinutes?: number;
 }
 
 export interface FocusTimerConfig {

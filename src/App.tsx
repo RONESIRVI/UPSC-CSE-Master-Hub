@@ -236,7 +236,7 @@ export default function App() {
     taskType: "study" | "revision" | "pyq" | "notes" | "answer_writing";
     triggerTimerStart?: boolean;
   }>({
-    subject: "Indian Polity",
+    subject: "राजस्थान का इतिहास, कला, संस्कृति, साहित्य, परम्परा एवं विरासत",
     topic: "",
     taskType: "study",
     triggerTimerStart: false,
@@ -682,7 +682,7 @@ export default function App() {
       {
         id: "init-1",
         date: new Date().toISOString().split("T")[0],
-        subject: "Indian Polity",
+        subject: "राजस्थान का इतिहास, कला, संस्कृति, साहित्य, परम्परा एवं विरासत",
         paper: "Prelims GS1",
         durationMinutes: 120,
         topicCovered: "Preamble & Fundamental Rights Articles 14-18",

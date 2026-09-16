@@ -151,12 +151,11 @@ export interface SyllabusTopic {
   id: string;
   paper:
     | "Prelims GS1"
-    | "Prelims CSAT"
-    | "Mains GS1"
+    |  "Mains GS1"
     | "Mains GS2"
     | "Mains GS3"
     | "Mains GS4"
-    | "Mains Essay";
+    | ;
   subject: string;
   module: string;
   title: string;
@@ -325,7 +324,7 @@ export interface MockTestLog {
   subject?: string;
   topic?: string;
   date: string;
-  type: "Prelims GS1" | "Prelims CSAT" | "Mains GS";
+  type: "Prelims GS1" |  "Mains GS1" | "Mains GS2" | "Mains GS3" | "Mains GS4";
   totalMarks: number;
   marksObtained: number;
   cutoffScore: number;

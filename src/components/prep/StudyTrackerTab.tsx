@@ -100,7 +100,7 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
   syllabus = [],
 
   currentStudySession = {
-    subject: "Indian Polity",
+    subject: "राजस्थान का इतिहास, कला, संस्कृति, साहित्य, परम्परा एवं विरासत",
     topic: "",
     taskType: "study",
   },
@@ -866,20 +866,9 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
               className="w-full bg-transparent text-xs font-bold text-slate-800 outline-none cursor-pointer"
             >
               <option value="all">All Subjects ({sessionLogs.length})</option>
-              <option value="Indian Polity">Indian Polity</option>
-              <option value="Modern Indian History">
-                Modern Indian History
-              </option>
-              <option value="Indian Economy">Indian Economy</option>
-              <option value="Environment & Ecology">
-                Environment & Ecology
-              </option>
-              <option value="Physical & Indian Geography">Geography</option>
-              <option value="CSAT Paper II">CSAT Paper II</option>
-              <option value="Ethics (GS4)">Ethics (GS4)</option>
-              <option value="Optional Subject">Optional Subject</option>
-              <option value="Current Affairs">Current Affairs</option>
-              <option value="Mains Answer Writing">Mains Answer Writing</option>
+              {Array.from(new Set(syllabus.map(s => s.subject))).map(subj => (
+                <option key={subj} value={subj}>{subj}</option>
+              ))}
             </select>
           </div>
 

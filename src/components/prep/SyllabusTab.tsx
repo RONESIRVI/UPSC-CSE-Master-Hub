@@ -57,7 +57,7 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
   const [newTitle, setNewTitle] = useState("");
   const [newPaper, setNewPaper] =
     useState<SyllabusTopic["paper"]>("Prelims GS1");
-  const [newSubject, setNewSubject] = useState("Indian Polity");
+  const [newSubject, setNewSubject] = useState("राजस्थान का इतिहास, कला, संस्कृति, साहित्य, परम्परा एवं विरासत");
   const [newModule, setNewModule] = useState("");
   const [newYield, setNewYield] =
     useState<SyllabusTopic["yield"]>("🔥 High Yield");
@@ -67,12 +67,12 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
   const papers = [
     "All",
     "Prelims GS1",
-    "Prelims CSAT",
+    ,
     "Mains GS1",
     "Mains GS2",
     "Mains GS3",
     "Mains GS4",
-    "Mains Essay",
+    ,
   ];
 
   const filteredTopics = syllabus.filter((t) => {
@@ -364,13 +364,13 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                     onChange={(e) => setNewPaper(e.target.value as any)}
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-bold"
                   >
-                    <option value="Prelims GS1">Prelims GS1</option>
-                    <option value="Prelims CSAT">Prelims CSAT</option>
-                    <option value="Mains GS1">Mains GS1</option>
-                    <option value="Mains GS2">Mains GS2</option>
-                    <option value="Mains GS3">Mains GS3</option>
-                    <option value="Mains GS4">Mains GS4</option>
-                    <option value="Mains Essay">Mains Essay</option>
+                    <option value="Prelims GS1">Prelims (GK & GS)</option>
+                    <option value=>Prelims CSAT</option>
+                    <option value="Mains GS1">Mains Paper I</option>
+                    <option value="Mains GS2">Mains Paper II</option>
+                    <option value="Mains GS3">Mains Paper III</option>
+                    <option value="Mains GS4">Mains Paper IV (Hindi/Eng)</option>
+                    <option value=>Mains Essay</option>
                   </select>
                 </div>
 

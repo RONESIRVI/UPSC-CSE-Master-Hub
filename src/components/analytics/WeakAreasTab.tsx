@@ -232,9 +232,9 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
             className="bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none font-bold cursor-pointer"
           >
             <option value="All">All Papers</option>
-            <option value="Prelims GS1">Prelims GS1</option>
-            <option value="Prelims CSAT">Prelims CSAT</option>
-            <option value="Mains GS4">Mains GS4</option>
+            <option value="Prelims GS1">Prelims (GK & GS)</option>
+            <option value=>Prelims CSAT</option>
+            <option value="Mains GS4">Mains Paper IV (Hindi/Eng)</option>
           </select>
 
           {/* Intensity filter */}

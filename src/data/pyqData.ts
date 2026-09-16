@@ -7,7 +7,7 @@ export const PYQ_DATABASE: PYQQuestion[] = [
     type: "Prelims",
     year: 2023,
     paper: "Prelims GS1",
-    subject: "Indian Polity & Governance",
+    subject: "राजस्थान का इतिहास, कला, संस्कृति, साहित्य, परम्परा एवं विरासत",
     topic: "Due Process of Law & Article 21",
     questionText:
       "In India, what is the meaning of the concept 'Due Process of Law'?",
@@ -70,7 +70,7 @@ export const PYQ_DATABASE: PYQQuestion[] = [
     type: "Prelims",
     year: 2022,
     paper: "Prelims GS1",
-    subject: "Indian Polity & Governance",
+    subject: "राजस्थान का इतिहास, कला, संस्कृति, साहित्य, परम्परा एवं विरासत",
     topic: "Anti-Defection Law (Tenth Schedule)",
     questionText:
       "With reference to the Anti-Defection Law in India, consider the following statements:\n1. The law specifies that a nominated legislator cannot join any political party within six months of being appointed to the House.\n2. The law does not provide any time-frame within which the presiding officer has to decide a defection case.\nWhich of the statements given above is/are correct?",
@@ -90,7 +90,7 @@ export const PYQ_DATABASE: PYQQuestion[] = [
     id: "pyq-pre-2023-csat-1",
     type: "Prelims",
     year: 2023,
-    paper: "Prelims CSAT",
+    paper: ,
     subject: "CSAT Paper II",
     topic: "Number System & Divisibility",
     questionText:
@@ -114,7 +114,7 @@ export const PYQ_DATABASE: PYQQuestion[] = [
     type: "Mains",
     year: 2023,
     paper: "Mains GS2",
-    subject: "Indian Polity & Governance",
+    subject: "राजस्थान का इतिहास, कला, संस्कृति, साहित्य, परम्परा एवं विरासत",
     topic: "Judicial Accountability & Independence",
     questionText:
       "Constitutional Morality is rooted in the Constitution itself and is founded on its essential facets. Explain the doctrine of 'Constitutional Morality' with the help of relevant judicial precedents.",

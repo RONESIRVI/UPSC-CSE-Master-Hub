@@ -43,7 +43,7 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
   // Modal for Add Custom Revision Item
   const [showAddModal, setShowAddModal] = useState(false);
   const [formTopicTitle, setFormTopicTitle] = useState("");
-  const [formSubject, setFormSubject] = useState("Indian Polity & Governance");
+  const [formSubject, setFormSubject] = useState("राजस्थान का इतिहास, कला, संस्कृति, साहित्य, परम्परा एवं विरासत");
   const [formPaper, setFormPaper] = useState("Prelims GS1");
   const [formSummaryText, setFormSummaryText] = useState("");
   const [formQuestion, setFormQuestion] = useState("");
@@ -450,13 +450,13 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
                     onChange={(e) => setFormPaper(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-bold cursor-pointer"
                   >
-                    <option value="Prelims GS1">Prelims GS1</option>
-                    <option value="Prelims CSAT">Prelims CSAT</option>
-                    <option value="Mains GS1">Mains GS1</option>
-                    <option value="Mains GS2">Mains GS2</option>
-                    <option value="Mains GS3">Mains GS3</option>
-                    <option value="Mains GS4">Mains GS4</option>
-                    <option value="Mains Essay">Mains Essay</option>
+                    <option value="Prelims GS1">Prelims (GK & GS)</option>
+                    <option value=>Prelims CSAT</option>
+                    <option value="Mains GS1">Mains Paper I</option>
+                    <option value="Mains GS2">Mains Paper II</option>
+                    <option value="Mains GS3">Mains Paper III</option>
+                    <option value="Mains GS4">Mains Paper IV (Hindi/Eng)</option>
+                    <option value=>Mains Essay</option>
                     <option value="Optional">Optional</option>
                   </select>
                 </div>

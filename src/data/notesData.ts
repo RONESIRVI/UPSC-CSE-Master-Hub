@@ -6,7 +6,7 @@ export const DEFAULT_QUICK_REVISION_NOTES: QuickRevisionNote[] = [
     topicId: "p1-polity-const",
     topicTitle: "Fundamental Rights (Art 12-35) & Writs",
     paper: "Prelims GS1",
-    subject: "Indian Polity & Governance",
+    subject: "राजस्थान का इतिहास, कला, संस्कृति, साहित्य, परम्परा एवं विरासत",
     bulletPoints: [
       "Habeas Corpus: 'To have the body'. Issued against both public authorities & private individuals.",
       "Mandamus: 'We Command'. Issued to public official to perform duty; NOT against private individual or President/Governor.",
@@ -75,7 +75,7 @@ export const DEFAULT_QUICK_REVISION_NOTES: QuickRevisionNote[] = [
     topicId: "p1-polity-system",
     topicTitle: "Governor Discretionary Powers & Landmark Rulings",
     paper: "Mains GS2",
-    subject: "Indian Polity & Governance",
+    subject: "राजस्थान का इतिहास, कला, संस्कृति, साहित्य, परम्परा एवं विरासत",
     bulletPoints: [
       "Constitutional Discretion (Art 163): Reservation of bills for President (Art 200), Recommendation of President's Rule (Art 356), Sixth Schedule administration.",
       "Situational Discretion: Appointment of CM when no party has clear majority; Dismissal of ministry unable to prove majority on floor.",

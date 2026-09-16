@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MockTestLog } from "../../types";
 import {
   BarChart2,
@@ -57,6 +57,26 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
             prelimsLogs.length
         )
       : 0;
+
+  useEffect(() => {
+    if (questionsAttempted > 0) {
+      const incorrect = questionsAttempted - correctCount;
+      let calcScore = 0;
+      
+      if (testType === "Prelims CSAT") {
+        calcScore = Math.max(0, (correctCount * 2.5) - (incorrect * 0.83));
+        setCutoffMarks(66.67);
+      } else {
+        calcScore = Math.max(0, (correctCount * 2) - (incorrect * 0.66));
+        setCutoffMarks(88);
+      }
+      
+      const calcAcc = Math.round((correctCount / questionsAttempted) * 100);
+      
+      setScore(parseFloat(calcScore.toFixed(2)));
+      setAccuracyPct(calcAcc);
+    }
+  }, [questionsAttempted, correctCount, testType]);
 
   const handleSaveMock = (e: React.FormEvent) => {
     e.preventDefault();
@@ -403,8 +423,8 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
                     type="number"
                     step="0.1"
                     value={score}
-                    onChange={(e) => setScore(parseFloat(e.target.value) || 0)}
-                    className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
+                    readOnly
+                    className="w-full bg-indigo-50/50 border border-indigo-200 text-indigo-900 font-bold text-xs rounded-xl px-3 py-2 outline-none cursor-not-allowed"
                   />
                 </div>
 
@@ -415,10 +435,8 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
                   <input
                     type="number"
                     value={accuracyPct}
-                    onChange={(e) =>
-                      setAccuracyPct(parseInt(e.target.value) || 0)
-                    }
-                    className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
+                    readOnly
+                    className="w-full bg-emerald-50/50 border border-emerald-200 text-emerald-900 font-bold text-xs rounded-xl px-3 py-2 outline-none cursor-not-allowed"
                   />
                 </div>
 
@@ -432,7 +450,7 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
                     onChange={(e) =>
                       setCutoffMarks(parseFloat(e.target.value) || 0)
                     }
-                    className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
+                    className="w-full bg-amber-50 border border-amber-300 text-amber-900 font-bold text-xs rounded-xl px-3 py-2 outline-none focus:border-amber-600"
                   />
                 </div>
               </div>

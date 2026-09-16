@@ -12,7 +12,6 @@ import {
 } from "../../types";
 import { CommandCenter } from "./CommandCenter";
 import { SmartAlerts } from "./SmartAlerts";
-import { SmartRecommendationCard } from "./SmartRecommendation";
 import { PreparationHealthScore } from "./PreparationHealth";
 import { PersonalizedPlan } from "./PersonalizedPlan";
 import { AudioRecorderModal } from "./AudioRecorderModal";
@@ -111,85 +110,7 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
     };
   }, [totalStudyTimeToday, dailyGoalHours, syllabus]);
 
-  const currentRecommendation = useMemo<SmartRecommendation | null>(() => {
-    const now = new Date();
-    const currentTimeMinutes = now.getHours() * 60 + now.getMinutes();
-
-    let activeTask = null;
-    let nextTask = null;
-
-    for (const task of dailyTasks) {
-      if (task.completed) continue;
-      if (!task.timeSlot) continue;
-      
-      const timeParts = task.timeSlot.split(" - ");
-      if (timeParts.length < 2) continue;
-      
-      const [startStr, endStr] = timeParts;
-      
-      const parseTime = (timeStr: string) => {
-         const [time, ampm] = timeStr.trim().split(" ");
-         if (!time || !ampm) return 0;
-         const [h, m] = time.split(":");
-         let hours = parseInt(h);
-         if (ampm === "PM" && hours !== 12) hours += 12;
-         if (ampm === "AM" && hours === 12) hours = 0;
-         return hours * 60 + parseInt(m);
-      };
-      
-      const start = parseTime(startStr);
-      const end = parseTime(endStr);
-      
-      if (currentTimeMinutes >= start && currentTimeMinutes < end) {
-        activeTask = task;
-        break;
-      } else if (currentTimeMinutes < start && !nextTask) {
-        nextTask = { task, start };
-      }
-    }
-    if (activeTask) {
-      return {
-        subject: activeTask.subject || "Study Session",
-        topic: activeTask.title,
-        reason: "Current active task from your schedule",
-        tags: ["Daily Plan", "Active"],
-        taskId: activeTask.id,
-        isFuture: false,
-      };
-    } else if (nextTask) {
-       return {
-        subject: nextTask.task.subject || "Study Session",
-        topic: nextTask.task.title,
-        reason: "Next upcoming task",
-        tags: ["Daily Plan", "Upcoming"],
-        taskId: nextTask.task.id,
-        isFuture: true,
-        startTimeMinutes: nextTask.start,
-      };
-    } else if (dailyTasks.find(t => !t.completed)) {
-       const task = dailyTasks.find(t => !t.completed)!;
-       return {
-        subject: task.subject || "Study Session",
-        topic: task.title,
-        reason: "Next uncompleted task",
-        tags: ["Daily Plan"],
-        taskId: task.id,
-        isFuture: false,
-      };
-    }
-
-    if (weakAreas.length > 0) {
-      return {
-        subject: weakAreas[0].subject,
-        topic: weakAreas[0].topic,
-        reason: "Critical Weak Area identified from recent Mock Tests",
-        tags: ["Weak Area", "High PYQ Frequency"],
-        isFuture: false,
-      };
-    }
-    return null;
-  }, [weakAreas, dailyTasks]);
-
+  // SmartRecommendation logic removed as requested
   const handleToggleTask = (taskId: string) => {
     setDailyTasks((prev) =>
       prev.map((t) => (t.id === taskId ? { ...t, completed: !t.completed } : t))
@@ -217,20 +138,7 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Left Column (Main Content) */}
         <div className="xl:col-span-2 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {currentRecommendation ? (
-              <SmartRecommendationCard
-                recommendation={currentRecommendation}
-                onStartStudy={() => {
-                  setActiveTab("prep");
-                }}
-              />
-            ) : (
-              <div className="bg-indigo-50 border-2 border-indigo-100 rounded-2xl p-6 text-center text-indigo-800">
-                <h3 className="font-bold mb-2">All Caught Up!</h3>
-                <p className="text-sm">You have completed your daily schedule. Take a break or do some spaced revision!</p>
-              </div>
-            )}
+          <div className="flex flex-col gap-6">
             <SmartAlerts
               overdueRevisions={overdueRevisions}
               criticalWeakAreas={criticalWeakAreas}

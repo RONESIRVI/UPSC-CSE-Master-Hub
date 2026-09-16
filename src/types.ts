@@ -10,7 +10,7 @@ export type PrepSubTab =
   | "syllabus"
   | "tracker"
   | "revision"
-  | "notes"
+  | "mindmaps"
   | "pyq";
 export type AnalyticsSubTab =
   | "progress"
@@ -417,4 +417,13 @@ export interface QuickRevisionNote {
   tags: string[];
   importance: "🔥 High Yield" | "⭐ Important" | "📘 Standard";
   updatedAt: string;
+}
+
+export interface Mindmap {
+  id: string;
+  title: string;
+  subject: string;
+  driveUrl: string;
+  tags?: string[];
+  createdAt?: string;
 }

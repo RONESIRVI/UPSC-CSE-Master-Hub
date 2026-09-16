@@ -10,7 +10,7 @@ import {
 import { SyllabusTab } from "./SyllabusTab";
 import { StudyPlanTab } from "./StudyPlanTab";
 import { SpacedRevisionTab } from "./SpacedRevisionTab";
-import { RevisionNotesTab } from "./RevisionNotesTab";
+import { MindmapsGalleryTab } from "./MindmapsGalleryTab";
 import { PYQTab } from "./PYQTab";
 
 
@@ -20,6 +20,7 @@ import {
   RotateCcw,
   HelpCircle,
   StickyNote,
+  Image as ImageIcon,
   ChevronDown,
   Check,
   Sparkles,
@@ -165,12 +166,12 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
       color: "bg-blue-50 text-blue-600 border-blue-200",
     },
     {
-      key: "notes",
-      label: "Quick Revision Notes",
-      description: "Local high-yield fact cards & key points binder",
-      icon: StickyNote,
-      badge: "Binder",
-      color: "bg-amber-50 text-amber-600 border-amber-200",
+      key: "mindmaps",
+      label: "Mindmaps Gallery",
+      description: "Visual notes & mindmaps synced from Google Drive",
+      icon: ImageIcon,
+      badge: "Gallery",
+      color: "bg-purple-50 text-purple-600 border-purple-200",
     },
     {
       key: "revision",
@@ -292,12 +293,12 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
           onAddTopic={onAddTopic}
           onDeleteTopic={onDeleteTopic}
           onResetDefaultSyllabus={onResetDefaultSyllabus}
-          onNavigateToNotes={() => setActiveSubTab("notes")}
+          onNavigateToNotes={() => setActiveSubTab("mindmaps")}
         />
       )}
 
-      {activeSubTab === "notes" && (
-        <RevisionNotesTab syllabus={syllabus} />
+      {activeSubTab === "mindmaps" && (
+        <MindmapsGalleryTab syllabus={syllabus} />
       )}
 
       {activeSubTab === "revision" && (

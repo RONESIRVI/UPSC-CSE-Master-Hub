@@ -428,25 +428,24 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
             return (
               <div
                 key={note.id}
-                className="bg-white border-2 border-slate-200 hover:border-indigo-300 rounded-2xl p-5 shadow-xs transition-all flex flex-col justify-between space-y-4"
+                className="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 group flex flex-col justify-between h-full"
               >
                 {/* Note Header */}
-                <div className="space-y-2">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      <span className="px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-bold text-[11px] border border-indigo-100 whitespace-nowrap">
-                        {note.paper}
-                      </span>
-                      <span className="text-xs text-slate-500 font-medium">
-                        {note.subject}
-                      </span>
-                      <span className="text-xs text-amber-700 font-bold whitespace-nowrap">
-                        • {note.importance}
+                <div className="space-y-4">
+                  <div className="flex items-start justify-between">
+                    <div className="flex flex-wrap items-center gap-2">
+                      {note.importance === "🔥 High Yield" && (
+                        <span className="px-2.5 py-1 bg-rose-100 text-rose-700 text-[10px] font-bold rounded-lg uppercase tracking-wider">
+                          🔥 High Yield
+                        </span>
+                      )}
+                      <span className="px-2.5 py-1 bg-slate-100 text-slate-600 text-[10px] font-bold rounded-lg uppercase">
+                        {note.paper} • {note.subject}
                       </span>
                     </div>
 
                     {/* Card Actions */}
-                    <div className="flex items-center gap-1 shrink-0">
+                    <div className="flex items-center gap-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button
                         onClick={() => handleCopyNote(note)}
                         className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition cursor-pointer"
@@ -477,27 +476,27 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
                     </div>
                   </div>
 
-                  <h3 className="text-base font-bold text-slate-900 leading-snug">
+                  <h3 className="text-xl font-bold text-slate-900 leading-tight group-hover:text-indigo-600 transition-colors">
                     {note.topicTitle}
                   </h3>
                 </div>
 
                 {/* Bullet Points List */}
-                <div className="bg-slate-50/80 rounded-xl p-3 border border-slate-100 space-y-2">
-                  <ul className="space-y-2">
+                <div className="mt-4 mb-6 space-y-3">
+                  <ul className="space-y-3">
                     {note.bulletPoints.map((point, idx) => (
                       <li
                         key={idx}
-                        className="flex items-start gap-2 text-xs text-slate-700 leading-relaxed font-medium"
+                        className="flex items-start gap-3"
                       >
-                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0" />
-                        <span>{point}</span>
+                        <svg className="w-4 h-4 text-indigo-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span className="text-sm text-slate-700 leading-relaxed font-medium">{point}</span>
                       </li>
                     ))}
                   </ul>
 
                   {/* Inline Quick Add Point */}
-                  <div className="pt-2 mt-2 border-t border-slate-200/70 flex items-center gap-2">
+                  <div className="pt-3 mt-3 border-t border-slate-100 flex items-center gap-2">
                     <input
                       type="text"
                       placeholder="+ Quick add a fact or article point..."
@@ -513,11 +512,11 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
                           handleAddInlinePoint(note.id);
                         }
                       }}
-                      className="flex-1 bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-[11px] text-slate-900 outline-none focus:ring-1 focus:ring-indigo-500 font-medium"
+                      className="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-slate-900 outline-none focus:ring-2 focus:ring-indigo-500 font-medium transition-all"
                     />
                     <button
                       onClick={() => handleAddInlinePoint(note.id)}
-                      className="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold rounded-lg transition cursor-pointer shrink-0"
+                      className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg transition cursor-pointer shrink-0"
                     >
                       Add
                     </button>
@@ -525,19 +524,19 @@ export const RevisionNotesTab: React.FC<RevisionNotesTabProps> = ({
                 </div>
 
                 {/* Note Footer & Tags */}
-                <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
-                  <div className="flex flex-wrap items-center gap-1.5">
+                <div className="pt-4 border-t border-slate-100 flex items-center justify-between mt-auto">
+                  <div className="flex flex-wrap items-center gap-2">
                     {note.tags.map((tag, i) => (
                       <span
                         key={i}
-                        className="text-[10px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200"
+                        className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest bg-indigo-50 px-2 py-1 rounded-md"
                       >
                         #{tag}
                       </span>
                     ))}
                   </div>
 
-                  <span className="text-[10px] text-slate-400 font-mono">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                     Updated: {note.updatedAt}
                   </span>
                 </div>

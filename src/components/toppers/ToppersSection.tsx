@@ -85,7 +85,7 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
     },
     {
       key: "notes",
-      label: "Mindmaps & Notes",
+      label: "Mindmaps & Notes Gallery",
       description:
         "Handwritten toppers notes, micro-diagrams & GS 1-4 high-yield mindmaps",
       icon: FileText,

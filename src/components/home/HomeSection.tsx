@@ -222,11 +222,7 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
               <SmartRecommendationCard
                 recommendation={currentRecommendation}
                 onStartStudy={() => {
-                  if (currentRecommendation.taskId) {
-                    onNavigateToTracker(currentRecommendation.taskId);
-                  } else {
-                    setActiveTab("prep");
-                  }
+                  setActiveTab("prep");
                 }}
               />
             ) : (

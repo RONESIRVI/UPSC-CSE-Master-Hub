@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { Capacitor } from '@capacitor/core';
@@ -386,7 +386,7 @@ export default function App() {
        const stat = topicStats[key];
        const percentage = stat.totalMarks > 0 ? (stat.totalMarksObtained / stat.totalMarks) * 100 : 0;
        
-       let severity: "Critical" | "Moderate" | "Mild" = "Mild";
+       let severity: "Critical" | "Moderate" | "Minor" = "Minor";
        if (percentage < 40) severity = "Critical";
        else if (percentage < 60) severity = "Moderate";
        

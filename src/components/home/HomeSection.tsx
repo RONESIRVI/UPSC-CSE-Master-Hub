@@ -75,19 +75,11 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
     const studyHoursScore =
       Math.min(
         100,
-        Math.round((totalStudyTimeToday / 3600 / dailyGoalHours) * 100)
       ) || 0;
+    
     const pyqScore = 0; 
     const revisionScore = 0;
     
-    // Calculate mock tests score (e.g. if average accuracy is > 0 or based on test counts)
-    const testsScore = mockLogs.length > 0 ? 
-      Math.min(100, Math.round(
-        mockLogs.reduce((acc, m) => acc + (m.accuracyRate || 0), 0) / mockLogs.length
-      )) : 0;
-      
-    const answersScore = 0;
-
     const completedSyllabus = syllabus.filter(
       (s) => s.status === "mastered" || s.status === "revised_2"
     ).length;
@@ -95,6 +87,12 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
       100,
       Math.round((completedSyllabus / Math.max(syllabus.length, 1)) * 100)
     ) || 0;
+
+    // Target Mocks: 40 for 100% syllabus completion
+    const targetMocks = Math.max(1, Math.round(40 * (syllabusScore / 100)));
+    const testsScore = Math.min(100, Math.round((mockLogs.length / targetMocks) * 100)) || 0;
+      
+    const answersScore = 0;
 
     const overallScore = Math.round(
       (studyHoursScore +

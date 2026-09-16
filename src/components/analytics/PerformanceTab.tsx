@@ -210,11 +210,11 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
           <table className="w-full text-left text-xs text-slate-700">
             <thead className="bg-slate-50 text-slate-700 uppercase font-bold text-[11px] border-b border-slate-200">
               <tr>
-                <th className="py-3 px-4">Test Title</th>
-                <th className="py-3 px-4">Score</th>
-                <th className="py-3 px-4">Cutoff Clearance</th>
-                <th className="py-3 px-4">Accuracy</th>
-                <th className="py-3 px-4">Date</th>
+                <th className="py-3 px-4 min-w-[200px]">Test Title</th>
+                <th className="py-3 px-4 whitespace-nowrap">Score</th>
+                <th className="py-3 px-4 whitespace-nowrap">Cutoff Clearance</th>
+                <th className="py-3 px-4 whitespace-nowrap">Accuracy</th>
+                <th className="py-3 px-4 whitespace-nowrap">Date</th>
                 <th className="py-3 px-4 text-right">Action</th>
               </tr>
             </thead>
@@ -227,19 +227,21 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
 
                 return (
                   <tr key={m.id} className="hover:bg-slate-50/80 transition">
-                    <td className="py-3.5 px-4 font-bold text-slate-900">
-                      {m.testSeriesName || m.testName || "Mock Test"}
-                      <span className="block text-[10px] text-slate-500 font-normal">
+                    <td className="py-3.5 px-4 font-bold text-slate-900 max-w-[250px]">
+                      <div className="truncate" title={m.testSeriesName || m.testName || "Mock Test"}>
+                        {m.testSeriesName || m.testName || "Mock Test"}
+                      </div>
+                      <span className="block text-[10px] text-slate-500 font-normal mt-0.5">
                         {m.type}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 font-mono font-extrabold text-indigo-600 text-sm">
+                    <td className="py-3.5 px-4 font-mono font-extrabold text-indigo-600 text-sm whitespace-nowrap">
                       {obtained}{" "}
                       <span className="text-xs text-slate-400 font-normal">
                         / {m.totalMarks}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4">
+                    <td className="py-3.5 px-4 whitespace-nowrap">
                       <span
                         className={`px-2.5 py-1 rounded-md text-[10px] font-bold border ${
                           cleared
@@ -252,10 +254,10 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
                           : `${delta.toFixed(1)} Below Cutoff`}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 font-mono font-bold text-slate-800">
+                    <td className="py-3.5 px-4 font-mono font-bold text-slate-800 whitespace-nowrap">
                       {m.accuracyRate ? `${m.accuracyRate}%` : "—"}
                     </td>
-                    <td className="py-3.5 px-4 text-slate-500 font-mono">
+                    <td className="py-3.5 px-4 text-slate-500 font-mono whitespace-nowrap">
                       {m.date}
                     </td>
                     <td className="py-3.5 px-4 text-right">

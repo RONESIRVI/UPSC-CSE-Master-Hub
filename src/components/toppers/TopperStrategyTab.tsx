@@ -55,7 +55,7 @@ export const TopperStrategyTab: React.FC<TopperStrategyTabProps> = ({
               Blueprint
             </span>
             <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
-              Decoded UPSC Scoring Strategies
+              Decoded RAS Scoring Strategies
             </span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">

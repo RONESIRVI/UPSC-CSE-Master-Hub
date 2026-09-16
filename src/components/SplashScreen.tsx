@@ -19,7 +19,7 @@ export function SplashScreen() {
       >
         <motion.img
           src="/splash-image.jpeg"
-          alt="UPSC Topper Intelligence App"
+          alt="RAS Topper Intelligence App"
           className="w-full h-auto max-h-[85vh] object-contain rounded-2xl shadow-[0_0_80px_rgba(79,70,229,0.3)] ring-1 ring-white/10"
           initial={{ y: 20 }}
           animate={{ y: 0 }}

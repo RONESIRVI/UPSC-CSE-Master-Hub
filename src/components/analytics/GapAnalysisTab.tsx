@@ -34,9 +34,7 @@ export const GapAnalysisTab: React.FC<GapAnalysisTabProps> = ({
             Gap Analysis & Effort Allocation Deficit
           </h2>
           <p className="text-sm text-slate-600 max-w-3xl leading-relaxed mt-1">
-            Many aspirants over-invest in low-yield subtopics (e.g. Ancient &
-            Medieval History) while neglecting high-yield game-changers (GS4
-            Ethics, CSAT, Essay, and Optional). Align your study time with marks
+            Many aspirants over-invest in low-yield subtopics while neglecting high-yield game-changers. Align your study time with marks
             return on investment.
           </p>
         </div>

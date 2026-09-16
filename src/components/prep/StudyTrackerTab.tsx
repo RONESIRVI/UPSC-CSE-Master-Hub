@@ -196,7 +196,7 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
     }
     const success = exportStudyLogsToCsv(
       logsToExport,
-      `upsc_study_sessions_${label}`
+      `ras_study_sessions_${label}`
     );
     if (success) {
       setExportFeedback(
@@ -225,7 +225,7 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
       const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
       
       if (Capacitor.isNativePlatform()) {
-        const fileName = `upsc_study_history_${new Date().getTime()}.jpg`;
+        const fileName = `ras_study_history_${new Date().getTime()}.jpg`;
         const base64Data = dataUrl.split(",")[1];
         
         const savedFile = await Filesystem.writeFile({
@@ -243,7 +243,7 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
         setExportFeedback("Photo shared successfully!");
       } else {
         const link = document.createElement("a");
-        link.download = `upsc_study_history_${new Date().getTime()}.jpg`;
+        link.download = `ras_study_history_${new Date().getTime()}.jpg`;
         link.href = dataUrl;
         link.click();
         setExportFeedback("Photo downloaded successfully!");
@@ -348,7 +348,7 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-100 flex items-center gap-1.5 w-fit">
-                  <Clock className="w-3.5 h-3.5 text-indigo-600" /> UPSC Focus
+                  <Clock className="w-3.5 h-3.5 text-indigo-600" /> RAS Focus
                   Engine
                 </span>
 
@@ -950,7 +950,7 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
           <div ref={historyListRef} className="p-2 bg-white rounded-lg space-y-2.5 max-h-[500px] overflow-y-auto pr-1">
             {/* Header for Image Export */}
             <div className="hidden print-header p-2 bg-indigo-50 border-b border-indigo-100 mb-4 rounded-xl">
-               <h2 className="text-sm font-bold text-indigo-900">UPSC Study Session History</h2>
+               <h2 className="text-sm font-bold text-indigo-900">RAS Study Session History</h2>
                <p className="text-xs text-indigo-700">Generated on: {new Date().toLocaleString()}</p>
             </div>
 

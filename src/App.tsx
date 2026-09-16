@@ -99,7 +99,7 @@ export default function App() {
 
           // Check for GitHub Releases
           const res = await fetch(
-            "https://api.github.com/repos/RONESIRVI/UPSC-CSE-Master-Hub/releases/latest"
+            "https://api.github.com/repos/RONESIRVI/RAS-CSE-Master-Hub/releases/latest"
           );
           const data = await res.json();
 
@@ -122,7 +122,7 @@ export default function App() {
                 await LocalNotifications.schedule({
                   notifications: [
                     {
-                      title: "🆕 UPSC Conquest Update!",
+                      title: "🆕 RAS Conquest Update!",
                       body: `Version ${data.tag_name} उपलब्ध है। App में जाकर 'Update Now' पर क्लिक करें।`,
                       id: 10,
                       schedule: { at: new Date(Date.now() + 500) },
@@ -200,7 +200,7 @@ export default function App() {
       await LocalNotifications.schedule({
         notifications: [
           {
-            title: "✓ UPSC CSE Master Hub Updated",
+            title: "✓ RAS CSE Master Hub Updated",
             body: `Version ${updateInfo.version} installed successfully.`,
             id: 2,
             schedule: { at: new Date(Date.now() + 1000) }
@@ -259,7 +259,7 @@ export default function App() {
 
   // Core Data States with LocalStorage Hydration
   const [strategies, setStrategies] = useState<StrategySetupItem[]>(() => {
-    const saved = localStorage.getItem("upsc_strategies");
+    const saved = localStorage.getItem("ras_strategies");
     const local = saved ? JSON.parse(saved) : [];
     if (!saved || local.length === 0) return STRATEGY_SETUP;
     const localMap = new Map(local.map((item: StrategySetupItem) => [item.id, item]));
@@ -270,7 +270,7 @@ export default function App() {
   });
 
   const [toppers, setToppers] = useState<TopperProfile[]>(() => {
-    const saved = localStorage.getItem("upsc_toppers");
+    const saved = localStorage.getItem("ras_toppers");
     const local = saved ? JSON.parse(saved) : [];
     if (!saved || local.length === 0) return TOPPERS_PROFILES;
     const localMap = new Map(local.map((item: TopperProfile) => [item.id, item]));
@@ -281,7 +281,7 @@ export default function App() {
   });
 
   const [topperRoutines, setTopperRoutines] = useState<TopperRoutine[]>(() => {
-    const saved = localStorage.getItem("upsc_topper_routines_v1");
+    const saved = localStorage.getItem("ras_topper_routines_v1");
     const local = saved ? JSON.parse(saved) : [];
     if (!saved || local.length === 0) return TOPPER_ROUTINES;
     const localMap = new Map(local.map((item: TopperRoutine) => [item.id, item]));
@@ -314,22 +314,22 @@ export default function App() {
   );
 
   const [sessionLogs, setSessionLogs] = useState<StudySessionLog[]>(() => {
-    const saved = localStorage.getItem("upsc_session_logs_v2");
+    const saved = localStorage.getItem("ras_session_logs_v2");
     return saved ? JSON.parse(saved) : [];
   });
 
   const [mockLogs, setMockLogs] = useState<MockTestLog[]>(() => {
-    const saved = localStorage.getItem("upsc_mock_logs_v2");
+    const saved = localStorage.getItem("ras_mock_logs_v2");
     return saved ? JSON.parse(saved) : DEFAULT_MOCK_LOGS;
   });
 
   const [revisionQueue, setRevisionQueue] = useState<RevisionItem[]>(() => {
-    const saved = localStorage.getItem("upsc_revision_queue_v2");
+    const saved = localStorage.getItem("ras_revision_queue_v2");
     return saved ? JSON.parse(saved) : DEFAULT_REVISION_QUEUE;
   });
 
   const [pyqs, setPyqs] = useState<PYQQuestion[]>(() => {
-    const saved = localStorage.getItem("upsc_pyqs_v2");
+    const saved = localStorage.getItem("ras_pyqs_v2");
     return saved ? JSON.parse(saved) : PYQ_DATABASE;
   });
 
@@ -337,6 +337,8 @@ export default function App() {
     const topicStats: Record<string, {
        subject: string;
        topic: string;
+       lastMockScore: number;
+       lastMockCutoff: number;
        tests: number;
        totalMarksObtained: number;
        totalMarks: number;
@@ -351,6 +353,8 @@ export default function App() {
         topicStats[key] = {
            subject: log.subject,
            topic: log.topic,
+           lastMockScore: log.marksObtained,
+           lastMockCutoff: log.cutoffScore || 80,
            tests: 0,
            totalMarksObtained: 0,
            totalMarks: 0,
@@ -359,6 +363,8 @@ export default function App() {
         };
       }
       topicStats[key].tests += 1;
+      topicStats[key].lastMockScore = log.marksObtained;
+      topicStats[key].lastMockCutoff = log.cutoffScore || 80;
       topicStats[key].totalMarksObtained += log.marksObtained;
       topicStats[key].totalMarks += log.totalMarks;
       topicStats[key].incorrectCount += (log.incorrectCount || 0);
@@ -371,6 +377,8 @@ export default function App() {
         topicStats[key] = {
            subject: log.subject,
            topic: log.topicCovered,
+           lastMockScore: 0,
+           lastMockCutoff: 80,
            tests: 0,
            totalMarksObtained: 0,
            totalMarks: 0,
@@ -384,6 +392,11 @@ export default function App() {
     const calculatedWeakAreas: WeakAreaItem[] = [];
     Object.keys(topicStats).forEach((key, idx) => {
        const stat = topicStats[key];
+       
+       if (stat.tests > 0 && stat.lastMockScore >= stat.lastMockCutoff + 12) {
+          return; // Topic mastered according to strict RAS criteria
+       }
+
        const percentage = stat.totalMarks > 0 ? (stat.totalMarksObtained / stat.totalMarks) * 100 : 0;
        
        let severity: "Critical" | "Moderate" | "Minor" = "Minor";
@@ -421,13 +434,13 @@ export default function App() {
   }, [mockLogs, sessionLogs]);
 
   const [dailyTasks, setDailyTasks] = useState<DailyTask[]>(() => {
-    const saved = localStorage.getItem("upsc_daily_tasks_v2");
-    const savedDate = localStorage.getItem("upsc_daily_tasks_date");
+    const saved = localStorage.getItem("ras_daily_tasks_v2");
+    const savedDate = localStorage.getItem("ras_daily_tasks_date");
     const today = new Date().toISOString().split("T")[0];
     
     if (savedDate !== today) {
-      localStorage.removeItem("upsc_daily_tasks_v2");
-      localStorage.setItem("upsc_daily_tasks_date", today);
+      localStorage.removeItem("ras_daily_tasks_v2");
+      localStorage.setItem("ras_daily_tasks_date", today);
       return [];
     }
     
@@ -439,7 +452,7 @@ export default function App() {
     return saved ? JSON.parse(saved) : [];
   });
   const [studyStreak, setStudyStreak] = useState<number>(() => {
-    const saved = localStorage.getItem("upsc_study_streak_v1");
+    const saved = localStorage.getItem("ras_study_streak_v1");
     return saved ? JSON.parse(saved) : 0;
   });
 
@@ -489,31 +502,31 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("upsc_toppers_v1", JSON.stringify(toppers));
+    localStorage.setItem("ras_toppers_v1", JSON.stringify(toppers));
   }, [toppers]);
 
   useEffect(() => {
-    localStorage.setItem("upsc_topper_routines_v1", JSON.stringify(topperRoutines));
+    localStorage.setItem("ras_topper_routines_v1", JSON.stringify(topperRoutines));
   }, [topperRoutines]);
 
   useEffect(() => {
-    localStorage.setItem("upsc_strategies", JSON.stringify(strategies));
-    localStorage.setItem("upsc_toppers", JSON.stringify(toppers));
+    localStorage.setItem("ras_strategies", JSON.stringify(strategies));
+    localStorage.setItem("ras_toppers", JSON.stringify(toppers));
     localStorage.setItem("ras_syllabus_v2", JSON.stringify(syllabus));
     localStorage.setItem(
       "ras_study_plan_v1",
       JSON.stringify(studyPlanPhases)
     );
-    localStorage.setItem("upsc_session_logs_v2", JSON.stringify(sessionLogs));
-    localStorage.setItem("upsc_mock_logs_v2", JSON.stringify(mockLogs));
+    localStorage.setItem("ras_session_logs_v2", JSON.stringify(sessionLogs));
+    localStorage.setItem("ras_mock_logs_v2", JSON.stringify(mockLogs));
     localStorage.setItem(
-      "upsc_revision_queue_v2",
+      "ras_revision_queue_v2",
       JSON.stringify(revisionQueue)
     );
-    localStorage.setItem("upsc_pyqs_v2", JSON.stringify(pyqs));
+    localStorage.setItem("ras_pyqs_v2", JSON.stringify(pyqs));
     localStorage.setItem("ras_audio_notes_v2", JSON.stringify(audioNotes));
-    localStorage.setItem("upsc_daily_tasks_v2", JSON.stringify(dailyTasks));
-    localStorage.setItem("upsc_study_streak_v1", JSON.stringify(studyStreak));
+    localStorage.setItem("ras_daily_tasks_v2", JSON.stringify(dailyTasks));
+    localStorage.setItem("ras_study_streak_v1", JSON.stringify(studyStreak));
   }, [
     strategies,
     toppers,
@@ -591,7 +604,7 @@ export default function App() {
 
   const handleResetDefaultSyllabus = () => {
     setSyllabus(DEFAULT_SYLLABUS);
-    localStorage.setItem("upsc_syllabus", JSON.stringify(DEFAULT_SYLLABUS));
+    localStorage.setItem("ras_syllabus", JSON.stringify(DEFAULT_SYLLABUS));
   };
 
   // Handlers for Study Plan Milestones
@@ -652,7 +665,7 @@ export default function App() {
 
   const handleResetDefaultStudyPlan = () => {
     setStudyPlanPhases(DEFAULT_STUDY_PLAN);
-    localStorage.setItem("upsc_study_plan", JSON.stringify(DEFAULT_STUDY_PLAN));
+    localStorage.setItem("ras_study_plan", JSON.stringify(DEFAULT_STUDY_PLAN));
   };
 
   // Handlers for Study Session Logs
@@ -688,7 +701,7 @@ export default function App() {
       },
     ];
     setSessionLogs(defaults);
-    localStorage.setItem("upsc_study_logs", JSON.stringify(defaults));
+    localStorage.setItem("ras_study_logs", JSON.stringify(defaults));
   };
 
   // Handlers for Mock Test Logs
@@ -716,7 +729,7 @@ export default function App() {
   const handleResetDefaultRevisionQueue = () => {
     setRevisionQueue(DEFAULT_REVISION_QUEUE);
     localStorage.setItem(
-      "upsc_revision_queue",
+      "ras_revision_queue",
       JSON.stringify(DEFAULT_REVISION_QUEUE)
     );
   };
@@ -732,14 +745,14 @@ export default function App() {
 
   const handleResetDefaultPYQs = () => {
     setPyqs(PYQ_DATABASE);
-    localStorage.setItem("upsc_pyqs", JSON.stringify(PYQ_DATABASE));
+    localStorage.setItem("ras_pyqs", JSON.stringify(PYQ_DATABASE));
   };
 
 
 
   const handleAdoptRoutine = (routine: TopperRoutine) => {
     const today = new Date().toISOString().split("T")[0];
-    localStorage.setItem("upsc_daily_tasks_date", today);
+    localStorage.setItem("ras_daily_tasks_date", today);
     // Convert TopperRoutine schedule to DailyTasks
     const newTasks: DailyTask[] = routine.schedule.map((item, idx) => ({
       id: `adopted-task-${Date.now()}-${idx}`,
@@ -815,7 +828,7 @@ export default function App() {
                 try {
                   alert("🔄 Checking for latest update from GitHub...");
                   const res = await fetch(
-                    "https://api.github.com/repos/RONESIRVI/UPSC-CSE-Master-Hub/releases/latest"
+                    "https://api.github.com/repos/RONESIRVI/RAS-CSE-Master-Hub/releases/latest"
                   );
                   const data = await res.json();
                   const asset = data?.assets?.find((a: any) => a.name === "dist.zip");
@@ -1113,7 +1126,7 @@ export default function App() {
                 U
               </span>
               <span className="font-semibold text-slate-700">
-                UPSC CONQUEST Master Hub
+                RAS CONQUEST Master Hub
               </span>
               <span>• Bento Grid Preparation Suite</span>
             </div>

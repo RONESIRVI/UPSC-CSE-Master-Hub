@@ -132,7 +132,7 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
               Active Spaced Repetition Review Queue
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed mt-1">
-              Without active revision, 80% of UPSC information is forgotten
+              Without active revision, 80% of RAS information is forgotten
               within 48 hours. Review your scheduled flashcards and topic
               summaries to permanently anchor concepts into long-term memory.
             </p>
@@ -151,7 +151,7 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
             {onResetDefaultRevisionQueue && (
               <button
                 onClick={() => {
-                  if (confirm("Restore standard UPSC Spaced Revision Queue?")) {
+                  if (confirm("Restore standard RAS Spaced Revision Queue?")) {
                     onResetDefaultRevisionQueue();
                   }
                 }}

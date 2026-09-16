@@ -80,7 +80,7 @@ export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
               </span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">
-              Personalized UPSC Study Roadmap
+              Personalized RAS Study Roadmap
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed mt-1">
               Follow a time-tested 4-phase preparation lifecycle: Foundation ➔
@@ -104,14 +104,14 @@ export const StudyPlanTab: React.FC<StudyPlanTabProps> = ({
                 onClick={() => {
                   if (
                     confirm(
-                      "Restore standard UPSC 4-Phase study plan? Your custom milestones will be reset."
+                      "Restore standard RAS 4-Phase study plan? Your custom milestones will be reset."
                     )
                   ) {
                     onResetDefaultStudyPlan();
                   }
                 }}
                 className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition cursor-pointer"
-                title="Restore Standard UPSC Study Roadmap"
+                title="Restore Standard RAS Study Roadmap"
               >
                 <RotateCcw className="w-3.5 h-3.5 shrink-0" />
                 <span>Restore Standard Plan</span>

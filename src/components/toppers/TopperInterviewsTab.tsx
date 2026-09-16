@@ -34,7 +34,7 @@ export const TopperInterviewsTab: React.FC<TopperInterviewsTabProps> = ({ audioN
           <div>
             <div className="flex items-center gap-2">
               <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-100 flex items-center gap-1.5">
-                <Users className="w-3.5 h-3.5 text-emerald-600" /> UPSC
+                <Users className="w-3.5 h-3.5 text-emerald-600" /> RAS
                 Personality Test Vault
               </span>
               <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
@@ -45,7 +45,7 @@ export const TopperInterviewsTab: React.FC<TopperInterviewsTabProps> = ({ audioN
               Real Interview Transcripts & DAF Grilling Analysis
             </h2>
             <p className="text-sm text-slate-600 max-w-3xl leading-relaxed mt-1">
-              Read authentic UPSC interview board transcripts, psychological
+              Read authentic RAS interview board transcripts, psychological
               composure techniques, situational reaction questions, and DAF
               (Detailed Application Form) defense strategies.
             </p>

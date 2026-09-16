@@ -90,7 +90,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
     {
       key: "gap-analysis",
       label: "Effort Gap Analysis",
-      description: "UPSC weightage vs actual study hours parity analysis",
+      description: "RAS weightage vs actual study hours parity analysis",
       icon: Scale,
       badge: "Weightage vs Hours",
       color: "bg-amber-50 text-amber-600 border-amber-200",
@@ -99,7 +99,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
       key: "rank-benchmark",
       label: "Rank Benchmark & Cutoffs",
       description:
-        "Yearly Prelims & Mains UPSC official cutoffs and topper marks benchmark",
+        "Yearly Prelims & Mains RAS official cutoffs and topper marks benchmark",
       icon: Trophy,
       badge: "AIR 1 Cutoffs",
       color: "bg-purple-50 text-purple-600 border-purple-200",

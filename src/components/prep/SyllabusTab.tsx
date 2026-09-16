@@ -212,7 +212,7 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
             <div className="flex flex-wrap items-center gap-2">
               <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-100 flex items-center gap-1.5">
                 <BookOpen className="w-3.5 h-3.5 text-emerald-600 shrink-0" />{" "}
-                UPSC Syllabus Engine
+                RAS Syllabus Engine
               </span>
               <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
                 Flexible & Customizable
@@ -222,7 +222,7 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
               Hierarchical Syllabus Tracker
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed mt-1">
-              Track official UPSC syllabus micro-topics or add your own custom
+              Track official RAS syllabus micro-topics or add your own custom
               optional/mains subjects. Cycle your revisions and track your mastery.
             </p>
           </div>
@@ -263,14 +263,14 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                   onClick={() => {
                     if (
                       confirm(
-                        "Restore official UPSC standard syllabus? Custom added topics will be reset."
+                        "Restore official RAS standard syllabus? Custom added topics will be reset."
                       )
                     ) {
                       onResetDefaultSyllabus();
                     }
                   }}
                   className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-semibold transition cursor-pointer"
-                  title="Reset to official UPSC syllabus"
+                  title="Reset to official RAS syllabus"
                 >
                   <RotateCcw className="w-3.5 h-3.5 shrink-0" />
                   <span>Restore Standard</span>

@@ -88,9 +88,14 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
       Math.round((completedSyllabus / Math.max(syllabus.length, 1)) * 100)
     ) || 0;
 
-    // Target Mocks: 40 for 100% syllabus completion
-    const targetMocks = Math.max(1, Math.round(40 * (syllabusScore / 100)));
-    const testsScore = Math.min(100, Math.round((mockLogs.length / targetMocks) * 100)) || 0;
+    // Target Mocks: 3 tests per subtopic in the entire syllabus
+    const totalSubtopics = syllabus.reduce((acc, topic) => acc + (topic.subtopics?.length || 0), 0);
+    const totalTargetMocks = totalSubtopics * 3;
+    const targetMocks = Math.max(1, Math.round(totalTargetMocks * (syllabusScore / 100)));
+    
+    // Only count mocks where score >= cutoff + 12
+    const validMocksCount = mockLogs.filter(m => (m.marksObtained ?? 0) >= ((m.cutoffScore ?? 80) + 12)).length;
+    const testsScore = Math.min(100, Math.round((validMocksCount / targetMocks) * 100)) || 0;
       
     const answersScore = 0;
 

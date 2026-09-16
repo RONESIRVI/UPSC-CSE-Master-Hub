@@ -19,7 +19,7 @@ export const PYQ_DATABASE: PYQQuestion[] = [
     ],
     correctOption: "B",
     explanation:
-      "'Due Process of Law' (derived from the US Constitution and established in India via the Maneka Gandhi case, 1978) requires that a law must not only be enacted following the proper procedure, but the law itself must be just, fair, and reasonable. Hence, 'Fair application of law' (or Principle of Natural Justice / substantive fairness) is the closest interpretation. In the official UPSC key, fair application / natural justice principles were the intended essence.",
+      "'Due Process of Law' (derived from the US Constitution and established in India via the Maneka Gandhi case, 1978) requires that a law must not only be enacted following the proper procedure, but the law itself must be just, fair, and reasonable. Hence, 'Fair application of law' (or Principle of Natural Justice / substantive fairness) is the closest interpretation. In the official RAS key, fair application / natural justice principles were the intended essence.",
     eliminationTechnique:
       "Eliminate (A) immediately because 'Procedure established by law' is the narrower British/original Indian concept before Maneka Gandhi 1978.",
   },

@@ -68,7 +68,7 @@ export const PRESET_CONFIGS: {
   },
   {
     id: "gs_marathon_90",
-    name: "UPSC GS Marathon",
+    name: "RAS GS Marathon",
     badge: "90 / 15 min",
     focus: 90,
     shortBreak: 15,
@@ -87,7 +87,7 @@ export const PRESET_CONFIGS: {
     longBreak: 40,
     cycles: 2,
     description:
-      "Authentic 2-hour UPSC exam slot simulation (9:30-11:30 AM GS1 or CSAT Paper II).",
+      "Authentic 2-hour RAS exam slot simulation (9:30-11:30 AM GS1 or CSAT Paper II).",
     tagColor: "bg-emerald-50 text-emerald-700 border-emerald-200",
   },
   {

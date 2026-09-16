@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MockTestLog } from "../../types";
+import { MockTestLog, SyllabusTopic } from "../../types";
 import {
   BarChart2,
   CheckCircle2,
@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 interface PerformanceTabProps {
-  syllabus: any[];
+  syllabus: SyllabusTopic[];
   mockLogs: MockTestLog[];
   onAddMockLog: (log: MockTestLog) => void;
   onDeleteMockLog: (id: string) => void;
@@ -80,6 +80,32 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
 
   const handleSaveMock = (e: React.FormEvent) => {
     e.preventDefault();
+    if (mockTestType === "Topic Wise" && (!subject || selectedSubtopics.length === 0)) {
+      alert("Please select a subject and at least one topic for Topic Wise test.");
+      return;
+    }
+
+    if (mockTestType === "Full Length" && !testName.trim()) {
+      alert("Please enter a test title for Full Length test.");
+      return;
+    }
+
+    if (questionsAttempted < correctCount) {
+       alert("Correct questions cannot exceed attempted questions.");
+       return;
+    }
+
+    // NEW VALIDATION: Ensure the syllabus topic has started processing
+    if (mockTestType === "Topic Wise") {
+      const parentTopic = syllabus.find(s => s.subject === subject);
+      if (parentTopic) {
+        if (parentTopic.status === "not_started") {
+          alert(`Cannot log mock test! You haven't started processing the subject: "${subject}". Please update its status in the Syllabus Tracker first.`);
+          return;
+        }
+      }
+    }
+
     const autoTitle = mockTestType === "Topic Wise" && subject 
        ? `${subject} — ${selectedSubtopics.join(", ")}` 
        : testName.trim() || "Full Mock Test";

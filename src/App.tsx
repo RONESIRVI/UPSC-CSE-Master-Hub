@@ -402,12 +402,12 @@ export default function App() {
          id: `dynamic-weak-${idx}`,
          subject: stat.subject,
          topic: stat.topic,
+         paper: "Mock Analysis",
          severity: severity,
-         failedQuestions: stat.incorrectCount,
-         negativeMarksLost: (stat.incorrectCount * 0.66),
-         trend: trend,
-         lastTestedDate: new Date().toISOString().split("T")[0],
-         remedyAction: stat.studyMinutes > 0 
+         failedQuestionsCount: stat.incorrectCount,
+         estimatedMarkLoss: (stat.incorrectCount * 0.66),
+         priorityBook: "Standard Source",
+         recommendedAction: stat.studyMinutes > 0 
            ? `Revise your notes. You have studied this for ${Math.floor(stat.studyMinutes/60)}h ${stat.studyMinutes%60}m.`
            : `Focus on ${stat.topic} core concepts and solve PYQs.`,
        });

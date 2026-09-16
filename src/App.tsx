@@ -867,6 +867,7 @@ export default function App() {
                     studyPlanPhases={studyPlanPhases}
                     currentStudySession={currentStudySession}
                     setCurrentStudySession={setCurrentStudySession}
+                    mockLogs={mockLogs}
                     onSaveAudioNote={(note) => {
                       setAudioNotes(prev => [note, ...prev]);
                       // Auto switch to toppers interview tab to show the saved note

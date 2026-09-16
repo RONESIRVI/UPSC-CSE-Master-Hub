@@ -297,7 +297,25 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
                     <option value="Insight">Insight</option>
                   </select>
                 </div>
-
+                
+                <div>
+                  <label className="text-xs font-bold text-slate-700 block mb-1">
+                    Exam Type
+                  </label>
+                  <select
+                    value={testType}
+                    onChange={(e) => setTestType(e.target.value as any)}
+                    className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
+                  >
+                    <option value="Prelims GS1">Prelims GS1</option>
+                    <option value="Prelims CSAT">Prelims CSAT</option>
+                    <option value="Mains GS">Mains GS</option>
+                    <option value="Mains Essay">Mains Essay</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 gap-3">
                 <div>
                   <label className="text-xs font-bold text-slate-700 block mb-1">
                     Type

@@ -9,6 +9,7 @@ import {
   StudyPlanPhase,
   SmartRecommendation,
   PreparationHealth,
+  MockTestLog,
 } from "../../types";
 import { CommandCenter } from "./CommandCenter";
 import { SmartAlerts } from "./SmartAlerts";
@@ -38,6 +39,7 @@ interface HomeSectionProps {
     topic: string;
     taskType: "study" | "revision" | "pyq" | "notes" | "answer_writing";
   }>>;
+  mockLogs?: MockTestLog[];
   onSaveAudioNote: (note: any) => void;
 }
 
@@ -53,6 +55,7 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
   revisionQueue,
   currentStudySession,
   setCurrentStudySession,
+  mockLogs = [],
   onSaveAudioNote,
 }) => {
   const [isAudioModalOpen, setIsAudioModalOpen] = React.useState(false);
@@ -76,7 +79,13 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
       ) || 0;
     const pyqScore = 0; 
     const revisionScore = 0;
-    const testsScore = 0;
+    
+    // Calculate mock tests score (e.g. if average accuracy is > 0 or based on test counts)
+    const testsScore = mockLogs.length > 0 ? 
+      Math.min(100, Math.round(
+        mockLogs.reduce((acc, m) => acc + (m.accuracyRate || 0), 0) / mockLogs.length
+      )) : 0;
+      
     const answersScore = 0;
 
     const completedSyllabus = syllabus.filter(

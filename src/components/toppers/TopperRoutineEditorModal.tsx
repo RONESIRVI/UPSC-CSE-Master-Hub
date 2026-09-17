@@ -44,6 +44,40 @@ export const TopperRoutineEditorModal: React.FC<TopperRoutineEditorModalProps> =
             />
           </div>
 
+          <div className="grid grid-cols-3 gap-4">
+            <div>
+              <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Wake-up Time</label>
+              <input
+                type="text"
+                placeholder="e.g. 05:00 AM"
+                value={formData.wakeUpTime || ""}
+                onChange={(e) => setFormData({ ...formData, wakeUpTime: e.target.value })}
+                className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Sleep Time</label>
+              <input
+                type="text"
+                placeholder="e.g. 10:30 PM"
+                value={formData.sleepTime || ""}
+                onChange={(e) => setFormData({ ...formData, sleepTime: e.target.value })}
+                className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Total Hours</label>
+              <input
+                type="number"
+                min="0"
+                step="0.5"
+                value={formData.totalStudyHours || 0}
+                onChange={(e) => setFormData({ ...formData, totalStudyHours: parseFloat(e.target.value) || 0 })}
+                className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2"
+              />
+            </div>
+          </div>
+
           <div className="space-y-3">
             <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Schedule Items</label>
             {formData.schedule.map((item, idx) => (

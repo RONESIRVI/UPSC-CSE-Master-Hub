@@ -529,9 +529,26 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                   <h3 className="text-sm sm:text-base font-bold text-slate-900">
                     {topic.title}
                   </h3>
-                  <p className="text-xs text-slate-500 line-clamp-1 font-medium">
-                    {topic.module}
-                  </p>
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    {topic.module && topic.module !== '—' && (
+                      <p className="text-xs text-slate-500 font-medium">{topic.module}</p>
+                    )}
+                    {topic.priority && (
+                      <span className="text-xs text-yellow-700 font-bold bg-yellow-50 border border-yellow-200 px-2 py-0.5 rounded-md">
+                        {topic.priority}
+                      </span>
+                    )}
+                    {topic.questionEstimate && (
+                      <span className="text-[10px] text-indigo-700 font-bold bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-md">
+                        ~{topic.questionEstimate} MCQ
+                      </span>
+                    )}
+                    {topic.commonPreMains && (
+                      <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">
+                        Pre+Mains दोनों
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 {/* Right Action buttons */}
@@ -589,12 +606,55 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
               {/* Expanded Micro-Subtopics Sub-tree */}
               {isExpanded && (
                 <div className="px-4 sm:px-5 pb-5 pt-3 border-t border-slate-100 space-y-3 bg-slate-50/70 rounded-b-2xl">
+
+                  {/* क्या तैयार करें — from Excel */}
+                  {topic.studyGuide && (
+                    <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-3 text-xs">
+                      <div className="flex items-center gap-1.5 font-bold text-indigo-800 mb-1">
+                        <BookOpen className="w-3.5 h-3.5 shrink-0" />
+                        क्या तैयार करें (Excel Guide)
+                      </div>
+                      <p className="text-indigo-900 leading-relaxed">{topic.studyGuide}</p>
+                    </div>
+                  )}
+
+                  {/* Exam Tips */}
+                  {topic.examTips && (
+                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs">
+                      <div className="flex items-center gap-1.5 font-bold text-amber-800 mb-1">
+                        <Sparkles className="w-3.5 h-3.5 shrink-0" />
+                        Exam Tips
+                      </div>
+                      <p className="text-amber-900 leading-relaxed">{topic.examTips}</p>
+                    </div>
+                  )}
+
+                  {/* User Notes */}
                   {topic.notes && (
-                    <div className="text-xs text-amber-800 bg-amber-50/70 p-3 rounded-xl border border-amber-200">
-                      <strong className="text-amber-900">
-                        Study Strategy Note:{" "}
-                      </strong>
+                    <div className="text-xs text-slate-800 bg-slate-100 p-3 rounded-xl border border-slate-200">
+                      <strong className="text-slate-900">📝 My Notes: </strong>
                       {topic.notes}
+                    </div>
+                  )}
+
+                  {/* Meta info row */}
+                  {(topic.source || topic.questionType || topic.questionEstimate) && (
+                    <div className="flex flex-wrap gap-2 text-[10px]">
+                      {topic.questionType && (
+                        <span className="px-2 py-1 rounded-md bg-purple-50 text-purple-700 border border-purple-200 font-bold">
+                          {topic.questionType}
+                        </span>
+                      )}
+                      {topic.questionEstimate && (
+                        <span className="px-2 py-1 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200 font-bold">
+                          Est. {topic.questionEstimate} MCQ
+                        </span>
+                      )}
+                      {topic.source && (
+                        <span className="px-2 py-1 rounded-md bg-slate-100 text-slate-700 border border-slate-200 font-medium">
+                          📚 {topic.source}
+                        </span>
+                      )}
                     </div>
                   )}
 

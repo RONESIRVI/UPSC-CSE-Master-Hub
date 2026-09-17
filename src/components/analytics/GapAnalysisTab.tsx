@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
+import { SyllabusTopic, StudySessionLog, TimeVsWeightageGap } from "../../types";
 import { GAP_ANALYSIS_METRICS } from "../../data/analyticsDefaults";
 import {
   Layers,
@@ -9,15 +10,111 @@ import {
   Scale,
   Download,
   BookOpen,
+  Filter
 } from "lucide-react";
 
 interface GapAnalysisTabProps {
+  syllabus?: SyllabusTopic[];
+  sessionLogs?: StudySessionLog[];
   onOpenExportReport?: () => void;
 }
 
 export const GapAnalysisTab: React.FC<GapAnalysisTabProps> = ({
+  syllabus = [],
+  sessionLogs = [],
   onOpenExportReport,
 }) => {
+  const [selectedPaper, setSelectedPaper] = useState<string>("All");
+
+  // Get unique papers from syllabus
+  const papers = useMemo(() => {
+    const p = new Set<string>();
+    syllabus.forEach(t => {
+      if (t.paper) p.add(t.paper);
+    });
+    return ["All", ...Array.from(p)];
+  }, [syllabus]);
+
+  // Compute dynamic gap analysis based on syllabus & sessionLogs
+  const dynamicMetrics = useMemo(() => {
+    if (!syllabus || syllabus.length === 0) return GAP_ANALYSIS_METRICS;
+
+    // Filter topics by paper
+    const filteredTopics = selectedPaper === "All" 
+      ? syllabus 
+      : syllabus.filter(t => t.paper === selectedPaper);
+
+    if (filteredTopics.length === 0) return [];
+
+    // Filter session logs
+    const filteredLogs = selectedPaper === "All"
+      ? sessionLogs
+      : sessionLogs.filter(log => log.paper === selectedPaper);
+
+    let totalQs = 0;
+    let totalTime = 0;
+
+    const subjectMap = new Map<string, { qCount: number; timeCount: number; recommendation: string }>();
+
+    // 1. Gather Questions Weightage
+    filteredTopics.forEach(topic => {
+      const qMatch = topic.questionEstimate?.match(/\d+/);
+      const q = qMatch ? parseInt(qMatch[0]) : 0;
+      
+      const subj = topic.subject || "Other";
+      if (!subjectMap.has(subj)) {
+        subjectMap.set(subj, { qCount: 0, timeCount: 0, recommendation: topic.studyGuide || "Focus on key topics." });
+      }
+      subjectMap.get(subj)!.qCount += q;
+      totalQs += q;
+    });
+
+    // 2. Gather Time Invested
+    filteredLogs.forEach(log => {
+      const subj = log.subject || "Other";
+      if (!subjectMap.has(subj)) {
+        subjectMap.set(subj, { qCount: 0, timeCount: 0, recommendation: "Review study strategy." });
+      }
+      subjectMap.get(subj)!.timeCount += log.durationMinutes;
+      totalTime += log.durationMinutes;
+    });
+
+    // 3. Compute Gap
+    const metrics: TimeVsWeightageGap[] = [];
+
+    subjectMap.forEach((data, subject) => {
+      // If we don't have enough data to calculate percentages properly, fallback to even spread or zero
+      const idealPct = totalQs > 0 ? (data.qCount / totalQs) * 100 : 0;
+      const actualPct = totalTime > 0 ? (data.timeCount / totalTime) * 100 : 0;
+      
+      const delta = Math.round(actualPct - idealPct);
+      let status: "Under-Allocated" | "Balanced" | "Over-Allocated" = "Balanced";
+      
+      if (delta < -3) status = "Under-Allocated";
+      else if (delta > 3) status = "Over-Allocated";
+
+      // If user hasn't started logging time, and there are no estimates, skip it if not relevant
+      if (data.qCount === 0 && data.timeCount === 0) return;
+
+      metrics.push({
+        subject,
+        actualTimePercent: Math.round(actualPct),
+        idealWeightagePercent: Math.round(idealPct),
+        deltaPercent: delta,
+        status,
+        recommendation: data.recommendation,
+      });
+    });
+
+    // Sort by largest gap magnitude
+    metrics.sort((a, b) => Math.abs(b.deltaPercent || 0) - Math.abs(a.deltaPercent || 0));
+
+    // If completely empty (no time logged, no questions estimated), fallback
+    if (metrics.length === 0) return GAP_ANALYSIS_METRICS;
+    
+    return metrics;
+  }, [syllabus, sessionLogs, selectedPaper]);
+
   return (
     <div className="space-y-6">
       {/* Top Banner */}
@@ -28,15 +125,15 @@ export const GapAnalysisTab: React.FC<GapAnalysisTabProps> = ({
               <Scale className="w-3.5 h-3.5 text-indigo-600" /> ROI Optimizer
             </span>
             <span className="px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-bold border border-amber-100">
-              RAS/RPSC 2026 — Based on Excel Priority & MCQ Data
+              Live Syllabus Synced
             </span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">
-            RAS Effort Gap Analysis
+            Dynamic Effort Gap Analysis
           </h2>
           <p className="text-sm text-slate-600 max-w-3xl leading-relaxed mt-1">
-            आपके अध्ययन समय की तुलना RPSC पेपर के subject-wise MCQ weightage से की गई है।
-            ★★★★★ priority वाले subjects पर ध्यान दें — ये RAS Prelims में सबसे ज़्यादा MCQ लाते हैं।
+            यह सेक्शन आपके द्वारा लॉग किए गए अध्ययन समय की तुलना सिलेबस के अनुसार अनुमानित प्रश्नों के वेटेज से करता है।
+            सही पेपर चुनें और अपनी रणनीति (Strategy) को संतुलित (Balance) करें।
           </p>
         </div>
 
@@ -52,174 +149,152 @@ export const GapAnalysisTab: React.FC<GapAnalysisTabProps> = ({
         )}
       </div>
 
-      {/* Priority Legend */}
-      <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 shadow-sm">
-        <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
-          RAS Priority Scale (Excel से derived)
-        </p>
-        <div className="flex flex-wrap gap-2 text-xs font-semibold">
-          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-rose-50 text-rose-800 border border-rose-200">
-            <span>★★★★★</span>
-            <span>Ultra High — 20+ MCQ expected</span>
+      {/* Filter Row */}
+      <div className="flex flex-col sm:flex-row justify-between gap-3">
+        <div className="flex items-center gap-3 bg-white p-2 rounded-xl border border-slate-200 shadow-sm w-full sm:w-auto">
+          <div className="pl-2 flex items-center gap-1.5 text-slate-500">
+            <Filter className="w-4 h-4" />
+            <span className="text-xs font-bold uppercase tracking-wider">Paper:</span>
           </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-50 text-amber-800 border border-amber-200">
-            <span>★★★★☆</span>
-            <span>High — 10–20 MCQ expected</span>
-          </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-blue-50 text-blue-800 border border-blue-200">
-            <span>★★★☆☆</span>
-            <span>Medium — 5–10 MCQ expected</span>
-          </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200">
-            <span>★★☆☆☆</span>
-            <span>Low — 1–5 MCQ expected</span>
-          </div>
+          <select
+            value={selectedPaper}
+            onChange={(e) => setSelectedPaper(e.target.value)}
+            className="bg-slate-50 border-none rounded-lg px-3 py-1.5 text-sm font-bold text-indigo-700 outline-none cursor-pointer flex-1"
+          >
+            {papers.map((p) => (
+              <option key={p} value={p}>
+                {p}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
       {/* Gap Analysis Cards */}
       <div className="space-y-4">
-        {GAP_ANALYSIS_METRICS.map((gap, index) => {
-          const isUnderAllocated = gap.status === "Under-Allocated";
-          const isOverAllocated = gap.status === "Over-Allocated";
-          const isBalanced = gap.status === "Balanced";
+        {dynamicMetrics.length === 0 ? (
+          <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 text-center space-y-3">
+            <BookOpen className="w-10 h-10 text-slate-300 mx-auto" />
+            <h3 className="text-sm font-bold text-slate-800">No data available for {selectedPaper}</h3>
+            <p className="text-xs text-slate-500 max-w-sm mx-auto">
+              Please make sure syllabus topics exist and you have logged study sessions for this paper.
+            </p>
+          </div>
+        ) : (
+          dynamicMetrics.map((gap, index) => {
+            const isUnderAllocated = gap.status === "Under-Allocated";
+            const isOverAllocated = gap.status === "Over-Allocated";
+            const isBalanced = gap.status === "Balanced";
+            const delta = gap.deltaPercent || 0;
 
-          return (
-            <div
-              key={index}
-              className={`bg-white border-2 rounded-2xl p-6 shadow-sm space-y-4 transition ${
-                isUnderAllocated
-                  ? "border-rose-300"
-                  : isOverAllocated
-                  ? "border-amber-300"
-                  : "border-emerald-300"
-              }`}
-            >
-              {/* Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3.5 border-b border-slate-100">
-                <div className="flex items-center gap-2">
-                  {isUnderAllocated ? (
-                    <TrendingDown className="w-4 h-4 text-rose-500 shrink-0" />
-                  ) : isOverAllocated ? (
-                    <TrendingUp className="w-4 h-4 text-amber-500 shrink-0" />
-                  ) : (
-                    <Minus className="w-4 h-4 text-emerald-500 shrink-0" />
-                  )}
-                  <h3 className="text-base font-bold text-slate-900">
-                    {gap.subject}
-                  </h3>
-                </div>
-
-                <span
-                  className={`px-2.5 py-1 rounded-md text-xs font-bold border self-start sm:self-auto ${
-                    isUnderAllocated
-                      ? "bg-rose-50 text-rose-700 border-rose-200"
-                      : isOverAllocated
-                      ? "bg-amber-50 text-amber-800 border-amber-200"
-                      : "bg-emerald-50 text-emerald-700 border-emerald-200"
-                  }`}
-                >
-                  {gap.status} (
-                  {gap.deltaPercent > 0
-                    ? `+${gap.deltaPercent}%`
-                    : `${gap.deltaPercent}%`}{" "}
-                  Gap)
-                </span>
-              </div>
-
-              {/* Dual Visual Bars */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                {/* Time Bar */}
-                <div className="space-y-1.5 bg-slate-50 p-3.5 rounded-xl border border-slate-200 shadow-xs">
-                  <div className="flex justify-between font-bold text-slate-700">
-                    <span>आपका अध्ययन समय</span>
-                    <span className="font-mono text-amber-700 font-bold">
-                      {gap.actualTimePercent}% of Total Hours
-                    </span>
-                  </div>
-                  <div className="w-full h-2 rounded-full bg-slate-200 overflow-hidden">
-                    <div
-                      className="h-full bg-amber-500 rounded-full transition-all duration-700"
-                      style={{ width: `${Math.min(gap.actualTimePercent * 3, 100)}%` }}
-                    />
-                  </div>
-                </div>
-
-                {/* RAS Weightage Bar */}
-                <div className="space-y-1.5 bg-slate-50 p-3.5 rounded-xl border border-slate-200 shadow-xs">
-                  <div className="flex justify-between font-bold text-slate-700">
-                    <span>RPSC पेपर वेटेज (अनुमानित MCQ)</span>
-                    <span className="font-mono text-indigo-600 font-bold">
-                      {gap.idealWeightagePercent}% of Total Marks
-                    </span>
-                  </div>
-                  <div className="w-full h-2 rounded-full bg-slate-200 overflow-hidden">
-                    <div
-                      className="h-full bg-indigo-600 rounded-full transition-all duration-700"
-                      style={{ width: `${Math.min(gap.idealWeightagePercent * 3, 100)}%` }}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Recommendation with क्या करें */}
+            return (
               <div
-                className={`p-3.5 rounded-xl border text-xs text-slate-700 flex items-start gap-2.5 font-medium ${
+                key={index}
+                className={`bg-white border-2 rounded-2xl p-6 shadow-sm space-y-4 transition ${
                   isUnderAllocated
-                    ? "bg-rose-50 border-rose-200"
+                    ? "border-rose-300"
                     : isOverAllocated
-                    ? "bg-amber-50 border-amber-200"
-                    : "bg-emerald-50 border-emerald-200"
+                    ? "border-amber-300"
+                    : "border-emerald-300"
                 }`}
               >
-                <BookOpen
-                  className={`w-4 h-4 shrink-0 mt-0.5 ${
+                {/* Header */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3.5 border-b border-slate-100">
+                  <div className="flex items-center gap-2">
+                    {isUnderAllocated ? (
+                      <TrendingDown className="w-4 h-4 text-rose-500 shrink-0" />
+                    ) : isOverAllocated ? (
+                      <TrendingUp className="w-4 h-4 text-amber-500 shrink-0" />
+                    ) : (
+                      <Minus className="w-4 h-4 text-emerald-500 shrink-0" />
+                    )}
+                    <h3 className="text-base font-bold text-slate-900">
+                      {gap.subject}
+                    </h3>
+                  </div>
+
+                  <span
+                    className={`px-2.5 py-1 rounded-md text-xs font-bold border self-start sm:self-auto ${
+                      isUnderAllocated
+                        ? "bg-rose-50 text-rose-700 border-rose-200"
+                        : isOverAllocated
+                        ? "bg-amber-50 text-amber-800 border-amber-200"
+                        : "bg-emerald-50 text-emerald-700 border-emerald-200"
+                    }`}
+                  >
+                    {gap.status} ({delta > 0 ? `+${delta}%` : `${delta}%`} Gap)
+                  </span>
+                </div>
+
+                {/* Dual Visual Bars */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                  {/* Time Bar */}
+                  <div className="space-y-1.5 bg-slate-50 p-3.5 rounded-xl border border-slate-200 shadow-xs">
+                    <div className="flex justify-between font-bold text-slate-700">
+                      <span>आपका अध्ययन समय</span>
+                      <span className="font-mono text-amber-700 font-bold">
+                        {gap.actualTimePercent}% of Total Hours
+                      </span>
+                    </div>
+                    <div className="w-full h-2 rounded-full bg-slate-200 overflow-hidden">
+                      <div
+                        className="h-full bg-amber-500 rounded-full transition-all duration-700"
+                        style={{ width: `${Math.min((gap.actualTimePercent || 0) * 3, 100)}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* RAS Weightage Bar */}
+                  <div className="space-y-1.5 bg-slate-50 p-3.5 rounded-xl border border-slate-200 shadow-xs">
+                    <div className="flex justify-between font-bold text-slate-700">
+                      <span>पेपर वेटेज (अनुमानित MCQ)</span>
+                      <span className="font-mono text-indigo-600 font-bold">
+                        {gap.idealWeightagePercent}% of Total Marks
+                      </span>
+                    </div>
+                    <div className="w-full h-2 rounded-full bg-slate-200 overflow-hidden">
+                      <div
+                        className="h-full bg-indigo-600 rounded-full transition-all duration-700"
+                        style={{ width: `${Math.min((gap.idealWeightagePercent || 0) * 3, 100)}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Recommendation with क्या करें */}
+                <div
+                  className={`p-3.5 rounded-xl border text-xs text-slate-700 flex items-start gap-2.5 font-medium ${
                     isUnderAllocated
-                      ? "text-rose-600"
+                      ? "bg-rose-50 border-rose-200"
                       : isOverAllocated
-                      ? "text-amber-600"
-                      : "text-emerald-600"
+                      ? "bg-amber-50 border-amber-200"
+                      : "bg-emerald-50 border-emerald-200"
                   }`}
-                />
-                <div>
-                  <strong className="text-slate-900 font-bold block mb-0.5">
-                    {isUnderAllocated
-                      ? "⚠️ कम समय दे रहे हैं — बढ़ाएं:"
-                      : isOverAllocated
-                      ? "📉 ज़्यादा समय दे रहे हैं — Rebalance करें:"
-                      : "✅ Balanced — Maintain करें:"}
-                  </strong>
-                  <span>{gap.recommendation}</span>
+                >
+                  <BookOpen
+                    className={`w-4 h-4 shrink-0 mt-0.5 ${
+                      isUnderAllocated
+                        ? "text-rose-600"
+                        : isOverAllocated
+                        ? "text-amber-600"
+                        : "text-emerald-600"
+                    }`}
+                  />
+                  <div className="flex-1">
+                    <strong className="text-slate-900 font-bold block mb-0.5">
+                      {isUnderAllocated
+                        ? "⚠️ कम समय दे रहे हैं — बढ़ाएं:"
+                        : isOverAllocated
+                        ? "📉 ज़्यादा समय दे रहे हैं — Rebalance करें:"
+                        : "✅ Balanced — Maintain करें:"}
+                    </strong>
+                    <span className="block line-clamp-3 leading-relaxed">{gap.recommendation}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Summary Box */}
-      <div className="bg-gradient-to-r from-indigo-50 to-slate-50 border-2 border-indigo-200 rounded-2xl p-5 shadow-sm">
-        <h3 className="text-sm font-bold text-indigo-900 flex items-center gap-2 mb-3">
-          <Layers className="w-4 h-4 text-indigo-600" />
-          RAS Prelims Priority Summary — Excel Based
-        </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 text-xs">
-          {[
-            { label: "राज्यव्यवस्था", stars: "★★★★★", mcq: "~25", color: "bg-rose-100 text-rose-800" },
-            { label: "विज्ञान", stars: "★★★★★", mcq: "~20", color: "bg-rose-100 text-rose-800" },
-            { label: "भूगोल", stars: "★★★★★", mcq: "~25", color: "bg-rose-100 text-rose-800" },
-            { label: "राजस्थान GK", stars: "★★★★☆", mcq: "~30", color: "bg-amber-100 text-amber-800" },
-            { label: "तर्कशक्ति", stars: "★★★★★", mcq: "~25", color: "bg-rose-100 text-rose-800" },
-            { label: "अर्थव्यवस्था", stars: "★★★★★", mcq: "~12", color: "bg-rose-100 text-rose-800" },
-            { label: "भारत इतिहास", stars: "★★★★☆", mcq: "~18", color: "bg-amber-100 text-amber-800" },
-            { label: "समसामयिक", stars: "★★★★★", mcq: "~7", color: "bg-rose-100 text-rose-800" },
-          ].map((item, i) => (
-            <div key={i} className={`p-2 rounded-lg ${item.color} font-semibold`}>
-              <div className="text-[10px] opacity-75">{item.stars} · {item.mcq} MCQ</div>
-              <div>{item.label}</div>
-            </div>
-          ))}
-        </div>
+            );
+          })
+        )}
       </div>
     </div>
   );

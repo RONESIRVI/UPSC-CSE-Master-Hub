@@ -64,16 +64,13 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
   const [newSubtopicsInput, setNewSubtopicsInput] = useState("");
   const [newNotes, setNewNotes] = useState("");
 
-  const papers = [
-    "All",
-    "Prelims GS1",
-    ,
-    "Mains GS1",
-    "Mains GS2",
-    "Mains GS3",
-    "Mains GS4",
-    ,
-  ];
+  const papers = React.useMemo(() => {
+    const p = new Set<string>();
+    syllabus.forEach(t => {
+      if (t.paper) p.add(t.paper);
+    });
+    return ["All", ...Array.from(p)];
+  }, [syllabus]);
 
   const filteredTopics = syllabus.filter((t) => {
     if (selectedPaper !== "All" && t.paper !== selectedPaper) return false;

@@ -303,8 +303,12 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
         />
       )}
 
-      {activeSubTab === "gap-analysis" && (
-        <GapAnalysisTab onOpenExportReport={() => setShowExportModal(true)} />
+      {activeSubTab === "effort-gap" && (
+        <GapAnalysisTab
+          syllabus={syllabus}
+          sessionLogs={sessionLogs}
+          onOpenExportReport={() => setShowExportModal(true)}
+        />
       )}
 
       {activeSubTab === "rank-benchmark" && <RankBenchmarkTab />}

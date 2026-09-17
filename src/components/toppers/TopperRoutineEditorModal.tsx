@@ -44,40 +44,6 @@ export const TopperRoutineEditorModal: React.FC<TopperRoutineEditorModalProps> =
             />
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
-            <div>
-              <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Wake-up Time</label>
-              <input
-                type="text"
-                placeholder="e.g. 05:00 AM"
-                value={formData.wakeUpTime || ""}
-                onChange={(e) => setFormData({ ...formData, wakeUpTime: e.target.value })}
-                className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2"
-              />
-            </div>
-            <div>
-              <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Sleep Time</label>
-              <input
-                type="text"
-                placeholder="e.g. 10:30 PM"
-                value={formData.sleepTime || ""}
-                onChange={(e) => setFormData({ ...formData, sleepTime: e.target.value })}
-                className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2"
-              />
-            </div>
-            <div>
-              <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Total Hours</label>
-              <input
-                type="number"
-                min="0"
-                step="0.5"
-                value={formData.totalStudyHours || 0}
-                onChange={(e) => setFormData({ ...formData, totalStudyHours: parseFloat(e.target.value) || 0 })}
-                className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2"
-              />
-            </div>
-          </div>
-
           <div className="space-y-3">
             <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Schedule Items</label>
             {formData.schedule.map((item, idx) => (
@@ -147,7 +113,58 @@ export const TopperRoutineEditorModal: React.FC<TopperRoutineEditorModalProps> =
 
         <div className="p-4 border-t border-slate-100 bg-slate-50 flex justify-end">
           <button
-            onClick={() => onSave(formData)}
+            onClick={() => {
+              let totalHours = 0;
+              let firstTime = "";
+              let lastTime = "";
+              
+              formData.schedule.forEach((slot, index) => {
+                // Calculate hours for non-break categories
+                if (slot.category !== "Break / Health") {
+                  const times = slot.time.match(/(\d{1,2}):?(\d{2})?\s*(AM|PM|am|pm)/ig);
+                  if (times && times.length === 2) {
+                    const parseAmPm = (t: string) => {
+                      const match = t.match(/(\d{1,2}):?(\d{2})?\s*(AM|PM|am|pm)/i);
+                      if (!match) return 0;
+                      let h = parseInt(match[1]);
+                      const m = parseInt(match[2] || "0");
+                      const isPM = match[3].toLowerCase() === "pm";
+                      if (h === 12 && !isPM) h = 0;
+                      if (h !== 12 && isPM) h += 12;
+                      return h + m/60;
+                    };
+                    const start = parseAmPm(times[0]);
+                    let end = parseAmPm(times[1]);
+                    if (end < start) end += 24;
+                    totalHours += (end - start);
+                  } else {
+                    const hrMatch = slot.time.match(/(\d+(\.\d+)?)\s*hr/i);
+                    if (hrMatch) totalHours += parseFloat(hrMatch[1]);
+                  }
+                }
+                
+                // Extract wake up time from first slot
+                if (index === 0) {
+                  const firstMatch = slot.time.match(/(\d{1,2}):?(\d{2})?\s*(AM|PM|am|pm)/i);
+                  if (firstMatch) firstTime = firstMatch[0];
+                }
+                
+                // Extract sleep time from last slot's end time
+                if (index === formData.schedule.length - 1) {
+                  const lastMatch = slot.time.match(/(\d{1,2}):?(\d{2})?\s*(AM|PM|am|pm)/ig);
+                  if (lastMatch && lastMatch.length > 0) {
+                    lastTime = lastMatch[lastMatch.length - 1];
+                  }
+                }
+              });
+
+              onSave({
+                ...formData,
+                totalStudyHours: totalHours > 0 ? parseFloat(totalHours.toFixed(1)) : formData.totalStudyHours,
+                wakeUpTime: firstTime ? firstTime.toUpperCase() : formData.wakeUpTime,
+                sleepTime: lastTime ? lastTime.toUpperCase() : formData.sleepTime,
+              });
+            }}
             className="flex items-center gap-2 px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold"
           >
             <Save className="w-4 h-4" /> Save Schedule

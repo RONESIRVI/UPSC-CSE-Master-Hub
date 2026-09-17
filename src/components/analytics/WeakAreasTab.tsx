@@ -24,7 +24,7 @@ import {
 
 interface WeakAreasTabProps {
   weakAreas: WeakAreaItem[];
-
+  sessionLogs?: StudySessionLog[];
   syllabus?: SyllabusTopic[];
   mockLogs?: MockTestLog[];
   onOpenExportReport?: () => void;
@@ -32,7 +32,7 @@ interface WeakAreasTabProps {
 
 export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
   weakAreas,
-
+  sessionLogs = [],
   syllabus = [],
   mockLogs = [],
   onOpenExportReport,
@@ -461,6 +461,29 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                   </div>
                 </div>
 
+                {/* Revision Insights AI Scolding */}
+                {(() => {
+                  const revisionTime = sessionLogs
+                    .filter((log) => log.topicCovered === selectedTopic.topic && log.taskType === "revision")
+                    .reduce((sum, log) => sum + log.durationMinutes, 0);
+                  const accuracy = selectedTopic.accuracyInMocks || 50;
+                  
+                  if (accuracy < 70 && revisionTime < 60) {
+                    return (
+                      <div className="space-y-1.5 text-xs mt-3">
+                        <span className="font-bold text-rose-700 flex items-center gap-1.5">
+                          <AlertTriangle className="w-3.5 h-3.5" /> Warning: Lack of Revision
+                        </span>
+                        <div className="p-3 bg-rose-50 rounded-xl border border-rose-200 text-rose-800 leading-relaxed font-bold shadow-sm">
+                          भाई, आपने हाल ही में इस विषय का टेस्ट दिया है, लेकिन आपका परिणाम संतोषजनक नहीं रहा (Accuracy: {accuracy}%)। 
+                          आपने इस टॉपिक का ठीक से रिवीजन भी नहीं किया है (रिवीजन रिकॉर्ड: सिर्फ़ {revisionTime} मिनट)। इसी वजह से यह विषय कमज़ोर है, इसे सेटअप करें!
+                        </div>
+                      </div>
+                    );
+                  }
+                  return null;
+                })()}
+
                 {/* Targeted Action Plan */}
                 <div className="space-y-1.5 text-xs">
                   <span className="font-bold text-slate-900 flex items-center gap-1.5">
@@ -573,6 +596,29 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                       </span>
                     </div>
                   </div>
+
+                  {/* Revision Insights AI Scolding */}
+                  {(() => {
+                    const revisionTime = sessionLogs
+                      .filter((log) => log.topicCovered === item.topic && log.taskType === "revision")
+                      .reduce((sum, log) => sum + log.durationMinutes, 0);
+                    const accuracy = item.accuracyInMocks || 50;
+                    
+                    if (accuracy < 70 && revisionTime < 60) {
+                      return (
+                        <div className="space-y-1.5 text-xs mt-3">
+                          <span className="font-bold text-rose-700 flex items-center gap-1.5">
+                            <AlertTriangle className="w-3.5 h-3.5" /> Warning: Lack of Revision
+                          </span>
+                          <div className="p-3 bg-rose-50 rounded-xl border border-rose-200 text-rose-800 leading-relaxed font-bold shadow-sm">
+                            भाई, आपने हाल ही में इस विषय का टेस्ट दिया है, लेकिन आपका परिणाम संतोषजनक नहीं रहा (Accuracy: {accuracy}%)। 
+                            आपने इस टॉपिक का ठीक से रिवीजन भी नहीं किया है (रिवीजन रिकॉर्ड: सिर्फ़ {revisionTime} मिनट)। इसी वजह से यह विषय कमज़ोर है, इसे सेटअप करें!
+                          </div>
+                        </div>
+                      );
+                    }
+                    return null;
+                  })()}
 
                   {/* Recommended Action & Books */}
                   <div className="space-y-2 text-xs text-slate-700">

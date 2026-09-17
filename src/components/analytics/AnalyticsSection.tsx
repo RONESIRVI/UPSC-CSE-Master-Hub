@@ -296,6 +296,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
       {activeSubTab === "weak-areas" && (
         <WeakAreasTab
           weakAreas={weakAreas}
+          sessionLogs={sessionLogs}
           syllabus={syllabus}
           mockLogs={mockLogs}
           onOpenExportReport={() => setShowExportModal(true)}

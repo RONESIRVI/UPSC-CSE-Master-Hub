@@ -24,6 +24,8 @@ export const TaskLoggerModal: React.FC<TaskLoggerModalProps> = ({
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
 
+  const [taskType, setTaskType] = useState<"study" | "revision" | "pyq" | "notes" | "answer_writing">("study");
+
   const calculateDuration = (start: string, end: string) => {
     if (!start || !end) return 0;
     const [startH, startM] = start.split(":").map(Number);
@@ -70,6 +72,7 @@ export const TaskLoggerModal: React.FC<TaskLoggerModalProps> = ({
       setPaper(matchedPaper);
       setSubject(matchedSubject);
       setTopic(task.title || "");
+      setTaskType(task.type === "revision" ? "revision" : "study");
       
       // Auto duration based on timeSlot if possible
       let initialStart = "";
@@ -121,7 +124,7 @@ export const TaskLoggerModal: React.FC<TaskLoggerModalProps> = ({
       startTime,
       endTime,
       topicCovered: topic || task.title || "Study Session",
-      taskType: task.type === "revision" ? "revision" : "study",
+      taskType: taskType,
       qualityRating: 4, // Default
       notes: amountStudied ? `Amount Read: ${amountStudied}` : undefined,
     };
@@ -205,6 +208,23 @@ export const TaskLoggerModal: React.FC<TaskLoggerModalProps> = ({
                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2"
                />
             )}
+          </div>
+
+          <div>
+            <label className="text-xs font-bold text-slate-600 uppercase flex items-center gap-1.5 mb-1">
+              Task Type
+            </label>
+            <select
+              value={taskType}
+              onChange={(e) => setTaskType(e.target.value as any)}
+              className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2"
+            >
+              <option value="study">Study</option>
+              <option value="revision">Revision</option>
+              <option value="pyq">PYQ</option>
+              <option value="notes">Notes Making</option>
+              <option value="answer_writing">Answer Writing</option>
+            </select>
           </div>
 
           <div className="grid grid-cols-2 gap-4">

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SyllabusTopic,
   StudySessionLog,
   MockTestLog,
   WeakAreaItem,
+  UserProfile,
 } from "../../types";
 import {
   GAP_ANALYSIS_METRICS,
@@ -38,6 +39,7 @@ import {
 interface AnalyticsExportModalProps {
   isOpen: boolean;
   onClose: () => void;
+  userProfile?: UserProfile;
   syllabus: SyllabusTopic[];
   sessionLogs: StudySessionLog[];
   studyStreak: number;
@@ -48,6 +50,7 @@ interface AnalyticsExportModalProps {
 export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
   isOpen,
   onClose,
+  userProfile,
   syllabus,
   sessionLogs,
   studyStreak,
@@ -55,8 +58,13 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
   weakAreas,
 }) => {
   const [format, setFormat] = useState<"pdf" | "png">("pdf");
-  const [aspirantName, setAspirantName] = useState<string>("UPSC CSE Aspirant");
-  const [targetExam, setTargetExam] = useState<string>("UPSC CSE 2026");
+  const [aspirantName, setAspirantName] = useState<string>(userProfile?.name || "UPSC CSE Aspirant");
+  const [targetExam, setTargetExam] = useState<string>(userProfile?.targetExam || "UPSC CSE 2026");
+
+  useEffect(() => {
+    if (userProfile?.name) setAspirantName(userProfile.name);
+    if (userProfile?.targetExam) setTargetExam(userProfile.targetExam);
+  }, [userProfile]);
 
   // Section inclusion flags (Heatmap and Gap Analysis prominent)
   const [includeHeatmap, setIncludeHeatmap] = useState<boolean>(true);

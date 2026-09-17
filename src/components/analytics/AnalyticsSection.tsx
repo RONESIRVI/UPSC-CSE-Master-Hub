@@ -5,6 +5,7 @@ import {
   StudySessionLog,
   MockTestLog,
   WeakAreaItem,
+  UserProfile,
 } from "../../types";
 import { ProgressTab } from "./ProgressTab";
 import { PerformanceTab } from "./PerformanceTab";
@@ -26,6 +27,7 @@ import {
 } from "lucide-react";
 
 interface AnalyticsSectionProps {
+  userProfile?: UserProfile;
   activeSubTab: AnalyticsSubTab;
   setActiveSubTab: (subTab: AnalyticsSubTab) => void;
   syllabus: SyllabusTopic[];
@@ -38,6 +40,7 @@ interface AnalyticsSectionProps {
 }
 
 export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
+  userProfile,
   activeSubTab,
   setActiveSubTab,
   syllabus,
@@ -309,6 +312,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
       <AnalyticsExportModal
         isOpen={showExportModal}
         onClose={() => setShowExportModal(false)}
+        userProfile={userProfile}
         syllabus={syllabus}
         sessionLogs={sessionLogs}
         studyStreak={studyStreak}

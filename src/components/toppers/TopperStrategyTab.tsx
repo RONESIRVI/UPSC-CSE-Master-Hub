@@ -104,7 +104,7 @@ export const TopperStrategyTab: React.FC<TopperStrategyTabProps> = ({
             >
               <div className="flex items-start gap-3">
                 <img
-                  src={topper.avatar}
+                  src={"/ranker-logo.jpg"}
                   alt={topper.name}
                   className="w-14 h-14 rounded-xl object-cover border-2 border-indigo-100 shrink-0 shadow-sm"
                 />

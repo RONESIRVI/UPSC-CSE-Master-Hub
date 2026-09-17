@@ -192,7 +192,9 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
                   className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3.5 py-2.5 outline-none font-bold focus:ring-2 focus:ring-indigo-500 cursor-pointer"
                 >
                   <option value="">Select Subject</option>
-                  {Array.from(new Set(syllabus.map(t => t.subject).filter(Boolean))).map(s => (
+                  {Array.from(new Set(syllabus
+                    .filter(t => t.status === "completed" || t.status === "in-progress")
+                    .map(t => t.subject).filter(Boolean))).map(s => (
                     <option key={s} value={s}>{s}</option>
                   ))}
                 </select>
@@ -223,9 +225,16 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
                   >
                     <option value="">Select Topic</option>
                     {syllabus
-                      .filter(t => t.subject === currentStudySession.subject)
-                      .flatMap(t => t.subtopics || [])
-                      .map(sub => typeof sub === "string" ? sub : sub.title)
+                      .filter(t => (t.status === "completed" || t.status === "in-progress") && t.subject === currentStudySession.subject)
+                      .flatMap(t => {
+                        // Include main title
+                        const topics = [t.title];
+                        // Include subtopics if any
+                        if (t.subtopics) {
+                          topics.push(...t.subtopics.map(sub => typeof sub === "string" ? sub : sub.title));
+                        }
+                        return topics;
+                      })
                       .map(title => (
                         <option key={title} value={title}>{title}</option>
                       ))}

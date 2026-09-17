@@ -60,10 +60,10 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
     }
   };
 
-  // Group by Subject
-  const subjectGroups = Array.from(new Set(syllabus.map((s) => s.subject))).map(
-    (subject) => {
-      const topics = syllabus.filter((s) => s.subject === subject);
+  // Group by Paper (previously Subject)
+  const paperGroups = Array.from(new Set(syllabus.map((s) => s.paper || "Uncategorized"))).map(
+    (paper) => {
+      const topics = syllabus.filter((s) => (s.paper || "Uncategorized") === paper);
       const mastered = topics.filter((s) => s.status === "mastered").length;
       const active = topics.filter(
         (s) => s.status !== "not_started" && s.status !== "mastered"
@@ -71,7 +71,7 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
       const pct = Math.round(
         ((mastered * 1 + active * 0.5) / topics.length) * 100
       );
-      return { subject, total: topics.length, mastered, pct };
+      return { paper, total: topics.length, mastered, pct };
     }
   );
 
@@ -86,7 +86,7 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
               Coverage & Mastery Index
             </span>
             <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
-              Deep Subject Diagnostics
+              Deep Paper Diagnostics
             </span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">
@@ -94,7 +94,7 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
           </h2>
           <p className="text-sm text-slate-600 max-w-3xl leading-relaxed mt-1">
             Real-time telemetry on your syllabus coverage, time invested, active
-            streaks, and subject-wise completion rates across Prelims and Mains.
+            streaks, and paper-wise completion rates across Prelims and Mains.
           </p>
         </div>
 
@@ -153,22 +153,22 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
           </div>
         </div>
 
-        {/* Study Hours */}
+        {/* Time Invested */}
         <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-xs font-bold text-slate-500">
-            <span>Logged Study Time</span>
+            <span>Time Invested</span>
             <Clock className="w-4 h-4 text-indigo-600" />
           </div>
           <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600">
-            {totalHoursLogged} hrs
+            {totalHoursLogged} <span className="text-lg">hrs</span>
           </div>
           <p className="text-xs text-slate-500 font-medium">
-            Across {sessionLogs.length} focused study logs
+            Across {sessionLogs.length} focused sessions
           </p>
           <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden mt-2">
             <div
-              className="h-full bg-indigo-600 rounded-full"
-              style={{ width: `75%` }}
+              className="h-full bg-indigo-500 rounded-full"
+              style={{ width: `${Math.min((totalMinutesLogged / 6000) * 100, 100)}%` }}
             />
           </div>
         </div>
@@ -176,27 +176,27 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
         {/* Active Streak */}
         <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-xs font-bold text-slate-500">
-            <span>Active Study Streak</span>
-            <Flame className="w-4 h-4 text-orange-500 fill-orange-500" />
+            <span>Active Streak</span>
+            <Flame className="w-4 h-4 text-orange-500" />
           </div>
-          <div className="text-2xl sm:text-3xl font-extrabold text-orange-600">
-            {studyStreak} Days
+          <div className="text-2xl sm:text-3xl font-extrabold text-orange-500">
+            {studyStreak} <span className="text-lg">days</span>
           </div>
           <p className="text-xs text-slate-500 font-medium">
-            Continuous daily preparation
+            Keep the momentum going!
           </p>
           <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden mt-2">
             <div
               className="h-full bg-orange-500 rounded-full"
-              style={{ width: `${Math.min(studyStreak * 5, 100)}%` }}
+              style={{ width: `${Math.min((studyStreak / 30) * 100, 100)}%` }}
             />
           </div>
         </div>
 
-        {/* UPSC Readiness Score */}
+        {/* Mock Confidence */}
         <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-xs font-bold text-slate-500">
-            <span>Readiness Index</span>
+            <span>Mock Confidence</span>
             <Target className="w-4 h-4 text-sky-600" />
           </div>
           <div className="text-2xl sm:text-3xl font-extrabold text-sky-600">
@@ -214,12 +214,12 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
         </div>
       </div>
 
-      {/* Subject-Wise Mastery Bars */}
+      {/* Paper-Wise Mastery Bars */}
       <div className="bg-white border-2 border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
         <div className="flex items-center justify-between pb-3.5 border-b border-slate-100">
           <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
             <Layers className="w-4 h-4 text-indigo-600" />
-            <span>Subject-Wise Mastery Breakdown</span>
+            <span>Paper-Wise Mastery Breakdown</span>
           </h3>
           <span className="text-xs text-slate-500 font-medium">
             Weighted by UPSC Question Distribution
@@ -227,10 +227,10 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
         </div>
 
         <div className="space-y-4">
-          {subjectGroups.map((group, index) => (
+          {paperGroups.map((group, index) => (
             <div key={index} className="space-y-1.5">
               <div className="flex items-center justify-between text-xs font-semibold">
-                <span className="text-slate-800">{group.subject}</span>
+                <span className="text-slate-800">{group.paper}</span>
                 <span className="font-mono text-indigo-600 font-bold">
                   {group.pct}% ({group.mastered}/{group.total} Topics)
                 </span>

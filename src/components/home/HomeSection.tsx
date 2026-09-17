@@ -185,11 +185,13 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
             
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
               <div>
-                <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">Subject / Paper</label>
+                <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
+                  <BookOpen className="w-3.5 h-3.5 text-indigo-500" /> Subject / Paper
+                </label>
                 <select
                   value={currentStudySession.subject}
                   onChange={(e) => setCurrentStudySession(prev => ({ ...prev, subject: e.target.value, topic: "" }))}
-                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3.5 py-2.5 outline-none font-bold focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                  className="w-full bg-indigo-50/40 border border-indigo-100 text-indigo-900 text-xs font-semibold rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-indigo-500/50 hover:bg-indigo-50 transition-all cursor-pointer shadow-sm"
                 >
                   <option value="">Select Subject</option>
                   {Array.from(new Set(syllabus
@@ -201,11 +203,13 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">What are you doing?</label>
+                <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
+                  <Target className="w-3.5 h-3.5 text-indigo-500" /> What are you doing?
+                </label>
                 <select
                   value={currentStudySession.taskType}
                   onChange={(e) => setCurrentStudySession(prev => ({ ...prev, taskType: e.target.value as any }))}
-                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3.5 py-2.5 outline-none font-bold focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                  className="w-full bg-indigo-50/40 border border-indigo-100 text-indigo-900 text-xs font-semibold rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-indigo-500/50 hover:bg-indigo-50 transition-all cursor-pointer shadow-sm"
                 >
                   <option value="study">Study New Topic</option>
                   <option value="revision">Revision</option>
@@ -216,12 +220,14 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">Topic Name</label>
+                <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
+                  <Type className="w-3.5 h-3.5 text-indigo-500" /> Topic Name
+                </label>
                 {currentStudySession.subject ? (
                   <select
                     value={currentStudySession.topic}
                     onChange={(e) => setCurrentStudySession(prev => ({ ...prev, topic: e.target.value }))}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3.5 py-2.5 outline-none font-medium focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                    className="w-full bg-indigo-50/40 border border-indigo-100 text-indigo-900 text-xs font-semibold rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-indigo-500/50 hover:bg-indigo-50 transition-all cursor-pointer shadow-sm"
                   >
                     <option value="">Select Topic</option>
                     {syllabus

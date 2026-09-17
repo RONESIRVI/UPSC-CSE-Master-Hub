@@ -165,7 +165,7 @@ export const TaskLoggerModal: React.FC<TaskLoggerModalProps> = ({
                 setSubject("");
                 setTopic("");
               }}
-              className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2"
+              className="w-full bg-indigo-50/40 border border-indigo-100 text-indigo-900 text-sm font-semibold rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-indigo-500/50 hover:bg-indigo-50 transition-all cursor-pointer shadow-sm"
             >
               <option value="">-- Select Paper --</option>
               {uniquePapers.map(p => <option key={p} value={p}>{p}</option>)}
@@ -173,8 +173,8 @@ export const TaskLoggerModal: React.FC<TaskLoggerModalProps> = ({
           </div>
 
           <div>
-            <label className="text-xs font-bold text-slate-600 uppercase flex items-center gap-1.5 mb-1">
-              <BookOpen className="w-3.5 h-3.5" /> Subject
+            <label className="text-xs font-bold text-slate-600 uppercase flex items-center gap-1.5 mb-1.5">
+              <BookOpen className="w-4 h-4 text-indigo-500" /> Subject
             </label>
             <select
               value={subject}
@@ -182,7 +182,7 @@ export const TaskLoggerModal: React.FC<TaskLoggerModalProps> = ({
                 setSubject(e.target.value);
                 setTopic("");
               }}
-              className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2"
+              className="w-full bg-indigo-50/40 border border-indigo-100 text-indigo-900 text-sm font-semibold rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-indigo-500/50 hover:bg-indigo-50 transition-all cursor-pointer shadow-sm"
             >
               <option value="">-- Select Subject --</option>
               {subjectsForPaper.map(s => <option key={s} value={s}>{s}</option>)}
@@ -190,14 +190,14 @@ export const TaskLoggerModal: React.FC<TaskLoggerModalProps> = ({
           </div>
 
           <div>
-            <label className="text-xs font-bold text-slate-600 uppercase flex items-center gap-1.5 mb-1">
-              <Type className="w-3.5 h-3.5" /> Topic / Subtopic
+            <label className="text-xs font-bold text-slate-600 uppercase flex items-center gap-1.5 mb-1.5">
+              <Type className="w-4 h-4 text-indigo-500" /> Topic / Subtopic
             </label>
             {topicsForSubject.length > 0 ? (
                <select
                  value={topic}
                  onChange={(e) => setTopic(e.target.value)}
-                 className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2"
+                 className="w-full bg-indigo-50/40 border border-indigo-100 text-indigo-900 text-sm font-semibold rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-indigo-500/50 hover:bg-indigo-50 transition-all cursor-pointer shadow-sm"
                >
                  <option value="">-- Select Topic --</option>
                  {topicsForSubject.map(t => <option key={t} value={t}>{t}</option>)}

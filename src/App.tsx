@@ -800,16 +800,34 @@ export default function App() {
     const today = new Date().toISOString().split("T")[0];
     localStorage.setItem("ras_daily_tasks_date", today);
     // Convert TopperRoutine schedule to DailyTasks
-    const newTasks: DailyTask[] = routine.schedule.map((item, idx) => ({
-      id: `adopted-task-${Date.now()}-${idx}`,
-      title: item.activity,
-      completed: false,
-      type: item.category.toLowerCase().includes("break") || item.category.toLowerCase().includes("sleep") 
-            ? "revision" // Fallback type, not perfect but works for UI
-            : "study",
-      timeSlot: item.time,
-      subject: item.category,
-    }));
+    const newTasks: DailyTask[] = [
+      {
+        id: `adopted-task-wakeup-${Date.now()}`,
+        title: "Wake Up & Morning Routine",
+        completed: false,
+        type: "study",
+        timeSlot: routine.wakeUpTime || "06:00 AM",
+        subject: "Health & Routine",
+      },
+      ...routine.schedule.map((item, idx) => ({
+        id: `adopted-task-${Date.now()}-${idx}`,
+        title: item.activity,
+        completed: false,
+        type: item.category.toLowerCase().includes("break") || item.category.toLowerCase().includes("sleep") 
+              ? "revision" // Fallback type, not perfect but works for UI
+              : "study",
+        timeSlot: item.time,
+        subject: item.category,
+      }) as DailyTask),
+      {
+        id: `adopted-task-sleep-${Date.now()}`,
+        title: "Sleep & Recovery",
+        completed: false,
+        type: "study",
+        timeSlot: routine.sleepTime || "11:00 PM",
+        subject: "Health & Routine",
+      }
+    ];
     
     setDailyTasks(newTasks);
     setActiveTab("home"); // Navigate home where daily tasks are visible

@@ -18,6 +18,7 @@ import { SmartAlerts } from "./SmartAlerts";
 import { PreparationHealthScore } from "./PreparationHealth";
 import { PersonalizedPlan } from "./PersonalizedPlan";
 import { AudioRecorderModal } from "./AudioRecorderModal";
+import { TaskLoggerModal } from "./TaskLoggerModal";
 import { Play, Target, Mic } from "lucide-react";
 
 interface HomeSectionProps {
@@ -45,6 +46,7 @@ interface HomeSectionProps {
   }>>;
   mockLogs?: MockTestLog[];
   onSaveAudioNote: (note: any) => void;
+  onAddSessionLog: (log: StudySessionLog) => void;
 }
 
 export const HomeSection: React.FC<HomeSectionProps> = ({
@@ -63,8 +65,11 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
   setCurrentStudySession,
   mockLogs = [],
   onSaveAudioNote,
+  onAddSessionLog,
 }) => {
   const [isAudioModalOpen, setIsAudioModalOpen] = React.useState(false);
+  const [isTaskLoggerOpen, setIsTaskLoggerOpen] = React.useState(false);
+  const [taskToLog, setTaskToLog] = React.useState<DailyTask | null>(null);
   // Calculate total study time today
   const totalStudyTimeToday = useMemo(() => {
     const today = new Date().toISOString().split("T")[0];
@@ -265,18 +270,29 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
             onNavigateToTracker={(taskId) => {
               const task = dailyTasks.find((t) => t.id === taskId);
               if (task) {
-                setCurrentStudySession({
-                  subject: task.subject || task.title,
-                  topic: task.title,
-                  taskType: task.type === "revision" ? "revision" : "study",
-                  triggerTimerStart: true,
-                });
+                setTaskToLog(task);
+                setIsTaskLoggerOpen(true);
               }
-              setActiveTab("prep");
             }}
           />
         </div>
       </div>
+
+      <TaskLoggerModal
+        isOpen={isTaskLoggerOpen}
+        onClose={() => setIsTaskLoggerOpen(false)}
+        task={taskToLog}
+        syllabus={syllabus}
+        onSave={(log) => {
+          onAddSessionLog(log);
+          if (taskToLog) {
+             // mark task as complete automatically
+             if (!taskToLog.completed) {
+               handleToggleTask(taskToLog.id);
+             }
+          }
+        }}
+      />
 
       <AudioRecorderModal
         isOpen={isAudioModalOpen}

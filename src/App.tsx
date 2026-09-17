@@ -936,6 +936,7 @@ export default function App() {
                       setActiveTab("toppers");
                       setTopperSubTab("interviews");
                     }}
+                    onAddSessionLog={handleAddSessionLog}
                   />
                 )}
 

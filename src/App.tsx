@@ -62,7 +62,7 @@ export default function App() {
   usePushNotifications();
 
   // Initialize Realtime Database
-  const { toppers: fsToppers, strategies: fsStrategies, routines: fsRoutines, notes: fsNotes } = useFirestoreData();
+  const { toppers: fsToppers, strategies: fsStrategies, routines: fsRoutines, notes: fsNotes, syllabusTopics: fsSyllabus } = useFirestoreData();
 
   // Update System State
   const [updateInfo, setUpdateInfo] = useState<{ version: string; body: string; url: string } | null>(null);
@@ -334,13 +334,50 @@ export default function App() {
       const parsed = JSON.parse(saved);
       return parsed.map((topic: any) => ({
         ...topic,
-        subtopics: topic.subtopics.map((sub: any) => 
+        subtopics: topic.subtopics.map((sub: any) =>
           typeof sub === 'string' ? { title: sub, status: "not_started" } : sub
         )
       }));
     }
-    return DEFAULT_SYLLABUS;
+    return DEFAULT_SYLLABUS; // temporary fallback until Firebase loads
   });
+
+  // ─── Sync Firebase Syllabus → App (merge with user progress) ─────────────
+  useEffect(() => {
+    if (!fsSyllabus || fsSyllabus.length === 0) return;
+
+    setSyllabus(prev => {
+      // Build a map of user's local progress by topic id
+      const localProgressMap = new Map(prev.map(t => [t.id, {
+        status: t.status,
+        notes: t.notes,
+        subtopics: t.subtopics,
+      }]));
+
+      // Merge: Firebase = master content, localStorage = user progress
+      const merged = fsSyllabus.map(remoteTopic => {
+        const localProgress = localProgressMap.get(remoteTopic.id);
+        if (localProgress) {
+          return {
+            ...remoteTopic,               // New content/structure from Firebase
+            status: localProgress.status, // Preserve user's progress
+            notes: localProgress.notes,   // Preserve user's notes
+            // Preserve subtopic statuses where titles match
+            subtopics: remoteTopic.subtopics.map(remoteSub => {
+              const localSub = localProgress.subtopics?.find(ls => ls.title === remoteSub.title);
+              return localSub ? { ...remoteSub, status: localSub.status } : remoteSub;
+            }),
+          };
+        }
+        return remoteTopic; // New topic from Firebase, user hasn't touched it
+      });
+
+      // Save to localStorage
+      localStorage.setItem("ras_syllabus_v2", JSON.stringify(merged));
+      console.log(`[Syllabus Sync] Merged ${merged.length} topics from Firebase`);
+      return merged;
+    });
+  }, [fsSyllabus]);
 
   const [studyPlanPhases, setStudyPlanPhases] = useState<StudyPlanPhase[]>(
     () => {

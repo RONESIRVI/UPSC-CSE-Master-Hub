@@ -162,11 +162,16 @@ export interface SyllabusTopic {
   id: string;
   paper:
     | "Prelims GS1"
-    |  "Mains GS1"
+    | "Mains GS1"
     | "Mains GS2"
     | "Mains GS3"
     | "Mains GS4"
-    | ;
+    | "Pre Paper"
+    | "Mains Paper I"
+    | "Mains Paper II"
+    | "Mains Paper III"
+    | "Mains Paper IV"
+    | string;   // allow any future paper
   subject: string;
   module: string;
   title: string;
@@ -196,6 +201,15 @@ export interface SyllabusTopic {
       | "mastered";
   }[];
   failedMockQuestions?: number;
+  // RAS/RPSC Extra fields (from Excel)
+  priority?: string;          // e.g. "★★★★★"
+  questionEstimate?: string;  // e.g. "2-3"
+  questionType?: string;      // "MCQ" | "Descriptive"
+  source?: string;            // e.g. "RPSC Raj. GK"
+  commonPreMains?: boolean;   // true if appears in both Pre & Mains
+  examTips?: string;          // exam tip / notes from Excel
+  studyGuide?: string;        // "Kya Taiyar Karen" column
+  paperFullName?: string;     // full paper title
 }
 
 export interface StudyPlanPhase {

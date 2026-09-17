@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../lib/firebase";
-import { TopperProfile, StrategySetupItem, TopperRoutine, InterviewTranscript } from "../types";
+import { TopperProfile, StrategySetupItem, TopperRoutine, InterviewTranscript, SyllabusTopic } from "../types";
 import { Capacitor } from "@capacitor/core";
 
 // Import fallback data in case Firebase is offline or empty
@@ -13,6 +13,7 @@ export const useFirestoreData = () => {
   const [routines, setRoutines] = useState<TopperRoutine[]>(fallbackData.TOPPER_ROUTINES as TopperRoutine[]);
   const [interviews, setInterviews] = useState<InterviewTranscript[]>(fallbackData.INTERVIEW_TRANSCRIPTS as InterviewTranscript[]);
   const [notes, setNotes] = useState<any[]>(fallbackData.TOPPER_NOTES || []);
+  const [syllabusTopics, setSyllabusTopics] = useState<SyllabusTopic[] | null>(null); // null = not yet loaded
   const [loading, setLoading] = useState(true);
 
   const initialLoad = useRef(true);
@@ -73,6 +74,17 @@ export const useFirestoreData = () => {
       setLoading(false);
     });
 
+    // ─── Syllabus Topics from Firebase ─────────────────────────────────────
+    const unsubSyllabus = onSnapshot(doc(db, "appData", "SYLLABUS_TOPICS"), (docSnap) => {
+      if (docSnap.exists() && docSnap.data().data && Array.isArray(docSnap.data().data)) {
+        setSyllabusTopics(docSnap.data().data as SyllabusTopic[]);
+        triggerUpdateNotification();
+        console.log(`[Firebase] Syllabus loaded: ${docSnap.data().data.length} topics`);
+      } else {
+        setSyllabusTopics(null); // fallback to default
+      }
+    });
+
     const timer = setTimeout(() => {
       initialLoad.current = false;
     }, 5000);
@@ -83,10 +95,11 @@ export const useFirestoreData = () => {
       unsubRoutines();
       unsubInterviews();
       unsubNotes();
+      unsubSyllabus();
       clearTimeout(notifyTimeout);
       clearTimeout(timer);
     };
   }, []);
 
-  return { toppers, strategies, routines, interviews, notes, loading };
+  return { toppers, strategies, routines, interviews, notes, syllabusTopics, loading };
 };

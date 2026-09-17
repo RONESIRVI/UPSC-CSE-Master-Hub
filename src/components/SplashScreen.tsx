@@ -1,51 +1,105 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "motion/react";
+import { Compass, Sparkles, GraduationCap } from "lucide-react";
 
 export function SplashScreen() {
+  const [loadingProgress, setLoadingProgress] = useState(0);
+
+  useEffect(() => {
+    // Simulate loading progress
+    const interval = setInterval(() => {
+      setLoadingProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          return 100;
+        }
+        return prev + Math.floor(Math.random() * 10) + 5; // increment by 5-15%
+      });
+    }, 150);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <motion.div
-      className="fixed inset-0 z-[9999] bg-[#020617] flex items-center justify-center overflow-hidden"
+      className="fixed inset-0 z-[9999] bg-[#020617] flex flex-col items-center justify-center overflow-hidden"
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } }}
+      exit={{ opacity: 0, filter: "blur(10px)", transition: { duration: 0.8, ease: "easeInOut" } }}
     >
-      {/* Subtle background glow effect */}
-      <div className="absolute inset-0 bg-indigo-900/20 blur-[120px] rounded-full scale-150" />
+      {/* Background Animated Glows */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-600/20 blur-[120px] rounded-full mix-blend-screen animate-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600/20 blur-[120px] rounded-full mix-blend-screen animate-pulse" style={{ animationDelay: "1s" }} />
 
       <motion.div
-        className="relative z-10 w-full h-full max-w-2xl max-h-[100dvh] flex items-center justify-center p-4 sm:p-8"
-        initial={{ scale: 0.85, opacity: 0, filter: "blur(10px)" }}
-        animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
-        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }} // smooth spring-like easing
+        className="relative z-10 flex flex-col items-center text-center px-6"
+        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
       >
-        <motion.img
-          src="/splash-image.jpeg"
-          alt="RAS Topper Intelligence App"
-          className="w-full h-auto max-h-[85vh] object-contain rounded-2xl shadow-[0_0_80px_rgba(79,70,229,0.3)] ring-1 ring-white/10"
-          initial={{ y: 20 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-        />
+        {/* Animated Logo Icon */}
+        <div className="relative mb-8">
+          <motion.div 
+            className="absolute inset-0 bg-indigo-500 rounded-full blur-[30px] opacity-40"
+            animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.6, 0.4] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <div className="relative w-24 h-24 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 p-[2px] shadow-2xl">
+            <div className="w-full h-full bg-[#020617] rounded-2xl flex items-center justify-center">
+              <Compass className="w-12 h-12 text-indigo-400" />
+            </div>
+          </div>
+          {/* Floating Sparkles */}
+          <motion.div 
+            className="absolute -top-3 -right-3 text-amber-300"
+            animate={{ rotate: 360, scale: [1, 1.2, 1] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+          >
+            <Sparkles className="w-6 h-6" />
+          </motion.div>
+        </div>
 
-        {/* Loading indicator that fades in after a delay */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2"
+        {/* Typography */}
+        <motion.h1 
+          className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-200 via-white to-purple-200 mb-3 tracking-tight"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+        >
+          UPSC & RAS 
+          <br className="sm:hidden" /> Master Hub
+        </motion.h1>
+        
+        <motion.p 
+          className="text-indigo-200/70 text-sm sm:text-base font-medium max-w-xs flex items-center justify-center gap-2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.5 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
         >
-          <div
-            className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce"
-            style={{ animationDelay: "0ms" }}
+          <GraduationCap className="w-4 h-4" /> Smart Preparation Tracker
+        </motion.p>
+      </motion.div>
+
+      {/* Loading Progress Bar */}
+      <motion.div 
+        className="absolute bottom-16 left-0 right-0 px-12 sm:px-32 max-w-md mx-auto w-full"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8, duration: 0.5 }}
+      >
+        <div className="flex justify-between items-end mb-2 px-1">
+          <span className="text-[10px] font-bold text-indigo-300/60 uppercase tracking-widest">
+            {loadingProgress < 100 ? "Initializing Engines..." : "Ready to Launch"}
+          </span>
+          <span className="text-xs font-bold text-white">{Math.min(loadingProgress, 100)}%</span>
+        </div>
+        <div className="h-1.5 w-full bg-slate-800/80 rounded-full overflow-hidden border border-slate-700/50 relative">
+          <motion.div
+            className="absolute top-0 left-0 bottom-0 bg-gradient-to-r from-indigo-500 to-purple-400 rounded-full"
+            initial={{ width: "0%" }}
+            animate={{ width: `${Math.min(loadingProgress, 100)}%` }}
+            transition={{ ease: "easeOut", duration: 0.2 }}
           />
-          <div
-            className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce"
-            style={{ animationDelay: "150ms" }}
-          />
-          <div
-            className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce"
-            style={{ animationDelay: "300ms" }}
-          />
-        </motion.div>
+        </div>
       </motion.div>
     </motion.div>
   );

@@ -19,7 +19,7 @@ import { PreparationHealthScore } from "./PreparationHealth";
 import { PersonalizedPlan } from "./PersonalizedPlan";
 import { AudioRecorderModal } from "./AudioRecorderModal";
 import { TaskLoggerModal } from "./TaskLoggerModal";
-import { Play, Target, Mic } from "lucide-react";
+import { Play, Target, Mic, BookOpen, Type } from "lucide-react";
 
 interface HomeSectionProps {
   userProfile?: UserProfile;

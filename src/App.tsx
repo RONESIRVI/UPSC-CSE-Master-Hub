@@ -455,8 +455,18 @@ export default function App() {
     const today = new Date().toISOString().split("T")[0];
     
     if (savedDate !== today) {
-      localStorage.removeItem("ras_daily_tasks_v2");
       localStorage.setItem("ras_daily_tasks_date", today);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          // Keep the schedule, but reset the checkboxes for the new day
+          const resetTasks = parsed.map((task: any) => ({ ...task, completed: false }));
+          localStorage.setItem("ras_daily_tasks_v2", JSON.stringify(resetTasks));
+          return resetTasks;
+        } catch (e) {
+          return [];
+        }
+      }
       return [];
     }
     

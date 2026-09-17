@@ -10,6 +10,7 @@ import {
   SmartRecommendation,
   PreparationHealth,
   MockTestLog,
+  UserProfile,
 } from "../../types";
 import { CommandCenter } from "./CommandCenter";
 import { ProfileCard3D } from "./ProfileCard3D";
@@ -20,6 +21,8 @@ import { AudioRecorderModal } from "./AudioRecorderModal";
 import { Play, Target, Mic } from "lucide-react";
 
 interface HomeSectionProps {
+  userProfile?: UserProfile;
+  onOpenProfileEdit?: () => void;
   setActiveTab: (tab: MainTab) => void;
   dailyTasks: DailyTask[];
   setDailyTasks: React.Dispatch<React.SetStateAction<DailyTask[]>>;
@@ -45,6 +48,8 @@ interface HomeSectionProps {
 }
 
 export const HomeSection: React.FC<HomeSectionProps> = ({
+  userProfile,
+  onOpenProfileEdit,
   setActiveTab,
   dailyTasks,
   setDailyTasks,
@@ -141,12 +146,14 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
     <div className="space-y-6">
       {/* Top Main 3D Profile Dashboard */}
       <ProfileCard3D 
-        name="AARIZ MANSURI"
-        role="RAS Aspirant"
+        name={userProfile?.name || "AARIZ MANSURI"}
+        role={userProfile?.role || "RAS Aspirant"}
+        avatarUrl={userProfile?.avatarUrl}
+        onOpenProfileEdit={onOpenProfileEdit}
         totalStudyHours={Math.floor(sessionLogs.reduce((acc, log) => acc + log.durationMinutes, 0) / 60)}
         currentStreak={studyStreak}
-        completedTests={mockLogs.length}
-        targetExam="RAS CSE 2027"
+        completedTests={mockLogs?.length || 0}
+        targetExam={userProfile?.targetExam || "RAS CSE 2027"}
         progressPercent={healthScore.overallScore}
         currentFocus={syllabus.filter(s => s.status === "in_progress").slice(0, 3).map(s => s.subject)}
       />

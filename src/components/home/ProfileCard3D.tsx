@@ -4,6 +4,8 @@ import { Clock, Flame, CheckCircle, Target, TrendingUp, ChevronRight } from "luc
 interface ProfileCard3DProps {
   name: string;
   role: string;
+  avatarUrl?: string;
+  onOpenProfileEdit?: () => void;
   totalStudyHours: number;
   currentStreak: number;
   completedTests: number;
@@ -15,6 +17,8 @@ interface ProfileCard3DProps {
 export const ProfileCard3D: React.FC<ProfileCard3DProps> = ({
   name,
   role,
+  avatarUrl,
+  onOpenProfileEdit,
   totalStudyHours,
   currentStreak,
   completedTests,
@@ -42,14 +46,17 @@ export const ProfileCard3D: React.FC<ProfileCard3DProps> = ({
             <div className="absolute inset-0 rounded-full bg-amber-400/20 blur-xl animate-pulse"></div>
             <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full p-[3px] bg-gradient-to-b from-[#D4AF37] via-[#F3E5AB] to-[#8A7322] shadow-[0_0_20px_rgba(212,175,55,0.3)] relative z-10 overflow-hidden transform transition-transform duration-500 group-hover:scale-105">
               <div className="w-full h-full rounded-full bg-[#111827] border-4 border-[#0A0F1C] flex items-center justify-center overflow-hidden relative">
-                {/* Placeholder Avatar Image or Icon */}
-                <svg
-                  className="w-16 h-16 text-slate-300 relative z-10"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
-                </svg>
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover relative z-10" />
+                ) : (
+                  <svg
+                    className="w-16 h-16 text-slate-300 relative z-10"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+                  </svg>
+                )}
                 {/* subtle mandala/chakra background inside avatar */}
                 <div className="absolute inset-0 opacity-10 flex items-center justify-center">
                   <svg viewBox="0 0 100 100" className="w-24 h-24 text-amber-500 animate-[spin_60s_linear_infinite]">
@@ -154,7 +161,7 @@ export const ProfileCard3D: React.FC<ProfileCard3DProps> = ({
             
             {/* View Details Button */}
             <button 
-              onClick={() => alert("Profile Settings & Detailed Analytics coming in the next update!")}
+              onClick={() => onOpenProfileEdit?.()}
               className="hidden sm:flex ml-auto px-4 py-2 rounded-full bg-white/10 border border-white/20 items-center justify-center text-white text-xs font-bold tracking-widest uppercase transition-all hover:bg-white/20 hover:scale-105 shadow-lg gap-2"
             >
               <span>View Profile</span>
@@ -167,7 +174,7 @@ export const ProfileCard3D: React.FC<ProfileCard3DProps> = ({
       
       {/* Mobile View Details Action (Visible only on mobile) */}
       <div 
-        onClick={() => alert("Profile Settings & Detailed Analytics coming in the next update!")}
+        onClick={() => onOpenProfileEdit?.()}
         className="sm:hidden border-t border-[#2A3441] bg-[#0A0F1C]/80 px-6 py-3 flex items-center justify-between cursor-pointer active:bg-white/5"
       >
         <div className="flex items-center gap-2">

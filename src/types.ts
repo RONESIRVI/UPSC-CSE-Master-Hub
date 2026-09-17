@@ -20,6 +20,17 @@ export type AnalyticsSubTab =
   | "gap-analysis"
   | "rank-benchmark";
 
+export interface ActivityMap {
+  [date: string]: { duration: number; sessions: number };
+}
+
+export interface UserProfile {
+  name: string;
+  role: string;
+  targetExam: string;
+  avatarUrl?: string;
+}
+
 export interface TopperProfile {
   id: string;
   name: string;

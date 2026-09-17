@@ -10,6 +10,7 @@ import { HomeSection } from "./components/home/HomeSection";
 import { ToppersSection } from "./components/toppers/ToppersSection";
 import { PrepSection } from "./components/prep/PrepSection";
 import { AnalyticsSection } from "./components/analytics/AnalyticsSection";
+import { ProfileEditModal } from "./components/profile/ProfileEditModal";
 
 import { SmartExtractorTab } from "./components/prep/SmartExtractorTab";
 import { SplashScreen } from "./components/SplashScreen";
@@ -226,6 +227,21 @@ export default function App() {
   const [prepSubTab, setPrepSubTab] = useState<PrepSubTab>("syllabus");
   const [analyticsSubTab, setAnalyticsSubTab] =
     useState<AnalyticsSubTab>("progress");
+
+  // Profile State
+  const [userProfile, setUserProfile] = useState(() => {
+    const saved = localStorage.getItem("ras_user_profile");
+    return saved ? JSON.parse(saved) : { 
+      name: "AARIZ MANSURI", 
+      role: "RAS Aspirant", 
+      targetExam: "RAS CSE 2027" 
+    };
+  });
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("ras_user_profile", JSON.stringify(userProfile));
+  }, [userProfile]);
 
   // Splash Screen State
   const [showSplash, setShowSplash] = useState<boolean>(true);
@@ -868,6 +884,8 @@ export default function App() {
                 {/* Pillar 0: HOME / COMMAND CENTER */}
                 {activeTab === "home" && (
                   <HomeSection
+                    userProfile={userProfile}
+                    onOpenProfileEdit={() => setIsProfileModalOpen(true)}
                     setActiveTab={setActiveTab}
                     dailyTasks={dailyTasks}
                     setDailyTasks={setDailyTasks}
@@ -1115,10 +1133,15 @@ export default function App() {
           onNavigate={handleGlobalNavigate}
         />
 
-
-
-
-        {/* Footer */}
+        {/* Profile Edit Modal */}
+        <ProfileEditModal
+          isOpen={isProfileModalOpen}
+          onClose={() => setIsProfileModalOpen(false)}
+          userProfile={userProfile}
+          onSave={(newProfile) => {
+            setUserProfile(newProfile);
+          }}
+        />        {/* Footer */}
         <footer className="border-t border-slate-200 bg-white pt-6 pb-24 lg:pb-6 text-slate-500 text-xs text-center mt-12 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
             <div className="flex items-center gap-2">

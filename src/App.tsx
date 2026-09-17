@@ -804,6 +804,7 @@ export default function App() {
         {/* Main Top Navigation Header */}
         <div>
           <Navbar
+            userProfile={userProfile}
             activeTab={activeTab}
             setActiveTab={setActiveTab}
             onOpenSearch={() => setSearchOpen(true)}

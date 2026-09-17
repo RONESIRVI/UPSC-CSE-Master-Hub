@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MainTab } from "../types";
+import { MainTab, UserProfile } from "../types";
 import {
   Home,
   Trophy,
@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 
 interface NavbarProps {
+  userProfile?: UserProfile;
   activeTab: MainTab;
   setActiveTab: (tab: MainTab) => void;
   onOpenSearch: () => void;
@@ -27,6 +28,7 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
+  userProfile,
   activeTab,
   setActiveTab,
   onOpenSearch,
@@ -80,7 +82,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </span>
               </div>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] hidden md:block mt-0.5">
-                Elite Preparation Ecosystem
+                Hi, {userProfile?.name || "Aspirant"}
               </p>
             </div>
           </div>

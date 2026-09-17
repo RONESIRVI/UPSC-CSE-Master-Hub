@@ -18,6 +18,12 @@ export const ProfileEditModal: React.FC<ProfileEditModalProps> = ({
   const [formData, setFormData] = useState<UserProfile>(userProfile);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  React.useEffect(() => {
+    if (isOpen) {
+      setFormData(userProfile);
+    }
+  }, [isOpen, userProfile]);
+
   if (!isOpen) return null;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

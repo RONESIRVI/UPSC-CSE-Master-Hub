@@ -75,7 +75,7 @@ export default function App() {
     if (fsToppers.length > 0) {
       setToppers(prev => {
         const prevMap = new Map(prev.map(p => [p.id, p]));
-        return fsToppers.map(ft => prevMap.has(ft.id) ? { ...ft, ...prevMap.get(ft.id) } : ft);
+        return fsToppers.map(ft => prevMap.has(ft.id) ? { ...prevMap.get(ft.id), ...ft } : ft);
       });
     }
   }, [fsToppers]);
@@ -84,7 +84,7 @@ export default function App() {
     if (fsStrategies.length > 0) {
       setStrategies(prev => {
         const prevMap = new Map(prev.map(p => [p.id, p]));
-        return fsStrategies.map(fs => prevMap.has(fs.id) ? { ...fs, ...prevMap.get(fs.id) } : fs);
+        return fsStrategies.map(fs => prevMap.has(fs.id) ? { ...prevMap.get(fs.id), ...fs } : fs);
       });
     }
   }, [fsStrategies]);
@@ -93,7 +93,7 @@ export default function App() {
     if (fsRoutines.length > 0) {
       setTopperRoutines(prev => {
         const prevMap = new Map(prev.map(p => [p.id, p]));
-        return fsRoutines.map(fr => prevMap.has(fr.id) ? { ...fr, ...prevMap.get(fr.id) } : fr);
+        return fsRoutines.map(fr => prevMap.has(fr.id) ? { ...prevMap.get(fr.id), ...fr } : fr);
       });
     }
   }, [fsRoutines]);
@@ -102,7 +102,7 @@ export default function App() {
     if (fsNotes?.length > 0) {
       setNotes(prev => {
         const prevMap = new Map(prev.map(p => [p.id, p]));
-        return fsNotes.map(fn => prevMap.has(fn.id) ? { ...fn, ...prevMap.get(fn.id) } : fn);
+        return fsNotes.map(fn => prevMap.has(fn.id) ? { ...prevMap.get(fn.id), ...fn } : fn);
       });
     }
   }, [fsNotes]);
@@ -299,7 +299,7 @@ export default function App() {
     const local = saved ? JSON.parse(saved) : [];
     if (!saved || local.length === 0) return STRATEGY_SETUP;
     const localMap = new Map(local.map((item: StrategySetupItem) => [item.id, item]));
-    const merged = STRATEGY_SETUP.map(item => { const localItem = localMap.get(item.id); return localItem ? Object.assign({}, item, localItem) : item; });
+    const merged = STRATEGY_SETUP.map(item => { const localItem = localMap.get(item.id); return localItem ? Object.assign({}, localItem, item) : item; });
     const remoteIds = new Set(STRATEGY_SETUP.map(item => item.id));
     local.forEach((item: StrategySetupItem) => { if (!remoteIds.has(item.id)) merged.push(item); });
     return merged;
@@ -310,7 +310,7 @@ export default function App() {
     const local = saved ? JSON.parse(saved) : [];
     if (!saved || local.length === 0) return TOPPERS_PROFILES;
     const localMap = new Map(local.map((item: TopperProfile) => [item.id, item]));
-    const merged = TOPPERS_PROFILES.map(item => { const localItem = localMap.get(item.id); return localItem ? Object.assign({}, item, localItem) : item; });
+    const merged = TOPPERS_PROFILES.map(item => { const localItem = localMap.get(item.id); return localItem ? Object.assign({}, localItem, item) : item; });
     const remoteIds = new Set(TOPPERS_PROFILES.map(item => item.id));
     local.forEach((item: TopperProfile) => { if (!remoteIds.has(item.id)) merged.push(item); });
     return merged;
@@ -321,7 +321,7 @@ export default function App() {
     const local = saved ? JSON.parse(saved) : [];
     if (!saved || local.length === 0) return TOPPER_ROUTINES;
     const localMap = new Map(local.map((item: TopperRoutine) => [item.id, item]));
-    const merged = TOPPER_ROUTINES.map(item => { const localItem = localMap.get(item.id); return localItem ? Object.assign({}, item, localItem) : item; });
+    const merged = TOPPER_ROUTINES.map(item => { const localItem = localMap.get(item.id); return localItem ? Object.assign({}, localItem, item) : item; });
     const remoteIds = new Set(TOPPER_ROUTINES.map(item => item.id));
     local.forEach((item: TopperRoutine) => { if (!remoteIds.has(item.id)) merged.push(item); });
     return merged;
@@ -866,7 +866,7 @@ export default function App() {
               // 1. First sync Excel data immediately
               setTopperRoutines(prev => {
                 const localMap = new Map(prev.map(item => [item.id, item]));
-                const merged = TOPPER_ROUTINES.map(item => { const localItem = localMap.get(item.id); return localItem ? Object.assign({}, item, localItem) : item; });
+                const merged = TOPPER_ROUTINES.map(item => { const localItem = localMap.get(item.id); return localItem ? Object.assign({}, localItem, item) : item; });
                 const remoteIds = new Set(TOPPER_ROUTINES.map(item => item.id));
                 prev.forEach(item => { if (!remoteIds.has(item.id)) merged.push(item); });
                 return merged;
@@ -874,7 +874,7 @@ export default function App() {
               
               setToppers(prev => {
                 const localMap = new Map(prev.map(item => [item.id, item]));
-                const merged = TOPPERS_PROFILES.map(item => { const localItem = localMap.get(item.id); return localItem ? Object.assign({}, item, localItem) : item; });
+                const merged = TOPPERS_PROFILES.map(item => { const localItem = localMap.get(item.id); return localItem ? Object.assign({}, localItem, item) : item; });
                 const remoteIds = new Set(TOPPERS_PROFILES.map(item => item.id));
                 prev.forEach(item => { if (!remoteIds.has(item.id)) merged.push(item); });
                 return merged;

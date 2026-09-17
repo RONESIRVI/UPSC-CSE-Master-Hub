@@ -72,19 +72,39 @@ export default function App() {
 
 
   useEffect(() => {
-    if (fsToppers.length > 0) setToppers(fsToppers);
+    if (fsToppers.length > 0) {
+      setToppers(prev => {
+        const prevMap = new Map(prev.map(p => [p.id, p]));
+        return fsToppers.map(ft => prevMap.has(ft.id) ? { ...ft, ...prevMap.get(ft.id) } : ft);
+      });
+    }
   }, [fsToppers]);
 
   useEffect(() => {
-    if (fsStrategies.length > 0) setStrategies(fsStrategies);
+    if (fsStrategies.length > 0) {
+      setStrategies(prev => {
+        const prevMap = new Map(prev.map(p => [p.id, p]));
+        return fsStrategies.map(fs => prevMap.has(fs.id) ? { ...fs, ...prevMap.get(fs.id) } : fs);
+      });
+    }
   }, [fsStrategies]);
 
   useEffect(() => {
-    if (fsRoutines.length > 0) setTopperRoutines(fsRoutines);
+    if (fsRoutines.length > 0) {
+      setTopperRoutines(prev => {
+        const prevMap = new Map(prev.map(p => [p.id, p]));
+        return fsRoutines.map(fr => prevMap.has(fr.id) ? { ...fr, ...prevMap.get(fr.id) } : fr);
+      });
+    }
   }, [fsRoutines]);
 
   useEffect(() => {
-    if (fsNotes?.length > 0) setNotes(fsNotes);
+    if (fsNotes?.length > 0) {
+      setNotes(prev => {
+        const prevMap = new Map(prev.map(p => [p.id, p]));
+        return fsNotes.map(fn => prevMap.has(fn.id) ? { ...fn, ...prevMap.get(fn.id) } : fn);
+      });
+    }
   }, [fsNotes]);
 
   // Silent Auto-Update Engine on App Open

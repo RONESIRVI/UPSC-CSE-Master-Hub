@@ -37,16 +37,19 @@ export const TaskLoggerModal: React.FC<TaskLoggerModalProps> = ({
   
   const durationMinutes = calculateDuration(startTime, endTime);
 
-  // Extract unique papers, subjects, and topics from syllabus
-  const uniquePapers = Array.from(new Set(syllabus.map((s) => s.paper))).filter(Boolean);
+  // Only show subjects/topics that are either completed or in-progress
+  const activeSyllabus = syllabus.filter(s => s.status === "completed" || s.status === "in-progress");
+
+  // Extract unique papers, subjects, and topics from activeSyllabus
+  const uniquePapers = Array.from(new Set(activeSyllabus.map((s) => s.paper))).filter(Boolean);
   
   const subjectsForPaper = Array.from(
-    new Set(syllabus.filter((s) => !paper || s.paper === paper).map((s) => s.subject))
+    new Set(activeSyllabus.filter((s) => !paper || s.paper === paper).map((s) => s.subject))
   ).filter(Boolean);
   
   const topicsForSubject = Array.from(
     new Set(
-      syllabus
+      activeSyllabus
         .filter((s) => (!paper || s.paper === paper) && (!subject || s.subject === subject))
         .map((s) => s.title)
     )

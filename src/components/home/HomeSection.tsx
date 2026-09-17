@@ -259,7 +259,11 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
             </div>
           </div>
 
-          <PreparationHealthScore health={healthScore} />
+          <PreparationHealthScore 
+            health={healthScore} 
+            sessionLogs={sessionLogs}
+            totalStudyTimeToday={totalStudyTimeToday}
+          />
         </div>
 
         {/* Right Column (Side Panel) */}

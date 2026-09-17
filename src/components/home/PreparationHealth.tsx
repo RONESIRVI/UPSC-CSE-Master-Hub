@@ -21,6 +21,15 @@ export const PreparationHealthScore: React.FC<PreparationHealthProps> = ({
   // Get only today's sessions
   const today = new Date().toISOString().split("T")[0];
   const todaysSessions = sessionLogs.filter((log) => log.date === today);
+  
+  const formatTimeStr = (t?: string) => {
+    if (!t) return "";
+    const [h, m] = t.split(":");
+    let hours = parseInt(h);
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12;
+    return `${hours}:${m} ${ampm}`;
+  };
 
   return (
     <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 shadow-sm space-y-5">
@@ -61,6 +70,12 @@ export const PreparationHealthScore: React.FC<PreparationHealthProps> = ({
                   </h4>
                   <div className="text-[10px] text-slate-500 font-bold uppercase tracking-wide flex items-center gap-1.5 mt-0.5">
                     <span className="text-indigo-600">{log.subject}</span>
+                    {log.startTime && log.endTime && (
+                      <>
+                        <span className="w-1 h-1 rounded-full bg-slate-300" />
+                        <span className="text-slate-600 truncate">{formatTimeStr(log.startTime)} - {formatTimeStr(log.endTime)}</span>
+                      </>
+                    )}
                     {log.notes && (
                       <>
                         <span className="w-1 h-1 rounded-full bg-slate-300" />

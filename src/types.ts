@@ -218,6 +218,8 @@ export interface StudySessionLog {
   subject: string;
   paper: string;
   durationMinutes: number;
+  startTime?: string;
+  endTime?: string;
   topicCovered: string;
   taskType?: "study" | "revision" | "pyq" | "notes" | "answer_writing";
   qualityRating: 1 | 2 | 3 | 4 | 5; // 5 = High focus

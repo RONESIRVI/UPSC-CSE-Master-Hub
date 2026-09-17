@@ -982,6 +982,20 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
                         ⭐ {log.qualityRating}/5
                       </span>
                     )}
+                    {log.startTime && log.endTime && (
+                      <span className="text-[11px] font-mono font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-600 border border-slate-200 hidden sm:inline-block">
+                        {(() => {
+                          const f = (t:string) => {
+                             const [h, m] = t.split(":");
+                             let hours = parseInt(h);
+                             const ampm = hours >= 12 ? "PM" : "AM";
+                             hours = hours % 12 || 12;
+                             return `${hours}:${m} ${ampm}`;
+                          };
+                          return `${f(log.startTime)} - ${f(log.endTime)}`;
+                        })()}
+                      </span>
+                    )}
                     <span className="font-mono font-extrabold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-xl border border-indigo-200 shadow-2xs">
                       {log.durationMinutes} mins
                     </span>

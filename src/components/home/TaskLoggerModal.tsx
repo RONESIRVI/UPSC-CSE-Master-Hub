@@ -21,7 +21,19 @@ export const TaskLoggerModal: React.FC<TaskLoggerModalProps> = ({
   const [subject, setSubject] = useState("");
   const [topic, setTopic] = useState("");
   const [amountStudied, setAmountStudied] = useState("");
-  const [durationMinutes, setDurationMinutes] = useState<number>(60);
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+
+  const calculateDuration = (start: string, end: string) => {
+    if (!start || !end) return 0;
+    const [startH, startM] = start.split(":").map(Number);
+    const [endH, endM] = end.split(":").map(Number);
+    let diff = (endH * 60 + endM) - (startH * 60 + startM);
+    if (diff < 0) diff += 24 * 60;
+    return diff;
+  };
+  
+  const durationMinutes = calculateDuration(startTime, endTime);
 
   // Extract unique papers, subjects, and topics from syllabus
   const uniquePapers = Array.from(new Set(syllabus.map((s) => s.paper))).filter(Boolean);
@@ -60,7 +72,39 @@ export const TaskLoggerModal: React.FC<TaskLoggerModalProps> = ({
       setTopic(task.title || "");
       
       // Auto duration based on timeSlot if possible
-      setDurationMinutes(60); // default
+      let initialStart = "";
+      let initialEnd = "";
+      if (task.timeSlot) {
+        try {
+           const parts = task.timeSlot.split("-").map(p => p.trim());
+           if (parts.length === 2) {
+              const parseTime = (t: string) => {
+                 const match = t.match(/(\d+):(\d+)\s*(AM|PM)?/i);
+                 if (match) {
+                    let h = parseInt(match[1]);
+                    const m = match[2];
+                    const ampm = match[3]?.toUpperCase();
+                    if (ampm === "PM" && h < 12) h += 12;
+                    if (ampm === "AM" && h === 12) h = 0;
+                    return `${h.toString().padStart(2, "0")}:${m}`;
+                 }
+                 return "";
+              };
+              initialStart = parseTime(parts[0]);
+              initialEnd = parseTime(parts[1]);
+           }
+        } catch(e) {}
+      }
+      
+      if (!initialStart || !initialEnd) {
+         const now = new Date();
+         initialEnd = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+         now.setHours(now.getHours() - 1);
+         initialStart = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+      }
+      
+      setStartTime(initialStart);
+      setEndTime(initialEnd);
       setAmountStudied("");
     }
   }, [task, syllabus]);
@@ -74,6 +118,8 @@ export const TaskLoggerModal: React.FC<TaskLoggerModalProps> = ({
       subject: subject || task.subject || "General",
       paper: paper || "General",
       durationMinutes: durationMinutes,
+      startTime,
+      endTime,
       topicCovered: topic || task.title || "Study Session",
       taskType: task.type === "revision" ? "revision" : "study",
       qualityRating: 4, // Default
@@ -164,28 +210,44 @@ export const TaskLoggerModal: React.FC<TaskLoggerModalProps> = ({
           <div className="grid grid-cols-2 gap-4">
              <div>
                <label className="text-xs font-bold text-slate-600 uppercase flex items-center gap-1.5 mb-1">
-                 Amount Studied
+                 Start Time
                </label>
                <input
-                 type="text"
-                 value={amountStudied}
-                 onChange={(e) => setAmountStudied(e.target.value)}
-                 placeholder="e.g. 15 Pages, Ch-3"
+                 type="time"
+                 value={startTime}
+                 onChange={(e) => setStartTime(e.target.value)}
                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2"
                />
              </div>
              <div>
                <label className="text-xs font-bold text-slate-600 uppercase flex items-center gap-1.5 mb-1">
-                 <Clock className="w-3.5 h-3.5" /> Duration (mins)
+                 End Time
                </label>
-               <input
-                 type="number"
-                 min="1"
-                 value={durationMinutes}
-                 onChange={(e) => setDurationMinutes(parseInt(e.target.value) || 0)}
-                 className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2"
-               />
+               <div className="relative">
+                 <input
+                   type="time"
+                   value={endTime}
+                   onChange={(e) => setEndTime(e.target.value)}
+                   className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 pr-12"
+                 />
+                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded">
+                   {durationMinutes}m
+                 </span>
+               </div>
              </div>
+          </div>
+          
+          <div>
+            <label className="text-xs font-bold text-slate-600 uppercase flex items-center gap-1.5 mb-1">
+              Amount Studied (Optional)
+            </label>
+            <input
+              type="text"
+              value={amountStudied}
+              onChange={(e) => setAmountStudied(e.target.value)}
+              placeholder="e.g. 15 Pages, Ch-3"
+              className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2"
+            />
           </div>
         </div>
 

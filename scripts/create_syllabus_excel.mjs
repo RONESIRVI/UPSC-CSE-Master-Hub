@@ -44,6 +44,34 @@ function mapYield(priority) {
   return "📘 Standard";
 }
 
+// ─── Subject Mapping for Prelims GS1 ───────────────────────────────────────
+function mapSubject(subject, title, mappedPaper) {
+  if (mappedPaper !== "Prelims GS1") return subject; // Apply only to Prelims
+  
+  if (subject === "राजस्थान GK") return "राजस्थान का इतिहास, कला, संस्कृति, साहित्य, परम्परा एवं विरासत";
+  if (subject === "भारत इतिहास") return "भारत का इतिहास";
+  if (subject === "भूगोल") {
+    if (title && title.includes("राजस्थान")) return "राजस्थान का भूगोल";
+    return "विश्व एवं भारत का भूगोल";
+  }
+  if (subject === "राज्यव्यवस्था") {
+    if (title && (title.includes("राजस्थान") || title.includes("RPSC") || title.includes("CM"))) {
+      return "राजस्थान की राजनीतिक एवं प्रशासनिक व्यवस्था";
+    }
+    return "भारतीय संविधान, राजनीतिक व्यवस्था और शासन";
+  }
+  if (subject === "अर्थव्यवस्था") {
+    if (title && title.includes("राजस्थान")) return "राजस्थान की अर्थव्यवस्था";
+    return "आर्थिक अवधारणाएँ एवं भारतीय अर्थव्यवस्था";
+  }
+  if (subject === "विज्ञान") return "विज्ञान एवं प्रौद्योगिकी";
+  if (subject === "तर्कशक्ति") return "तार्किक विवेचन एवं मानसिक योग्यता";
+  if (subject === "गणित") return "तार्किक विवेचन एवं मानसिक योग्यता";
+  if (subject === "समसामयिक") return "समसामयिक घटनाएँ एवं मुद्दे (राजस्थान के विशेष संदर्भ में)";
+  
+  return subject;
+}
+
 // ─── Build Syllabus Sheet Data ─────────────────────────────────────────────
 const syllabusHeaders = [
   "id",
@@ -86,11 +114,13 @@ const syllabusRows = rows.map(row => {
 
   const mappedPaper = PAPER_MAP[paper] || paper || "Prelims GS1";
   const id = `ras-${exam === "Pre" ? "pre" : "mains"}-${String(srNo).padStart(3, "0")}`;
+  
+  const mappedSubject = mapSubject(subject || "", topic || "", mappedPaper);
 
   return [
     id,
     mappedPaper,
-    subject || "",
+    mappedSubject,
     unit || "—",
     topic || "",
     subTopic || "",

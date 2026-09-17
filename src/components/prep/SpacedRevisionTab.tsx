@@ -443,21 +443,23 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Paper
+                    Paper / Exam
                   </label>
                   <select
                     value={formPaper}
-                    onChange={(e) => setFormPaper(e.target.value)}
+                    onChange={(e) => {
+                      setFormPaper(e.target.value);
+                      setFormSubject("");
+                      setFormTopicTitle("");
+                    }}
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-bold cursor-pointer"
                   >
-                    <option value="Prelims GS1">Prelims (GK & GS)</option>
-
-                    <option value="Mains GS1">Mains Paper I</option>
-                    <option value="Mains GS2">Mains Paper II</option>
-                    <option value="Mains GS3">Mains Paper III</option>
-                    <option value="Mains GS4">Mains Paper IV (Hindi/Eng)</option>
-
-                    <option value="Optional">Optional</option>
+                    <option value="">Select Paper</option>
+                    {Array.from(new Set(syllabus.map((t) => t.paper).filter(Boolean))).map((p) => (
+                      <option key={p} value={p}>
+                        {p}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
@@ -474,8 +476,17 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-medium cursor-pointer"
                   >
                     <option value="">Select Subject</option>
-                    {Array.from(new Set(syllabus.map(t => t.subject).filter(Boolean))).map(s => (
-                      <option key={s} value={s}>{s}</option>
+                    {Array.from(
+                      new Set(
+                        syllabus
+                          .filter((t) => !formPaper || t.paper === formPaper)
+                          .map((t) => t.subject)
+                          .filter(Boolean)
+                      )
+                    ).map((s) => (
+                      <option key={s} value={s}>
+                        {s}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -494,11 +505,22 @@ export const SpacedRevisionTab: React.FC<SpacedRevisionTabProps> = ({
                   >
                     <option value="">Select Topic</option>
                     {syllabus
-                      .filter(t => t.subject === formSubject)
-                      .flatMap(t => t.subtopics || [])
-                      .map(sub => typeof sub === "string" ? sub : sub.title)
-                      .map(title => (
-                        <option key={title} value={title}>{title}</option>
+                      .filter((t) => (!formPaper || t.paper === formPaper) && t.subject === formSubject)
+                      .flatMap((t) => {
+                        const topics = [t.title];
+                        if (t.subtopics) {
+                          topics.push(
+                            ...t.subtopics.map((sub) =>
+                              typeof sub === "string" ? sub : sub.title
+                            )
+                          );
+                        }
+                        return topics;
+                      })
+                      .map((title) => (
+                        <option key={title} value={title}>
+                          {title}
+                        </option>
                       ))}
                   </select>
                 ) : (

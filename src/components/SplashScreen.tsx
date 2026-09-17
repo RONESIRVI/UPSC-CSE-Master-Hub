@@ -43,10 +43,9 @@ export function SplashScreen() {
             animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.6, 0.4] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           />
-          <div className="relative w-24 h-24 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 p-[2px] shadow-2xl">
-            <div className="w-full h-full bg-[#020617] rounded-2xl flex items-center justify-center">
-              <Compass className="w-12 h-12 text-indigo-400" />
-            </div>
+          <div className="relative flex items-center justify-center w-24 h-24 rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden mb-6 bg-white p-1 border border-slate-100">
+            <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/40 to-white/0 translate-x-[-100%] animate-[shimmer_2s_infinite] z-20" />
+            <img src="/icon.png" alt="LBSNAA" className="w-full h-full object-contain rounded-2xl z-10" />
           </div>
           {/* Floating Sparkles */}
           <motion.div 

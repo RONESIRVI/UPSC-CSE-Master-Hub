@@ -65,6 +65,7 @@ interface StudyTrackerTabProps {
   syllabus?: SyllabusTopic[];
 
   currentStudySession?: {
+    paper?: string;
     subject: string;
     topic: string;
     taskType: "study" | "revision" | "pyq" | "notes" | "answer_writing";

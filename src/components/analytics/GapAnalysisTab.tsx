@@ -25,6 +25,7 @@ export const GapAnalysisTab: React.FC<GapAnalysisTabProps> = ({
   onOpenExportReport,
 }) => {
   const [selectedPaper, setSelectedPaper] = useState<string>("All");
+  const [selectedSubject, setSelectedSubject] = useState<string>("All");
 
   // Get unique papers from syllabus
   const papers = useMemo(() => {
@@ -35,21 +36,30 @@ export const GapAnalysisTab: React.FC<GapAnalysisTabProps> = ({
     return ["All", ...Array.from(p)];
   }, [syllabus]);
 
+  // Get unique subjects for the selected paper
+  const subjects = useMemo(() => {
+    const s = new Set<string>();
+    syllabus.filter(t => t.status !== "not_started" && t.status !== "in_progress").forEach(t => {
+      if (t.subject && (selectedPaper === "All" || t.paper === selectedPaper)) s.add(t.subject);
+    });
+    return ["All", ...Array.from(s)];
+  }, [syllabus, selectedPaper]);
+
   // Compute dynamic gap analysis based on syllabus & sessionLogs
   const dynamicMetrics = useMemo(() => {
     if (!syllabus || syllabus.length === 0) return GAP_ANALYSIS_METRICS;
 
-    // Filter topics by paper
-    const filteredTopics = selectedPaper === "All" 
-      ? syllabus 
-      : syllabus.filter(t => t.paper === selectedPaper);
+    // Filter topics by paper, subject and status
+    let filteredTopics = syllabus.filter(t => t.status !== "not_started" && t.status !== "in_progress");
+    if (selectedPaper !== "All") filteredTopics = filteredTopics.filter(t => t.paper === selectedPaper);
+    if (selectedSubject !== "All") filteredTopics = filteredTopics.filter(t => t.subject === selectedSubject);
 
     if (filteredTopics.length === 0) return [];
 
     // Filter session logs
-    const filteredLogs = selectedPaper === "All"
-      ? sessionLogs
-      : sessionLogs.filter(log => log.paper === selectedPaper);
+    let filteredLogs = sessionLogs;
+    if (selectedPaper !== "All") filteredLogs = filteredLogs.filter(log => log.paper === selectedPaper);
+    if (selectedSubject !== "All") filteredLogs = filteredLogs.filter(log => log.subject === selectedSubject);
 
     let totalQs = 0;
     let totalTime = 0;
@@ -109,11 +119,9 @@ export const GapAnalysisTab: React.FC<GapAnalysisTabProps> = ({
     // Sort by largest gap magnitude
     metrics.sort((a, b) => Math.abs(b.deltaPercent || 0) - Math.abs(a.deltaPercent || 0));
 
-    // If completely empty (no time logged, no questions estimated), fallback
-    if (metrics.length === 0) return GAP_ANALYSIS_METRICS;
-    
+    // If completely empty (no time logged, no questions estimated), return empty array
     return metrics;
-  }, [syllabus, sessionLogs, selectedPaper]);
+  }, [syllabus, sessionLogs, selectedPaper, selectedSubject]);
 
   return (
     <div className="space-y-6">
@@ -164,6 +172,24 @@ export const GapAnalysisTab: React.FC<GapAnalysisTabProps> = ({
             {papers.map((p) => (
               <option key={p} value={p}>
                 {p}
+              </option>
+            ))}
+          </select>
+        </div>
+        
+        <div className="flex items-center gap-3 bg-white p-2 rounded-xl border border-slate-200 shadow-sm w-full sm:w-auto">
+          <div className="pl-2 flex items-center gap-1.5 text-slate-500">
+            <Filter className="w-4 h-4" />
+            <span className="text-xs font-bold uppercase tracking-wider">Subject:</span>
+          </div>
+          <select
+            value={selectedSubject}
+            onChange={(e) => setSelectedSubject(e.target.value)}
+            className="bg-slate-50 border-none rounded-lg px-3 py-1.5 text-sm font-bold text-indigo-700 outline-none cursor-pointer flex-1 max-w-[200px] truncate"
+          >
+            {subjects.map((s) => (
+              <option key={s} value={s}>
+                {s}
               </option>
             ))}
           </select>

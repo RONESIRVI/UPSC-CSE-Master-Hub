@@ -38,7 +38,7 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
   onOpenExportReport,
 }) => {
   const [selectedPaper, setSelectedPaper] = useState<string>("All");
-  const [selectedIntensity, setSelectedIntensity] = useState<string>("All");
+  const [selectedSubject, setSelectedSubject] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [viewMode, setViewMode] = useState<"heatmap" | "cards">("heatmap");
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(
@@ -110,17 +110,16 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
         failedCount,
         item.accuracyInMocks || 50
       );
-      const matchIntensity =
-        selectedIntensity === "All" ||
-        intensity.level.startsWith(selectedIntensity);
+      const matchSubject =
+        selectedSubject === "All" || item.subject === selectedSubject;
       const matchQuery =
         !searchQuery.trim() ||
         item.topic.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.subject.toLowerCase().includes(searchQuery.toLowerCase());
 
-      return matchPaper && matchIntensity && matchQuery;
+      return matchPaper && matchSubject && matchQuery;
     });
-  }, [weakAreas, selectedPaper, selectedIntensity, searchQuery]);
+  }, [weakAreas, selectedPaper, selectedSubject, searchQuery]);
 
   // Aggregate metrics
   const totalFailedQuestions = useMemo(() => {
@@ -239,16 +238,16 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
             <option value="Mains GS4">Mains Paper IV (Hindi/Eng)</option>
           </select>
 
-          {/* Intensity filter */}
+          {/* Subject filter */}
           <select
-            value={selectedIntensity}
-            onChange={(e) => setSelectedIntensity(e.target.value)}
-            className="bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none font-bold cursor-pointer"
+            value={selectedSubject}
+            onChange={(e) => setSelectedSubject(e.target.value)}
+            className="bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none font-bold cursor-pointer max-w-[200px] truncate"
           >
-            <option value="All">All Intensities</option>
-            <option value="Critical">Critical (6+ Failed)</option>
-            <option value="Moderate">Moderate (4-5 Failed)</option>
-            <option value="Mild">Mild (2-3 Failed)</option>
+            <option value="All">All Subjects</option>
+            {Array.from(new Set(weakAreas.filter(w => selectedPaper === "All" || w.paper === selectedPaper).map(w => w.subject).filter(Boolean))).map(s => (
+               <option key={s} value={s}>{s}</option>
+            ))}
           </select>
 
           {/* View Mode Toggle */}
@@ -490,10 +489,29 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                     <Target className="w-3.5 h-3.5 text-indigo-600" />{" "}
                     Prescribed Action Plan:
                   </span>
-                  <div className="p-3 bg-indigo-50/60 rounded-xl border border-indigo-200 text-slate-700 leading-relaxed font-medium">
+                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-slate-700 leading-relaxed font-medium">
                     {selectedTopic.recommendedAction}
                   </div>
                 </div>
+
+                {/* Excel Study Guide Injection */}
+                {(() => {
+                  const syllabusMatch = syllabus.find(s => s.title === selectedTopic.topic || s.id === selectedTopic.topic);
+                  if (syllabusMatch?.studyGuide) {
+                    return (
+                      <div className="space-y-1.5 text-xs mt-3">
+                        <span className="font-bold text-indigo-800 flex items-center gap-1.5">
+                          <BookOpen className="w-3.5 h-3.5 text-indigo-600" /> 
+                          मार्क बढ़ाने के लिए क्या तैयार करें (Excel Guide):
+                        </span>
+                        <div className="p-3 bg-indigo-50 rounded-xl border border-indigo-200 text-indigo-900 leading-relaxed font-bold shadow-sm">
+                          {syllabusMatch.studyGuide}
+                        </div>
+                      </div>
+                    );
+                  }
+                  return null;
+                })()}
 
                 {/* Priority Book & PYQs */}
                 <div className="space-y-2 text-xs">

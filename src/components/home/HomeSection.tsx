@@ -19,7 +19,7 @@ import { PreparationHealthScore } from "./PreparationHealth";
 import { PersonalizedPlan } from "./PersonalizedPlan";
 import { AudioRecorderModal } from "./AudioRecorderModal";
 import { TaskLoggerModal } from "./TaskLoggerModal";
-import { Play, Target, Mic, BookOpen, Type } from "lucide-react";
+import { Play, Target, Mic, BookOpen, Type, Layers } from "lucide-react";
 
 interface HomeSectionProps {
   userProfile?: UserProfile;
@@ -35,11 +35,13 @@ interface HomeSectionProps {
   revisionQueue: RevisionItem[];
   studyPlanPhases: StudyPlanPhase[];
   currentStudySession: {
+    paper?: string;
     subject: string;
     topic: string;
     taskType: "study" | "revision" | "pyq" | "notes" | "answer_writing";
   };
   setCurrentStudySession: React.Dispatch<React.SetStateAction<{
+    paper?: string;
     subject: string;
     topic: string;
     taskType: "study" | "revision" | "pyq" | "notes" | "answer_writing";
@@ -183,10 +185,26 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
               <h3 className="font-bold text-slate-800 uppercase tracking-wider text-sm">Quick Start Study Session</h3>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-3.5">
               <div>
                 <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
-                  <BookOpen className="w-3.5 h-3.5 text-indigo-500" /> Subject / Paper
+                  <Layers className="w-3.5 h-3.5 text-indigo-500" /> Exam / Paper
+                </label>
+                <select
+                  value={currentStudySession.paper || ""}
+                  onChange={(e) => setCurrentStudySession(prev => ({ ...prev, paper: e.target.value, subject: "", topic: "" }))}
+                  className="w-full bg-indigo-50/40 border border-indigo-100 text-indigo-900 text-xs font-semibold rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-indigo-500/50 hover:bg-indigo-50 transition-all cursor-pointer shadow-sm"
+                >
+                  <option value="">Select Exam</option>
+                  {Array.from(new Set(syllabus.filter(t => t.status !== "not_started").map(t => t.paper).filter(Boolean))).map(p => (
+                    <option key={p} value={p}>{p}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
+                  <BookOpen className="w-3.5 h-3.5 text-indigo-500" /> Subject
                 </label>
                 <select
                   value={currentStudySession.subject}
@@ -194,9 +212,7 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
                   className="w-full bg-indigo-50/40 border border-indigo-100 text-indigo-900 text-xs font-semibold rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-indigo-500/50 hover:bg-indigo-50 transition-all cursor-pointer shadow-sm"
                 >
                   <option value="">Select Subject</option>
-                  {Array.from(new Set(syllabus
-                    .filter(t => t.status === "completed" || t.status === "in-progress")
-                    .map(t => t.subject).filter(Boolean))).map(s => (
+                  {Array.from(new Set(syllabus.filter(t => (!currentStudySession.paper || t.paper === currentStudySession.paper) && t.status !== "not_started").map(t => t.subject).filter(Boolean))).map(s => (
                     <option key={s} value={s}>{s}</option>
                   ))}
                 </select>
@@ -231,7 +247,7 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
                   >
                     <option value="">Select Topic</option>
                     {syllabus
-                      .filter(t => (t.status === "completed" || t.status === "in-progress") && t.subject === currentStudySession.subject)
+                      .filter(t => (!currentStudySession.paper || t.paper === currentStudySession.paper) && t.subject === currentStudySession.subject && t.status !== "not_started")
                       .flatMap(t => {
                         // Include main title
                         const topics = [t.title];

@@ -267,11 +267,14 @@ export default function App() {
   const [showSplash, setShowSplash] = useState<boolean>(true);
 
   const [currentStudySession, setCurrentStudySession] = useState<{
+    paper?: string;
     subject: string;
     topic: string;
+    subtopic?: string;
     taskType: "study" | "revision" | "pyq" | "notes" | "answer_writing";
     triggerTimerStart?: boolean;
   }>({
+    paper: "",
     subject: "राजस्थान का इतिहास, कला, संस्कृति, साहित्य, परम्परा एवं विरासत",
     topic: "",
     taskType: "study",
@@ -421,6 +424,9 @@ export default function App() {
 
     mockLogs.forEach(log => {
       if (!log.subject || !log.topic) return;
+      const syllabusTopic = syllabus.find(s => s.subject === log.subject && s.title === log.topic);
+      if (syllabusTopic?.status === "not_started" || syllabusTopic?.status === "in_progress") return;
+
       const key = `${log.subject}-${log.topic}`;
       if (!topicStats[key]) {
         topicStats[key] = {
@@ -445,6 +451,9 @@ export default function App() {
 
     sessionLogs.forEach(log => {
       if (!log.subject || !log.topicCovered) return;
+      const syllabusTopic = syllabus.find(s => s.subject === log.subject && s.title === log.topicCovered);
+      if (syllabusTopic?.status === "not_started" || syllabusTopic?.status === "in_progress") return;
+
       const key = `${log.subject}-${log.topicCovered}`;
       if (!topicStats[key]) {
         topicStats[key] = {
@@ -466,7 +475,7 @@ export default function App() {
     Object.keys(topicStats).forEach((key, idx) => {
        const stat = topicStats[key];
        
-       if (stat.tests > 0 && stat.lastMockScore >= stat.lastMockCutoff + 12) {
+       if (stat.tests > 0 && stat.lastMockScore >= stat.lastMockCutoff + 15) {
           return; // Topic mastered according to strict RAS criteria
        }
 
@@ -1113,7 +1122,14 @@ export default function App() {
                      notes: currentStudySession.subtopic ? `Sub-topic: ${currentStudySession.subtopic}` : "",
                    });
                    setTimerSeconds(0);
-                   setCurrentStudySession({subject: "", topic: "", triggerTimerStart: false});
+                   setCurrentStudySession({ 
+                     paper: "",
+                     subject: "", 
+                     topic: "", 
+                     subtopic: "",
+                     taskType: "study",
+                     triggerTimerStart: false 
+                  });
                 }}
                 className="w-[72px] h-10 rounded-xl bg-rose-500/10 text-rose-500 border border-rose-500/30 flex items-center justify-center hover:bg-rose-500/20 transition-all"
               >

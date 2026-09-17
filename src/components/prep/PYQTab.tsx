@@ -22,6 +22,7 @@ interface PYQTabProps {
   onAddPYQ?: (pyq: PYQQuestion) => void;
   onDeletePYQ?: (id: string) => void;
   onResetDefaultPYQs?: () => void;
+  syllabus: SyllabusTopic[];
 }
 
 export const PYQTab: React.FC<PYQTabProps> = ({
@@ -30,6 +31,7 @@ export const PYQTab: React.FC<PYQTabProps> = ({
   onAddPYQ,
   onDeletePYQ,
   onResetDefaultPYQs,
+  syllabus,
 }) => {
   const [selectedType, setSelectedType] = useState<"All" | "Prelims" | "Mains">(
     "All"
@@ -510,21 +512,24 @@ export const PYQTab: React.FC<PYQTabProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Paper
+                    Paper / Exam
                   </label>
-                  <select
+                  <input
+                    type="text"
+                    list="pyq-paper-options"
                     value={formPaper}
-                    onChange={(e) => setFormPaper(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-bold"
-                  >
-                    <option value="Prelims GS1">Prelims (GK & GS)</option>
-
-                    <option value="Mains GS1">Mains Paper I</option>
-                    <option value="Mains GS2">Mains Paper II</option>
-                    <option value="Mains GS3">Mains Paper III</option>
-                    <option value="Mains GS4">Mains Paper IV (Hindi/Eng)</option>
-
-                  </select>
+                    onChange={(e) => {
+                      setFormPaper(e.target.value);
+                      setFormSubject("");
+                    }}
+                    placeholder="Type or select a paper..."
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-bold focus:ring-2 focus:ring-indigo-500"
+                  />
+                  <datalist id="pyq-paper-options">
+                    {Array.from(new Set(syllabus.map((t) => t.paper).filter(Boolean))).map((p) => (
+                      <option key={p} value={p} />
+                    ))}
+                  </datalist>
                 </div>
 
                 <div>
@@ -533,11 +538,24 @@ export const PYQTab: React.FC<PYQTabProps> = ({
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. Indian Polity, Economy"
+                    list="pyq-subject-options"
                     value={formSubject}
                     onChange={(e) => setFormSubject(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-medium"
+                    placeholder="e.g. Polity, History, Economy, Optional"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-medium focus:ring-2 focus:ring-indigo-500"
                   />
+                  <datalist id="pyq-subject-options">
+                    {Array.from(
+                      new Set(
+                        syllabus
+                          .filter((t) => !formPaper || t.paper === formPaper)
+                          .map((t) => t.subject)
+                          .filter(Boolean)
+                      )
+                    ).map((s) => (
+                      <option key={s} value={s} />
+                    ))}
+                  </datalist>
                 </div>
               </div>
 

@@ -62,7 +62,7 @@ export const RankBenchmarkTab: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <span className="px-3 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-bold border border-amber-200 flex items-center gap-1.5">
-              <Trophy className="w-3.5 h-3.5 text-amber-600" /> Official UPSC
+              <Trophy className="w-3.5 h-3.5 text-amber-600" /> Official RAS
               Cutoff Archive & Estimator
             </span>
             <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
@@ -85,7 +85,7 @@ export const RankBenchmarkTab: React.FC = () => {
         <div className="flex items-center justify-between pb-3.5 border-b border-slate-100">
           <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
             <Calculator className="w-4 h-4 text-indigo-600" />
-            <span>Interactive UPSC Marks & Service Simulator</span>
+            <span>Interactive RAS Marks & Service Simulator</span>
           </h3>
           <span className="text-xs text-slate-500 font-medium">
             Prelims Max: 200 • Mains Max: 1750 • Interview: 275
@@ -217,7 +217,7 @@ export const RankBenchmarkTab: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3.5 border-b border-slate-100">
           <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
             <BarChart2 className="w-4 h-4 text-indigo-600" />
-            <span>Official UPSC Cutoffs History (General Category)</span>
+            <span>Official RAS Cutoffs History (General Category)</span>
           </h3>
         </div>
 
@@ -244,7 +244,7 @@ export const RankBenchmarkTab: React.FC = () => {
               {HISTORICAL_CUTOFFS.map((cut) => (
                 <tr key={cut.year} className="hover:bg-slate-50/80 transition">
                   <td className="py-3.5 px-4 font-bold text-slate-900 font-sans whitespace-nowrap">
-                    UPSC CSE {cut.year}
+                    RAS CSE {cut.year}
                   </td>
                   <td className="py-3.5 px-4 font-bold text-amber-700 whitespace-nowrap">
                     {cut.prelimsGeneral} / 200

@@ -68,9 +68,9 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center justify-between h-15 sm:h-18">
           {/* Brand Logo & Name - Premium VIP Redesign */}
           <div className="flex items-center gap-3 shrink-0 group cursor-pointer">
-            <div className="relative flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-600 shadow-lg shadow-amber-500/30 overflow-hidden transform transition-all duration-300 group-hover:scale-105 group-hover:-rotate-3 shrink-0">
-              <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-              <Crown className="w-6 h-6 text-white drop-shadow-md z-10" strokeWidth={2.5} />
+            <div className="relative flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-2xl shadow-lg shadow-slate-200/50 overflow-hidden transform transition-all duration-300 group-hover:scale-105 group-hover:-rotate-3 shrink-0 bg-white border border-slate-100 p-0.5">
+              <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/40 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 z-20" />
+              <img src="/icon.png" alt="LBSNAA" className="w-full h-full object-contain rounded-xl z-10" />
             </div>
             <div className="flex flex-col justify-center">
               <div className="flex items-center gap-2">

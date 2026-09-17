@@ -279,6 +279,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
           syllabus={syllabus}
           sessionLogs={sessionLogs}
           studyStreak={studyStreak}
+          mockLogs={mockLogs}
           onOpenExportReport={() => setShowExportModal(true)}
         />
       )}
@@ -303,7 +304,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
         />
       )}
 
-      {activeSubTab === "effort-gap" && (
+      {activeSubTab === "gap-analysis" && (
         <GapAnalysisTab
           syllabus={syllabus}
           sessionLogs={sessionLogs}

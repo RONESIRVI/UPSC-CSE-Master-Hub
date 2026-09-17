@@ -106,6 +106,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
+  const [modalPaper, setModalPaper] = useState("");
   const [modalSubject, setModalSubject] = useState("");
   const [modalTopic, setModalTopic] = useState("");
   const [modalSubtopic, setModalSubtopic] = useState("");
@@ -332,11 +333,31 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
               </p>
               
               <div className="space-y-4">
+                {/* Exam/Paper Dropdown */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Exam / Paper</label>
+                  <select 
+                    value={modalPaper || currentStudySession?.paper || ""}
+                    onChange={(e) => {
+                      setModalPaper(e.target.value);
+                      setModalSubject("");
+                      setModalTopic("");
+                      setModalSubtopic("");
+                    }}
+                    className="w-full bg-slate-50 border border-slate-200 text-slate-700 rounded-xl p-3 font-medium outline-none focus:border-indigo-500 transition-colors"
+                  >
+                    <option value="">Select Exam</option>
+                    {Array.from(new Set(syllabus.map(s => s.paper).filter(Boolean))).map(p => (
+                      <option key={p} value={p}>{p}</option>
+                    ))}
+                  </select>
+                </div>
+
                 {/* Subject Dropdown */}
                 <div>
                   <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Subject</label>
                   <select 
-                    value={modalSubject || currentStudySession.subject}
+                    value={modalSubject || currentStudySession?.subject || ""}
                     onChange={(e) => {
                       setModalSubject(e.target.value);
                       setModalTopic("");
@@ -345,7 +366,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
                     className="w-full bg-slate-50 border border-slate-200 text-slate-700 rounded-xl p-3 font-medium outline-none focus:border-indigo-500 transition-colors"
                   >
                     <option value="">Select Subject</option>
-                    {Array.from(new Set(syllabus.map(s => s.subject))).map(subj => (
+                    {Array.from(new Set(syllabus.filter(s => !(modalPaper || currentStudySession?.paper) || s.paper === (modalPaper || currentStudySession?.paper)).map(s => s.subject).filter(Boolean))).map(subj => (
                       <option key={subj} value={subj}>{subj}</option>
                     ))}
                   </select>
@@ -355,16 +376,16 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
                 <div>
                   <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Topic</label>
                   <select 
-                    value={modalTopic || currentStudySession.topic}
+                    value={modalTopic || currentStudySession?.topic || ""}
                     onChange={(e) => {
                       setModalTopic(e.target.value);
                       setModalSubtopic("");
                     }}
-                    disabled={!(modalSubject || currentStudySession.subject)}
+                    disabled={!(modalSubject || currentStudySession?.subject)}
                     className="w-full bg-slate-50 border border-slate-200 text-slate-700 rounded-xl p-3 font-medium outline-none focus:border-indigo-500 transition-colors disabled:opacity-50"
                   >
                     <option value="">Select Topic</option>
-                    {syllabus.filter(s => s.subject === (modalSubject || currentStudySession.subject)).map(topic => (
+                    {syllabus.filter(s => (!(modalPaper || currentStudySession?.paper) || s.paper === (modalPaper || currentStudySession?.paper)) && s.subject === (modalSubject || currentStudySession?.subject)).map(topic => (
                       <option key={topic.id} value={topic.title}>{topic.title}</option>
                     ))}
                   </select>
@@ -376,11 +397,11 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
                   <select 
                     value={modalSubtopic}
                     onChange={(e) => setModalSubtopic(e.target.value)}
-                    disabled={!(modalTopic || currentStudySession.topic)}
+                    disabled={!(modalTopic || currentStudySession?.topic)}
                     className="w-full bg-slate-50 border border-slate-200 text-slate-700 rounded-xl p-3 font-medium outline-none focus:border-indigo-500 transition-colors disabled:opacity-50"
                   >
                     <option value="">Select Sub-topic (Optional)</option>
-                    {syllabus.find(s => s.title === (modalTopic || currentStudySession.topic))?.subtopics.map(sub => (
+                    {syllabus.find(s => s.title === (modalTopic || currentStudySession?.topic))?.subtopics.map(sub => (
                       <option key={sub.title} value={sub.title}>{sub.title}</option>
                     ))}
                   </select>
@@ -390,11 +411,13 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
               <div className="pt-2">
                 <button
                   onClick={() => {
-                    const finalSubject = modalSubject || currentStudySession.subject;
-                    const finalTopic = modalTopic || currentStudySession.topic;
-                    if (setCurrentStudySession) {
+                    const finalPaper = modalPaper || currentStudySession?.paper || "";
+                    const finalSubject = modalSubject || currentStudySession?.subject || "";
+                    const finalTopic = modalTopic || currentStudySession?.topic || "";
+                    if (setCurrentStudySession && currentStudySession) {
                       setCurrentStudySession({
                         ...currentStudySession, 
+                        paper: finalPaper,
                         subject: finalSubject,
                         topic: modalSubtopic ? `${finalTopic} - ${modalSubtopic}` : finalTopic,
                         triggerTimerStart: false
@@ -402,7 +425,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
                     }
                     if (onStartTimer) onStartTimer();
                   }}
-                  disabled={!(modalSubject || currentStudySession.subject)}
+                  disabled={!(modalSubject || currentStudySession?.subject)}
                   className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed active:scale-95 text-white rounded-xl font-black uppercase tracking-wider text-sm shadow-lg shadow-indigo-500/30 transition-all flex items-center justify-center gap-2"
                 >
                   <Play className="w-4 h-4 fill-white" />

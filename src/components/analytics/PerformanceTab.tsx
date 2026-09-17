@@ -29,9 +29,7 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
   const [testName, setTestName] = useState("");
   const [seriesName, setSeriesName] = useState("Insight");
-  const [testType, setTestType] = useState<
-    "Prelims GS1" |  "Mains GS"
-  >("Prelims GS1");
+  const [testType, setTestType] = useState<string>("Prelims GS1");
   const [score, setScore] = useState<number>(92);
   const [totalMarks, setTotalMarks] = useState<number>(200);
   const [accuracyPct, setAccuracyPct] = useState<number>(75);
@@ -41,14 +39,20 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
   const [selectedSubtopics, setSelectedSubtopics] = useState<string[]>([]);
   const [mockTestType, setMockTestType] = useState<"Full Length" | "Topic Wise">("Topic Wise");
   const [totalQuestions, setTotalQuestions] = useState<number>(100);
-  const [questionsAttempted, setQuestionsAttempted] = useState<number>(0);
-  const [correctCount, setCorrectCount] = useState<number>(0);
+  const [questionsAttempted, setQuestionsAttempted] = useState<number | "">("");
+  const [correctCount, setCorrectCount] = useState<number | "">("");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   
-  const subjects = Array.from(new Set(syllabus.map((t: any) => t.subject).filter(Boolean)));
+  const subjects = Array.from(new Set(syllabus.filter((t: any) => t.status !== "not_started" && t.status !== "in_progress").map((t: any) => t.subject).filter(Boolean)));
   const subtopicsForSubject = syllabus
     .filter((t: any) => t.subject === subject)
-    .flatMap((t: any) => t.subtopics || [])
-    .map((sub: any) => typeof sub === "string" ? sub : sub.title);
+    .flatMap((t: any) => {
+      const topics = [t.title];
+      if (t.subtopics) {
+        topics.push(...t.subtopics.map((sub: any) => typeof sub === "string" ? sub : sub.title));
+      }
+      return topics;
+    });
   const prelimsLogs = mockLogs.filter((m) => m.type === "Prelims GS1");
   const avgPrelimsScore =
     prelimsLogs.length > 0
@@ -59,7 +63,7 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
       : 0;
 
   useEffect(() => {
-    if (questionsAttempted > 0) {
+    if (typeof questionsAttempted === "number" && typeof correctCount === "number" && questionsAttempted > 0) {
       const incorrect = questionsAttempted - correctCount;
       let calcScore = 0;
       // Standard calculation
@@ -75,27 +79,38 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
 
   const handleSaveMock = (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null); // Clear previous errors
     if (mockTestType === "Topic Wise" && (!subject || selectedSubtopics.length === 0)) {
-      alert("Please select a subject and at least one topic for Topic Wise test.");
+      setErrorMessage("Please select a subject and at least one topic for Topic Wise test.");
       return;
     }
 
     if (mockTestType === "Full Length" && !testName.trim()) {
-      alert("Please enter a test title for Full Length test.");
+      setErrorMessage("Please enter a test title for Full Length test.");
+      return;
+    }
+
+    if (questionsAttempted === "" || correctCount === "") {
+      setErrorMessage("Please enter both the number of Attempted and Correct questions.");
+      return;
+    }
+
+    if (questionsAttempted <= 0) {
+      setErrorMessage("Please enter the number of questions attempted.");
       return;
     }
 
     if (questionsAttempted < correctCount) {
-       alert("Correct questions cannot exceed attempted questions.");
+       setErrorMessage("Correct questions cannot exceed attempted questions.");
        return;
     }
 
-    // NEW VALIDATION: Ensure the syllabus topic has started processing
+    // NEW VALIDATION: Ensure the syllabus topic has reached revision
     if (mockTestType === "Topic Wise") {
       const parentTopic = syllabus.find(s => s.subject === subject);
       if (parentTopic) {
-        if (parentTopic.status === "not_started") {
-          alert(`Cannot log mock test! You haven't started processing the subject: "${subject}". Please update its status in the Syllabus Tracker first.`);
+        if (parentTopic.status === "not_started" || parentTopic.status === "in_progress") {
+          setErrorMessage(`Cannot log mock test! The subject "${subject}" is still in progress. Please complete studying it and move it to revision in the Syllabus Tracker first.`);
           return;
         }
       }
@@ -118,10 +133,10 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
       totalMarks,
       cutoffScore: cutoffMarks,
       totalQuestions,
-      questionsAttempted,
-      correctCount,
-      incorrectCount: questionsAttempted - correctCount,
-      accuracyRate: questionsAttempted > 0 ? Math.round((correctCount / questionsAttempted) * 100) : accuracyPct,
+      questionsAttempted: questionsAttempted as number,
+      correctCount: correctCount as number,
+      incorrectCount: (questionsAttempted as number) - (correctCount as number),
+      accuracyRate: (questionsAttempted as number) > 0 ? Math.round(((correctCount as number) / (questionsAttempted as number)) * 100) : accuracyPct,
       analysisNotes:
         analysisNotes ||
         "Good attempt. Need faster elimination in science & tech.",
@@ -130,8 +145,8 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
     setShowAddModal(false);
     setTestName("");
     setAnalysisNotes("");
-    setQuestionsAttempted(0);
-    setCorrectCount(0);
+    setQuestionsAttempted("");
+    setCorrectCount("");
   };
 
   return (
@@ -302,9 +317,24 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
           <div className="w-full max-w-md bg-white border-2 border-slate-200 rounded-2xl p-6 shadow-2xl space-y-4">
-            <h3 className="text-lg font-bold text-slate-900">
-              Log Mock Test Score
-            </h3>
+            <div className="flex justify-between items-center">
+              <h3 className="text-lg font-bold text-slate-900">
+                Log Mock Test Score
+              </h3>
+              <button 
+                onClick={() => { setShowAddModal(false); setErrorMessage(null); }} 
+                className="text-slate-400 hover:text-slate-600 transition cursor-pointer p-1"
+              >
+                ×
+              </button>
+            </div>
+            
+            {errorMessage && (
+              <div className="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-xl flex items-start gap-3 text-sm font-semibold animate-in fade-in slide-in-from-top-2">
+                <AlertCircle className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />
+                <p>{errorMessage}</p>
+              </div>
+            )}
 
             <form onSubmit={handleSaveMock} className="space-y-3.5">
               <div className="grid grid-cols-2 gap-3">
@@ -323,17 +353,17 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
                 
                 <div>
                   <label className="text-xs font-bold text-slate-700 block mb-1">
-                    Exam Type
+                    Paper
                   </label>
                   <select
                     value={testType}
-                    onChange={(e) => setTestType(e.target.value as any)}
+                    onChange={(e) => setTestType(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
                   >
-                    <option value="Prelims GS1">Prelims (GK & GS)</option>
-
-                    <option value="Mains GS1">Mains Paper I</option>\n<option value="Mains GS2">Mains Paper II</option>\n<option value="Mains GS3">Mains Paper III</option>\n<option value="Mains GS4">Mains Paper IV (Hindi/Eng)</option>
-
+                    <option value="">Select Paper</option>
+                    {Array.from(new Set(syllabus.filter(t => t.status !== "not_started" && t.status !== "in_progress").map(t => t.paper).filter(Boolean))).map(p => (
+                      <option key={p} value={p}>{p}</option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -369,7 +399,9 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
                       className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
                     >
                       <option value="">Select Subject</option>
-                      {subjects.map(s => <option key={s} value={s}>{s}</option>)}
+                      {Array.from(new Set(syllabus.filter(t => (!testType || t.paper === testType) && t.status !== "not_started" && t.status !== "in_progress").map(t => t.subject).filter(Boolean))).map(s => (
+                        <option key={s} value={s}>{s}</option>
+                      ))}
                     </select>
                   </div>
                   <div>
@@ -437,8 +469,8 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
                   </label>
                   <input
                     type="number"
-                    value={questionsAttempted}
-                    onChange={(e) => setQuestionsAttempted(parseInt(e.target.value) || 0)}
+                    value={questionsAttempted === "" ? "" : questionsAttempted}
+                    onChange={(e) => setQuestionsAttempted(e.target.value === "" ? "" : parseInt(e.target.value))}
                     className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
                   />
                 </div>
@@ -448,8 +480,8 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
                   </label>
                   <input
                     type="number"
-                    value={correctCount}
-                    onChange={(e) => setCorrectCount(parseInt(e.target.value) || 0)}
+                    value={correctCount === "" ? "" : correctCount}
+                    onChange={(e) => setCorrectCount(e.target.value === "" ? "" : parseInt(e.target.value))}
                     className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
                   />
                 </div>
@@ -464,8 +496,8 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
                     type="number"
                     step="0.1"
                     value={score}
-                    readOnly
-                    className="w-full bg-indigo-50/50 border border-indigo-200 text-indigo-900 font-bold text-xs rounded-xl px-3 py-2 outline-none cursor-not-allowed"
+                    onChange={(e) => setScore(parseFloat(e.target.value) || 0)}
+                    className="w-full bg-slate-50 border border-slate-300 text-slate-900 font-bold text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
                   />
                 </div>
 
@@ -476,8 +508,8 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
                   <input
                     type="number"
                     value={accuracyPct}
-                    readOnly
-                    className="w-full bg-emerald-50/50 border border-emerald-200 text-emerald-900 font-bold text-xs rounded-xl px-3 py-2 outline-none cursor-not-allowed"
+                    onChange={(e) => setAccuracyPct(parseFloat(e.target.value) || 0)}
+                    className="w-full bg-slate-50 border border-slate-300 text-slate-900 font-bold text-xs rounded-xl px-3 py-2 outline-none focus:border-emerald-600"
                   />
                 </div>
 
@@ -512,8 +544,11 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
               <div className="flex justify-end gap-2 pt-3">
                 <button
                   type="button"
-                  onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold hover:bg-slate-200"
+                  onClick={() => {
+                    setShowAddModal(false);
+                    setErrorMessage(null);
+                  }}
+                  className="flex-1 py-2 rounded-xl border-2 border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition cursor-pointer"
                 >
                   Cancel
                 </button>

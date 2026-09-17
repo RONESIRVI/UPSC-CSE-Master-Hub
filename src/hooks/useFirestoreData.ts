@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot, collection } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import { TopperProfile, StrategySetupItem, TopperRoutine, InterviewTranscript, SyllabusTopic } from "../types";
 import { Capacitor } from "@capacitor/core";
@@ -75,11 +75,12 @@ export const useFirestoreData = () => {
     });
 
     // ─── Syllabus Topics from Firebase ─────────────────────────────────────
-    const unsubSyllabus = onSnapshot(doc(db, "appData", "SYLLABUS_TOPICS"), (docSnap) => {
-      if (docSnap.exists() && docSnap.data().data && Array.isArray(docSnap.data().data)) {
-        setSyllabusTopics(docSnap.data().data as SyllabusTopic[]);
+    const unsubSyllabus = onSnapshot(collection(db, "appData", "SYLLABUS_TOPICS", "topics"), (snapshot) => {
+      if (!snapshot.empty) {
+        const topics = snapshot.docs.map(doc => doc.data() as SyllabusTopic);
+        setSyllabusTopics(topics);
         triggerUpdateNotification();
-        console.log(`[Firebase] Syllabus loaded: ${docSnap.data().data.length} topics`);
+        console.log(`[Firebase] Syllabus loaded: ${topics.length} topics`);
       } else {
         setSyllabusTopics(null); // fallback to default
       }

@@ -58,8 +58,8 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
   weakAreas,
 }) => {
   const [format, setFormat] = useState<"pdf" | "png">("pdf");
-  const [aspirantName, setAspirantName] = useState<string>(userProfile?.name || "UPSC CSE Aspirant");
-  const [targetExam, setTargetExam] = useState<string>(userProfile?.targetExam || "UPSC CSE 2026");
+  const [aspirantName, setAspirantName] = useState<string>(userProfile?.name || "RAS CSE Aspirant");
+  const [targetExam, setTargetExam] = useState<string>(userProfile?.targetExam || "RAS CSE 2026");
 
   useEffect(() => {
     if (userProfile?.name) setAspirantName(userProfile.name);
@@ -344,7 +344,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                   type="text"
                   value={aspirantName}
                   onChange={(e) => setAspirantName(e.target.value)}
-                  placeholder="e.g. UPSC CSE Aspirant"
+                  placeholder="e.g. RAS CSE Aspirant"
                   className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs font-bold rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
@@ -357,7 +357,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                   type="text"
                   value={targetExam}
                   onChange={(e) => setTargetExam(e.target.value)}
-                  placeholder="e.g. UPSC CSE 2026"
+                  placeholder="e.g. RAS CSE 2026"
                   className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs font-bold rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
@@ -410,7 +410,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                       <span>Effort Gap vs Weightage Parity</span>
                     </div>
                     <p className="text-[10px] text-slate-500 mt-0.5">
-                      Time invested % vs UPSC syllabus weightage return on
+                      Time invested % vs RAS syllabus weightage return on
                       investment deficit.
                     </p>
                   </div>
@@ -533,7 +533,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-extrabold uppercase tracking-widest text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded border border-indigo-200">
-                    UPSC CSE AI Telemetry Report
+                    RAS CSE AI Telemetry Report
                   </span>
                   <span className="text-xs font-bold text-slate-400 font-mono">
                     {targetExam}
@@ -608,7 +608,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                   -{avgNegativeMarks} pts
                 </div>
                 <div className="text-[10px] text-slate-500">
-                  UPSC 1/3 penalty rate
+                  RAS 1/3 penalty rate
                 </div>
               </div>
             </div>
@@ -646,7 +646,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                 </div>
 
                 <div className="grid grid-cols-3 gap-3">
-                  {(weakAreas.length > 0 ? weakAreas : DEFAULT_WEAK_AREAS).map((item) => {
+                  {weakAreas.map((item) => {
                     const failedCount =
                       item.failedQuestionsCount ||
                       (item.severity === "Critical"
@@ -703,7 +703,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
               </div>
             )}
 
-            {/* MODULE 2: EFFORT GAP ANALYSIS (Time Allocated vs UPSC Weightage) */}
+            {/* MODULE 2: EFFORT GAP ANALYSIS (Time Allocated vs RAS Weightage) */}
             {includeGapAnalysis && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between pb-2 border-b border-slate-200">
@@ -766,7 +766,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
 
                         <div>
                           <div className="flex justify-between text-slate-600 mb-0.5">
-                            <span>UPSC Marks Weightage:</span>
+                            <span>RAS Marks Weightage:</span>
                             <span className="font-mono font-bold text-indigo-700">
                               {gap.idealWeightagePercent}%
                             </span>
@@ -907,7 +907,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
 
             {/* Report Footer */}
             <div className="pt-6 border-t border-slate-200 flex items-center justify-between text-[10px] text-slate-400 font-mono">
-              <div>UPSC CSE Master Hub • Official Telemetry Engine</div>
+              <div>RAS CSE Master Hub • Official Telemetry Engine</div>
               <div>
                 Strict Confidential • Personal Aspirant Diagnostic Report
               </div>

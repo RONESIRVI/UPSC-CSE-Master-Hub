@@ -49,7 +49,7 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
 }) => {
   const [selectedPaper, setSelectedPaper] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [yieldFilter, setYieldFilter] = useState<string>("All");
+  const [selectedSubject, setSelectedSubject] = useState<string>("All");
   const [expandedTopicId, setExpandedTopicId] = useState<string | null>(null);
 
   // New Custom Topic Modal / Form State
@@ -72,9 +72,19 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
     return ["All", ...Array.from(p)];
   }, [syllabus]);
 
+  const subjects = React.useMemo(() => {
+    const s = new Set<string>();
+    syllabus.forEach(t => {
+      if ((selectedPaper === "All" || t.paper === selectedPaper) && t.subject) {
+        s.add(t.subject);
+      }
+    });
+    return ["All", ...Array.from(s)];
+  }, [syllabus, selectedPaper]);
+
   const filteredTopics = syllabus.filter((t) => {
     if (selectedPaper !== "All" && t.paper !== selectedPaper) return false;
-    if (yieldFilter !== "All" && t.yield !== yieldFilter) return false;
+    if (selectedSubject !== "All" && t.subject !== selectedSubject) return false;
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       const matchTitle = t.title.toLowerCase().includes(q);
@@ -246,34 +256,7 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
               </div>
             </div>
 
-            <div className="flex sm:flex-col gap-2 shrink-0">
-              <button
-                onClick={() => setIsAddModalOpen(true)}
-                className="flex-1 flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm transition cursor-pointer"
-              >
-                <Plus className="w-4 h-4 shrink-0" />
-                <span>Add Custom Topic</span>
-              </button>
 
-              {onResetDefaultSyllabus && (
-                <button
-                  onClick={() => {
-                    if (
-                      confirm(
-                        "Restore official RAS standard syllabus? Custom added topics will be reset."
-                      )
-                    ) {
-                      onResetDefaultSyllabus();
-                    }
-                  }}
-                  className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-semibold transition cursor-pointer"
-                  title="Reset to official RAS syllabus"
-                >
-                  <RotateCcw className="w-3.5 h-3.5 shrink-0" />
-                  <span>Restore Standard</span>
-                </button>
-              )}
-            </div>
           </div>
         </div>
 
@@ -298,20 +281,21 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
             >
               {papers.map((p) => (
                 <option key={p} value={p}>
-                  {p === "All" ? "All Subjects" : p}
+                  {p === "All" ? "All Papers / Exams" : p}
                 </option>
               ))}
             </select>
 
             <select
-              value={yieldFilter}
-              onChange={(e) => setYieldFilter(e.target.value)}
-              className="bg-white border border-slate-200 text-slate-800 text-xs rounded-xl px-3 py-2 outline-none font-bold focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-xs whitespace-nowrap"
+              value={selectedSubject}
+              onChange={(e) => setSelectedSubject(e.target.value)}
+              className="bg-white border border-slate-200 text-slate-800 text-xs rounded-xl px-3 py-2 outline-none font-bold focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-xs whitespace-nowrap max-w-[200px] truncate"
             >
-              <option value="All">All Yield Levels</option>
-              <option value="🔥 High Yield">🔥 High Yield</option>
-              <option value="⭐ Medium Yield">⭐ Medium Yield</option>
-              <option value="📘 Standard">📘 Standard</option>
+              {subjects.map((s) => (
+                <option key={s} value={s}>
+                  {s === "All" ? "All Subjects" : s}
+                </option>
+              ))}
             </select>
           </div>
         </div>
@@ -354,21 +338,21 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-bold text-slate-700 block mb-1.5">
-                    Subject Level
+                    Paper / Exam
                   </label>
-                  <select
+                  <input
+                    type="text"
+                    list="new-paper-options"
                     value={newPaper}
-                    onChange={(e) => setNewPaper(e.target.value as any)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-bold"
-                  >
-                    <option value="Prelims GS1">Prelims (GK & GS)</option>
-
-                    <option value="Mains GS1">Mains Paper I</option>
-                    <option value="Mains GS2">Mains Paper II</option>
-                    <option value="Mains GS3">Mains Paper III</option>
-                    <option value="Mains GS4">Mains Paper IV (Hindi/Eng)</option>
-
-                  </select>
+                    onChange={(e) => setNewPaper(e.target.value)}
+                    placeholder="Type or select a paper..."
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-bold focus:ring-2 focus:ring-indigo-500"
+                  />
+                  <datalist id="new-paper-options">
+                    {Array.from(new Set(syllabus.map((t) => t.paper).filter(Boolean))).map((p) => (
+                      <option key={p} value={p} />
+                    ))}
+                  </datalist>
                 </div>
 
                 <div>
@@ -377,11 +361,24 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                   </label>
                   <input
                     type="text"
+                    list="new-subject-options"
                     placeholder="e.g. Polity, History, Economy, Optional"
                     value={newSubject}
                     onChange={(e) => setNewSubject(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-medium"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-medium focus:ring-2 focus:ring-indigo-500"
                   />
+                  <datalist id="new-subject-options">
+                    {Array.from(
+                      new Set(
+                        syllabus
+                          .filter((t) => !newPaper || t.paper === newPaper)
+                          .map((t) => t.subject)
+                          .filter(Boolean)
+                      )
+                    ).map((s) => (
+                      <option key={s} value={s} />
+                    ))}
+                  </datalist>
                 </div>
               </div>
 
@@ -555,7 +552,7 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                     onClick={() =>
                       onUpdateTopicStatus(topic.id, getNextStatus(topic.status))
                     }
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition flex items-center gap-1.5 shadow-xs cursor-pointer ${statusInfo.color}`}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer ${statusInfo.color} w-[115px] sm:w-[120px] shrink-0`}
                     title="Click to cycle completion status"
                   >
                     {topic.status === "mastered" ? (
@@ -569,20 +566,6 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
                   </button>
 
 
-                  {/* Delete Topic (if custom) */}
-                  {onDeleteTopic && (
-                    <button
-                      onClick={() => {
-                        if (confirm(`Delete topic "${topic.title}"?`)) {
-                          onDeleteTopic(topic.id);
-                        }
-                      }}
-                      className="p-2 rounded-xl bg-slate-50 hover:bg-rose-50 hover:text-rose-600 text-slate-400 transition border border-slate-200 shadow-xs cursor-pointer"
-                      title="Delete topic"
-                    >
-                      <Trash2 className="w-4 h-4 shrink-0" />
-                    </button>
-                  )}
 
                   {/* Expand / Collapse Button */}
                   <button
@@ -603,17 +586,6 @@ export const SyllabusTab: React.FC<SyllabusTabProps> = ({
               {/* Expanded Micro-Subtopics Sub-tree */}
               {isExpanded && (
                 <div className="px-4 sm:px-5 pb-5 pt-3 border-t border-slate-100 space-y-3 bg-slate-50/70 rounded-b-2xl">
-
-                  {/* क्या तैयार करें — from Excel */}
-                  {topic.studyGuide && (
-                    <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-3 text-xs">
-                      <div className="flex items-center gap-1.5 font-bold text-indigo-800 mb-1">
-                        <BookOpen className="w-3.5 h-3.5 shrink-0" />
-                        क्या तैयार करें (Excel Guide)
-                      </div>
-                      <p className="text-indigo-900 leading-relaxed">{topic.studyGuide}</p>
-                    </div>
-                  )}
 
                   {/* Exam Tips */}
                   {topic.examTips && (

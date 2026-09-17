@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SyllabusTopic, StudySessionLog } from "../../types";
+import { SyllabusTopic, StudySessionLog, MockTestLog } from "../../types";
 import {
   BarChart3,
   CheckCircle2,
@@ -19,6 +19,7 @@ interface ProgressTabProps {
   syllabus: SyllabusTopic[];
   sessionLogs: StudySessionLog[];
   studyStreak: number;
+  mockLogs?: MockTestLog[];
   onOpenExportReport?: () => void;
 }
 
@@ -26,9 +27,22 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
   syllabus,
   sessionLogs,
   studyStreak,
+  mockLogs = [],
   onOpenExportReport,
 }) => {
   const [exportedMsg, setExportedMsg] = useState<boolean>(false);
+
+  // Compute dynamic mock confidence
+  const prelimsLogs = mockLogs.filter(m => m.type === "Prelims GS1" || m.type === "CSAT" || m.type?.includes("Prelims"));
+  const avgPrelimsScore = prelimsLogs.length > 0
+    ? prelimsLogs.reduce((acc, l) => acc + (l.marksObtained || 0), 0) / prelimsLogs.length
+    : 0;
+  
+  // A simplistic probability model (Target 100+ score = 99% probability)
+  const probability = prelimsLogs.length > 0 
+    ? Math.min(Math.round((avgPrelimsScore / 110) * 100 * 10) / 10, 99) 
+    : 0;
+
   const totalTopics = syllabus.length;
   const masteredTopics = syllabus.filter((s) => s.status === "mastered").length;
   const inProgressTopics = syllabus.filter(
@@ -71,7 +85,17 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
       const pct = Math.round(
         ((mastered * 1 + active * 0.5) / topics.length) * 100
       );
-      return { paper, total: topics.length, mastered, pct };
+      
+      const subjectSet = Array.from(new Set(topics.map(t => t.subject).filter(Boolean)));
+      const subjects = subjectSet.map(sub => {
+        const subTopics = topics.filter(t => t.subject === sub);
+        const subMastered = subTopics.filter(t => t.status === "mastered").length;
+        const subActive = subTopics.filter(t => t.status !== "not_started" && t.status !== "mastered").length;
+        const subPct = Math.round(((subMastered * 1 + subActive * 0.5) / subTopics.length) * 100) || 0;
+        return { name: sub, total: subTopics.length, mastered: subMastered, pct: subPct };
+      });
+
+      return { paper, total: topics.length, mastered, pct, subjects };
     }
   );
 
@@ -200,15 +224,15 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
             <Target className="w-4 h-4 text-sky-600" />
           </div>
           <div className="text-2xl sm:text-3xl font-extrabold text-sky-600">
-            74.2 / 100
+            {prelimsLogs.length > 0 ? `${probability} / 100` : "N/A"}
           </div>
           <p className="text-xs text-slate-500 font-medium">
             Prelims Qualification Probability
           </p>
           <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden mt-2">
             <div
-              className="h-full bg-sky-500 rounded-full"
-              style={{ width: `74.2%` }}
+              className="h-full bg-sky-500 rounded-full transition-all duration-1000"
+              style={{ width: `${probability}%` }}
             />
           </div>
         </div>
@@ -222,32 +246,60 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
             <span>Paper-Wise Mastery Breakdown</span>
           </h3>
           <span className="text-xs text-slate-500 font-medium">
-            Weighted by UPSC Question Distribution
+            Weighted by RAS Question Distribution
           </span>
         </div>
 
         <div className="space-y-4">
           {paperGroups.map((group, index) => (
-            <div key={index} className="space-y-1.5">
-              <div className="flex items-center justify-between text-xs font-semibold">
-                <span className="text-slate-800">{group.paper}</span>
-                <span className="font-mono text-indigo-600 font-bold">
-                  {group.pct}% ({group.mastered}/{group.total} Topics)
-                </span>
+            <div key={index} className="space-y-3 mb-4">
+              <div className="space-y-1.5 p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                <div className="flex items-center justify-between text-xs font-bold">
+                  <span className="text-slate-800">{group.paper}</span>
+                  <span className="font-mono text-indigo-600 font-extrabold">
+                    {group.pct}% ({group.mastered}/{group.total} Topics)
+                  </span>
+                </div>
+                <div className="w-full h-2.5 rounded-full bg-slate-200 overflow-hidden shadow-inner">
+                  <div
+                    className={`h-full rounded-full transition-all duration-500 ${
+                      group.pct >= 70
+                        ? "bg-emerald-500"
+                        : group.pct >= 40
+                        ? "bg-amber-500"
+                        : "bg-rose-500"
+                    }`}
+                    style={{ width: `${group.pct}%` }}
+                  />
+                </div>
               </div>
-
-              <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
-                <div
-                  className={`h-full rounded-full transition-all duration-500 ${
-                    group.pct >= 70
-                      ? "bg-emerald-500"
-                      : group.pct >= 40
-                      ? "bg-amber-500"
-                      : "bg-rose-500"
-                  }`}
-                  style={{ width: `${group.pct}%` }}
-                />
-              </div>
+              
+              {group.subjects.length > 0 && (
+                <div className="space-y-2.5 pl-4 border-l-2 border-indigo-100 ml-2">
+                  {group.subjects.map((sub, sIdx) => (
+                    <div key={sIdx} className="space-y-1">
+                      <div className="flex items-center justify-between text-[11px] font-semibold">
+                        <span className="text-slate-700 truncate max-w-[200px] sm:max-w-[400px]">{sub.name}</span>
+                        <span className="font-mono text-slate-500">
+                          {sub.pct}% ({sub.mastered}/{sub.total})
+                        </span>
+                      </div>
+                      <div className="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden">
+                        <div
+                          className={`h-full rounded-full transition-all duration-500 ${
+                            sub.pct >= 70
+                              ? "bg-emerald-400"
+                              : sub.pct >= 40
+                              ? "bg-amber-400"
+                              : "bg-rose-400"
+                          }`}
+                          style={{ width: `${sub.pct}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
         </div>

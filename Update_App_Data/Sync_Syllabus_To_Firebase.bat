@@ -1,10 +1,10 @@
 @echo off
 chcp 65001 >nul
 echo.
-echo ╔══════════════════════════════════════════════════════╗
-echo ║   RAS Syllabus — Firebase Sync Tool                 ║
-echo ║   Excel → Firebase Firestore → Live App Update      ║
-echo ╚══════════════════════════════════════════════════════╝
+echo ======================================================
+echo    RAS Syllabus - Firebase Sync Tool                 
+echo    Excel - Firebase Firestore - Live App Update      
+echo ======================================================
 echo.
 echo  Source File : Update_App_Data\ras_syllabus_data.xlsx
 echo  Firestore   : appData/SYLLABUS_TOPICS
@@ -17,7 +17,7 @@ cd /d "%~dp0.."
 node scripts/uploadSyllabusToFirebase.mjs
 
 echo.
-echo ══════════════════════════════════════════════════════
+echo ======================================================
 if %ERRORLEVEL% EQU 0 (
     echo  SUCCESS: Syllabus synced to Firebase successfully!
     echo  App will update automatically within seconds.
@@ -27,6 +27,6 @@ if %ERRORLEVEL% EQU 0 (
     echo   - Internet connection is active
     echo   - Excel file path is correct in the script
 )
-echo ══════════════════════════════════════════════════════
+echo ======================================================
 echo.
 pause

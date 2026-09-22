@@ -1038,9 +1038,9 @@
   ],
   "TOPPER_ROUTINES": [
     {
-      "id": "Working Professionals Model - Shruti Modi Style",
-      "title": "Routine for Shruti Modi",
-      "topperRef": "Shruti Modi",
+      "id": "routine_shakti-dubey",
+      "title": "Routine of Shakti Dubey (AIR 1)",
+      "topperRef": "Shakti Dubey",
       "type": "Early Riser / Standard Full-Time",
       "totalStudyHours": 10,
       "wakeUpTime": "05:00 AM",
@@ -1089,13 +1089,14 @@
         }
       ],
       "extraData": {
+        "Optional Subject": "PSIR (280 अंक)",
         "Target Phase": "Foundation Phase",
         "Focus Area": "Consistency and Output-based learning"
       }
     },
     {
-      "id": "Harshita Goyal - 4-Block Target Model (AIR 2, UPSC CSE)",
-      "title": "Routine for Harshita Goyal",
+      "id": "routine_harshita-goyal",
+      "title": "Routine of Harshita Goyal (AIR 2)",
       "topperRef": "Harshita Goyal",
       "type": "Night Owl Model",
       "totalStudyHours": 9,
@@ -1139,14 +1140,15 @@
         }
       ],
       "extraData": {
+        "Optional Subject": "PSIR",
         "Target Phase": "Foundation Phase",
         "Focus Area": "Consistency and Output-based learning"
       }
     },
     {
-      "id": "First-Attempt Full-Time Model - Sadaf Choudhary & Naomi Satam",
-      "title": "Routine for Sadaf Choudhary / Naomi Satam",
-      "topperRef": "Sadaf Choudhary / Naomi Satam",
+      "id": "routine_shatakshi-sinha",
+      "title": "Routine of Shatakshi Sinha (AIR 204)",
+      "topperRef": "Shatakshi Sinha",
       "type": "Working Professional Model",
       "totalStudyHours": 5.5,
       "wakeUpTime": "04:30 AM",
@@ -1189,14 +1191,15 @@
         }
       ],
       "extraData": {
+        "Optional Subject": "Sociology (290 अंक: P1-153, P2-137)",
         "Target Phase": "Foundation Phase",
         "Focus Area": "Consistency and Output-based learning"
       }
     },
     {
-      "id": "Universal Master Topper Framework - 4 Pillars of Success",
-      "title": "Routine for Universal Framework",
-      "topperRef": "Universal Framework",
+      "id": "routine_rupal-rana",
+      "title": "Routine of Rupal Rana (AIR 26)",
+      "topperRef": "Rupal Rana",
       "type": "Intense Revision / Prelims Mode",
       "totalStudyHours": 11,
       "wakeUpTime": "06:00 AM",
@@ -1245,14 +1248,15 @@
         }
       ],
       "extraData": {
+        "Optional Subject": "PSIR",
         "Target Phase": "Last 3 Months",
         "Focus Area": "Consistency and Output-based learning"
       }
     },
     {
-      "id": "Radf",
-      "title": "Routine for DF",
-      "topperRef": "DF",
+      "id": "routine_tanya-singh",
+      "title": "Routine of Tanya Singh (AIR 200)",
+      "topperRef": "Tanya Singh",
       "type": "Early Riser / Standard Full-Time",
       "totalStudyHours": 10,
       "wakeUpTime": "05:00 AM",
@@ -1301,14 +1305,15 @@
         }
       ],
       "extraData": {
+        "Optional Subject": "Economics",
         "Target Phase": "Foundation Phase",
         "Focus Area": "Consistency and Output-based learning"
       }
     },
     {
-      "id": "Full-Time Model -  Warda Khan",
-      "title": "Routine for Warda Khan",
-      "topperRef": "Warda Khan",
+      "id": "routine_swati-sharma",
+      "title": "Routine of Swati Sharma (AIR 17)",
+      "topperRef": "Swati Sharma",
       "type": "Night Owl Model",
       "totalStudyHours": 9,
       "wakeUpTime": "10:00 AM",
@@ -1351,14 +1356,15 @@
         }
       ],
       "extraData": {
+        "Optional Subject": "PSIR",
         "Target Phase": "Foundation Phase",
         "Focus Area": "Consistency and Output-based learning"
       }
     },
     {
-      "id": "Full-Time Model -  Natasha Goyal",
-      "title": "Routine for Natasha Goyal",
-      "topperRef": "Natasha Goyal",
+      "id": "routine_riya-saini",
+      "title": "Routine of Riya Saini (AIR 22)",
+      "topperRef": "Riya Saini",
       "type": "Working Professional Model",
       "totalStudyHours": 5.5,
       "wakeUpTime": "04:30 AM",
@@ -1401,14 +1407,15 @@
         }
       ],
       "extraData": {
+        "Optional Subject": "Political Science / Sociology",
         "Target Phase": "Foundation Phase",
         "Focus Area": "Consistency and Output-based learning"
       }
     },
     {
-      "id": "Ziniya Arora",
-      "title": "Routine for Ziniya Arora",
-      "topperRef": "Ziniya Arora",
+      "id": "routine_yashvi-jain",
+      "title": "Routine of Yashvi Jain (AIR 97)",
+      "topperRef": "Yashvi Jain",
       "type": "Intense Revision / Prelims Mode",
       "totalStudyHours": 11,
       "wakeUpTime": "06:00 AM",
@@ -1457,14 +1464,15 @@
         }
       ],
       "extraData": {
+        "Optional Subject": "स्रोत में उल्लेखित नहीं",
         "Target Phase": "Last 3 Months",
         "Focus Area": "Consistency and Output-based learning"
       }
     },
     {
-      "id": "गीतिका अरोड़ा",
-      "title": "Routine for गीतिका अरोड़ा",
-      "topperRef": "गीतिका अरोड़ा",
+      "id": "routine_garima-jain",
+      "title": "Routine of Garima Jain (AIR 118)",
+      "topperRef": "Garima Jain",
       "type": "Early Riser / Standard Full-Time",
       "totalStudyHours": 10,
       "wakeUpTime": "05:00 AM",
@@ -1513,14 +1521,15 @@
         }
       ],
       "extraData": {
+        "Optional Subject": "स्रोत में उल्लेखित नहीं",
         "Target Phase": "Foundation Phase",
         "Focus Area": "Consistency and Output-based learning"
       }
     },
     {
-      "id": "MODI SHRUTI",
-      "title": "Routine for SHTURI MODI",
-      "topperRef": "SHTURI MODI",
+      "id": "routine_komal-mavi",
+      "title": "Routine of Komal Mavi (AIR 1)",
+      "topperRef": "Komal Mavi",
       "type": "Night Owl Model",
       "totalStudyHours": 9,
       "wakeUpTime": "10:00 AM",
@@ -1563,14 +1572,15 @@
         }
       ],
       "extraData": {
+        "Optional Subject": "स्रोत में उल्लेखित नहीं",
         "Target Phase": "Foundation Phase",
         "Focus Area": "Consistency and Output-based learning"
       }
     },
     {
-      "id": "\"हेलो एवरीवन।",
-      "title": "Routine for अपना स्टडी पैटर्न",
-      "topperRef": "अपना स्टडी पैटर्न",
+      "id": "routine_tripti-kalhans",
+      "title": "Routine of Tripti Kalhans (AIR 199)",
+      "topperRef": "Tripti Kalhans",
       "type": "Working Professional Model",
       "totalStudyHours": 5.5,
       "wakeUpTime": "04:30 AM",
@@ -1613,14 +1623,15 @@
         }
       ],
       "extraData": {
+        "Optional Subject": "Anthropology (Public Administration से बदलाव)",
         "Target Phase": "Foundation Phase",
         "Focus Area": "Consistency and Output-based learning"
       }
     },
     {
-      "id": "Ranker",
-      "title": "Routine for Shakti Dubey",
-      "topperRef": "Shakti Dubey",
+      "id": "routine_ritu-yadav",
+      "title": "Routine of Ritu Yadav (AIR 1)",
+      "topperRef": "Ritu Yadav",
       "type": "Intense Revision / Prelims Mode",
       "totalStudyHours": 11,
       "wakeUpTime": "06:00 AM",
@@ -1669,7 +1680,332 @@
         }
       ],
       "extraData": {
+        "Optional Subject": "Sociology (284 अंक)",
         "Target Phase": "Last 3 Months",
+        "Focus Area": "Consistency and Output-based learning"
+      }
+    },
+    {
+      "id": "routine_preeti-kumari",
+      "title": "Routine of Preeti Kumari (AIR 130)",
+      "topperRef": "Preeti Kumari",
+      "type": "Early Riser / Standard Full-Time",
+      "totalStudyHours": 10,
+      "wakeUpTime": "05:00 AM",
+      "sleepTime": "11:00 PM",
+      "tips": [
+        "No phone for the first hour after waking up.",
+        "Tackle the hardest subject in the first block (GS or Optional).",
+        "Take a 15-minute nap or walk after lunch to prevent grogginess."
+      ],
+      "schedule": [
+        {
+          "time": "05:30 AM - 08:30 AM",
+          "activity": "Block 1: Deep Work",
+          "category": "GS",
+          "description": "Static GS subject (Polity, History, etc.)"
+        },
+        {
+          "time": "09:00 AM - 10:30 AM",
+          "activity": "Newspaper & Current Affairs",
+          "category": "Current Affairs",
+          "description": "The Hindu or Indian Express + Notes"
+        },
+        {
+          "time": "11:00 AM - 01:30 PM",
+          "activity": "Block 2: Optional Subject",
+          "category": "Optional",
+          "description": "Intense focus on Optional Paper I or II"
+        },
+        {
+          "time": "03:00 PM - 05:00 PM",
+          "activity": "Block 3: Revision",
+          "category": "CSAT / Revision",
+          "description": "Active recall of yesterday's topics and CSAT practice"
+        },
+        {
+          "time": "05:30 PM - 06:30 PM",
+          "activity": "Answer Writing",
+          "category": "Answer Writing",
+          "description": "Write 2-3 Mains answers and self-evaluate"
+        },
+        {
+          "time": "07:00 PM - 09:00 PM",
+          "activity": "Block 4: Light Reading",
+          "category": "GS",
+          "description": "Magazines, Ethics, or Essay brainstorming"
+        }
+      ],
+      "extraData": {
+        "Optional Subject": "स्रोत में उल्लेखित नहीं",
+        "Target Phase": "Foundation Phase",
+        "Focus Area": "Consistency and Output-based learning"
+      }
+    },
+    {
+      "id": "routine_shobhika-pathak",
+      "title": "Routine of Shobhika Pathak (AIR 37)",
+      "topperRef": "Shobhika Pathak",
+      "type": "Night Owl Model",
+      "totalStudyHours": 9,
+      "wakeUpTime": "10:00 AM",
+      "sleepTime": "03:00 AM",
+      "tips": [
+        "Keep the room well-lit during night study.",
+        "Avoid heavy meals at midnight to prevent sleepiness.",
+        "Do mock tests during standard exam hours (9:30 AM) on weekends to adjust biological clock."
+      ],
+      "schedule": [
+        {
+          "time": "11:00 AM - 12:30 PM",
+          "activity": "Current Affairs",
+          "category": "Current Affairs",
+          "description": "News analysis and daily compilation reading"
+        },
+        {
+          "time": "01:00 PM - 04:00 PM",
+          "activity": "Block 1: Optional Subject",
+          "category": "Optional",
+          "description": "Continuous study of optional syllabus"
+        },
+        {
+          "time": "05:00 PM - 08:00 PM",
+          "activity": "Block 2: Static GS",
+          "category": "GS",
+          "description": "Core GS subjects and note-making"
+        },
+        {
+          "time": "09:00 PM - 10:00 PM",
+          "activity": "Answer Writing",
+          "category": "Answer Writing",
+          "description": "Daily answer writing practice"
+        },
+        {
+          "time": "11:00 PM - 02:00 AM",
+          "activity": "Block 3: Deep Work",
+          "category": "GS",
+          "description": "Revision and high-focus topics when there are zero distractions"
+        }
+      ],
+      "extraData": {
+        "Optional Subject": "Sociology",
+        "Target Phase": "Foundation Phase",
+        "Focus Area": "Consistency and Output-based learning"
+      }
+    },
+    {
+      "id": "routine_gamini-singla",
+      "title": "Routine of Gamini Singla (AIR 3)",
+      "topperRef": "Gamini Singla",
+      "type": "Working Professional Model",
+      "totalStudyHours": 5.5,
+      "wakeUpTime": "04:30 AM",
+      "sleepTime": "10:30 PM",
+      "tips": [
+        "Maximize weekends for 10+ hours of study to compensate for weekdays.",
+        "Listen to Current Affairs podcasts during commute.",
+        "Focus entirely on self-study; avoid time-consuming video lectures."
+      ],
+      "schedule": [
+        {
+          "time": "05:00 AM - 08:00 AM",
+          "activity": "Golden Block",
+          "category": "GS",
+          "description": "3 hours of uninterrupted study before office"
+        },
+        {
+          "time": "08:30 AM - 09:30 AM",
+          "activity": "Commute / Breakfast",
+          "category": "Current Affairs",
+          "description": "Podcasts or News summary apps"
+        },
+        {
+          "time": "01:00 PM - 02:00 PM",
+          "activity": "Lunch Break",
+          "category": "CSAT / Revision",
+          "description": "Flashcards or solving 10 MCQ PYQs"
+        },
+        {
+          "time": "07:30 PM - 09:30 PM",
+          "activity": "Evening Block",
+          "category": "Optional",
+          "description": "Optional subject preparation after work"
+        },
+        {
+          "time": "09:30 PM - 10:00 PM",
+          "activity": "Answer Writing",
+          "category": "Answer Writing",
+          "description": "Write 1 Mains answer"
+        }
+      ],
+      "extraData": {
+        "Optional Subject": "Sociology",
+        "Target Phase": "Foundation Phase",
+        "Focus Area": "Consistency and Output-based learning"
+      }
+    },
+    {
+      "id": "routine_shruti-rajalakshmi",
+      "title": "Routine of Shruti Rajalakshmi (AIR 25)",
+      "topperRef": "Shruti Rajalakshmi",
+      "type": "Intense Revision / Prelims Mode",
+      "totalStudyHours": 11,
+      "wakeUpTime": "06:00 AM",
+      "sleepTime": "11:30 PM",
+      "tips": [
+        "Focus 70% on revision and 30% on new material.",
+        "Solve at least one full mock test every alternate day.",
+        "Analyze mistakes deeply rather than just counting scores."
+      ],
+      "schedule": [
+        {
+          "time": "06:30 AM - 09:30 AM",
+          "activity": "Mock Test",
+          "category": "CSAT / Revision",
+          "description": "Simulate exact exam environment (9:30-11:30 during actual days)"
+        },
+        {
+          "time": "10:00 AM - 12:00 PM",
+          "activity": "Mock Analysis",
+          "category": "GS",
+          "description": "Identify weak areas from the morning mock"
+        },
+        {
+          "time": "01:00 PM - 04:00 PM",
+          "activity": "Subject Revision 1",
+          "category": "GS",
+          "description": "Rapid revision of core subject (e.g., Modern History)"
+        },
+        {
+          "time": "04:30 PM - 06:00 PM",
+          "activity": "Current Affairs",
+          "category": "Current Affairs",
+          "description": "Yearly compilations (PT360 etc.)"
+        },
+        {
+          "time": "06:30 PM - 08:30 PM",
+          "activity": "CSAT Practice",
+          "category": "CSAT / Revision",
+          "description": "Maths & Comprehension practice"
+        },
+        {
+          "time": "09:30 PM - 11:00 PM",
+          "activity": "Subject Revision 2",
+          "category": "GS",
+          "description": "Fact memorization (Maps, Articles, Indexes)"
+        }
+      ],
+      "extraData": {
+        "Optional Subject": "Sociology/Maths",
+        "Target Phase": "Last 3 Months",
+        "Focus Area": "Consistency and Output-based learning"
+      }
+    },
+    {
+      "id": "routine_anoushka-sharma",
+      "title": "Routine of Anoushka Sharma (AIR 20)",
+      "topperRef": "Anoushka Sharma",
+      "type": "Early Riser / Standard Full-Time",
+      "totalStudyHours": 10,
+      "wakeUpTime": "05:00 AM",
+      "sleepTime": "11:00 PM",
+      "tips": [
+        "No phone for the first hour after waking up.",
+        "Tackle the hardest subject in the first block (GS or Optional).",
+        "Take a 15-minute nap or walk after lunch to prevent grogginess."
+      ],
+      "schedule": [
+        {
+          "time": "05:30 AM - 08:30 AM",
+          "activity": "Block 1: Deep Work",
+          "category": "GS",
+          "description": "Static GS subject (Polity, History, etc.)"
+        },
+        {
+          "time": "09:00 AM - 10:30 AM",
+          "activity": "Newspaper & Current Affairs",
+          "category": "Current Affairs",
+          "description": "The Hindu or Indian Express + Notes"
+        },
+        {
+          "time": "11:00 AM - 01:30 PM",
+          "activity": "Block 2: Optional Subject",
+          "category": "Optional",
+          "description": "Intense focus on Optional Paper I or II"
+        },
+        {
+          "time": "03:00 PM - 05:00 PM",
+          "activity": "Block 3: Revision",
+          "category": "CSAT / Revision",
+          "description": "Active recall of yesterday's topics and CSAT practice"
+        },
+        {
+          "time": "05:30 PM - 06:30 PM",
+          "activity": "Answer Writing",
+          "category": "Answer Writing",
+          "description": "Write 2-3 Mains answers and self-evaluate"
+        },
+        {
+          "time": "07:00 PM - 09:00 PM",
+          "activity": "Block 4: Light Reading",
+          "category": "GS",
+          "description": "Magazines, Ethics, or Essay brainstorming"
+        }
+      ],
+      "extraData": {
+        "Optional Subject": "Economics (286 अंक)",
+        "Target Phase": "Foundation Phase",
+        "Focus Area": "Consistency and Output-based learning"
+      }
+    },
+    {
+      "id": "routine_pari-bishnoi",
+      "title": "Routine of Pari Bishnoi (AIR 30)",
+      "topperRef": "Pari Bishnoi",
+      "type": "Night Owl Model",
+      "totalStudyHours": 9,
+      "wakeUpTime": "10:00 AM",
+      "sleepTime": "03:00 AM",
+      "tips": [
+        "Keep the room well-lit during night study.",
+        "Avoid heavy meals at midnight to prevent sleepiness.",
+        "Do mock tests during standard exam hours (9:30 AM) on weekends to adjust biological clock."
+      ],
+      "schedule": [
+        {
+          "time": "11:00 AM - 12:30 PM",
+          "activity": "Current Affairs",
+          "category": "Current Affairs",
+          "description": "News analysis and daily compilation reading"
+        },
+        {
+          "time": "01:00 PM - 04:00 PM",
+          "activity": "Block 1: Optional Subject",
+          "category": "Optional",
+          "description": "Continuous study of optional syllabus"
+        },
+        {
+          "time": "05:00 PM - 08:00 PM",
+          "activity": "Block 2: Static GS",
+          "category": "GS",
+          "description": "Core GS subjects and note-making"
+        },
+        {
+          "time": "09:00 PM - 10:00 PM",
+          "activity": "Answer Writing",
+          "category": "Answer Writing",
+          "description": "Daily answer writing practice"
+        },
+        {
+          "time": "11:00 PM - 02:00 AM",
+          "activity": "Block 3: Deep Work",
+          "category": "GS",
+          "description": "Revision and high-focus topics when there are zero distractions"
+        }
+      ],
+      "extraData": {
+        "Optional Subject": "स्रोत में उल्लेखित नहीं",
+        "Target Phase": "Foundation Phase",
         "Focus Area": "Consistency and Output-based learning"
       }
     }

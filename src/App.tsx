@@ -14,6 +14,7 @@ import { ProfileEditModal } from "./components/profile/ProfileEditModal";
 
 import { SmartExtractorTab } from "./components/prep/SmartExtractorTab";
 import { SplashScreen } from "./components/SplashScreen";
+import { UIGallery } from "./components/UIGallery";
 import {
   Home,
   Trophy,
@@ -889,7 +890,11 @@ export default function App() {
 
   return (
     <>
-      <AnimatePresence>{showSplash && <SplashScreen />}</AnimatePresence>
+      {window.location.search.includes('mode=gallery') ? (
+        <UIGallery />
+      ) : (
+        <>
+          <AnimatePresence>{showSplash && <SplashScreen />}</AnimatePresence>
 
       <div
         className="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased selection:bg-indigo-500 selection:text-white flex flex-col justify-between"
@@ -1218,6 +1223,14 @@ export default function App() {
               }`} />
             <span className="text-[10px] tracking-tight">OCR</span>
           </button>
+
+          <button
+            onClick={() => window.location.href = "?mode=gallery"}
+            className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition cursor-pointer text-pink-500 hover:text-pink-600`}
+          >
+            <Sparkles className={`w-5 h-5 mb-0.5 text-pink-500`} />
+            <span className="text-[10px] tracking-tight">Dev Gallery</span>
+          </button>
         </div>
 
         {/* Update Modal */}
@@ -1265,6 +1278,8 @@ export default function App() {
           </div>
         </footer>
       </div>
+        </>
+      )}
     </>
   );
 }

@@ -1,5 +1,5 @@
 {
-  "name": "react-example",
+  "name": "cse-prep",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -14,7 +14,8 @@
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
     "upload-db": "node scripts/uploadToFirestore.js",
-    "sync-excel": "node scripts/parseExcel.js && npm run upload-db"
+    "sync-excel": "node scripts/parseExcel.js && npm run upload-db",
+    "capture-screens": "node scripts/capture-screens.js"
   },
   "dependencies": {
     "@capacitor/app": "^8.1.1",

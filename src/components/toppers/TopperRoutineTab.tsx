@@ -159,32 +159,38 @@ export const TopperRoutineTab: React.FC<TopperRoutineTabProps> = ({
           </div>
         </div>
 
-        {/* Wake up and sleep markers Cards */}
-        <div className="flex flex-col sm:flex-row items-center gap-4">
-          <div className="flex-1 w-full bg-amber-50/50 border border-amber-200 rounded-2xl p-5 flex items-center justify-between shadow-sm hover:shadow-md transition">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-amber-100 text-amber-600 rounded-xl shadow-inner">
-                <Sun className="w-6 h-6" />
+        {/* Wake up and sleep markers Cards (Conditionally Rendered) */}
+        {(selectedRoutine.wakeUpTime || selectedRoutine.sleepTime) && (
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            {selectedRoutine.wakeUpTime && (
+              <div className="flex-1 w-full bg-amber-50/50 border border-amber-200 rounded-2xl p-5 flex items-center justify-between shadow-sm hover:shadow-md transition">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-amber-100 text-amber-600 rounded-xl shadow-inner">
+                    <Sun className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <div className="text-xs uppercase font-bold text-amber-700 tracking-wider">Wake-up Time</div>
+                    <div className="text-xl font-black text-slate-800 mt-0.5">{selectedRoutine.wakeUpTime}</div>
+                  </div>
+                </div>
               </div>
-              <div>
-                <div className="text-xs uppercase font-bold text-amber-700 tracking-wider">Wake-up Time</div>
-                <div className="text-xl font-black text-slate-800 mt-0.5">{selectedRoutine.wakeUpTime}</div>
+            )}
+            
+            {selectedRoutine.sleepTime && (
+              <div className="flex-1 w-full bg-indigo-50/50 border border-indigo-200 rounded-2xl p-5 flex items-center justify-between shadow-sm hover:shadow-md transition">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-indigo-100 text-indigo-600 rounded-xl shadow-inner">
+                    <Moon className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <div className="text-xs uppercase font-bold text-indigo-700 tracking-wider">Sleep Time</div>
+                    <div className="text-xl font-black text-slate-800 mt-0.5">{selectedRoutine.sleepTime}</div>
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
           </div>
-          
-          <div className="flex-1 w-full bg-indigo-50/50 border border-indigo-200 rounded-2xl p-5 flex items-center justify-between shadow-sm hover:shadow-md transition">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-indigo-100 text-indigo-600 rounded-xl shadow-inner">
-                <Moon className="w-6 h-6" />
-              </div>
-              <div>
-                <div className="text-xs uppercase font-bold text-indigo-700 tracking-wider">Sleep Time</div>
-                <div className="text-xl font-black text-slate-800 mt-0.5">{selectedRoutine.sleepTime}</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        )}
 
         {/* Timetable Schedule Grid */}
         <div className="space-y-3">

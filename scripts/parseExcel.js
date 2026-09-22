@@ -135,22 +135,58 @@ try {
         title: `Routine for ${topperName || 'Working Professional'}`,
         type: row[2] || 'Working Professional (5-6h)',
         topperRef: topperName || 'Various',
-        totalStudyHours: parseInt(row[3]) || 6,
-        wakeUpTime: row[4] || '06:00 AM',
-        sleepTime: row[5] || '11:00 PM',
+        totalStudyHours: 0,
+        wakeUpTime: '',
+        sleepTime: '',
         schedule: [],
-        tips: row[10] ? String(row[10]).split('|').map(t => t.trim()) : []
+        tips: []
       });
     }
     const routine = routinesMap.get(routineId);
     routine.schedule.push({
-      time: row[6] || '00:00',
-      activity: row[7] || 'Study',
-      category: row[8] || 'GS',
-      description: row[9] || ''
+      time: row[3] || '00:00',
+      activity: row[4] || 'Study',
+      category: row[5] || 'GS',
+      description: ''
     });
   });
-  const routinesData = Array.from(routinesMap.values());
+  
+  // Try to infer wake up and sleep time from the schedule time strings
+  const routinesData = Array.from(routinesMap.values()).map(routine => {
+    const timePattern = /\b(1[0-2]|0?[1-9]):([0-5][0-9])\s*([AaPp][Mm])\b/g;
+    let earliestTimeStr = "";
+    let latestTimeStr = "";
+    let earliestVal = 9999;
+    let latestVal = -1;
+    
+    routine.schedule.forEach(slot => {
+      let match;
+      while ((match = timePattern.exec(slot.time)) !== null) {
+        let h = parseInt(match[1]);
+        const m = parseInt(match[2]);
+        const ampm = match[3].toUpperCase();
+        if (ampm === 'PM' && h < 12) h += 12;
+        if (ampm === 'AM' && h === 12) h = 0;
+        
+        let val = h * 60 + m;
+        // Shift night owls so times like 1AM, 2AM are considered latest (val > 1440)
+        if (val < 240) val += 1440; // 00:00 - 04:00 AM shifted to end of day
+        
+        if (val < earliestVal) {
+          earliestVal = val;
+          earliestTimeStr = match[0].toUpperCase();
+        }
+        if (val > latestVal) {
+          latestVal = val;
+          latestTimeStr = match[0].toUpperCase();
+        }
+      }
+    });
+    
+    routine.wakeUpTime = earliestTimeStr;
+    routine.sleepTime = latestTimeStr;
+    return routine;
+  });
 
   // 4. Interviews
   const interviewsSheet = wb.Sheets['Interviews'];

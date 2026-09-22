@@ -6,6 +6,7 @@ interface ProfileCard3DProps {
   role: string;
   avatarUrl?: string;
   onOpenProfileEdit?: () => void;
+  onOpenSettings?: () => void;
   totalStudyHours: number;
   currentStreak: number;
   completedTests: number;
@@ -19,6 +20,7 @@ export const ProfileCard3D: React.FC<ProfileCard3DProps> = ({
   role,
   avatarUrl,
   onOpenProfileEdit,
+  onOpenSettings,
   totalStudyHours,
   currentStreak,
   completedTests,
@@ -75,7 +77,12 @@ export const ProfileCard3D: React.FC<ProfileCard3DProps> = ({
 
           <div className="text-center">
             <h2 className="text-xl sm:text-2xl font-black text-white tracking-wide font-sans">{name}</h2>
-            <p className="text-[#D4AF37] font-medium text-sm tracking-wider uppercase mt-1">{role}</p>
+            <div className="flex items-center justify-center gap-2 mt-1">
+              <p className="text-[#D4AF37] font-medium text-sm tracking-wider uppercase">{role}</p>
+              <button onClick={() => onOpenSettings?.()} className="p-1 rounded bg-white/10 hover:bg-white/20 transition-colors" title="Settings">
+                <svg className="w-4 h-4 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -173,15 +180,26 @@ export const ProfileCard3D: React.FC<ProfileCard3DProps> = ({
       </div>
       
       {/* Mobile View Details Action (Visible only on mobile) */}
-      <div 
-        onClick={() => onOpenProfileEdit?.()}
-        className="sm:hidden border-t border-[#2A3441] bg-[#0A0F1C]/80 px-6 py-3 flex items-center justify-between cursor-pointer active:bg-white/5"
-      >
-        <div className="flex items-center gap-2">
-          <TrendingUp className="w-4 h-4 text-[#D4AF37]" />
-          <span className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider">View Full Profile</span>
+      <div className="sm:hidden border-t border-[#2A3441] bg-[#0A0F1C]/80 flex">
+        <div 
+          onClick={() => onOpenProfileEdit?.()}
+          className="flex-1 px-6 py-3 flex items-center justify-between cursor-pointer active:bg-white/5 border-r border-[#2A3441]"
+        >
+          <div className="flex items-center gap-2">
+            <TrendingUp className="w-4 h-4 text-[#D4AF37]" />
+            <span className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider">Full Profile</span>
+          </div>
+          <ChevronRight className="w-4 h-4 text-[#D4AF37]" />
         </div>
-        <ChevronRight className="w-4 h-4 text-[#D4AF37]" />
+        <div 
+          onClick={() => onOpenSettings?.()}
+          className="px-6 py-3 flex items-center justify-center cursor-pointer active:bg-white/5"
+        >
+          <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            Settings
+          </span>
+        </div>
       </div>
 
     </div>

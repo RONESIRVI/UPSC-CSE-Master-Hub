@@ -24,6 +24,7 @@ import { Play, Target, Mic, BookOpen, Type, Layers } from "lucide-react";
 interface HomeSectionProps {
   userProfile?: UserProfile;
   onOpenProfileEdit?: () => void;
+  onOpenSettings?: () => void;
   setActiveTab: (tab: MainTab) => void;
   dailyTasks: DailyTask[];
   setDailyTasks: React.Dispatch<React.SetStateAction<DailyTask[]>>;
@@ -54,6 +55,7 @@ interface HomeSectionProps {
 export const HomeSection: React.FC<HomeSectionProps> = ({
   userProfile,
   onOpenProfileEdit,
+  onOpenSettings,
   setActiveTab,
   dailyTasks,
   setDailyTasks,
@@ -157,6 +159,7 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
         role={userProfile?.role || "RAS Aspirant"}
         avatarUrl={userProfile?.avatarUrl}
         onOpenProfileEdit={onOpenProfileEdit}
+        onOpenSettings={onOpenSettings}
         totalStudyHours={Math.floor(sessionLogs.reduce((acc, log) => acc + log.durationMinutes, 0) / 60)}
         currentStreak={studyStreak}
         completedTests={mockLogs?.length || 0}

@@ -312,7 +312,7 @@ export default function App() {
   });
 
   const [toppers, setToppers] = useState<TopperProfile[]>(() => {
-    const saved = localStorage.getItem("ras_toppers");
+    const saved = localStorage.getItem("ras_toppers_v1") || localStorage.getItem("ras_toppers");
     const local = saved ? JSON.parse(saved) : [];
     if (!saved || local.length === 0) return TOPPERS_PROFILES;
     const localMap = new Map(local.map((item: TopperProfile) => [item.id, item]));
@@ -323,7 +323,7 @@ export default function App() {
   });
 
   const [topperRoutines, setTopperRoutines] = useState<TopperRoutine[]>(() => {
-    const saved = localStorage.getItem("ras_topper_routines_v1");
+    const saved = localStorage.getItem("ras_topper_routines_v1") || localStorage.getItem("ras_topper_routines");
     const local = saved ? JSON.parse(saved) : [];
     if (!saved || local.length === 0) return TOPPER_ROUTINES;
     const localMap = new Map(local.map((item: TopperRoutine) => [item.id, item]));
@@ -335,7 +335,7 @@ export default function App() {
   const [notes, setNotes] = useState<any[]>(fsNotes || []);
 
   const [syllabus, setSyllabus] = useState<SyllabusTopic[]>(() => {
-    const saved = localStorage.getItem("ras_syllabus_v2");
+    const saved = localStorage.getItem("ras_syllabus_v2") || localStorage.getItem("ras_syllabus");
     if (saved) {
       const parsed = JSON.parse(saved);
       return parsed.map((topic: any) => ({
@@ -387,7 +387,7 @@ export default function App() {
 
   const [studyPlanPhases, setStudyPlanPhases] = useState<StudyPlanPhase[]>(
     () => {
-      const saved = localStorage.getItem("ras_study_plan_v1");
+      const saved = localStorage.getItem("ras_study_plan_v1") || localStorage.getItem("ras_study_plan");
       return saved ? JSON.parse(saved) : DEFAULT_STUDY_PLAN;
     }
   );
@@ -398,17 +398,17 @@ export default function App() {
   });
 
   const [mockLogs, setMockLogs] = useState<MockTestLog[]>(() => {
-    const saved = localStorage.getItem("ras_mock_logs_v2");
+    const saved = localStorage.getItem("ras_mock_logs_v2") || localStorage.getItem("ras_mock_logs");
     return saved ? JSON.parse(saved) : DEFAULT_MOCK_LOGS;
   });
 
   const [revisionQueue, setRevisionQueue] = useState<RevisionItem[]>(() => {
-    const saved = localStorage.getItem("ras_revision_queue_v2");
+    const saved = localStorage.getItem("ras_revision_queue_v2") || localStorage.getItem("ras_revision_queue");
     return saved ? JSON.parse(saved) : DEFAULT_REVISION_QUEUE;
   });
 
   const [pyqs, setPyqs] = useState<PYQQuestion[]>(() => {
-    const saved = localStorage.getItem("ras_pyqs_v2");
+    const saved = localStorage.getItem("ras_pyqs_v2") || localStorage.getItem("ras_pyqs");
     return saved ? JSON.parse(saved) : PYQ_DATABASE;
   });
 
@@ -519,7 +519,7 @@ export default function App() {
   }, [mockLogs, sessionLogs]);
 
   const [dailyTasks, setDailyTasks] = useState<DailyTask[]>(() => {
-    const saved = localStorage.getItem("ras_daily_tasks_v2");
+    const saved = localStorage.getItem("ras_daily_tasks_v2") || localStorage.getItem("ras_daily_tasks");
     const savedDate = localStorage.getItem("ras_daily_tasks_date");
     const today = new Date().toISOString().split("T")[0];
     
@@ -543,7 +543,7 @@ export default function App() {
   });
 
   const [audioNotes, setAudioNotes] = useState<AudioNote[]>(() => {
-    const saved = localStorage.getItem("ras_audio_notes_v2");
+    const saved = localStorage.getItem("ras_audio_notes_v2") || localStorage.getItem("ras_audio_notes");
     return saved ? JSON.parse(saved) : [];
   });
   const [studyStreak, setStudyStreak] = useState<number>(() => {
@@ -879,6 +879,7 @@ export default function App() {
     ];
     
     setDailyTasks(newTasks);
+    localStorage.setItem("ras_daily_tasks_v2", JSON.stringify(newTasks));
     setActiveTab("home"); // Navigate home where daily tasks are visible
   };
 

@@ -1,4 +1,10 @@
-import { Capacitor } from "@capacitor/core";
+import { Capacitor, registerPlugin } from "@capacitor/core";
+
+export interface AppIconPluginInterface {
+  changeIcon(options: { name: string }): Promise<void>;
+}
+
+const AppIconNative = registerPlugin<AppIconPluginInterface>('AppIcon');
 
 /**
  * A custom Capacitor plugin stub for changing the Android App Icon dynamically.
@@ -9,9 +15,8 @@ export const AppIconPlugin = {
   changeIcon: async (iconName: string): Promise<void> => {
     if (Capacitor.isNativePlatform()) {
       try {
-        // Native invocation mock.
-        // const result = await Capacitor.Plugins.AppIcon.change({ name: iconName });
-        alert(`Native App Icon successfully changed to: ${iconName.toUpperCase()}.\n\n(Note: This requires native project compilation and the aliases to be configured in AndroidManifest.xml)`);
+        await AppIconNative.changeIcon({ name: iconName });
+        alert(`Native App Icon successfully changed to: ${iconName.toUpperCase()}.\n\n(It may take a few seconds to update on your launcher)`);
       } catch (error) {
         console.error("Failed to change app icon", error);
         alert("Failed to change app icon native configuration.");

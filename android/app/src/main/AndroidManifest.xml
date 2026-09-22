@@ -13,8 +13,8 @@
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBarLaunch"
             android:launchMode="singleTask"
-            android:exported="true">
-        </activity>
+            android:exported="true"
+        />
 
         <!-- Predefined Activity Aliases for Dynamic App Icons -->
         <activity-alias

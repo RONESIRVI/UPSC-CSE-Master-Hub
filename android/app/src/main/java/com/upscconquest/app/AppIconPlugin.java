@@ -23,20 +23,35 @@ public class AppIconPlugin extends Plugin {
         String pkg = getContext().getPackageName();
 
         ComponentName defaultIcon = new ComponentName(pkg, pkg + ".MainActivityDefault");
-        ComponentName darkIcon = new ComponentName(pkg, pkg + ".MainActivityDark");
-        ComponentName minimalIcon = new ComponentName(pkg, pkg + ".MainActivityMinimal");
+        ComponentName goldIcon = new ComponentName(pkg, pkg + ".MainActivityGold");
+        ComponentName stealthIcon = new ComponentName(pkg, pkg + ".MainActivityStealth");
+        ComponentName gradientIcon = new ComponentName(pkg, pkg + ".MainActivityGradient");
+        ComponentName classicIcon = new ComponentName(pkg, pkg + ".MainActivityClassic");
+        ComponentName originalIcon = new ComponentName(pkg, pkg + ".MainActivityOriginal");
 
         try {
             pm.setComponentEnabledSetting(defaultIcon,
                 "default".equals(iconName) ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                 PackageManager.DONT_KILL_APP);
 
-            pm.setComponentEnabledSetting(darkIcon,
-                "dark".equals(iconName) ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+            pm.setComponentEnabledSetting(goldIcon,
+                "gold".equals(iconName) ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                 PackageManager.DONT_KILL_APP);
 
-            pm.setComponentEnabledSetting(minimalIcon,
-                "minimal".equals(iconName) ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+            pm.setComponentEnabledSetting(stealthIcon,
+                "stealth".equals(iconName) ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP);
+
+            pm.setComponentEnabledSetting(gradientIcon,
+                "gradient".equals(iconName) ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP);
+
+            pm.setComponentEnabledSetting(classicIcon,
+                "classic".equals(iconName) ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP);
+
+            pm.setComponentEnabledSetting(originalIcon,
+                "original".equals(iconName) ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                 PackageManager.DONT_KILL_APP);
                 
             call.resolve();

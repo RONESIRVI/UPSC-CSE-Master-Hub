@@ -44,20 +44,22 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
             </p>
             <div className="grid grid-cols-3 gap-3">
               {[
-                { id: "default", label: "Classic", color: "bg-indigo-600" },
-                { id: "dark", label: "Dark Mode", color: "bg-slate-900" },
-                { id: "minimal", label: "Minimalist", color: "bg-slate-100 border-2 border-slate-300" }
+                { id: "default", label: "Classic", img: "/icons/icon_classic_lbsnaa.png" }, // Using classic as default look
+                { id: "gold", label: "Premium Gold", img: "/icons/icon_premium_gold.png" },
+                { id: "stealth", label: "Stealth Dark", img: "/icons/icon_stealth_dark.png" },
+                { id: "gradient", label: "Modern Flag", img: "/icons/icon_modern_gradient.png" },
+                { id: "original", label: "Web Logo", img: "/icons/icon_original_lbsnaa.png" }
               ].map(theme => (
                 <button
                   key={theme.id}
                   type="button"
                   onClick={() => AppIconPlugin.changeIcon(theme.id)}
-                  className="flex flex-col items-center justify-center p-4 rounded-2xl border-2 border-slate-100 hover:border-indigo-300 hover:bg-indigo-50/50 bg-white shadow-sm transition-all active:scale-95 group"
+                  className="flex flex-col items-center justify-center p-3 sm:p-4 rounded-2xl border-2 border-slate-100 hover:border-indigo-300 hover:bg-indigo-50/50 bg-white shadow-sm transition-all active:scale-95 group"
                 >
-                  <div className={`w-12 h-12 rounded-[14px] shadow-md mb-3 ${theme.color} flex items-center justify-center group-hover:scale-105 transition-transform`}>
-                    <span className={theme.id === "minimal" ? "text-slate-800 font-black text-lg" : "text-white font-black text-lg"}>C</span>
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-[14px] shadow-md mb-3 overflow-hidden group-hover:scale-105 transition-transform bg-slate-100">
+                    <img src={theme.img} alt={theme.label} className="w-full h-full object-cover" />
                   </div>
-                  <span className="text-xs font-bold text-slate-700">{theme.label}</span>
+                  <span className="text-[10px] sm:text-xs font-bold text-slate-700 text-center leading-tight">{theme.label}</span>
                 </button>
               ))}
             </div>

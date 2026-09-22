@@ -1224,13 +1224,6 @@ export default function App() {
             <span className="text-[10px] tracking-tight">OCR</span>
           </button>
 
-          <button
-            onClick={() => window.location.href = "?mode=gallery"}
-            className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition cursor-pointer text-pink-500 hover:text-pink-600`}
-          >
-            <Sparkles className={`w-5 h-5 mb-0.5 text-pink-500`} />
-            <span className="text-[10px] tracking-tight">Dev Gallery</span>
-          </button>
         </div>
 
         {/* Update Modal */}
@@ -1262,15 +1255,15 @@ export default function App() {
           <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <span className="w-5 h-5 rounded-md bg-indigo-600 text-white font-bold flex items-center justify-center text-[10px]">
-                U
+                C
               </span>
               <span className="font-semibold text-slate-700">
-                RAS CONQUEST Master Hub
+                CSE PREP Master Hub
               </span>
               <span>• Bento Grid Preparation Suite</span>
             </div>
             <div className="flex items-center gap-4 text-[11px] text-slate-500">
-              <span>Union Public Service Commission (CSE)</span>
+              <span>CSE PREP App</span>
               <span className="text-indigo-600 font-bold">
                 • 100% Offline-Safe Storage
               </span>

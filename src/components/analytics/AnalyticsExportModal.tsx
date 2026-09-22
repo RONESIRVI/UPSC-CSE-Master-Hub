@@ -239,7 +239,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                 </span>
               </div>
               <h3 className="text-lg font-bold text-slate-900 mt-0.5">
-                Export Performance &amp; Progress Report
+                Export Performance & Progress Report
               </h3>
             </div>
           </div>
@@ -297,7 +297,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                       PDF Document Report
                     </div>
                     <div className="text-[10px] text-slate-500">
-                      Multi-page print-ready official report with headers &amp;
+                      Multi-page print-ready official report with headers &
                       charts
                     </div>
                   </div>
@@ -326,7 +326,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                       PNG High-Res Image
                     </div>
                     <div className="text-[10px] text-slate-500">
-                      High-dpi visual canvas snapshot for quick sharing &amp;
+                      High-dpi visual canvas snapshot for quick sharing &
                       mobile view
                     </div>
                   </div>
@@ -351,7 +351,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
 
               <div>
                 <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-1">
-                  Target Examination &amp; Year
+                  Target Examination & Year
                 </label>
                 <input
                   type="text"
@@ -427,7 +427,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                   <div>
                     <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
                       <TrendingUp className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>Syllabus Coverage &amp; Mastery %</span>
+                      <span>Syllabus Coverage & Mastery %</span>
                     </div>
                     <p className="text-[10px] text-slate-500 mt-0.5">
                       Subject-wise progress bars, study streak stats, and total
@@ -447,7 +447,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                   <div>
                     <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
                       <BarChart2 className="w-3.5 h-3.5 text-blue-600" />
-                      <span>Mock Tests &amp; Negative Marks</span>
+                      <span>Mock Tests & Negative Marks</span>
                     </div>
                     <p className="text-[10px] text-slate-500 mt-0.5">
                       Accuracy trends, test logs table, and negative marking
@@ -540,7 +540,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                   </span>
                 </div>
                 <h1 className="text-2xl font-black text-slate-900 mt-2 tracking-tight">
-                  Performance Gap &amp; Progress Analytics Blueprint
+                  Performance Gap & Progress Analytics Blueprint
                 </h1>
                 <p className="text-xs text-slate-500 mt-0.5">
                   Generated for Candidate:{" "}
@@ -712,7 +712,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                       02
                     </span>
                     <h2 className="text-base font-bold text-slate-900">
-                      Effort Gap Analysis &amp; Exam Return-On-Investment
+                      Effort Gap Analysis & Exam Return-On-Investment
                       Deficit
                     </h2>
                   </div>

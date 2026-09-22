@@ -54,7 +54,7 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
               Good Morning 👋
             </h2>
             <div className="text-3xl font-extrabold tracking-tight">
-              UPSC CSE 2027
+              CSE PREP 2027
             </div>
             <div className="text-indigo-300 text-sm font-medium mt-1 flex items-center gap-2">
               <CalendarDays className="w-4 h-4" /> Day 82 / 365

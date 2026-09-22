@@ -282,7 +282,7 @@ Keep it conversational but highly professional and strictly UPSC-oriented.`;
   }
 
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`UPSC CSE App server running on http://localhost:${PORT}`);
+    console.log(`CSE PREP App server running on http://localhost:${PORT}`);
   });
 }
 

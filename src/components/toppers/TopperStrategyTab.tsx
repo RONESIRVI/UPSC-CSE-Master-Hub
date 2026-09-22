@@ -9,10 +9,7 @@ import {
   GraduationCap,
   Filter,
   FileText,
-  Sun,
-  Moon,
 } from "lucide-react";
-import { TOPPER_ROUTINES } from "../../data/toppersData";
 
 interface TopperStrategyTabProps {
   toppers: TopperProfile[];
@@ -185,38 +182,6 @@ export const TopperStrategyTab: React.FC<TopperStrategyTabProps> = ({
                     <span className="font-bold">Background:</span>{" "}
                     {topper.background}
                   </div>
-
-                  {/* Wake up and Sleep Time Cards */}
-                  {(() => {
-                    const routine = TOPPER_ROUTINES.find(r => r.topperRef === topper.name);
-                    if (!routine) return null;
-                    return (
-                      <div className="flex flex-col sm:flex-row items-center gap-3">
-                        <div className="flex-1 w-full bg-amber-50/50 border border-amber-200 rounded-2xl p-4 flex items-center justify-between shadow-sm">
-                          <div className="flex items-center gap-3">
-                            <div className="p-2.5 bg-amber-100 text-amber-600 rounded-xl">
-                              <Sun className="w-5 h-5" />
-                            </div>
-                            <div>
-                              <div className="text-[10px] uppercase font-bold text-amber-700 tracking-wider">Wake-up Time</div>
-                              <div className="text-lg font-black text-slate-800">{routine.wakeUpTime}</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex-1 w-full bg-indigo-50/50 border border-indigo-200 rounded-2xl p-4 flex items-center justify-between shadow-sm">
-                          <div className="flex items-center gap-3">
-                            <div className="p-2.5 bg-indigo-100 text-indigo-600 rounded-xl">
-                              <Moon className="w-5 h-5" />
-                            </div>
-                            <div>
-                              <div className="text-[10px] uppercase font-bold text-indigo-700 tracking-wider">Sleep Time</div>
-                              <div className="text-lg font-black text-slate-800">{routine.sleepTime}</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })()}
 
                   {/* Main Details - Marks Section */}
                   <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 shadow-sm">

@@ -118,63 +118,72 @@ try {
 
   // 3. Routines
   const routinesSheet = wb.Sheets['Routines'];
-  const routinesDataRaw = routinesSheet ? XLSX.utils.sheet_to_json(routinesSheet) : [];
+  const routinesDataRaw = routinesSheet ? XLSX.utils.sheet_to_json(routinesSheet, { header: 1 }) : [];
   
-  // Convert flat routines to nested structure
+  // Convert flat routines to nested structure using positional index to ignore header names
   const routinesMap = new Map();
-  routinesDataRaw.forEach((r) => {
-    if (!routinesMap.has(r.routineId)) {
-      routinesMap.set(r.routineId, {
-        id: r.routineId || `routine-${(r.topperName || 'default').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
-        title: `Routine for ${r.topperName || 'Working Professional'}`,
-        type: r.profileType || 'Working Professional (5-6h)',
-        topperRef: r.topperName || 'Various',
-        totalStudyHours: parseInt(r.totalStudyHours) || 6,
-        wakeUpTime: r.wakeUpTime || '06:00 AM',
-        sleepTime: r.sleepTime || '11:00 PM',
+  const routinesRows = routinesDataRaw.length > 1 ? routinesDataRaw.slice(1) : [];
+  
+  routinesRows.forEach((row) => {
+    if (!row || row.length === 0) return;
+    const routineId = row[0] || '';
+    const topperName = row[1] || '';
+    
+    if (!routinesMap.has(routineId)) {
+      routinesMap.set(routineId, {
+        id: routineId || `routine-${(topperName || 'default').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+        title: `Routine for ${topperName || 'Working Professional'}`,
+        type: row[2] || 'Working Professional (5-6h)',
+        topperRef: topperName || 'Various',
+        totalStudyHours: parseInt(row[3]) || 6,
+        wakeUpTime: row[4] || '06:00 AM',
+        sleepTime: row[5] || '11:00 PM',
         schedule: [],
-        tips: typeof r.tips === 'string' ? r.tips.split('|').map(t => t.trim()) : []
+        tips: row[10] ? String(row[10]).split('|').map(t => t.trim()) : []
       });
     }
-    const routine = routinesMap.get(r.routineId);
+    const routine = routinesMap.get(routineId);
     routine.schedule.push({
-      time: r.time || '00:00',
-      activity: r.activity || 'Study',
-      category: r.category || 'GS',
-      description: r.description || ''
+      time: row[6] || '00:00',
+      activity: row[7] || 'Study',
+      category: row[8] || 'GS',
+      description: row[9] || ''
     });
   });
   const routinesData = Array.from(routinesMap.values());
 
   // 4. Interviews
   const interviewsSheet = wb.Sheets['Interviews'];
-  const interviewsDataRaw = interviewsSheet ? XLSX.utils.sheet_to_json(interviewsSheet) : [];
+  const interviewsDataRaw = interviewsSheet ? XLSX.utils.sheet_to_json(interviewsSheet, { header: 1 }) : [];
   
   const interviewsMap = new Map();
-  interviewsDataRaw.forEach((row) => {
-    const candidateName = row.candidate || 'Unknown';
+  const interviewsRows = interviewsDataRaw.length > 1 ? interviewsDataRaw.slice(1) : [];
+  
+  interviewsRows.forEach((row) => {
+    if (!row || row.length === 0) return;
+    const candidateName = row[1] || 'Unknown';
     if (!interviewsMap.has(candidateName)) {
       interviewsMap.set(candidateName, {
-        id: `interview-${candidateName.toLowerCase().replace(/\\s+/g, '-')}`,
+        id: row[0] || `interview-${candidateName.toLowerCase().replace(/\\s+/g, '-')}`,
         candidateName: candidateName,
-        year: parseInt(row.year) || 2023,
-        rank: parseInt(row.rank) || 1,
-        boardChairperson: row.board || 'UPSC Board',
-        score: parseInt(row.score) || 200,
-        durationMinutes: parseInt(row.duration) || 30,
-        background: row.background || '',
-        dafHighlights: typeof row.dafHighlights === 'string' ? row.dafHighlights.split('|').map(s => s.trim()) : [],
+        year: parseInt(row[3]) || 2023,
+        rank: 1,
+        boardChairperson: row[2] || 'UPSC Board',
+        score: parseInt(row[4]) || 200,
+        durationMinutes: 30,
+        background: '',
+        dafHighlights: row[7] ? String(row[7]).split('|').map(s => s.trim()) : [],
         qaExcerpts: [],
-        keyTakeaways: typeof row.keyTakeaways === 'string' ? row.keyTakeaways.split('|').map(s => s.trim()) : []
+        keyTakeaways: []
       });
     }
     const transcript = interviewsMap.get(candidateName);
-    if (row.question || row.answer) {
+    if (row[5] || row[6]) {
       transcript.qaExcerpts.push({
-        question: row.question || '',
-        askedBy: row.askedBy || 'Member',
-        answer: row.answer || '',
-        analysis: row.analysis || ''
+        question: row[5] || '',
+        askedBy: 'Member',
+        answer: row[6] || '',
+        analysis: ''
       });
     }
   });
@@ -222,19 +231,26 @@ try {
 
   // 5. Notes & Mindmaps
   const notesSheet = wb.Sheets['Notes'];
-  const notesDataRaw = notesSheet ? XLSX.utils.sheet_to_json(notesSheet) : [];
-  const notesData = notesDataRaw.map(n => ({
-    id: n.id || `note-${(n.title || n.subject || 'default').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
-    title: n.title || 'Topper Note',
-    subject: n.subject || '',
-    paper: n.paper || '',
-    topperSource: n.topperSource || '',
-    type: n.type || 'Mindmap',
-    summary: n.summary || '',
-    keyPoints: typeof n.keyPoints === 'string' ? n.keyPoints.split('|').map(s => s.trim()) : [],
-    diagramDescription: n.diagramDescription || '',
-    svgDiagramType: n.svgDiagramType || ''
-  }));
+  const notesDataRaw = notesSheet ? XLSX.utils.sheet_to_json(notesSheet, { header: 1 }) : [];
+  const notesRows = notesDataRaw.length > 1 ? notesDataRaw.slice(1) : [];
+  
+  const notesData = notesRows.map(row => {
+    if (!row || row.length === 0) return null;
+    const title = row[1] || 'Topper Note';
+    const subject = row[2] || '';
+    return {
+      id: row[0] || `note-${(title || subject || 'default').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+      title: title,
+      subject: subject,
+      paper: row[3] || '',
+      topperSource: row[4] || '',
+      type: row[5] || 'Mindmap',
+      summary: row[6] || '',
+      keyPoints: row[7] ? String(row[7]).split('|').map(s => s.trim()) : [],
+      diagramDescription: row[8] || '',
+      svgDiagramType: row[9] || ''
+    };
+  }).filter(Boolean);
 
   const finalData = {
     TOPPERS_PROFILES: formattedProfiles,

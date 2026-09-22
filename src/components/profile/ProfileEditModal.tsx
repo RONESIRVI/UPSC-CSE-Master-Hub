@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import { UserProfile } from "../../types";
-import { X, Upload, Camera, Smartphone } from "lucide-react";
-import { AppIconPlugin } from "../../plugins/AppIconPlugin";
+import { X, Upload, Camera } from "lucide-react";
 
 interface ProfileEditModalProps {
   isOpen: boolean;
@@ -146,36 +145,6 @@ export const ProfileEditModal: React.FC<ProfileEditModalProps> = ({
                   className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
                   placeholder="e.g. RAS CSE 2027"
                 />
-              </div>
-
-              {/* App Icon Selection */}
-              <div className="pt-4 border-t border-slate-100">
-                <label className="flex items-center gap-2 text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">
-                  <Smartphone className="w-4 h-4 text-indigo-500" />
-                  App Icon Theme (Home Screen)
-                </label>
-                <div className="grid grid-cols-3 gap-3">
-                  {[
-                    { id: "default", label: "Classic", color: "bg-indigo-600" },
-                    { id: "dark", label: "Dark Mode", color: "bg-slate-900" },
-                    { id: "minimal", label: "Minimalist", color: "bg-slate-100 border-2 border-slate-300" }
-                  ].map(theme => (
-                    <button
-                      key={theme.id}
-                      type="button"
-                      onClick={() => AppIconPlugin.changeIcon(theme.id)}
-                      className="flex flex-col items-center justify-center p-3 rounded-xl border-2 border-transparent hover:border-indigo-300 bg-slate-50 transition-all active:scale-95"
-                    >
-                      <div className={`w-10 h-10 rounded-2xl shadow-sm mb-2 ${theme.color} flex items-center justify-center`}>
-                        <span className={theme.id === "minimal" ? "text-slate-800 font-black text-xs" : "text-white font-black text-xs"}>C</span>
-                      </div>
-                      <span className="text-[10px] font-bold text-slate-600">{theme.label}</span>
-                    </button>
-                  ))}
-                </div>
-                <p className="text-[10px] text-slate-400 mt-2 italic">
-                  Note: Applies to the physical device home screen. App will refresh upon change.
-                </p>
               </div>
             </div>
             

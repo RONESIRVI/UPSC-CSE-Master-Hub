@@ -12,6 +12,7 @@ import {
   Compass,
   Camera,
   Crown,
+  Settings,
 } from "lucide-react";
 
 interface NavbarProps {
@@ -25,6 +26,7 @@ interface NavbarProps {
   onToggleTimer: () => void;
   hasUpdate?: boolean;
   onOpenUpdateModal?: () => void;
+  onOpenSettings?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -38,6 +40,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onToggleTimer,
   hasUpdate,
   onOpenUpdateModal,
+  onOpenSettings,
 }) => {
   const [daysToPrelims, setDaysToPrelims] = useState<number>(0);
 
@@ -85,6 +88,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                 Hi, {userProfile?.name || "Aspirant"}
               </p>
             </div>
+            {onOpenSettings && (
+              <button
+                onClick={onOpenSettings}
+                className="ml-2 p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all"
+                title="Settings"
+              >
+                <Settings className="w-5 h-5" />
+              </button>
+            )}
           </div>
 
           {/* Center Main Pillars Tabs (Bento Segmented Controller) */}

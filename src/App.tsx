@@ -11,6 +11,7 @@ import { ToppersSection } from "./components/toppers/ToppersSection";
 import { PrepSection } from "./components/prep/PrepSection";
 import { AnalyticsSection } from "./components/analytics/AnalyticsSection";
 import { ProfileEditModal } from "./components/profile/ProfileEditModal";
+import { SettingsModal } from "./components/settings/SettingsModal";
 
 import { SmartExtractorTab } from "./components/prep/SmartExtractorTab";
 import { SplashScreen } from "./components/SplashScreen";
@@ -68,6 +69,7 @@ export default function App() {
   // Update System State
   const [updateInfo, setUpdateInfo] = useState<{ version: string; body: string; url: string } | null>(null);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [updateProgress, setUpdateProgress] = useState<number | null>(null);
 
 
@@ -969,6 +971,7 @@ export default function App() {
                 setTimeout(() => window.location.reload(), 500);
               }
             }}
+            onOpenSettings={() => setIsSettingsOpen(true)}
           />
 
           {/* Core Content Canvas */}
@@ -1250,7 +1253,13 @@ export default function App() {
           onSave={(newProfile) => {
             setUserProfile(newProfile);
           }}
-        />        {/* Footer */}
+        />        {/* Settings Modal */}
+        <SettingsModal
+          isOpen={isSettingsOpen}
+          onClose={() => setIsSettingsOpen(false)}
+        />
+
+        {/* Footer */}
         <footer className="border-t border-slate-200 bg-white pt-6 pb-24 lg:pb-6 text-slate-500 text-xs text-center mt-12 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
             <div className="flex items-center gap-2">

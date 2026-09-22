@@ -989,6 +989,7 @@ export default function App() {
                   <HomeSection
                     userProfile={userProfile}
                     onOpenProfileEdit={() => setIsProfileModalOpen(true)}
+                    onOpenSettings={() => setIsSettingsOpen(true)}
                     setActiveTab={setActiveTab}
                     dailyTasks={dailyTasks}
                     setDailyTasks={setDailyTasks}

@@ -86,15 +86,12 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
 
   // Compute Health Score
   const healthScore = useMemo<PreparationHealth>(() => {
-    // Zero out scores to reflect fresh state
-    const studyHoursScore =
-      Math.min(
-        100,
-      ) || 0;
+    // Calculate Study Hours Score (e.g. against dailyGoalHours)
+    const studyHoursScore = dailyGoalHours > 0 
+      ? Math.min(100, Math.round(((totalStudyTimeToday / 3600) / dailyGoalHours) * 100))
+      : 0;
     
-    const pyqScore = 0; 
-    const revisionScore = 0;
-    
+    // Calculate Syllabus Score
     const completedSyllabus = syllabus.filter(
       (s) => s.status === "mastered" || s.status === "revised_2"
     ).length;
@@ -112,24 +109,20 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
     const validMocksCount = mockLogs.filter(m => (m.marksObtained ?? 0) >= ((m.cutoffScore ?? 80) + 12)).length;
     const testsScore = Math.min(100, Math.round((validMocksCount / targetMocks) * 100)) || 0;
       
-    const answersScore = 0;
+    const answersScore = 0; // TBD
 
-    const overallScore = Math.round(
-      (studyHoursScore +
-        pyqScore +
-        revisionScore +
-        testsScore +
-        answersScore +
-        syllabusScore) /
-        6
-    ) || 0;
+    // Only average the metrics that are currently active/meaningful
+    const activeScores = [syllabusScore, testsScore, studyHoursScore].filter(s => s > 0);
+    const overallScore = activeScores.length > 0 
+      ? Math.round(activeScores.reduce((a, b) => a + b, 0) / activeScores.length)
+      : syllabusScore; // Fallback to syllabus score if everything else is 0
 
     return {
       overallScore,
       metrics: {
         studyHours: studyHoursScore,
-        pyq: pyqScore,
-        revision: revisionScore,
+        pyq: 0,
+        revision: 0,
         tests: testsScore,
         answers: answersScore,
         syllabus: syllabusScore,

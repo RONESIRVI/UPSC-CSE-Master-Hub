@@ -65,6 +65,19 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
       : 0;
 
   useEffect(() => {
+    // Auto-detect exam pattern based on Paper name
+    if (testType.toUpperCase().includes("CSAT") || testType.toUpperCase().includes("GS2") || testType.toUpperCase().includes("GS-2") || testType.toUpperCase().includes("GS 2")) {
+      setTotalQuestions(80);
+      setMarksPerQuestion(2.5);
+      setNegativeMarks(0.83);
+    } else if (testType.toUpperCase().includes("GS1") || testType.toUpperCase().includes("GS-1") || testType.toUpperCase().includes("GS 1") || testType.toUpperCase().includes("PRELIMS")) {
+      setTotalQuestions(100);
+      setMarksPerQuestion(2);
+      setNegativeMarks(0.66);
+    }
+  }, [testType]);
+
+  useEffect(() => {
     if (typeof questionsAttempted === "number" && typeof correctCount === "number" && questionsAttempted > 0) {
       const incorrect = questionsAttempted - correctCount;
       let calcScore = 0;
@@ -109,6 +122,11 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
 
     if (questionsAttempted < correctCount) {
        setErrorMessage("Correct questions cannot exceed attempted questions.");
+       return;
+    }
+
+    if (questionsAttempted > totalQuestions) {
+       setErrorMessage("Attempted questions cannot exceed total questions.");
        return;
     }
 

@@ -58,6 +58,10 @@ import {
 import { UpdateModal } from "./components/ui/UpdateModal";
 import { usePushNotifications } from "./hooks/usePushNotifications";
 import { useFirestoreData } from "./hooks/useFirestoreData";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { auth } from "./lib/firebase";
+import { backupUserData, restoreUserData } from "./lib/cloudSync";
+import { LoginPromptModal } from "./components/auth/LoginPromptModal";
 
 export default function App() {
   // Initialize Push Notifications
@@ -268,6 +272,44 @@ export default function App() {
 
   // Splash Screen State
   const [showSplash, setShowSplash] = useState<boolean>(true);
+  const [showLoginPrompt, setShowLoginPrompt] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  // Authentication Listener
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      setCurrentUser(user);
+      if (user) {
+        // If logged in, fetch from cloud
+        try {
+          const cloudData = await restoreUserData(user.uid);
+          if (cloudData) {
+            // Restore cloud data over local state
+            if (cloudData.userProfile) setUserProfile(cloudData.userProfile);
+            if (cloudData.syllabus) setSyllabus(cloudData.syllabus);
+            if (cloudData.studyPlan) setStudyPlanPhases(cloudData.studyPlan);
+            if (cloudData.sessionLogs) setSessionLogs(cloudData.sessionLogs);
+            if (cloudData.mockLogs) setMockLogs(cloudData.mockLogs);
+            if (cloudData.revisionQueue) setRevisionQueue(cloudData.revisionQueue);
+            if (cloudData.pyqs) setPyqs(cloudData.pyqs);
+            if (cloudData.audioNotes) setAudioNotes(cloudData.audioNotes);
+            if (cloudData.dailyTasks) setDailyTasks(cloudData.dailyTasks);
+            if (cloudData.studyStreak) setStudyStreak(cloudData.studyStreak);
+          }
+        } catch (e) {
+          console.error("Failed to restore user data from cloud", e);
+        }
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleSplashComplete = () => {
+    setShowSplash(false);
+    if (!currentUser) {
+      setShowLoginPrompt(true);
+    }
+  };
 
   const [currentStudySession, setCurrentStudySession] = useState<{
     paper?: string;
@@ -588,12 +630,9 @@ export default function App() {
   }, []); // Run exactly once
 
   // Sync to LocalStorage
+  // Sync to LocalStorage & Cloud
   useEffect(() => {
-    // Hide splash screen after 3 seconds
-    const splashTimer = setTimeout(() => {
-      setShowSplash(false);
-    }, 3500);
-    return () => clearTimeout(splashTimer);
+    // The splash screen now waits for a button click, so we remove the auto-timeout here.
   }, []);
 
   useEffect(() => {
@@ -622,6 +661,22 @@ export default function App() {
     localStorage.setItem("ras_audio_notes_v2", JSON.stringify(audioNotes));
     localStorage.setItem("ras_daily_tasks_v2", JSON.stringify(dailyTasks));
     localStorage.setItem("ras_study_streak_v1", JSON.stringify(studyStreak));
+    
+    // Auto Backup to Cloud if logged in (debounced implicitly by React renders, but ideally should be debounced)
+    if (currentUser) {
+      backupUserData(currentUser.uid, {
+        userProfile,
+        syllabus,
+        studyPlan: studyPlanPhases,
+        sessionLogs,
+        mockLogs,
+        revisionQueue,
+        pyqs,
+        audioNotes,
+        dailyTasks,
+        studyStreak
+      });
+    }
   }, [
     strategies,
     toppers,
@@ -897,7 +952,16 @@ export default function App() {
         <UIGallery />
       ) : (
         <>
-          <AnimatePresence>{showSplash && <SplashScreen />}</AnimatePresence>
+          {/* App Shell Modals */}
+          <AnimatePresence>{showSplash && <SplashScreen onComplete={handleSplashComplete} />}</AnimatePresence>
+          <AnimatePresence>
+            {showLoginPrompt && (
+              <LoginPromptModal 
+                onClose={() => setShowLoginPrompt(false)} 
+                onLoginSuccess={() => setShowLoginPrompt(false)} 
+              />
+            )}
+          </AnimatePresence>
 
       <div
         className="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased selection:bg-indigo-500 selection:text-white flex flex-col justify-between"
@@ -1259,6 +1323,8 @@ export default function App() {
         <SettingsModal
           isOpen={isSettingsOpen}
           onClose={() => setIsSettingsOpen(false)}
+          currentUser={currentUser}
+          onLoginClick={() => setShowLoginPrompt(true)}
         />
 
         {/* Footer */}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { Compass, Sparkles, GraduationCap } from "lucide-react";
 
-export function SplashScreen() {
+export function SplashScreen({ onComplete }: { onComplete: () => void }) {
   const [loadingProgress, setLoadingProgress] = useState(0);
 
   useEffect(() => {
@@ -77,27 +77,41 @@ export function SplashScreen() {
         </motion.p>
       </motion.div>
 
-      {/* Loading Progress Bar */}
+      {/* Loading Progress Bar or Launch Button */}
       <motion.div 
         className="absolute bottom-16 left-0 right-0 px-12 sm:px-32 max-w-md mx-auto w-full"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8, duration: 0.5 }}
       >
-        <div className="flex justify-between items-end mb-2 px-1">
-          <span className="text-[10px] font-bold text-indigo-300/60 uppercase tracking-widest">
-            {loadingProgress < 100 ? "Initializing Engines..." : "Ready to Launch"}
-          </span>
-          <span className="text-xs font-bold text-white">{Math.min(loadingProgress, 100)}%</span>
-        </div>
-        <div className="h-1.5 w-full bg-slate-800/80 rounded-full overflow-hidden border border-slate-700/50 relative">
-          <motion.div
-            className="absolute top-0 left-0 bottom-0 bg-gradient-to-r from-indigo-500 to-purple-400 rounded-full"
-            initial={{ width: "0%" }}
-            animate={{ width: `${Math.min(loadingProgress, 100)}%` }}
-            transition={{ ease: "easeOut", duration: 0.2 }}
-          />
-        </div>
+        {loadingProgress < 100 ? (
+          <>
+            <div className="flex justify-between items-end mb-2 px-1">
+              <span className="text-[10px] font-bold text-indigo-300/60 uppercase tracking-widest">
+                Initializing Engines...
+              </span>
+              <span className="text-xs font-bold text-white">{Math.min(loadingProgress, 100)}%</span>
+            </div>
+            <div className="h-1.5 w-full bg-slate-800/80 rounded-full overflow-hidden border border-slate-700/50 relative">
+              <motion.div
+                className="absolute top-0 left-0 bottom-0 bg-gradient-to-r from-indigo-500 to-purple-400 rounded-full"
+                initial={{ width: "0%" }}
+                animate={{ width: `${Math.min(loadingProgress, 100)}%` }}
+                transition={{ ease: "easeOut", duration: 0.2 }}
+              />
+            </div>
+          </>
+        ) : (
+          <motion.button
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="w-full py-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-black text-sm uppercase tracking-widest rounded-2xl shadow-[0_0_20px_rgba(99,102,241,0.4)] transition-all flex items-center justify-center gap-2 group cursor-pointer"
+            onClick={onComplete}
+          >
+            Ready to Launch
+            <Sparkles className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+          </motion.button>
+        )}
       </motion.div>
     </motion.div>
   );

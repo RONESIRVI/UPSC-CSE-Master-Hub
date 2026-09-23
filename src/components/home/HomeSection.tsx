@@ -297,6 +297,7 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
         <div className="xl:col-span-1">
           <PersonalizedPlan
             tasks={dailyTasks}
+            dailyGoalHours={dailyGoalHours}
             onToggleTask={handleToggleTask}
             onNavigateToTracker={(taskId) => {
               const task = dailyTasks.find((t) => t.id === taskId);

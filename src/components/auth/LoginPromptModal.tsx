@@ -37,8 +37,8 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ onClose, onL
     setError(null);
     setSuccess(null);
     try {
-      const trimmedEmail = email.trim();
-      const user = await loginWithEmail(trimmedEmail, password);
+      const sanitizedEmail = email.replace(/\s+/g, '');
+      const user = await loginWithEmail(sanitizedEmail, password);
       if (user) {
         onLoginSuccess(user);
       }
@@ -58,8 +58,8 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ onClose, onL
     setError(null);
     setSuccess(null);
     try {
-      const trimmedEmail = email.trim();
-      await resetPassword(trimmedEmail);
+      const sanitizedEmail = email.replace(/\s+/g, '');
+      await resetPassword(sanitizedEmail);
       setSuccess("Password reset link sent to your email!");
     } catch (err: any) {
       setError(err.message || "Failed to send reset email.");

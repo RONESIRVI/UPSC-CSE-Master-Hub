@@ -1,4 +1,4 @@
-import { GoogleAuthProvider, signInWithPopup, signInWithRedirect, signOut, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signInWithRedirect, signOut, signInWithEmailAndPassword, sendPasswordResetEmail, sendEmailVerification } from "firebase/auth";
 import { auth } from "./firebase";
 
 const googleProvider = new GoogleAuthProvider();
@@ -22,7 +22,25 @@ export const signInWithGoogle = async () => {
 export const loginWithEmail = async (email: string, pass: string) => {
   try {
     const result = await signInWithEmailAndPassword(auth, email, pass);
-    return result.user;
+    const user = result.user;
+
+    // Check if email is verified
+    if (user && !user.emailVerified) {
+      const storageKey = `verification_sent_${user.uid}`;
+      const alreadySent = localStorage.getItem(storageKey);
+      
+      if (!alreadySent) {
+        try {
+          await sendEmailVerification(user);
+          localStorage.setItem(storageKey, "true");
+          console.log("Verification email sent for the first time.");
+        } catch (vErr) {
+          console.error("Error sending verification email:", vErr);
+        }
+      }
+    }
+
+    return user;
   } catch (error) {
     console.error("Error signing in with Email/Password", error);
     throw error;

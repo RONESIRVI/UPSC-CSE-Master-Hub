@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Cloud, ShieldCheck, X, LogIn } from "lucide-react";
-import { signInWithGoogle } from "../../lib/authService";
+import { Cloud, ShieldCheck, X, LogIn, Mail, Lock, UserPlus } from "lucide-react";
+import { signInWithGoogle, loginWithEmail } from "../../lib/authService";
 
 interface LoginPromptModalProps {
   onClose: () => void;
@@ -10,6 +10,10 @@ interface LoginPromptModalProps {
 export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ onClose, onLoginSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // UI State for Email/Password
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleGoogleLogin = async () => {
     setLoading(true);
@@ -26,6 +30,22 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ onClose, onL
     }
   };
 
+  const handleEmailAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    try {
+      const user = await loginWithEmail(email, password);
+      if (user) {
+        onLoginSuccess(user);
+      }
+    } catch (err: any) {
+      setError(err.message || "Invalid Email or Password.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div 
@@ -34,52 +54,107 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ onClose, onL
       />
       
       <div className="relative bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-300">
-        <div className="bg-gradient-to-br from-indigo-600 to-indigo-800 p-8 text-center relative overflow-hidden">
+        
+        {/* Header Section */}
+        <div className="bg-gradient-to-br from-indigo-600 to-indigo-800 p-8 text-center relative overflow-hidden pb-12">
           <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
           
           <div className="relative z-10">
-            <div className="w-20 h-20 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center mx-auto mb-4 border border-white/20 shadow-lg">
-              <Cloud className="w-10 h-10 text-white" />
+            <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center mx-auto mb-4 border border-white/20 shadow-lg">
+              <ShieldCheck className="w-8 h-8 text-white" />
             </div>
             <h2 className="text-2xl font-black text-white tracking-tight mb-2">
-              Secure Your Progress
+              Welcome Back!
             </h2>
             <p className="text-indigo-100 text-sm font-medium">
-              Save your study data to the cloud so you never lose it, even if you uninstall the app.
+              Secure your preparation data to the cloud.
             </p>
           </div>
         </div>
 
-        <div className="p-6 space-y-4 bg-slate-50">
+        {/* Form Section */}
+        <div className="px-6 pb-6 bg-slate-50 relative -mt-6 rounded-t-3xl border-t border-slate-100">
+          
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 text-red-600 text-xs font-bold rounded-xl text-center">
-              {error}
+            <div className="mt-4 p-3 bg-rose-50 border border-rose-200 text-rose-600 text-xs font-bold rounded-xl text-center flex justify-between items-center">
+              <span>{error}</span>
+              <button onClick={() => setError(null)}><X className="w-4 h-4 hover:text-rose-800" /></button>
             </div>
           )}
+
+          <form onSubmit={handleEmailAuth} className="mt-6 space-y-4">
+            <div>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 block ml-1">Email Address</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                  <Mail className="w-4 h-4 text-slate-400" />
+                </div>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-white border-2 border-slate-200 text-slate-800 text-sm font-bold rounded-xl focus:ring-0 focus:border-indigo-500 block pl-10 p-3 transition-colors outline-none"
+                  placeholder="aspirant@lbsnaa.com"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 block ml-1">Password</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                  <Lock className="w-4 h-4 text-slate-400" />
+                </div>
+                <input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full bg-white border-2 border-slate-200 text-slate-800 text-sm font-bold rounded-xl focus:ring-0 focus:border-indigo-500 block pl-10 p-3 transition-colors outline-none"
+                  placeholder="••••••••"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all shadow-[0_4px_14px_0_rgba(99,102,241,0.39)] disabled:opacity-70 disabled:cursor-not-allowed mt-2"
+            >
+              {loading ? (
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : (
+                <><LogIn className="w-5 h-5" /> Log In securely</>
+              )}
+            </button>
+          </form>
+
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-200"></div>
+            </div>
+            <div className="relative flex justify-center text-xs">
+              <span className="px-3 bg-slate-50 text-slate-400 font-bold uppercase tracking-wider">Or</span>
+            </div>
+          </div>
 
           <div className="space-y-3">
             <button
               onClick={handleGoogleLogin}
-              disabled={loading}
-              className="w-full flex items-center justify-center gap-3 py-3.5 px-4 bg-white border-2 border-slate-200 hover:border-indigo-500 rounded-xl transition-all shadow-sm group disabled:opacity-70 disabled:cursor-not-allowed"
+              type="button"
+              className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-white border-2 border-slate-200 hover:border-slate-300 rounded-xl transition-all shadow-sm group"
             >
-              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
-              <span className="font-bold text-slate-700 group-hover:text-indigo-700">
-                {loading ? "Signing in..." : "Continue with Google"}
+              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-4 h-4" />
+              <span className="font-bold text-slate-600 text-sm">
+                Continue with Google
               </span>
             </button>
-          </div>
 
-          <div className="pt-2 border-t border-slate-200 mt-4">
-            <div className="flex items-center gap-2 mb-4">
-              <ShieldCheck className="w-4 h-4 text-emerald-500" />
-              <p className="text-[10px] text-slate-500 font-medium">
-                Offline Mode Supported. Your progress is stored locally when internet is disconnected.
-              </p>
-            </div>
             <button
               onClick={onClose}
-              className="w-full py-3 text-slate-500 font-bold text-sm hover:bg-slate-200/50 rounded-xl transition-colors"
+              type="button"
+              className="w-full py-3 text-slate-400 font-bold text-xs hover:bg-slate-200/50 rounded-xl transition-colors cursor-pointer"
             >
               Skip (Use Offline Mode)
             </button>

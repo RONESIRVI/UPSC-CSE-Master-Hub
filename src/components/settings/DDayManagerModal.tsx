@@ -6,9 +6,9 @@ import { backupUserData } from "../../lib/cloudSync";
 export interface DDayProject {
   id: string;
   name: string;
-  startDate?: string;
+  startDate?: string | null;
   targetDate: string;
-  goals?: string;
+  goals?: string | null;
   isMain: boolean;
 }
 
@@ -29,6 +29,7 @@ export const DDayManagerModal: React.FC<DDayManagerModalProps> = ({ isOpen, onCl
   const [targetDate, setTargetDate] = useState("");
   const [goals, setGoals] = useState("");
   const [isMain, setIsMain] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     if (isOpen) {
@@ -70,6 +71,7 @@ export const DDayManagerModal: React.FC<DDayManagerModalProps> = ({ isOpen, onCl
     setStartDate("");
     setTargetDate("");
     setGoals("");
+    setErrorMsg("");
     setIsMain(projects.length === 0); // Default to main if first project
     setView("form");
   };
@@ -80,24 +82,24 @@ export const DDayManagerModal: React.FC<DDayManagerModalProps> = ({ isOpen, onCl
     setStartDate(p.startDate || "");
     setTargetDate(p.targetDate);
     setGoals(p.goals || "");
+    setErrorMsg("");
     setIsMain(p.isMain);
     setView("form");
   };
 
   const handleDelete = (id: string) => {
-    if (confirm("Are you sure you want to delete this D-Day?")) {
-      const updated = projects.filter((p) => p.id !== id);
-      // if we deleted the main, and there are others, make the first one main
-      if (updated.length > 0 && !updated.some(p => p.isMain)) {
-        updated[0].isMain = true;
-      }
-      saveProjects(updated);
+    // Direct deletion to avoid Capacitor window.confirm bugs
+    const updated = projects.filter((p) => p.id !== id);
+    // if we deleted the main, and there are others, make the first one main
+    if (updated.length > 0 && !updated.some(p => p.isMain)) {
+      updated[0].isMain = true;
     }
+    saveProjects(updated);
   };
 
   const handleSaveForm = () => {
     if (!name.trim() || !targetDate) {
-      alert("Name and Target Date are required!");
+      setErrorMsg("Name and Target Date are required!");
       return;
     }
 
@@ -110,10 +112,10 @@ export const DDayManagerModal: React.FC<DDayManagerModalProps> = ({ isOpen, onCl
 
     const payload: DDayProject = {
       id: editingProject ? editingProject.id : Date.now().toString(),
-      name,
-      startDate: startDate || undefined,
+      name: name.trim(),
+      startDate: startDate || null,
       targetDate,
-      goals,
+      goals: goals || null,
       isMain,
     };
 
@@ -215,6 +217,12 @@ export const DDayManagerModal: React.FC<DDayManagerModalProps> = ({ isOpen, onCl
           {view === "form" && (
             <div className="space-y-6 animate-in slide-in-from-right-4 duration-300">
               
+              {errorMsg && (
+                <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-bold">
+                  {errorMsg}
+                </div>
+              )}
+
               <label className="flex items-center gap-3 p-4 rounded-2xl bg-[#1a1f29] border border-white/5 cursor-pointer hover:bg-white/[0.05] transition-colors">
                 <input 
                   type="checkbox" 

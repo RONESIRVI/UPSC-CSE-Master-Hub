@@ -51,19 +51,8 @@ export const ProfileCard3D: React.FC<ProfileCard3DProps> = ({
         } catch (e) {}
       }
       
-      // Fallback for legacy
-      const targetDDayStr = localStorage.getItem("target_d_day");
-      if (targetDDayStr) {
-        setDDayName("Mission D-Day");
-        const targetDate = new Date(targetDDayStr);
-        const today = new Date();
-        targetDate.setHours(0, 0, 0, 0);
-        today.setHours(0, 0, 0, 0);
-        const diffTime = targetDate.getTime() - today.getTime();
-        setDDayDaysLeft(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
-      } else {
-        setDDayDaysLeft(null);
-      }
+      // No valid main project found
+      setDDayDaysLeft(null);
     };
 
     fetchDDay();

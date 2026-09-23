@@ -254,35 +254,23 @@ export const DDayManagerModal: React.FC<DDayManagerModalProps> = ({ isOpen, onCl
               <div className="rounded-2xl bg-[#1a1f29] border border-white/5 overflow-hidden">
                 <div className="flex justify-between items-center p-4 border-b border-white/5">
                   <span className="text-slate-400 font-medium">Start date</span>
-                  <div className="relative">
-                    <input 
-                      type="date" 
-                      value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
-                      className="opacity-0 absolute inset-0 w-full h-full cursor-pointer z-10"
-                    />
-                    <div className="flex items-center gap-2 text-slate-300 font-medium">
-                      {startDate ? new Date(startDate).toLocaleDateString('en-US', { weekday: 'short', month: 'numeric', day: 'numeric' }) : "Not set"}
-                      <ChevronRight className="w-4 h-4 text-slate-600" />
-                    </div>
-                  </div>
+                  <input 
+                    type="date" 
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    className="bg-transparent text-slate-300 font-medium focus:outline-none text-right cursor-pointer"
+                  />
                 </div>
 
                 <div className="flex justify-between items-center p-4">
                   <span className="text-slate-400 font-medium">D-Day</span>
-                  <div className="relative">
-                    <input 
-                      type="date" 
-                      value={targetDate}
-                      onChange={(e) => setTargetDate(e.target.value)}
-                      required
-                      className="opacity-0 absolute inset-0 w-full h-full cursor-pointer z-10"
-                    />
-                    <div className="flex items-center gap-2 text-white font-bold">
-                      {targetDate ? new Date(targetDate).toLocaleDateString('en-US', { weekday: 'short', month: 'numeric', day: 'numeric' }) : "Not set"}
-                      <ChevronRight className="w-4 h-4 text-slate-600" />
-                    </div>
-                  </div>
+                  <input 
+                    type="date" 
+                    value={targetDate}
+                    onChange={(e) => setTargetDate(e.target.value)}
+                    required
+                    className="bg-transparent text-white font-bold focus:outline-none text-right cursor-pointer"
+                  />
                 </div>
               </div>
 

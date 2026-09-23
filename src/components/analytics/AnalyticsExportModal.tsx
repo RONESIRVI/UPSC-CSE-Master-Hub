@@ -334,35 +334,6 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
               </div>
             </div>
 
-            {/* Aspirant & Exam Info */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-1">
-                  Aspirant Name / Candidate Tag
-                </label>
-                <input
-                  type="text"
-                  value={aspirantName}
-                  onChange={(e) => setAspirantName(e.target.value)}
-                  placeholder="e.g. RAS CSE Aspirant"
-                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs font-bold rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
-
-              <div>
-                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-1">
-                  Target Examination & Year
-                </label>
-                <input
-                  type="text"
-                  value={targetExam}
-                  onChange={(e) => setTargetExam(e.target.value)}
-                  placeholder="e.g. RAS CSE 2026"
-                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs font-bold rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
-            </div>
-
             {/* Report Sections Customizer */}
             <div className="space-y-2">
               <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center justify-between">

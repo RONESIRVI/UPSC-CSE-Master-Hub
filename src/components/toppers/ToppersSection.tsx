@@ -81,7 +81,7 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
       description:
         "Daily hourly study timetables of toppers (Full-time & Working)",
       icon: Clock,
-      badge: "5 Schedules",
+      badge: `${routines?.length || 0} Schedules`,
       color: "bg-indigo-50 text-indigo-600 border-indigo-200",
     },
     {
@@ -90,7 +90,7 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
       description:
         "Handwritten toppers notes, micro-diagrams & GS 1-4 high-yield mindmaps",
       icon: FileText,
-      badge: "GS 1-4 Vault",
+      badge: `${notes?.length || 0} Notes`,
       color: "bg-emerald-50 text-emerald-600 border-emerald-200",
     },
     {

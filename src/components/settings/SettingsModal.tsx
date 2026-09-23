@@ -31,8 +31,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, c
     }
   };
 
-  };
-
   if (!isOpen) return null;
 
   return (

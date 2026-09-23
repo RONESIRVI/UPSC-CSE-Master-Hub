@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { X, Settings2, Palette, Bell, Cloud, LogOut, LogIn, RefreshCw, CheckCircle2, Target, Calendar } from "lucide-react";
+import { X, Settings2, Palette, Bell, Cloud, LogOut, LogIn, RefreshCw, CheckCircle2, Target, Calendar, ChevronRight } from "lucide-react";
 import { logout } from "../../lib/authService";
 import { User } from "firebase/auth";
 import { backupUserData } from "../../lib/cloudSync";
+import { DDayManagerModal } from "./DDayManagerModal";
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -14,7 +15,8 @@ interface SettingsModalProps {
 export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, currentUser, onLoginClick }) => {
   const [syncing, setSyncing] = useState(false);
   const [syncSuccess, setSyncSuccess] = useState(false);
-  const [dDayDate, setDDayDate] = useState(() => localStorage.getItem("target_d_day") || "");
+  const [isDDayModalOpen, setIsDDayModalOpen] = useState(false);
+  
   const [autoUpdateEnabled, setAutoUpdateEnabled] = useState(() => {
     return localStorage.getItem("disable_auto_update") !== "true";
   });
@@ -29,14 +31,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, c
     }
   };
 
-  const handleDDayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newDate = e.target.value;
-    setDDayDate(newDate);
-    if (newDate) {
-      localStorage.setItem("target_d_day", newDate);
-    } else {
-      localStorage.removeItem("target_d_day");
-    }
   };
 
   if (!isOpen) return null;
@@ -161,17 +155,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, c
                     <p className="text-[10px] text-slate-500 max-w-[200px]">Set your target exam date to see a live countdown on your profile.</p>
                   </div>
                 </div>
-                <div className="relative shrink-0">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Calendar className="w-4 h-4 text-slate-400" />
-                  </div>
-                  <input
-                    type="date"
-                    value={dDayDate}
-                    onChange={handleDDayChange}
-                    className="w-full sm:w-auto bg-white border-2 border-slate-200 text-slate-700 text-xs font-bold rounded-xl focus:ring-0 focus:border-indigo-500 block pl-9 p-2 transition-colors outline-none cursor-pointer"
-                  />
-                </div>
+                <button
+                  onClick={() => setIsDDayModalOpen(true)}
+                  className="shrink-0 flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 text-xs font-bold rounded-xl hover:bg-slate-50 transition-colors cursor-pointer shadow-sm"
+                >
+                  Manage <ChevronRight className="w-4 h-4" />
+                </button>
               </div>
             </div>
           </div>
@@ -219,6 +208,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, c
         </div>
 
       </div>
+
+      <DDayManagerModal 
+        isOpen={isDDayModalOpen}
+        onClose={() => setIsDDayModalOpen(false)}
+      />
     </div>
   );
 };

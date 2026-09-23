@@ -29,19 +29,46 @@ export const ProfileCard3D: React.FC<ProfileCard3DProps> = ({
   currentFocus,
 }) => {
   const [dDayDaysLeft, setDDayDaysLeft] = useState<number | null>(null);
+  const [dDayName, setDDayName] = useState<string>("Mission D-Day");
 
   useEffect(() => {
-    const targetDDayStr = localStorage.getItem("target_d_day");
-    if (targetDDayStr) {
-      const targetDate = new Date(targetDDayStr);
-      const today = new Date();
-      targetDate.setHours(0, 0, 0, 0);
-      today.setHours(0, 0, 0, 0);
-      const diffTime = targetDate.getTime() - today.getTime();
-      setDDayDaysLeft(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
-    } else {
-      setDDayDaysLeft(null);
-    }
+    const fetchDDay = () => {
+      const stored = localStorage.getItem("d_day_projects");
+      if (stored) {
+        try {
+          const projects = JSON.parse(stored);
+          const mainProject = projects.find((p: any) => p.isMain);
+          if (mainProject) {
+            setDDayName(mainProject.name);
+            const targetDate = new Date(mainProject.targetDate);
+            const today = new Date();
+            targetDate.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0);
+            const diffTime = targetDate.getTime() - today.getTime();
+            setDDayDaysLeft(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+            return;
+          }
+        } catch (e) {}
+      }
+      
+      // Fallback for legacy
+      const targetDDayStr = localStorage.getItem("target_d_day");
+      if (targetDDayStr) {
+        setDDayName("Mission D-Day");
+        const targetDate = new Date(targetDDayStr);
+        const today = new Date();
+        targetDate.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+        const diffTime = targetDate.getTime() - today.getTime();
+        setDDayDaysLeft(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+      } else {
+        setDDayDaysLeft(null);
+      }
+    };
+
+    fetchDDay();
+    window.addEventListener("d_day_updated", fetchDDay);
+    return () => window.removeEventListener("d_day_updated", fetchDDay);
   }, []);
 
   return (
@@ -140,7 +167,7 @@ export const ProfileCard3D: React.FC<ProfileCard3DProps> = ({
                   <CalendarDays className="w-5 h-5 drop-shadow-[0_0_8px_rgba(244,63,94,0.6)]" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-slate-300 text-xs sm:text-sm uppercase tracking-wider">Mission D-Day</h4>
+                  <h4 className="font-bold text-slate-300 text-xs sm:text-sm uppercase tracking-wider">{dDayName}</h4>
                   <p className="text-[10px] text-slate-500">Time is ticking...</p>
                 </div>
               </div>

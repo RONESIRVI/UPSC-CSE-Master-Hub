@@ -68,14 +68,18 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
     // Auto-detect exam pattern based on Paper name
     if (testType.toUpperCase().includes("CSAT") || testType.toUpperCase().includes("GS2") || testType.toUpperCase().includes("GS-2") || testType.toUpperCase().includes("GS 2")) {
       setTotalQuestions(80);
-      setMarksPerQuestion(2.5);
-      setNegativeMarks(0.83);
     } else if (testType.toUpperCase().includes("GS1") || testType.toUpperCase().includes("GS-1") || testType.toUpperCase().includes("GS 1") || testType.toUpperCase().includes("PRELIMS")) {
       setTotalQuestions(100);
-      setMarksPerQuestion(2);
-      setNegativeMarks(0.66);
     }
   }, [testType]);
+
+  useEffect(() => {
+    if (totalQuestions > 0) {
+      const newMarks = parseFloat((200 / totalQuestions).toFixed(2));
+      setMarksPerQuestion(newMarks);
+      setNegativeMarks(parseFloat((newMarks / 3).toFixed(2)));
+    }
+  }, [totalQuestions]);
 
   useEffect(() => {
     if (typeof questionsAttempted === "number" && typeof correctCount === "number" && questionsAttempted > 0) {
@@ -517,8 +521,8 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
                     type="number"
                     step="0.1"
                     value={marksPerQuestion}
-                    onChange={(e) => setMarksPerQuestion(parseFloat(e.target.value) || 0)}
-                    className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
+                    readOnly
+                    className="w-full bg-slate-200/50 border border-slate-200 text-slate-500 text-xs rounded-xl px-3 py-2 outline-none cursor-not-allowed"
                   />
                 </div>
                 <div>
@@ -529,8 +533,8 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
                     type="number"
                     step="0.01"
                     value={negativeMarks}
-                    onChange={(e) => setNegativeMarks(parseFloat(e.target.value) || 0)}
-                    className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
+                    readOnly
+                    className="w-full bg-slate-200/50 border border-slate-200 text-slate-500 text-xs rounded-xl px-3 py-2 outline-none cursor-not-allowed"
                   />
                 </div>
               </div>

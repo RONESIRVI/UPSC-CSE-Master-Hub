@@ -112,10 +112,9 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
       
     const answersScore = 0; // TBD
 
-    // Overall score should be a stable metric representing long-term preparation progress.
-    // We'll weight Syllabus Completion at 70% and Test Performance at 30%.
-    // We shouldn't filter out 0s because a 0% syllabus completion is a real 0%.
-    const overallScore = Math.round((syllabusScore * 0.7) + (testsScore * 0.3));
+    // The user specifically requested that the Profile overall progress should be based 
+    // ENTIRELY on Total Syllabus completion.
+    const overallScore = syllabusScore;
 
     return {
       overallScore,

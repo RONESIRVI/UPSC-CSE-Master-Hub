@@ -59,11 +59,8 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
   const avgPrelimsScore =
     prelimsLogs.length > 0
       ? Math.round(
-          prelimsLogs.reduce((acc, l) => {
-            const tm = l.totalMarks || 200;
-            const normalized = tm > 0 ? ((l.marksObtained ?? 0) / tm) * 200 : 0;
-            return acc + normalized;
-          }, 0) / prelimsLogs.length
+          prelimsLogs.reduce((acc, l) => acc + (l.marksObtained ?? 0), 0) /
+            prelimsLogs.length
         )
       : 0;
 
@@ -94,11 +91,7 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
     }
   }, [questionsAttempted, correctCount, testType, marksPerQuestion, negativeMarks]);
 
-  useEffect(() => {
-    if (totalQuestions > 0 && marksPerQuestion > 0) {
-      setTotalMarks(totalQuestions * marksPerQuestion);
-    }
-  }, [totalQuestions, marksPerQuestion]);
+
 
   const handleSaveMock = (e: React.FormEvent) => {
     e.preventDefault();

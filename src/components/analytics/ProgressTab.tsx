@@ -35,11 +35,7 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
   // Compute dynamic mock confidence
   const prelimsLogs = mockLogs.filter(m => m.type === "Prelims GS1" || m.type === "CSAT" || m.type?.includes("Prelims"));
   const avgPrelimsScore = prelimsLogs.length > 0
-    ? Math.round(prelimsLogs.reduce((acc, l) => {
-        const tm = l.totalMarks || 200;
-        const normalized = tm > 0 ? ((l.marksObtained || 0) / tm) * 200 : 0;
-        return acc + normalized;
-      }, 0) / prelimsLogs.length)
+    ? Math.round(prelimsLogs.reduce((acc, l) => acc + (l.marksObtained || 0), 0) / prelimsLogs.length)
     : 0;
   
   // A simplistic probability model (Target 100+ score = 99% probability)

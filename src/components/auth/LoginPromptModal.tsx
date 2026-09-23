@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Cloud, ShieldCheck, X, LogIn, Mail, Lock, UserPlus } from "lucide-react";
-import { signInWithGoogle, loginWithEmail } from "../../lib/authService";
+import { Cloud, ShieldCheck, X, LogIn, Mail, Lock, UserPlus, Send } from "lucide-react";
+import { signInWithGoogle, loginWithEmail, resetPassword } from "../../lib/authService";
 
 interface LoginPromptModalProps {
   onClose: () => void;
@@ -10,6 +10,7 @@ interface LoginPromptModalProps {
 export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ onClose, onLoginSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   
   // UI State for Email/Password
   const [email, setEmail] = useState("");
@@ -34,6 +35,7 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ onClose, onL
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setSuccess(null);
     try {
       const user = await loginWithEmail(email, password);
       if (user) {
@@ -41,6 +43,24 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ onClose, onL
       }
     } catch (err: any) {
       setError(err.message || "Invalid Email or Password.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      setError("Please enter your email address first.");
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+    try {
+      await resetPassword(email);
+      setSuccess("Password reset link sent to your email!");
+    } catch (err: any) {
+      setError(err.message || "Failed to send reset email.");
     } finally {
       setLoading(false);
     }
@@ -82,6 +102,13 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ onClose, onL
             </div>
           )}
 
+          {success && (
+            <div className="mt-4 p-3 bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs font-bold rounded-xl text-center flex justify-between items-center">
+              <span>{success}</span>
+              <button onClick={() => setSuccess(null)}><X className="w-4 h-4 hover:text-emerald-800" /></button>
+            </div>
+          )}
+
           <form onSubmit={handleEmailAuth} className="mt-6 space-y-4">
             <div>
               <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 block ml-1">Email Address</label>
@@ -101,7 +128,16 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ onClose, onL
             </div>
 
             <div>
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 block ml-1">Password</label>
+              <div className="flex justify-between items-center mb-1.5 ml-1">
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Password</label>
+                <button 
+                  type="button" 
+                  onClick={handleForgotPassword}
+                  className="text-[10px] font-bold text-indigo-500 hover:text-indigo-700 transition-colors"
+                >
+                  Forgot Password?
+                </button>
+              </div>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                   <Lock className="w-4 h-4 text-slate-400" />

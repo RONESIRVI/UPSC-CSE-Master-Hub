@@ -94,19 +94,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] hidden md:block mt-0.5">
                 Hi, {userProfile?.name || "Aspirant"}
               </p>
-            </div>
-            
-            {/* Live Time Card */}
-            <div className="flex items-center gap-2 sm:gap-3 ml-2 sm:ml-2 pl-2 sm:pl-4 border-l border-slate-200">
-              <div className="flex flex-col items-center justify-center px-2 sm:px-3 py-1 sm:py-1.5 bg-gradient-to-b from-slate-800 to-slate-900 rounded-lg sm:rounded-xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.1)] border border-slate-700/80 group-hover:border-indigo-500/50 transition-colors">
-                <span className="text-[10px] sm:text-[13px] font-mono font-black text-emerald-400 tracking-wider leading-none drop-shadow-[0_0_8px_rgba(52,211,153,0.3)]">
-                  {currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
-                </span>
-                <span className="text-[6px] sm:text-[8px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-0.5 sm:mt-1 leading-none">
-                  {currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
-                </span>
-              </div>
-            </div>
           </div>
 
           {/* Center Main Pillars Tabs (Bento Segmented Controller) */}
@@ -189,8 +176,18 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {daysToPrelims} DAYS LEFT
               </span>
             </div>
-
-
+            
+            {/* Live Time Card - Moved to Right Corner and Enlarged */}
+            <div className="flex items-center">
+              <div className="flex flex-col items-center justify-center px-4 sm:px-5 py-2 sm:py-2.5 bg-gradient-to-b from-slate-800 to-slate-900 rounded-xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.1)] border border-slate-700/80 group-hover:border-indigo-500/50 transition-colors min-w-[100px]">
+                <span className="text-sm sm:text-base font-mono font-black text-emerald-400 tracking-widest leading-none drop-shadow-[0_0_10px_rgba(52,211,153,0.4)]">
+                  {currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                </span>
+                <span className="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-[0.25em] mt-1.5 leading-none">
+                  {currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                </span>
+              </div>
+            </div>
 
           </div>
         </div>

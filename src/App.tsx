@@ -980,7 +980,7 @@ export default function App() {
         style={{ backgroundColor: "#f8fafc" }}
       >
         {/* Main Top Navigation Header */}
-        <div>
+        <div className="sticky top-0 z-50 w-full">
           <Navbar
             userProfile={userProfile}
             activeTab={activeTab}

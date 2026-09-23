@@ -94,6 +94,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] hidden md:block mt-0.5">
                 Hi, {userProfile?.name || "Aspirant"}
               </p>
+            </div>
           </div>
 
           {/* Center Main Pillars Tabs (Bento Segmented Controller) */}

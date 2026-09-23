@@ -1226,7 +1226,7 @@ export default function App() {
         )}
 
         {/* Mobile Floating Bottom App Bar (Native Android App Experience) */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-lg border-t border-slate-200 shadow-xl safe-bottom px-2 py-1.5 flex items-center justify-around">
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[90] bg-white/95 backdrop-blur-lg border-t border-slate-200 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] safe-bottom px-2 py-1.5 flex items-center justify-around">
           <button
             onClick={() => setActiveTab("home")}
             className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition cursor-pointer ${

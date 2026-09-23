@@ -41,6 +41,8 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
   const [totalQuestions, setTotalQuestions] = useState<number>(100);
   const [questionsAttempted, setQuestionsAttempted] = useState<number | "">("");
   const [correctCount, setCorrectCount] = useState<number | "">("");
+  const [marksPerQuestion, setMarksPerQuestion] = useState<number>(2);
+  const [negativeMarks, setNegativeMarks] = useState<number>(0.66);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   
   const subjects = Array.from(new Set(syllabus.filter((t: any) => t.status !== "not_started" && t.status !== "in_progress").map((t: any) => t.subject).filter(Boolean)));
@@ -66,16 +68,21 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
     if (typeof questionsAttempted === "number" && typeof correctCount === "number" && questionsAttempted > 0) {
       const incorrect = questionsAttempted - correctCount;
       let calcScore = 0;
-      // Standard calculation
-      calcScore = Math.max(0, (correctCount * 2) - (incorrect * 0.66));
-      setCutoffMarks(88);
+      // Flexible calculation based on user inputs
+      calcScore = Math.max(0, (correctCount * marksPerQuestion) - (incorrect * negativeMarks));
       
       const calcAcc = Math.round((correctCount / questionsAttempted) * 100);
       
       setScore(parseFloat(calcScore.toFixed(2)));
       setAccuracyPct(calcAcc);
     }
-  }, [questionsAttempted, correctCount, testType]);
+  }, [questionsAttempted, correctCount, testType, marksPerQuestion, negativeMarks]);
+
+  useEffect(() => {
+    if (totalQuestions > 0 && marksPerQuestion > 0) {
+      setTotalMarks(totalQuestions * marksPerQuestion);
+    }
+  }, [totalQuestions, marksPerQuestion]);
 
   const handleSaveMock = (e: React.FormEvent) => {
     e.preventDefault();
@@ -482,6 +489,33 @@ export const PerformanceTab: React.FC<PerformanceTabProps> = ({
                     type="number"
                     value={correctCount === "" ? "" : correctCount}
                     onChange={(e) => setCorrectCount(e.target.value === "" ? "" : parseInt(e.target.value))}
+                    className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[10px] font-bold text-slate-700 block mb-1">
+                    Marks per Q
+                  </label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={marksPerQuestion}
+                    onChange={(e) => setMarksPerQuestion(parseFloat(e.target.value) || 0)}
+                    className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-slate-700 block mb-1">
+                    Negative per Q
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={negativeMarks}
+                    onChange={(e) => setNegativeMarks(parseFloat(e.target.value) || 0)}
                     className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none focus:border-indigo-600"
                   />
                 </div>

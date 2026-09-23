@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { X, Settings2, Palette, Bell, Cloud, LogOut, LogIn, RefreshCw, CheckCircle2 } from "lucide-react";
+import { X, Settings2, Palette, Bell, Cloud, LogOut, LogIn, RefreshCw, CheckCircle2, Target, Calendar } from "lucide-react";
 import { logout } from "../../lib/authService";
 import { User } from "firebase/auth";
 import { backupUserData } from "../../lib/cloudSync";
@@ -14,6 +14,7 @@ interface SettingsModalProps {
 export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, currentUser, onLoginClick }) => {
   const [syncing, setSyncing] = useState(false);
   const [syncSuccess, setSyncSuccess] = useState(false);
+  const [dDayDate, setDDayDate] = useState(() => localStorage.getItem("target_d_day") || "");
   const [autoUpdateEnabled, setAutoUpdateEnabled] = useState(() => {
     return localStorage.getItem("disable_auto_update") !== "true";
   });
@@ -25,6 +26,16 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, c
       localStorage.setItem("disable_auto_update", "true");
     } else {
       localStorage.removeItem("disable_auto_update");
+    }
+  };
+
+  const handleDDayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newDate = e.target.value;
+    setDDayDate(newDate);
+    if (newDate) {
+      localStorage.setItem("target_d_day", newDate);
+    } else {
+      localStorage.removeItem("target_d_day");
     }
   };
 
@@ -137,6 +148,31 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, c
               >
                 <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all shadow-sm ${autoUpdateEnabled ? 'left-7' : 'left-1'}`} />
               </button>
+            </div>
+
+            <div className="p-4 rounded-2xl border border-slate-200 bg-slate-50">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-rose-100 text-rose-600 rounded-lg shrink-0">
+                    <Target className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-slate-700 text-sm">Target D-Day (Exam Date)</h4>
+                    <p className="text-[10px] text-slate-500 max-w-[200px]">Set your target exam date to see a live countdown on your profile.</p>
+                  </div>
+                </div>
+                <div className="relative shrink-0">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Calendar className="w-4 h-4 text-slate-400" />
+                  </div>
+                  <input
+                    type="date"
+                    value={dDayDate}
+                    onChange={handleDDayChange}
+                    className="w-full sm:w-auto bg-white border-2 border-slate-200 text-slate-700 text-xs font-bold rounded-xl focus:ring-0 focus:border-indigo-500 block pl-9 p-2 transition-colors outline-none cursor-pointer"
+                  />
+                </div>
+              </div>
             </div>
           </div>
 

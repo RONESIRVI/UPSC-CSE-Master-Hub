@@ -1,5 +1,5 @@
-import React from "react";
-import { Clock, Flame, CheckCircle, Target, TrendingUp, ChevronRight } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Clock, Flame, CheckCircle, Target, TrendingUp, ChevronRight, CalendarDays } from "lucide-react";
 
 interface ProfileCard3DProps {
   name: string;
@@ -28,6 +28,22 @@ export const ProfileCard3D: React.FC<ProfileCard3DProps> = ({
   progressPercent,
   currentFocus,
 }) => {
+  const [dDayDaysLeft, setDDayDaysLeft] = useState<number | null>(null);
+
+  useEffect(() => {
+    const targetDDayStr = localStorage.getItem("target_d_day");
+    if (targetDDayStr) {
+      const targetDate = new Date(targetDDayStr);
+      const today = new Date();
+      targetDate.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+      const diffTime = targetDate.getTime() - today.getTime();
+      setDDayDaysLeft(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+    } else {
+      setDDayDaysLeft(null);
+    }
+  }, []);
+
   return (
     <div className="group relative w-full rounded-[32px] bg-[#0A0F1C] overflow-hidden border border-[#2A3441] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.8)] transition-all duration-500 hover:shadow-[0_30px_60px_-12px_rgba(0,0,0,0.9)] hover:-translate-y-2">
       
@@ -114,6 +130,28 @@ export const ProfileCard3D: React.FC<ProfileCard3DProps> = ({
             </div>
 
           </div>
+
+          {/* D-Day Banner */}
+          {dDayDaysLeft !== null && (
+            <div className="w-full flex items-center justify-between p-3 sm:p-4 rounded-2xl bg-gradient-to-r from-rose-500/10 via-rose-500/5 to-transparent border border-rose-500/20 shadow-[0_0_15px_rgba(244,63,94,0.1)] relative overflow-hidden group/dday">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+              <div className="flex items-center gap-3 relative z-10">
+                <div className="p-2 rounded-xl bg-rose-500/20 text-rose-400 group-hover/dday:scale-110 transition-transform">
+                  <CalendarDays className="w-5 h-5 drop-shadow-[0_0_8px_rgba(244,63,94,0.6)]" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-300 text-xs sm:text-sm uppercase tracking-wider">Mission D-Day</h4>
+                  <p className="text-[10px] text-slate-500">Time is ticking...</p>
+                </div>
+              </div>
+              <div className="text-right relative z-10">
+                <span className="text-2xl sm:text-3xl font-black text-rose-500 drop-shadow-[0_0_12px_rgba(244,63,94,0.4)]">
+                  {dDayDaysLeft > 0 ? dDayDaysLeft : 0}
+                </span>
+                <span className="text-[10px] font-bold text-rose-400/80 uppercase ml-1 tracking-widest">Days Left</span>
+              </div>
+            </div>
+          )}
 
           {/* Progress & Target Row */}
           <div className="flex items-center bg-white/[0.02] p-4 rounded-2xl border border-white/5 shadow-inner relative overflow-hidden">

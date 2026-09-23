@@ -37,6 +37,12 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ onClose, onL
     setError(null);
     setSuccess(null);
     try {
+      if (!email.trim()) {
+        setError("Please type your email address first.");
+        setLoading(false);
+        return;
+      }
+      
       const sanitizedEmail = email.replace(/[\s\u200B-\u200D\uFEFF]/g, '');
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sanitizedEmail)) {
         setError("Invalid email format. Please check for typos (e.g., using comma instead of dot).");
@@ -133,8 +139,8 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ onClose, onL
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-white border-2 border-slate-200 text-slate-800 text-sm font-bold rounded-xl focus:ring-0 focus:border-indigo-500 block pl-10 p-3 transition-colors outline-none"
-                  placeholder="aspirant@lbsnaa.com"
+                  className="w-full bg-white border-2 border-slate-200 text-slate-800 text-sm font-bold rounded-xl focus:ring-0 focus:border-indigo-500 block pl-10 p-3 transition-colors outline-none placeholder:font-normal placeholder:text-slate-400"
+                  placeholder="type your email here..."
                 />
               </div>
             </div>

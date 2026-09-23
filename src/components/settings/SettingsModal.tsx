@@ -210,6 +210,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, c
       <DDayManagerModal 
         isOpen={isDDayModalOpen}
         onClose={() => setIsDDayModalOpen(false)}
+        currentUser={currentUser}
       />
     </div>
   );

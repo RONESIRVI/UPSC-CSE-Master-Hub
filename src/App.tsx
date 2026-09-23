@@ -302,6 +302,10 @@ export default function App() {
             if (cloudData.audioNotes) setAudioNotes(cloudData.audioNotes);
             if (cloudData.dailyTasks) setDailyTasks(cloudData.dailyTasks);
             if (cloudData.studyStreak) setStudyStreak(cloudData.studyStreak);
+            if (cloudData.dDays) {
+              localStorage.setItem("d_day_projects", JSON.stringify(cloudData.dDays));
+              window.dispatchEvent(new Event("d_day_updated"));
+            }
           }
         } catch (e) {
           console.error("Failed to restore user data from cloud", e);
@@ -681,7 +685,8 @@ export default function App() {
         pyqs,
         audioNotes,
         dailyTasks,
-        studyStreak
+        studyStreak,
+        dDays: JSON.parse(localStorage.getItem("d_day_projects") || "[]")
       });
     }
   }, [

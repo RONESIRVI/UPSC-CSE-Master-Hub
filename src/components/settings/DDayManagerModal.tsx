@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { X, Plus, ChevronLeft, Calendar, Trash2 } from "lucide-react";
+import { User } from "firebase/auth";
+import { backupUserData } from "../../lib/cloudSync";
 
 export interface DDayProject {
   id: string;
@@ -13,9 +15,10 @@ export interface DDayProject {
 interface DDayManagerModalProps {
   isOpen: boolean;
   onClose: () => void;
+  currentUser?: User | null;
 }
 
-export const DDayManagerModal: React.FC<DDayManagerModalProps> = ({ isOpen, onClose }) => {
+export const DDayManagerModal: React.FC<DDayManagerModalProps> = ({ isOpen, onClose, currentUser }) => {
   const [projects, setProjects] = useState<DDayProject[]>([]);
   const [view, setView] = useState<"list" | "form">("list");
   const [editingProject, setEditingProject] = useState<DDayProject | null>(null);
@@ -54,6 +57,11 @@ export const DDayManagerModal: React.FC<DDayManagerModalProps> = ({ isOpen, onCl
     localStorage.setItem("d_day_projects", JSON.stringify(newProjects));
     // Dispatch event so ProfileCard3D can update immediately
     window.dispatchEvent(new Event("d_day_updated"));
+    
+    // Backup to Firebase
+    if (currentUser) {
+      backupUserData(currentUser.uid, { dDays: newProjects });
+    }
   };
 
   const handleAddClick = () => {

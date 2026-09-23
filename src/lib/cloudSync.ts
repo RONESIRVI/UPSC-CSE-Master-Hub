@@ -13,6 +13,7 @@ export interface UserBackupData {
   audioNotes?: any;
   dailyTasks?: any;
   studyStreak?: any;
+  dDays?: any;
   lastSyncedAt?: number;
 }
 

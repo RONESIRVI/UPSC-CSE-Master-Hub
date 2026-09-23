@@ -31,25 +31,30 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ onClose, onL
     }
   };
 
-  const handleEmailAuth = async (e: React.FormEvent) => {
+  const handleEmailAuth = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
     setSuccess(null);
     try {
-      if (!email.trim()) {
+      // Fix for Android Autofill not triggering onChange
+      const formData = new FormData(e.currentTarget);
+      const emailValue = (formData.get('email') as string) || email;
+      const passwordValue = (formData.get('password') as string) || password;
+
+      if (!emailValue.trim()) {
         setError("Please type your email address first.");
         setLoading(false);
         return;
       }
       
-      const sanitizedEmail = email.replace(/[\s\u200B-\u200D\uFEFF]/g, '');
+      const sanitizedEmail = emailValue.replace(/[\s\u200B-\u200D\uFEFF]/g, '');
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sanitizedEmail)) {
         setError("Invalid email format. Please check for typos (e.g., using comma instead of dot).");
         setLoading(false);
         return;
       }
-      const user = await loginWithEmail(sanitizedEmail, password);
+      const user = await loginWithEmail(sanitizedEmail, passwordValue);
       if (user) {
         onLoginSuccess(user);
       }
@@ -61,7 +66,11 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ onClose, onL
   };
 
   const handleForgotPassword = async () => {
-    if (!email) {
+    // Read from DOM to bypass Autofill state bugs
+    const emailInput = document.querySelector('input[name="email"]') as HTMLInputElement;
+    const currentEmail = emailInput?.value || email;
+
+    if (!currentEmail) {
       setError("Please enter your email address first.");
       return;
     }
@@ -69,7 +78,7 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ onClose, onL
     setError(null);
     setSuccess(null);
     try {
-      const sanitizedEmail = email.replace(/[\s\u200B-\u200D\uFEFF]/g, '');
+      const sanitizedEmail = currentEmail.replace(/[\s\u200B-\u200D\uFEFF]/g, '');
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sanitizedEmail)) {
         setError("Invalid email format. Please check for typos.");
         setLoading(false);
@@ -136,6 +145,7 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ onClose, onL
                 </div>
                 <input
                   type="email"
+                  name="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -162,6 +172,7 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ onClose, onL
                 </div>
                 <input
                   type="password"
+                  name="password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

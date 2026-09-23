@@ -14,6 +14,19 @@ interface SettingsModalProps {
 export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, currentUser, onLoginClick }) => {
   const [syncing, setSyncing] = useState(false);
   const [syncSuccess, setSyncSuccess] = useState(false);
+  const [autoUpdateEnabled, setAutoUpdateEnabled] = useState(() => {
+    return localStorage.getItem("disable_auto_update") !== "true";
+  });
+
+  const toggleAutoUpdate = () => {
+    const newValue = !autoUpdateEnabled;
+    setAutoUpdateEnabled(newValue);
+    if (!newValue) {
+      localStorage.setItem("disable_auto_update", "true");
+    } else {
+      localStorage.removeItem("disable_auto_update");
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -104,7 +117,29 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, c
             </div>
           </div>
 
-          {/* Placeholder for future settings */}
+          {/* System Settings Section */}
+          <div className="space-y-4">
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest">System Preferences</h3>
+            
+            <div className="p-4 rounded-2xl border border-slate-200 bg-slate-50 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-emerald-100 text-emerald-600 rounded-lg shrink-0">
+                  <RefreshCw className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-700 text-sm">App Auto-Updates</h4>
+                  <p className="text-[10px] text-slate-500 max-w-[200px]">Check for new app versions automatically in the background. (Does not affect Firebase sync)</p>
+                </div>
+              </div>
+              <button
+                onClick={toggleAutoUpdate}
+                className={`w-12 h-6 rounded-full transition-colors relative focus:outline-none ${autoUpdateEnabled ? 'bg-emerald-500' : 'bg-slate-300'}`}
+              >
+                <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all shadow-sm ${autoUpdateEnabled ? 'left-7' : 'left-1'}`} />
+              </button>
+            </div>
+          </div>
+
           <div className="space-y-4">
             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest">More Options</h3>
             

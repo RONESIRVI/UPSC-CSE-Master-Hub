@@ -125,6 +125,13 @@ export default function App() {
           // Tell Capacitor Updater the app loaded successfully
           await CapacitorUpdater.notifyAppReady();
 
+          // Check if user disabled auto-updates
+          const disableAutoUpdate = localStorage.getItem("disable_auto_update") === "true";
+          if (disableAutoUpdate) {
+            console.log("Auto-update check disabled by user settings.");
+            return;
+          }
+
           // Check for GitHub Releases
           const res = await fetch(
             "https://api.github.com/repos/RONESIRVI/UPSC-CSE-Master-Hub/releases/latest"

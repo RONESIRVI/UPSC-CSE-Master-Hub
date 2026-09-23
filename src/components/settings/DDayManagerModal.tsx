@@ -34,8 +34,13 @@ export const DDayManagerModal: React.FC<DDayManagerModalProps> = ({ isOpen, onCl
   useEffect(() => {
     if (isOpen) {
       const stored = localStorage.getItem("d_day_projects");
-      if (stored) {
-        setProjects(JSON.parse(stored));
+      if (stored && stored !== "null") {
+        try {
+          const parsed = JSON.parse(stored);
+          setProjects(Array.isArray(parsed) ? parsed : []);
+        } catch (e) {
+          setProjects([]);
+        }
       } else {
         // Migration from old single target_d_day
         const oldTarget = localStorage.getItem("target_d_day");
@@ -194,7 +199,10 @@ export const DDayManagerModal: React.FC<DDayManagerModalProps> = ({ isOpen, onCl
                             <h4 className="font-bold text-slate-200 truncate">{p.name}</h4>
                             {p.isMain && <span className="px-1.5 py-0.5 bg-[#0ea5e9] text-white text-[9px] font-black uppercase tracking-wider rounded-md">MAIN</span>}
                           </div>
-                          <p className="text-xs text-slate-500 mt-1">{new Date(p.targetDate).toLocaleDateString('en-US', { weekday: 'short', month: 'numeric', day: 'numeric', year: 'numeric' })}</p>
+                          <p className="text-[10px] text-slate-500 mt-1">{new Date(p.targetDate).toLocaleDateString('en-US', { weekday: 'short', month: 'numeric', day: 'numeric', year: 'numeric' })}</p>
+                          {p.goals && (
+                            <p className="text-xs text-slate-400 mt-2 line-clamp-2 bg-white/5 p-2 rounded-lg">{p.goals}</p>
+                          )}
                         </div>
                         <div className="flex items-center gap-4 pl-4 border-l border-white/10">
                           <div className="text-right w-12">

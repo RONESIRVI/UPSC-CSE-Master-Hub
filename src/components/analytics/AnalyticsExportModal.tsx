@@ -616,7 +616,12 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-3">
+                {weakAreas.length === 0 ? (
+                  <div className="p-8 text-center bg-slate-50 rounded-xl border border-slate-200 border-dashed">
+                    <p className="text-slate-500 text-xs font-medium">No weak areas identified yet. Take a mock test to generate your failure heatmap.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-3 gap-3">
                   {weakAreas.map((item) => {
                     const failedCount =
                       item.failedQuestionsCount ||
@@ -670,7 +675,8 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                       </div>
                     );
                   })}
-                </div>
+                  </div>
+                )}
               </div>
             )}
 
@@ -692,8 +698,13 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                   </span>
                 </div>
 
-                <div className="space-y-3">
-                  {GAP_ANALYSIS_METRICS.map((gap, i) => (
+                {sessionLogs.length === 0 ? (
+                  <div className="p-8 text-center bg-slate-50 rounded-xl border border-slate-200 border-dashed">
+                    <p className="text-slate-500 text-xs font-medium">Insufficient study data. Log study sessions to unlock Effort Gap vs Exam Weightage parity analysis.</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {GAP_ANALYSIS_METRICS.map((gap, i) => (
                     <div
                       key={i}
                       className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2"
@@ -757,9 +768,10 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                         <strong>Topper Recommendation:</strong>{" "}
                         {gap.recommendation}
                       </div>
-                    </div>
-                  ))}
-                </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 
@@ -777,7 +789,12 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                {totalHoursLogged === "0.0" && masteredTopics === 0 ? (
+                  <div className="p-8 text-center bg-slate-50 rounded-xl border border-slate-200 border-dashed">
+                    <p className="text-slate-500 text-xs font-medium">No syllabus progress tracked yet. Start marking topics as in progress or mastered.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 gap-3">
                   {Array.from(new Set(syllabus.map((s) => s.subject)))
                     .map((subject, idx) => {
                       const topics = syllabus.filter(
@@ -820,12 +837,13 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                         </div>
                       );
                     })}
-                </div>
+                  </div>
+                )}
               </div>
             )}
 
             {/* MODULE 4: MOCK TEST PERFORMANCE LOGS */}
-            {includeMocks && mockLogs.length > 0 && (
+            {includeMocks && (
               <div className="space-y-3">
                 <div className="flex items-center justify-between pb-2 border-b border-slate-200">
                   <div className="flex items-center gap-2">
@@ -838,7 +856,12 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                   </div>
                 </div>
 
-                <table className="w-full text-left text-xs border-collapse">
+                {mockLogs.length === 0 ? (
+                  <div className="p-8 text-center bg-slate-50 rounded-xl border border-slate-200 border-dashed">
+                    <p className="text-slate-500 text-xs font-medium">No mock tests attempted yet. Record your mock test scores to see accuracy and penalty deductions.</p>
+                  </div>
+                ) : (
+                  <table className="w-full text-left text-xs border-collapse">
                   <thead>
                     <tr className="border-b border-slate-200 text-[10px] uppercase font-bold text-slate-400 bg-slate-50">
                       <th className="p-2">Date</th>
@@ -871,8 +894,9 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                         </td>
                       </tr>
                     ))}
-                  </tbody>
-                </table>
+                    </tbody>
+                  </table>
+                )}
               </div>
             )}
 

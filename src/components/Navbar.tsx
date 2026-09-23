@@ -53,6 +53,13 @@ export const Navbar: React.FC<NavbarProps> = ({
     setDaysToPrelims(diffDays > 0 ? diffDays : 270);
   }, []);
 
+  // Live Time state for Time Card
+  const [currentTime, setCurrentTime] = useState(new Date());
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   const formatTimer = (totalSec: number) => {
     const hrs = Math.floor(totalSec / 3600);
     const mins = Math.floor((totalSec % 3600) / 60);
@@ -87,6 +94,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] hidden md:block mt-0.5">
                 Hi, {userProfile?.name || "Aspirant"}
               </p>
+            </div>
+            
+            {/* Live Time Card */}
+            <div className="hidden sm:flex items-center gap-3 ml-2 pl-4 border-l border-slate-200">
+              <div className="flex flex-col items-center justify-center px-3 py-1.5 bg-gradient-to-b from-slate-800 to-slate-900 rounded-xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.1)] border border-slate-700/80 group-hover:border-indigo-500/50 transition-colors">
+                <span className="text-[13px] font-mono font-black text-emerald-400 tracking-wider leading-none drop-shadow-[0_0_8px_rgba(52,211,153,0.3)]">
+                  {currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                </span>
+                <span className="text-[8px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-1 leading-none">
+                  {currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                </span>
+              </div>
             </div>
           </div>
 

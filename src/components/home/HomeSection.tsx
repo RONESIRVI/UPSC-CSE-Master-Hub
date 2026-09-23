@@ -91,13 +91,14 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
       ? Math.min(100, Math.round(((totalStudyTimeToday / 3600) / dailyGoalHours) * 100))
       : 0;
     
-    // Calculate Syllabus Score
-    const completedSyllabus = syllabus.filter(
-      (s) => s.status === "mastered" || s.status === "revised_2"
-    ).length;
+    // Calculate Syllabus Score (Partial credits for in_progress / revised_1)
+    const masteredSyllabus = syllabus.filter((s) => s.status === "mastered" || s.status === "revised_2").length;
+    const partialSyllabus = syllabus.filter((s) => s.status === "in_progress" || s.status === "revised_1").length;
+    const totalTopics = Math.max(syllabus.length, 1);
+    
     const syllabusScore = Math.min(
       100,
-      Math.round((completedSyllabus / Math.max(syllabus.length, 1)) * 100)
+      Math.round(((masteredSyllabus * 1 + partialSyllabus * 0.5) / totalTopics) * 100)
     ) || 0;
 
     // Target Mocks: 3 tests per subtopic in the entire syllabus
@@ -111,11 +112,10 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
       
     const answersScore = 0; // TBD
 
-    // Only average the metrics that are currently active/meaningful
-    const activeScores = [syllabusScore, testsScore, studyHoursScore].filter(s => s > 0);
-    const overallScore = activeScores.length > 0 
-      ? Math.round(activeScores.reduce((a, b) => a + b, 0) / activeScores.length)
-      : syllabusScore; // Fallback to syllabus score if everything else is 0
+    // Overall score should be a stable metric representing long-term preparation progress.
+    // We'll weight Syllabus Completion at 70% and Test Performance at 30%.
+    // We shouldn't filter out 0s because a 0% syllabus completion is a real 0%.
+    const overallScore = Math.round((syllabusScore * 0.7) + (testsScore * 0.3));
 
     return {
       overallScore,

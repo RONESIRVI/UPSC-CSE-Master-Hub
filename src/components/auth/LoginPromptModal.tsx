@@ -37,7 +37,12 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ onClose, onL
     setError(null);
     setSuccess(null);
     try {
-      const sanitizedEmail = email.replace(/\s+/g, '');
+      const sanitizedEmail = email.replace(/[\s\u200B-\u200D\uFEFF]/g, '');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sanitizedEmail)) {
+        setError("Invalid email format. Please check for typos (e.g., using comma instead of dot).");
+        setLoading(false);
+        return;
+      }
       const user = await loginWithEmail(sanitizedEmail, password);
       if (user) {
         onLoginSuccess(user);
@@ -58,7 +63,12 @@ export const LoginPromptModal: React.FC<LoginPromptModalProps> = ({ onClose, onL
     setError(null);
     setSuccess(null);
     try {
-      const sanitizedEmail = email.replace(/\s+/g, '');
+      const sanitizedEmail = email.replace(/[\s\u200B-\u200D\uFEFF]/g, '');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sanitizedEmail)) {
+        setError("Invalid email format. Please check for typos.");
+        setLoading(false);
+        return;
+      }
       await resetPassword(sanitizedEmail);
       setSuccess("Password reset link sent to your email!");
     } catch (err: any) {

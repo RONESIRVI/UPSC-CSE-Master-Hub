@@ -111,9 +111,9 @@ const RadarSweep = ({ stats }: { stats?: { mocks: number, avgScore: number, dDay
       { text: "Economy", left: "15%", top: "65%" },
       { text: "Geography", left: "80%", top: "70%" },
       { text: "CSAT", left: "30%", top: "85%" },
-      { text: stats && stats.mocks > 0 ? `Mock Tests: ${stats.mocks} (Avg ${stats.avgScore})` : "Mock Tests", left: "65%", top: "15%" },
+      { text: `Mock Tests: ${stats?.mocks || 0} ${stats?.avgScore ? `(Avg ${stats.avgScore})` : ''}`, left: "65%", top: "15%" },
       { text: "Syllabus", left: "45%", top: "12%" },
-      { text: stats && stats.dDays > 0 ? `Mission D-Day (${stats.dDays})` : "Mission D-Day", left: "50%", top: "88%" },
+      { text: `Mission D-Day: ${stats?.dDays || 0}`, left: "50%", top: "88%" },
     ].map((item, i) => (
       <motion.div 
         key={i}

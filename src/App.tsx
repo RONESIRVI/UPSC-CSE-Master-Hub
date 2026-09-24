@@ -58,7 +58,7 @@ import {
 import { UpdateModal } from "./components/ui/UpdateModal";
 import { usePushNotifications } from "./hooks/usePushNotifications";
 import { useFirestoreData } from "./hooks/useFirestoreData";
-import { onAuthStateChanged, User } from "firebase/auth";
+import { onAuthStateChanged, User, signOut } from "firebase/auth";
 import { auth } from "./lib/firebase";
 import { backupUserData, restoreUserData } from "./lib/cloudSync";
 import { LoginPromptModal } from "./components/auth/LoginPromptModal";
@@ -314,6 +314,40 @@ export default function App() {
     });
     return () => unsubscribe();
   }, []);
+
+  // Auto Logout Logic (10 minutes inactivity)
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    const resetTimer = () => {
+      clearTimeout(timeoutId);
+      if (currentUser) {
+        timeoutId = setTimeout(() => {
+          signOut(auth).then(() => {
+            setCurrentUser(null);
+            setShowLoginPrompt(true);
+          }).catch(console.error);
+        }, 10 * 60 * 1000); // 10 minutes
+      }
+    };
+
+    if (currentUser) {
+      resetTimer(); // Start the timer initially
+
+      // Listen for user activity
+      const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
+      events.forEach(event => {
+        document.addEventListener(event, resetTimer, { passive: true, capture: true });
+      });
+
+      return () => {
+        clearTimeout(timeoutId);
+        events.forEach(event => {
+          document.removeEventListener(event, resetTimer, { capture: true });
+        });
+      };
+    }
+  }, [currentUser]);
 
   const handleSplashComplete = () => {
     setShowSplash(false);

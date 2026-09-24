@@ -93,7 +93,7 @@ const NeuralNetwork = () => {
   )
 };
 
-const RadarSweep = () => (
+const RadarSweep = ({ stats }: { stats?: { mocks: number, avgScore: number, dDays: number } }) => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 flex items-center justify-center bg-[#020617]">
     <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080801a_1px,transparent_1px),linear-gradient(to_bottom,#8080801a_1px,transparent_1px)] bg-[size:40px_40px] rounded-full [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)]" />
     {[1, 2, 3].map(i => (
@@ -111,9 +111,9 @@ const RadarSweep = () => (
       { text: "Economy", left: "15%", top: "65%" },
       { text: "Geography", left: "80%", top: "70%" },
       { text: "CSAT", left: "30%", top: "85%" },
-      { text: "Mock Tests", left: "65%", top: "15%" },
+      { text: stats && stats.mocks > 0 ? `Mock Tests: ${stats.mocks} (Avg ${stats.avgScore})` : "Mock Tests", left: "65%", top: "15%" },
       { text: "Syllabus", left: "45%", top: "12%" },
-      { text: "Mission D-Day", left: "50%", top: "88%" },
+      { text: stats && stats.dDays > 0 ? `Mission D-Day (${stats.dDays})` : "Mission D-Day", left: "50%", top: "88%" },
     ].map((item, i) => (
       <motion.div 
         key={i}
@@ -197,6 +197,7 @@ const Vortex = () => (
 export function SplashScreen({ onComplete }: { onComplete: () => void }) {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [effectType, setEffectType] = useState<"aurora" | "warp" | "rings" | "neural" | "radar" | "fireflies" | "vortex">("aurora");
+  const [appStats, setAppStats] = useState({ mocks: 0, avgScore: 0, dDays: 0 });
 
   const effects = [
     { id: "aurora", name: "Aurora Liquid" },
@@ -209,6 +210,27 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
   ];
 
   useEffect(() => {
+    // Load actual user stats from localStorage for the radar
+    try {
+      const mockLogs = JSON.parse(localStorage.getItem("ras_mock_logs_v2") || localStorage.getItem("ras_mock_logs") || "[]");
+      const dDays = JSON.parse(localStorage.getItem("d_day_projects") || "[]");
+      
+      let totalMocks = 0;
+      let totalScore = 0;
+      if (Array.isArray(mockLogs)) {
+        totalMocks = mockLogs.length;
+        totalScore = mockLogs.reduce((acc, log) => acc + (Number(log.score) || 0), 0);
+      }
+      
+      setAppStats({
+        mocks: totalMocks,
+        avgScore: totalMocks > 0 ? Math.round(totalScore / totalMocks) : 0,
+        dDays: Array.isArray(dDays) ? dDays.length : 0
+      });
+    } catch (e) {
+      console.error("Failed to load stats for splash screen", e);
+    }
+
     // Simulate loading progress
     const interval = setInterval(() => {
       setLoadingProgress((prev) => {
@@ -240,7 +262,7 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
       {effectType === "warp" && <WarpSpeed />}
       {effectType === "rings" && <GoldenRings />}
       {effectType === "neural" && <NeuralNetwork />}
-      {effectType === "radar" && <RadarSweep />}
+      {effectType === "radar" && <RadarSweep stats={appStats} />}
       {effectType === "fireflies" && <Fireflies />}
       {effectType === "vortex" && <Vortex />}
 

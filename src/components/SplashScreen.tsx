@@ -93,15 +93,107 @@ const NeuralNetwork = () => {
   )
 };
 
+const RadarSweep = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 flex items-center justify-center bg-[#020617]">
+    <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080801a_1px,transparent_1px),linear-gradient(to_bottom,#8080801a_1px,transparent_1px)] bg-[size:40px_40px] rounded-full [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)]" />
+    {[1, 2, 3].map(i => (
+      <div key={i} className="absolute rounded-full border border-teal-500/20" style={{ width: `${i*150}px`, height: `${i*150}px` }} />
+    ))}
+    <motion.div 
+      className="absolute w-[400px] h-[400px] rounded-full"
+      style={{ background: 'conic-gradient(from 0deg, transparent 70%, rgba(20, 184, 166, 0.4) 100%)' }}
+      animate={{ rotate: 360 }}
+      transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+    />
+    {Array.from({length: 8}).map((_, i) => (
+      <motion.div 
+        key={i}
+        className="absolute w-2 h-2 bg-teal-400 rounded-full shadow-[0_0_10px_#2dd4bf]"
+        style={{ left: `${30 + Math.random()*40}%`, top: `${30 + Math.random()*40}%` }}
+        animate={{ opacity: [0, 1, 0], scale: [0.5, 1.5, 0.5] }}
+        transition={{ duration: 4, repeat: Infinity, delay: Math.random() * 4 }}
+      />
+    ))}
+  </div>
+);
+
+const Fireflies = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 bg-[#0f0c08]">
+    <div className="absolute inset-0 bg-gradient-to-t from-amber-900/20 to-transparent" />
+    {Array.from({ length: 60 }).map((_, i) => (
+      <motion.div
+        key={i}
+        className="absolute bg-amber-400 rounded-full blur-[2px] mix-blend-screen"
+        style={{
+          width: Math.random() * 6 + 2 + "px",
+          height: Math.random() * 6 + 2 + "px",
+          left: Math.random() * 100 + "%",
+          top: Math.random() * 100 + "%",
+        }}
+        animate={{
+          y: [(Math.random() - 0.5) * 150, (Math.random() - 0.5) * 150],
+          x: [(Math.random() - 0.5) * 150, (Math.random() - 0.5) * 150],
+          opacity: [0, Math.random() * 0.8 + 0.2, 0],
+        }}
+        transition={{
+          duration: Math.random() * 10 + 5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+    ))}
+  </div>
+);
+
+const Vortex = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 flex items-center justify-center bg-black">
+    <div className="absolute w-64 h-64 bg-rose-600/20 blur-[80px] rounded-full animate-pulse" />
+    <motion.div 
+      className="relative w-full h-full flex items-center justify-center"
+      animate={{ rotate: -360 }}
+      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+    >
+      {Array.from({ length: 120 }).map((_, i) => {
+        const distance = 500 + Math.random() * 200;
+        return (
+          <motion.div
+            key={i}
+            className="absolute bg-rose-500 rounded-full shadow-[0_0_8px_#f43f5e]"
+            style={{
+              width: Math.random() * 3 + 1 + "px",
+              height: Math.random() * 3 + 1 + "px",
+            }}
+            animate={{
+              x: [Math.cos((i * 360) / 120) * distance, 0],
+              y: [Math.sin((i * 360) / 120) * distance, 0],
+              scale: [1, 0],
+              opacity: [0, 1, 0],
+            }}
+            transition={{
+              duration: Math.random() * 3 + 2,
+              repeat: Infinity,
+              delay: Math.random() * 3,
+              ease: "easeIn",
+            }}
+          />
+        );
+      })}
+    </motion.div>
+  </div>
+);
+
 export function SplashScreen({ onComplete }: { onComplete: () => void }) {
   const [loadingProgress, setLoadingProgress] = useState(0);
-  const [effectType, setEffectType] = useState<"aurora" | "warp" | "rings" | "neural">("aurora");
+  const [effectType, setEffectType] = useState<"aurora" | "warp" | "rings" | "neural" | "radar" | "fireflies" | "vortex">("aurora");
 
   const effects = [
     { id: "aurora", name: "Aurora Liquid" },
     { id: "warp", name: "Warp Speed" },
     { id: "rings", name: "Golden Rings" },
     { id: "neural", name: "Neural AI" },
+    { id: "radar", name: "Smart Radar" },
+    { id: "fireflies", name: "Golden Fireflies" },
+    { id: "vortex", name: "Rose Vortex" },
   ];
 
   useEffect(() => {
@@ -136,6 +228,9 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
       {effectType === "warp" && <WarpSpeed />}
       {effectType === "rings" && <GoldenRings />}
       {effectType === "neural" && <NeuralNetwork />}
+      {effectType === "radar" && <RadarSweep />}
+      {effectType === "fireflies" && <Fireflies />}
+      {effectType === "vortex" && <Vortex />}
 
       {/* Effect Switcher (For User Testing) */}
       <div className="absolute top-6 right-6 z-50 flex items-center gap-3">

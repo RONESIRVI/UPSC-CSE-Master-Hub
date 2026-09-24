@@ -170,9 +170,14 @@ export const DDayManagerModal: React.FC<DDayManagerModalProps> = ({ isOpen, onCl
               {view === "list" ? "Project (D-Day)" : editingProject ? "Edit project" : "Add project (D-Day)"}
             </h2>
           </div>
-          {view === "form" && (
+          {view === "form" ? (
             <button onClick={handleSaveForm} className="text-[#0ea5e9] font-bold px-4 py-2 hover:bg-white/5 rounded-xl transition-colors">
               Save
+            </button>
+          ) : (
+            <button onClick={handleAddClick} className="flex items-center gap-1.5 px-3 py-1.5 bg-[#0ea5e9]/10 text-[#0ea5e9] hover:bg-[#0ea5e9] hover:text-white font-bold rounded-xl transition-colors">
+              <Plus className="w-4 h-4" />
+              <span className="text-sm">Add</span>
             </button>
           )}
         </div>
@@ -288,15 +293,7 @@ export const DDayManagerModal: React.FC<DDayManagerModalProps> = ({ isOpen, onCl
           )}
         </div>
 
-        {/* FAB */}
-        {view === "list" && (
-          <button 
-            onClick={handleAddClick}
-            className="absolute bottom-6 right-6 w-14 h-14 bg-[#0ea5e9] hover:bg-[#0284c7] text-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(14,165,233,0.4)] transition-transform hover:scale-110 z-20"
-          >
-            <Plus className="w-6 h-6" />
-          </button>
-        )}
+
 
       </div>
     </div>

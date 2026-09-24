@@ -271,9 +271,9 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
             animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.6, 0.4] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           />
-          <div className="relative flex items-center justify-center w-24 h-24 rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden mb-6 bg-white p-1 border border-slate-100">
-            <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/40 to-white/0 translate-x-[-100%] animate-[shimmer_2s_infinite] z-20" />
-            <img src="/icon.png" alt="LBSNAA" className="w-full h-full object-contain rounded-2xl z-10" />
+          <div className="relative flex items-center justify-center w-28 h-28 sm:w-32 sm:h-32 rounded-3xl shadow-[0_0_30px_rgba(99,102,241,0.3)] overflow-hidden mb-6">
+            <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 translate-x-[-100%] animate-[shimmer_2s_infinite] z-20" />
+            <img src="/icon.png" alt="LBSNAA" className="w-full h-full object-contain z-10 drop-shadow-2xl" />
           </div>
           <motion.div 
             className="absolute -top-3 -right-3 text-amber-300"

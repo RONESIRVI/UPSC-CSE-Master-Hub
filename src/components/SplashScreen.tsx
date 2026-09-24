@@ -105,14 +105,26 @@ const RadarSweep = () => (
       animate={{ rotate: 360 }}
       transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
     />
-    {Array.from({length: 8}).map((_, i) => (
+    {[
+      { text: "Polity", left: "20%", top: "25%" },
+      { text: "History", left: "75%", top: "30%" },
+      { text: "Economy", left: "15%", top: "65%" },
+      { text: "Geography", left: "80%", top: "70%" },
+      { text: "CSAT", left: "30%", top: "85%" },
+      { text: "Mock Tests", left: "65%", top: "15%" },
+      { text: "Syllabus", left: "45%", top: "12%" },
+      { text: "Mission D-Day", left: "50%", top: "88%" },
+    ].map((item, i) => (
       <motion.div 
         key={i}
-        className="absolute w-2 h-2 bg-teal-400 rounded-full shadow-[0_0_10px_#2dd4bf]"
-        style={{ left: `${30 + Math.random()*40}%`, top: `${30 + Math.random()*40}%` }}
-        animate={{ opacity: [0, 1, 0], scale: [0.5, 1.5, 0.5] }}
-        transition={{ duration: 4, repeat: Infinity, delay: Math.random() * 4 }}
-      />
+        className="absolute text-teal-400 font-bold text-[10px] tracking-widest uppercase drop-shadow-[0_0_8px_rgba(45,212,191,0.8)] flex items-center gap-1.5"
+        style={{ left: item.left, top: item.top, transform: 'translate(-50%, -50%)' }}
+        animate={{ opacity: [0, 1, 0], scale: [0.9, 1.1, 0.9] }}
+        transition={{ duration: 4, repeat: Infinity, delay: i * 0.5 }}
+      >
+        <div className="w-1.5 h-1.5 bg-teal-400 rounded-full animate-ping" />
+        {item.text}
+      </motion.div>
     ))}
   </div>
 );

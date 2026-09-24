@@ -20,15 +20,70 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
     return () => clearInterval(interval);
   }, []);
 
+  // Generate random particles for the background
+  const particles = Array.from({ length: 40 }).map((_, i) => ({
+    id: i,
+    size: Math.random() * 4 + 1,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    duration: Math.random() * 4 + 3,
+    delay: Math.random() * 2,
+  }));
+
   return (
     <motion.div
       className="fixed inset-0 z-[9999] bg-[#020617] flex flex-col items-center justify-center overflow-hidden"
       initial={{ opacity: 1 }}
       exit={{ opacity: 0, filter: "blur(10px)", transition: { duration: 0.8, ease: "easeInOut" } }}
     >
-      {/* Background Animated Glows */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-600/20 blur-[120px] rounded-full mix-blend-screen animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600/20 blur-[120px] rounded-full mix-blend-screen animate-pulse" style={{ animationDelay: "1s" }} />
+      {/* Animated Gradient Background */}
+      <motion.div 
+        className="absolute inset-0 z-0 opacity-40"
+        animate={{
+          background: [
+            "radial-gradient(circle at 20% 30%, #3730a3 0%, transparent 40%)",
+            "radial-gradient(circle at 80% 70%, #4c1d95 0%, transparent 40%)",
+            "radial-gradient(circle at 50% 50%, #1e1b4b 0%, transparent 50%)",
+            "radial-gradient(circle at 20% 30%, #3730a3 0%, transparent 40%)",
+          ]
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+      />
+
+      {/* Floating Particles System */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        {particles.map((p) => (
+          <motion.div
+            key={p.id}
+            className="absolute bg-white rounded-full blur-[1px]"
+            style={{
+              width: p.size + "px",
+              height: p.size + "px",
+              left: p.x + "%",
+              top: p.y + "%",
+            }}
+            animate={{
+              y: ["0%", "-500%"],
+              x: ["0%", `${(Math.random() - 0.5) * 200}%`],
+              opacity: [0, 0.8, 0],
+              scale: [0, Math.random() * 2 + 1, 0],
+            }}
+            transition={{
+              duration: p.duration,
+              repeat: Infinity,
+              delay: p.delay,
+              ease: "easeOut",
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Deep Space Grid overlay */}
+      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+
+      {/* Core Orbs */}
+      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-600/10 blur-[120px] rounded-full mix-blend-screen animate-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-purple-600/10 blur-[120px] rounded-full mix-blend-screen animate-pulse" style={{ animationDelay: "1.5s" }} />
 
       <motion.div
         className="relative z-10 flex flex-col items-center text-center px-6"
@@ -103,13 +158,16 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
           </>
         ) : (
           <motion.button
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="w-full py-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-black text-sm uppercase tracking-widest rounded-2xl shadow-[0_0_20px_rgba(99,102,241,0.4)] transition-all flex items-center justify-center gap-2 group cursor-pointer"
+            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="relative w-full py-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-black text-sm uppercase tracking-widest rounded-2xl shadow-[0_0_30px_rgba(99,102,241,0.5)] transition-all flex items-center justify-center gap-2 group cursor-pointer overflow-hidden border border-white/20"
             onClick={onComplete}
           >
-            Ready to Launch
-            <Sparkles className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+            <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:animate-[shimmer_1.5s_infinite]" />
+            <span className="relative z-10">Ready to Launch</span>
+            <Sparkles className="w-5 h-5 relative z-10 group-hover:rotate-12 group-hover:scale-125 transition-all" />
           </motion.button>
         )}
       </motion.div>

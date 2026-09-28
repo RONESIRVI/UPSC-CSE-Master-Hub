@@ -147,15 +147,15 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
     <div className="space-y-6">
       {/* Top Main 3D Profile Dashboard */}
       <ProfileCard3D 
-        name={userProfile?.name || "AARIZ MANSURI"}
-        role={userProfile?.role || "RAS Aspirant"}
+        name={userProfile?.name || "Setup Profile"}
+        role={userProfile?.role || "Role Not Set"}
         avatarUrl={userProfile?.avatarUrl}
         onOpenProfileEdit={onOpenProfileEdit}
         onOpenSettings={onOpenSettings}
         totalStudyHours={Math.floor(sessionLogs.reduce((acc, log) => acc + log.durationMinutes, 0) / 60)}
         currentStreak={studyStreak}
         completedTests={mockLogs?.length || 0}
-        targetExam={userProfile?.targetExam || "RAS CSE 2027"}
+        targetExam={userProfile?.targetExam || "Target Not Set"}
         progressPercent={healthScore.overallScore}
         currentFocus={syllabus.filter(s => s.status === "in_progress").slice(0, 3).map(s => s.subject)}
       />

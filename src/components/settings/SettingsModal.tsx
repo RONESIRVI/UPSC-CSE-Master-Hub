@@ -142,23 +142,26 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, c
               </button>
             </div>
 
-            <div className="p-4 rounded-2xl border border-slate-200 bg-slate-50">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-rose-100 text-rose-600 rounded-lg shrink-0">
-                    <Target className="w-5 h-5" />
+            <div 
+              onClick={() => setIsDDayModalOpen(true)}
+              className="relative p-5 rounded-[24px] overflow-hidden cursor-pointer group shadow-[0_8px_30px_rgba(225,29,72,0.12)] hover:shadow-[0_12px_40px_rgba(225,29,72,0.2)] hover:-translate-y-0.5 transition-all duration-300 border border-rose-100 bg-white"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-rose-50 to-orange-50/50" />
+              <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-rose-400 to-orange-400 rounded-full blur-[40px] opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+              
+              <div className="relative z-10 flex items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-gradient-to-br from-rose-500 to-orange-500 text-white rounded-2xl shadow-[0_4px_20px_rgba(225,29,72,0.4)] group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                    <Target className="w-6 h-6" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-slate-700 text-sm">Target D-Day (Exam Date)</h4>
-                    <p className="text-[10px] text-slate-500 max-w-[200px]">Set your target exam date to see a live countdown on your profile.</p>
+                    <h4 className="font-black text-slate-800 text-base tracking-tight mb-1">Target D-Day <span className="text-rose-500">Pro</span></h4>
+                    <p className="text-[11px] font-bold text-slate-500 max-w-[200px] leading-snug">Track your exam dates & mission goals with live countdowns.</p>
                   </div>
                 </div>
-                <button
-                  onClick={() => setIsDDayModalOpen(true)}
-                  className="shrink-0 flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 text-xs font-bold rounded-xl hover:bg-slate-50 transition-colors cursor-pointer shadow-sm"
-                >
-                  Manage <ChevronRight className="w-4 h-4" />
-                </button>
+                <div className="w-10 h-10 shrink-0 rounded-full bg-white border border-rose-100 shadow-sm flex items-center justify-center text-rose-500 group-hover:bg-gradient-to-br group-hover:from-rose-500 group-hover:to-orange-500 group-hover:text-white group-hover:border-transparent transition-all duration-300">
+                  <ChevronRight className="w-5 h-5" />
+                </div>
               </div>
             </div>
           </div>

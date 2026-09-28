@@ -97,73 +97,47 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Center Main Pillars Tabs (Bento Segmented Controller) */}
-          <nav className="hidden lg:flex items-center gap-1.5 bg-slate-100/90 p-1.5 rounded-2xl border border-slate-200/80 shadow-inner">
-            <div className="flex items-center gap-2">
-              {hasUpdate && (
+          {/* Center Main Pillars Tabs (Bento Segmented Controller) - Premium Pro UI */}
+          <nav className="hidden lg:flex items-center gap-1.5 bg-slate-50/80 backdrop-blur-md p-1.5 rounded-[20px] border border-slate-200 shadow-sm relative z-20">
+            {hasUpdate && (
+              <div className="flex items-center mr-1">
                 <button
                   onClick={onOpenUpdateModal}
-                  className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-green-100 text-green-700 hover:bg-green-200 transition border border-green-300 font-bold text-xs"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-[14px] bg-green-50 text-green-600 hover:bg-green-100 transition-all border border-green-200 font-bold text-[10px] uppercase tracking-widest cursor-pointer"
                 >
-                  <div className="relative flex h-2.5 w-2.5">
+                  <div className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                   </div>
-                  Sync Updates
+                  Sync
                 </button>
-              )}
-            </div>
-            <button
-              id="tab-btn-home"
-              onClick={() => setActiveTab("home")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer ${
-                activeTab === "home"
-                  ? "bg-indigo-600 text-white shadow-sm"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
-              }`}
-            >
-              <Home className="w-3.5 h-3.5 shrink-0" />
-              <span>HOME</span>
-            </button>
+              </div>
+            )}
 
-            <button
-              id="tab-btn-toppers"
-              onClick={() => setActiveTab("toppers")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer ${
-                activeTab === "toppers"
-                  ? "bg-indigo-600 text-white shadow-sm"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
-              }`}
-            >
-              <Trophy className="w-3.5 h-3.5 shrink-0" />
-              <span>TOPPERS</span>
-            </button>
-
-            <button
-              id="tab-btn-prep"
-              onClick={() => setActiveTab("prep")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer ${
-                activeTab === "prep"
-                  ? "bg-indigo-600 text-white shadow-sm"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
-              }`}
-            >
-              <BookOpen className="w-3.5 h-3.5 shrink-0" />
-              <span>PREPARATION</span>
-            </button>
-
-            <button
-              id="tab-btn-analytics"
-              onClick={() => setActiveTab("analytics")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer ${
-                activeTab === "analytics"
-                  ? "bg-indigo-600 text-white shadow-sm"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
-              }`}
-            >
-              <BarChart3 className="w-3.5 h-3.5 shrink-0" />
-              <span>ANALYTICS</span>
-            </button>
+            {[
+              { id: "home", label: "HOME", icon: Home },
+              { id: "toppers", label: "TOPPERS", icon: Trophy },
+              { id: "prep", label: "PREP", icon: BookOpen },
+              { id: "analytics", label: "ANALYTICS", icon: BarChart3 },
+              { id: "ocr", label: "OCR", icon: Camera }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                id={`tab-btn-${tab.id}`}
+                onClick={() => setActiveTab(tab.id as MainTab)}
+                className={`relative flex items-center gap-2 px-4 py-2.5 rounded-[14px] text-[11px] font-black uppercase tracking-widest transition-all duration-300 whitespace-nowrap cursor-pointer overflow-hidden group ${
+                  activeTab === tab.id
+                    ? "text-rose-600 border border-rose-200 bg-white shadow-[0_4px_15px_rgba(225,29,72,0.1)] transform -translate-y-[1px]"
+                    : "text-slate-500 hover:text-slate-800 hover:bg-white hover:border-slate-200 border border-transparent"
+                }`}
+              >
+                {activeTab === tab.id && (
+                  <div className="absolute inset-0 bg-gradient-to-br from-rose-50 to-orange-50/50 pointer-events-none" />
+                )}
+                <tab.icon className={`w-4 h-4 relative z-10 transition-transform duration-300 ${activeTab === tab.id ? 'scale-110 drop-shadow-sm text-rose-500' : 'group-hover:scale-110 text-slate-400 group-hover:text-rose-400'}`} />
+                <span className="relative z-10">{tab.label}</span>
+              </button>
+            ))}
           </nav>
 
           {/* Right Action Utilities */}

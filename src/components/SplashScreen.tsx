@@ -1,97 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { Compass, Sparkles, GraduationCap, Settings2, Palette } from "lucide-react";
-
-const AuroraBackground = () => (
-  <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-    <motion.div className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-indigo-600/30 blur-[100px] mix-blend-screen" animate={{ x: [0, 50, 0], y: [0, 30, 0], scale: [1, 1.1, 1] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} />
-    <motion.div className="absolute bottom-[-10%] right-[-10%] w-[70vw] h-[70vw] rounded-full bg-purple-600/30 blur-[120px] mix-blend-screen" animate={{ x: [0, -50, 0], y: [0, -30, 0], scale: [1, 1.2, 1] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }} />
-    <motion.div className="absolute top-[30%] right-[30%] w-[40vw] h-[40vw] rounded-full bg-blue-500/20 blur-[80px] mix-blend-screen" animate={{ x: [0, -40, 0], y: [0, 80, 0] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }} />
-  </div>
-);
-
-const WarpSpeed = () => (
-  <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 flex items-center justify-center perspective-[1000px]">
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#020617_70%)] z-10" />
-    {Array.from({ length: 60 }).map((_, i) => (
-      <motion.div
-        key={i}
-        className="absolute w-0.5 bg-gradient-to-t from-white to-transparent"
-        style={{ 
-          rotate: `${(i * 360) / 60}deg`, 
-          originY: '1000px', // Creates the radial shooting effect
-          height: Math.random() * 100 + 50 + 'px'
-        }}
-        animate={{ 
-          opacity: [0, 1, 0], 
-          scaleY: [0, 2, 0],
-          y: [0, -1000] 
-        }}
-        transition={{ 
-          duration: Math.random() * 1 + 0.5, 
-          repeat: Infinity, 
-          delay: Math.random() * 2, 
-          ease: "easeIn" 
-        }}
-      />
-    ))}
-  </div>
-);
-
-const GoldenRings = () => (
-  <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 flex items-center justify-center">
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#D4AF37]/10 blur-[100px] rounded-full animate-pulse" />
-    {[1, 2, 3, 4, 5].map((i) => (
-      <motion.div
-        key={i}
-        className="absolute rounded-full border border-[#D4AF37]/20 border-dashed"
-        style={{ width: `${i * 120}px`, height: `${i * 120}px` }}
-        animate={{ rotate: 360 }}
-        transition={{ 
-          duration: i * 8, 
-          repeat: Infinity, 
-          ease: "linear", 
-          direction: i % 2 === 0 ? "reverse" : "normal" 
-        }}
-      />
-    ))}
-  </div>
-);
-
-const NeuralNetwork = () => {
-  const nodes = Array.from({ length: 20 }).map((_, i) => ({
-    id: i, x: Math.random() * 100, y: Math.random() * 100, duration: Math.random() * 15 + 10
-  }));
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      <div className="absolute inset-0 bg-[#020617]" />
-      {nodes.map(node => (
-        <motion.div
-          key={node.id}
-          className="absolute w-1.5 h-1.5 bg-cyan-400 rounded-full blur-[1px] shadow-[0_0_10px_cyan]"
-          style={{ left: `${node.x}%`, top: `${node.y}%` }}
-          animate={{ 
-            x: [0, (Math.random() - 0.5) * 100, 0], 
-            y: [0, (Math.random() - 0.5) * 100, 0] 
-          }}
-          transition={{ duration: node.duration, repeat: Infinity, ease: "linear" }}
-        />
-      ))}
-      <svg className="absolute inset-0 w-full h-full opacity-20">
-        {nodes.map((node, i) => (
-           nodes.slice(i+1, i+3).map(target => (
-             <motion.line 
-               key={`${node.id}-${target.id}`} 
-               x1={`${node.x}%`} y1={`${node.y}%`} 
-               x2={`${target.x}%`} y2={`${target.y}%`} 
-               stroke="#22d3ee" strokeWidth="1" 
-             />
-           ))
-        ))}
-      </svg>
-    </div>
-  )
-};
+import { Compass, Sparkles, GraduationCap, Settings2, X, Target, PenTool, BookOpen } from "lucide-react";
 
 const RadarSweep = ({ stats }: { stats?: { mocks: number, avgScore: number, dDays: number } }) => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 flex items-center justify-center bg-[#020617]">
@@ -105,109 +14,13 @@ const RadarSweep = ({ stats }: { stats?: { mocks: number, avgScore: number, dDay
       animate={{ rotate: 360 }}
       transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
     />
-    {[
-      { text: "Polity", left: "20%", top: "25%" },
-      { text: "History", left: "75%", top: "30%" },
-      { text: "Economy", left: "15%", top: "65%" },
-      { text: "Geography", left: "80%", top: "70%" },
-      { text: "CSAT", left: "30%", top: "85%" },
-      { text: `Mock Tests: ${stats?.mocks || 0} ${stats?.avgScore ? `(Avg ${stats.avgScore})` : ''}`, left: "65%", top: "15%" },
-      { text: "Syllabus", left: "45%", top: "12%" },
-      { text: `Mission D-Day: ${stats?.dDays || 0}`, left: "50%", top: "88%" },
-    ].map((item, i) => (
-      <motion.div 
-        key={i}
-        className="absolute text-teal-400 font-bold text-[10px] tracking-widest uppercase drop-shadow-[0_0_8px_rgba(45,212,191,0.8)] flex items-center gap-1.5"
-        style={{ left: item.left, top: item.top, transform: 'translate(-50%, -50%)' }}
-        animate={{ opacity: [0, 1, 0], scale: [0.9, 1.1, 0.9] }}
-        transition={{ duration: 4, repeat: Infinity, delay: i * 0.5 }}
-      >
-        <div className="w-1.5 h-1.5 bg-teal-400 rounded-full animate-ping" />
-        {item.text}
-      </motion.div>
-    ))}
-  </div>
-);
-
-const Fireflies = () => (
-  <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 bg-[#0f0c08]">
-    <div className="absolute inset-0 bg-gradient-to-t from-amber-900/20 to-transparent" />
-    {Array.from({ length: 60 }).map((_, i) => (
-      <motion.div
-        key={i}
-        className="absolute bg-amber-400 rounded-full blur-[2px] mix-blend-screen"
-        style={{
-          width: Math.random() * 6 + 2 + "px",
-          height: Math.random() * 6 + 2 + "px",
-          left: Math.random() * 100 + "%",
-          top: Math.random() * 100 + "%",
-        }}
-        animate={{
-          y: [(Math.random() - 0.5) * 150, (Math.random() - 0.5) * 150],
-          x: [(Math.random() - 0.5) * 150, (Math.random() - 0.5) * 150],
-          opacity: [0, Math.random() * 0.8 + 0.2, 0],
-        }}
-        transition={{
-          duration: Math.random() * 10 + 5,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-    ))}
-  </div>
-);
-
-const Vortex = () => (
-  <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 flex items-center justify-center bg-black">
-    <div className="absolute w-64 h-64 bg-rose-600/20 blur-[80px] rounded-full animate-pulse" />
-    <motion.div 
-      className="relative w-full h-full flex items-center justify-center"
-      animate={{ rotate: -360 }}
-      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-    >
-      {Array.from({ length: 120 }).map((_, i) => {
-        const distance = 500 + Math.random() * 200;
-        return (
-          <motion.div
-            key={i}
-            className="absolute bg-rose-500 rounded-full shadow-[0_0_8px_#f43f5e]"
-            style={{
-              width: Math.random() * 3 + 1 + "px",
-              height: Math.random() * 3 + 1 + "px",
-            }}
-            animate={{
-              x: [Math.cos((i * 360) / 120) * distance, 0],
-              y: [Math.sin((i * 360) / 120) * distance, 0],
-              scale: [1, 0],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: Math.random() * 3 + 2,
-              repeat: Infinity,
-              delay: Math.random() * 3,
-              ease: "easeIn",
-            }}
-          />
-        );
-      })}
-    </motion.div>
   </div>
 );
 
 export function SplashScreen({ onComplete }: { onComplete: () => void }) {
   const [loadingProgress, setLoadingProgress] = useState(0);
-  const [effectType, setEffectType] = useState<"aurora" | "warp" | "rings" | "neural" | "radar" | "fireflies" | "vortex">("aurora");
+  const [activeModal, setActiveModal] = useState<"dday" | "mocks" | "syllabus" | null>(null);
   const [appStats, setAppStats] = useState({ mocks: 0, avgScore: 0, dDays: 0 });
-
-  const effects = [
-    { id: "aurora", name: "Aurora Liquid" },
-    { id: "warp", name: "Warp Speed" },
-    { id: "rings", name: "Golden Rings" },
-    { id: "neural", name: "Neural AI" },
-    { id: "radar", name: "Smart Radar" },
-    { id: "fireflies", name: "Golden Fireflies" },
-    { id: "vortex", name: "Rose Vortex" },
-  ];
 
   useEffect(() => {
     // Load actual user stats from localStorage for the radar
@@ -245,12 +58,6 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
     return () => clearInterval(interval);
   }, []);
 
-  const cycleEffect = () => {
-    const currentIndex = effects.findIndex(e => e.id === effectType);
-    const nextIndex = (currentIndex + 1) % effects.length;
-    setEffectType(effects[nextIndex].id as any);
-  };
-
   return (
     <motion.div
       className="fixed inset-0 z-[9999] bg-[#020617] flex flex-col items-center justify-center overflow-hidden"
@@ -258,27 +65,128 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
       exit={{ opacity: 0, filter: "blur(10px)", transition: { duration: 0.8, ease: "easeInOut" } }}
     >
       {/* Background Effect Engine */}
-      {effectType === "aurora" && <AuroraBackground />}
-      {effectType === "warp" && <WarpSpeed />}
-      {effectType === "rings" && <GoldenRings />}
-      {effectType === "neural" && <NeuralNetwork />}
-      {effectType === "radar" && <RadarSweep stats={appStats} />}
-      {effectType === "fireflies" && <Fireflies />}
-      {effectType === "vortex" && <Vortex />}
+      <RadarSweep stats={appStats} />
 
-      {/* Effect Switcher (For User Testing) */}
-      <div className="absolute top-6 right-6 z-50 flex items-center gap-3">
-        <span className="text-[10px] font-bold text-white/50 uppercase tracking-widest bg-black/20 px-3 py-1.5 rounded-full border border-white/5 backdrop-blur-md">
-          {effects.find(e => e.id === effectType)?.name}
-        </span>
-        <button 
-          onClick={cycleEffect}
-          className="p-3 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md border border-white/10 transition-all hover:rotate-180"
-          title="Change Animation Effect"
+      {/* Top Stats Cards */}
+      <motion.div 
+        className="absolute top-8 left-0 right-0 px-4 w-full z-50 flex flex-wrap justify-center gap-2 sm:gap-4"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.5 }}
+      >
+        <div onClick={() => setActiveModal("dday")} className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-full px-3 py-1.5 flex items-center gap-2 shadow-[0_4px_10px_rgba(0,0,0,0.2)] hover:bg-white/10 transition-colors cursor-pointer active:scale-95">
+          <span className="text-amber-400 text-[8px] sm:text-[9px] font-bold tracking-widest uppercase">Target D-Day</span>
+          <div className="bg-white/10 px-1.5 py-0.5 rounded-md flex items-center justify-center">
+            <span className="text-[10px] sm:text-xs font-black text-white leading-none">{appStats.dDays || 0}</span>
+          </div>
+        </div>
+
+        <div onClick={() => setActiveModal("mocks")} className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-full px-3 py-1.5 flex items-center gap-2 shadow-[0_4px_10px_rgba(0,0,0,0.2)] hover:bg-white/10 transition-colors cursor-pointer active:scale-95">
+          <span className="text-teal-400 text-[8px] sm:text-[9px] font-bold tracking-widest uppercase">Mock Tests</span>
+          <div className="bg-white/10 px-1.5 py-0.5 rounded-md flex items-center justify-center gap-1">
+            <span className="text-[10px] sm:text-xs font-black text-white leading-none">{appStats.mocks || 0}</span>
+            <span className="text-[7px] sm:text-[8px] text-white/50 leading-none border-l border-white/20 pl-1">Avg {appStats.avgScore || 0}</span>
+          </div>
+        </div>
+
+        <div onClick={() => setActiveModal("syllabus")} className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-full px-3 py-1.5 flex items-center gap-2 shadow-[0_4px_10px_rgba(0,0,0,0.2)] hover:bg-white/10 transition-colors cursor-pointer active:scale-95">
+          <span className="text-indigo-400 text-[8px] sm:text-[9px] font-bold tracking-widest uppercase">Syllabus</span>
+          <div className="bg-white/10 px-1.5 py-0.5 rounded-md flex items-center justify-center">
+            <span className="text-[10px] sm:text-xs font-bold text-white/80 leading-none">Active</span>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Modal Popup */}
+      {activeModal && (
+        <div 
+          className="absolute inset-0 z-[10000] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm cursor-pointer"
+          onClick={() => setActiveModal(null)}
         >
-          <Palette className="w-5 h-5" />
-        </button>
-      </div>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className="bg-[#111827] border border-white/10 rounded-3xl p-6 w-full max-w-sm shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden cursor-default"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Background Glow */}
+            <div className={`absolute -top-20 -right-20 w-40 h-40 rounded-full blur-[60px] opacity-20 pointer-events-none ${
+              activeModal === 'dday' ? 'bg-amber-500' : activeModal === 'mocks' ? 'bg-teal-500' : 'bg-indigo-500'
+            }`} />
+            
+            <button 
+              onClick={() => setActiveModal(null)}
+              className="absolute top-4 right-4 p-2 text-white/50 hover:text-white bg-white/5 hover:bg-white/10 rounded-full transition-colors z-50 cursor-pointer"
+            >
+              <X className="w-4 h-4 pointer-events-none" />
+            </button>
+
+            <div className="flex flex-col relative z-10">
+              <div className="flex items-center gap-3 mb-6">
+                <div className={`p-3 rounded-2xl ${
+                  activeModal === 'dday' ? 'bg-amber-500/20 text-amber-400' : 
+                  activeModal === 'mocks' ? 'bg-teal-500/20 text-teal-400' : 'bg-indigo-500/20 text-indigo-400'
+                }`}>
+                  {activeModal === 'dday' && <Target className="w-6 h-6" />}
+                  {activeModal === 'mocks' && <PenTool className="w-6 h-6" />}
+                  {activeModal === 'syllabus' && <BookOpen className="w-6 h-6" />}
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-white">
+                    {activeModal === 'dday' ? 'Target D-Days' : activeModal === 'mocks' ? 'Mock Test Logs' : 'Core Syllabus'}
+                  </h3>
+                  <p className="text-xs text-white/50 font-medium tracking-wide">
+                    {activeModal === 'dday' ? 'Your upcoming exam deadlines' : activeModal === 'mocks' ? 'Recent test performances' : 'Subjects actively tracked'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                {activeModal === 'dday' && (
+                  <>
+                    {JSON.parse(localStorage.getItem("d_day_projects") || "[]").map((d: any, idx: number) => (
+                      <div key={idx} className="p-3 bg-white/5 rounded-xl border border-white/5 flex justify-between items-center">
+                        <span className="text-sm font-bold text-slate-200">{d.name}</span>
+                        <span className="text-xs font-black text-amber-400">{new Date(d.targetDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}</span>
+                      </div>
+                    ))}
+                    {JSON.parse(localStorage.getItem("d_day_projects") || "[]").length === 0 && (
+                       <p className="text-sm text-white/40 text-center py-4">No targets set yet.</p>
+                    )}
+                  </>
+                )}
+                {activeModal === 'mocks' && (
+                  <>
+                    {JSON.parse(localStorage.getItem("ras_mock_logs_v2") || localStorage.getItem("ras_mock_logs") || "[]").slice(0, 5).map((m: any, idx: number) => (
+                      <div key={idx} className="p-3 bg-white/5 rounded-xl border border-white/5 flex justify-between items-center">
+                        <div className="flex flex-col">
+                          <span className="text-sm font-bold text-slate-200">{m.testName || `Test ${idx+1}`}</span>
+                          <span className="text-[10px] text-white/40">{m.date}</span>
+                        </div>
+                        <span className="text-sm font-black text-teal-400">Score: {m.score}</span>
+                      </div>
+                    ))}
+                    {JSON.parse(localStorage.getItem("ras_mock_logs_v2") || localStorage.getItem("ras_mock_logs") || "[]").length === 0 && (
+                       <p className="text-sm text-white/40 text-center py-4">No mocks attempted yet.</p>
+                    )}
+                  </>
+                )}
+                {activeModal === 'syllabus' && (
+                  <>
+                    {['Polity & Governance', 'History & Art', 'Geography & Environment', 'Economy', 'Science & Tech'].map((sub, idx) => (
+                      <div key={idx} className="p-3 bg-white/5 rounded-xl border border-white/5 flex items-center gap-3">
+                        <div className="w-2 h-2 rounded-full bg-indigo-500" />
+                        <span className="text-sm font-bold text-slate-200">{sub}</span>
+                      </div>
+                    ))}
+                  </>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
 
       <motion.div
         className="relative z-10 flex flex-col items-center text-center px-6"

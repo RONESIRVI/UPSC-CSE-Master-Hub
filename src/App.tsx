@@ -1259,86 +1259,37 @@ export default function App() {
           </div>
         )}
 
-        {/* Mobile Floating Bottom App Bar (Native Android App Experience) */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[90] bg-white/95 backdrop-blur-lg border-t border-slate-200 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] safe-bottom px-2 py-1.5 flex items-center justify-around">
-          <button
-            onClick={() => setActiveTab("home")}
-            className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition cursor-pointer ${
-              activeTab === "home"
-                ? "text-indigo-600 font-bold bg-indigo-50/80"
-                : "text-slate-500 hover:text-slate-800"
-            }`}
-          >
-            <Home
-              className={`w-5 h-5 mb-0.5 ${
-                activeTab === "home" ? "text-indigo-600" : "text-slate-500"
+        {/* Mobile Floating Bottom App Bar - Premium Pro UI */}
+        <div className="lg:hidden fixed bottom-3 left-3 right-3 z-[90] bg-white/90 backdrop-blur-xl border border-white/80 shadow-[0_10px_40px_rgba(225,29,72,0.15)] rounded-2xl p-1.5 flex items-center justify-around safe-bottom">
+          {[
+            { id: "home", label: "Home", icon: Home },
+            { id: "toppers", label: "Toppers", icon: Trophy },
+            { id: "prep", label: "Prep", icon: BookOpen },
+            { id: "analytics", label: "Analytics", icon: BarChart3 },
+            { id: "ocr", label: "OCR", icon: ScanSearch }
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as MainTab)}
+              className={`relative flex flex-col items-center justify-center py-2 px-2 sm:px-4 rounded-xl transition-all duration-300 cursor-pointer overflow-hidden ${
+                activeTab === tab.id
+                  ? "text-rose-600 shadow-[0_4px_12px_rgba(225,29,72,0.1)] transform -translate-y-1 bg-white"
+                  : "text-slate-400 hover:text-slate-700 bg-transparent"
               }`}
-            />
-            <span className="text-[10px] tracking-tight">Home</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab("toppers")}
-            className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition cursor-pointer ${
-              activeTab === "toppers"
-                ? "text-indigo-600 font-bold bg-indigo-50/80"
-                : "text-slate-500 hover:text-slate-800"
-            }`}
-          >
-            <Trophy
-              className={`w-5 h-5 mb-0.5 ${
-                activeTab === "toppers" ? "text-indigo-600" : "text-slate-500"
-              }`}
-            />
-            <span className="text-[10px] tracking-tight">Toppers</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab("prep")}
-            className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition cursor-pointer ${
-              activeTab === "prep"
-                ? "text-indigo-600 font-bold bg-indigo-50/80"
-                : "text-slate-500 hover:text-slate-800"
-            }`}
-          >
-            <BookOpen
-              className={`w-5 h-5 mb-0.5 ${
-                activeTab === "prep" ? "text-indigo-600" : "text-slate-500"
-              }`}
-            />
-            <span className="text-[10px] tracking-tight">Prep</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab("analytics")}
-            className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition cursor-pointer ${
-              activeTab === "analytics"
-                ? "text-indigo-600 font-bold bg-indigo-50/80"
-                : "text-slate-500 hover:text-slate-800"
-            }`}
-          >
-            <BarChart3
-              className={`w-5 h-5 mb-0.5 ${
-                activeTab === "analytics" ? "text-indigo-600" : "text-slate-500"
-              }`}
-            />
-            <span className="text-[10px] tracking-tight">Analytics</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab("ocr")}
-            className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition cursor-pointer ${
-              activeTab === "ocr"
-                ? "text-indigo-600 font-bold bg-indigo-50/80"
-                : "text-slate-500 hover:text-slate-800"
-            }`}
-          >
-            <ScanSearch className={`w-5 h-5 mb-0.5 ${
-                activeTab === "ocr" ? "text-indigo-600" : "text-slate-500"
-              }`} />
-            <span className="text-[10px] tracking-tight">OCR</span>
-          </button>
-
+            >
+              {activeTab === tab.id && (
+                <div className="absolute inset-0 bg-gradient-to-tr from-rose-50/80 to-orange-50/50 rounded-xl" />
+              )}
+              <tab.icon
+                className={`w-5 h-5 mb-0.5 relative z-10 transition-transform duration-300 ${
+                  activeTab === tab.id ? "scale-110 drop-shadow-sm text-rose-500" : ""
+                }`}
+              />
+              <span className={`text-[10px] tracking-tight relative z-10 ${activeTab === tab.id ? 'font-black' : 'font-bold'}`}>
+                {tab.label}
+              </span>
+            </button>
+          ))}
         </div>
 
         {/* Update Modal */}

@@ -7,6 +7,7 @@ echo Syncing Excel data to Firebase Cloud...
 echo Please wait...
 echo.
 
+cd /d "%~dp0.."
 call npm run sync-excel
 
 echo.

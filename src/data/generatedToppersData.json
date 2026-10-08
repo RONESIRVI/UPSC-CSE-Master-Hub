@@ -1038,83 +1038,83 @@
   ],
   "TOPPER_ROUTINES": [
     {
-      "id": "Working Professionals Model - Shruti Modi Style",
+      "id": "Working Professionals Model ",
       "title": "Routine for Shruti Modi",
       "type": "Working Professional",
       "topperRef": "Shruti Modi",
       "totalStudyHours": 0,
       "wakeUpTime": "05:30 AM",
-      "sleepTime": "02:00 AM",
+      "sleepTime": "10:30 PM",
       "schedule": [
         {
-          "time": "05:30 AM - 08:00 AM",
-          "activity": "Heavy static GS subjects without phone distractions",
+          "time": "05:30 AM – 08:00 AM",
+          "activity": "Heavy static GS subjects study without phone distractions (Pre-office morning block)",
           "category": "Morning Slot",
           "description": ""
         },
         {
-          "time": "Commute & Lunch (1 hr)",
-          "activity": "Current affairs magazine, editorial podcasts, and short notes revision",
+          "time": "Commute & Lunch (~1 hr)",
+          "activity": "Current affairs magazines, editorial podcasts, and short notes revision (Passive micro-learning)",
           "category": "Micro-Slots",
           "description": ""
         },
         {
-          "time": "08:00 PM - 10:30 PM",
-          "activity": "Optional subject prep and daily 1-2 Mains answer writing",
-          "category": "Evening Slot",
+          "time": "05:00 PM – 05:30 PM",
+          "activity": "Leave bank at 5:00 PM; reach library chair by 5:30 PM (Work-to-study transition)",
+          "category": "Transit",
           "description": ""
         },
         {
-          "time": "Saturday & Sunday (10-12 hrs)",
-          "activity": "Full-length Prelims/Mains tests, mistake analysis, and backlog revision",
-          "category": "Weekend Marathon",
-          "description": ""
-        },
-        {
-          "time": "06:30 PM - 08:30 PM",
-          "activity": "Mains answer writing, value addition (quotes, data, case studies), toppers' copies",
+          "time": "05:30 PM – 08:00 PM",
+          "activity": "Mains answer writing + value addition (quotes, data, case studies); stick to basic notes — Answer Writing is the most critical habit",
           "category": "Evening Session",
           "description": ""
         },
         {
-          "time": "01:30 AM - 02:00 AM",
-          "activity": "Heavy static GS subjects without phone distractions",
-          "category": "Morning Slot",
+          "time": "08:00 PM – 10:30 PM",
+          "activity": "Optional subject deep preparation + 1–2 Mains answers (evening extended slot)",
+          "category": "Evening Slot",
+          "description": ""
+        },
+        {
+          "time": "Sat & Sun (10–12 hrs)",
+          "activity": "Full-length Prelims/Mains mock tests, detailed mistake analysis, and backlog revision (Weekend marathon)",
+          "category": "Weekend Marathon",
           "description": ""
         }
       ],
       "tips": []
     },
     {
-      "id": "Harshita Goyal - 4-Block Target Model (AIR 2, UPSC CSE)",
+      "id": "4-Block Target Model (AIR 2, CSE 2024)",
       "title": "Routine for Harshita Goyal",
-      "type": "AIR 2 Model",
+      "type": "AIR 2 Full-Time",
       "topperRef": "Harshita Goyal",
       "totalStudyHours": 0,
       "wakeUpTime": "",
       "sleepTime": "",
       "schedule": [
         {
-          "time": "Morning (0.5 - 1 hr)",
-          "activity": "Passive reading of The Indian Express without making notes",
-          "category": "Warm-up",
+          "time": "Morning (30 min – 1 hr)",
+          "activity": "Passive reading of The Indian Express without making notes (Gentle cognitive warm-up)",
+          "category": "Warm-Up Block",
           "description": ""
         },
         {
-          "time": "2.5 - 3 hrs",
-          "activity": "Core GS subjects (Polity, Economy, Geography) with direct book highlighting",
+          "time": "2.5 – 3 hrs (Peak energy block)",
+          "activity": "Core GS — Polity, Economy, Geography — direct book highlighting (Peak-hour deep static reading)",
           "category": "Peak Energy Slot",
           "description": ""
         },
         {
-          "time": "2.5 - 3 hrs",
-          "activity": "Optional subject deep preparation (Thinkers, theory, syllabus)",
+          "time": "2.5 – 3 hrs (Afternoon block)",
+          "activity": "Optional subject deep preparation — Thinkers, theories, full syllabus coverage (PSIR)",
           "category": "Focus Slot",
           "description": ""
         },
         {
-          "time": "1.5 - 2 hrs",
-          "activity": "Last 5 years PYQ solving and end-of-day Black-pen active recall",
+          "time": "1.5 – 2 hrs (Evening block)",
+          "activity": "Last 5-year PYQ solving + End-of-day Black-pen active recall (Output simulation & retention)",
           "category": "Application & Active Recall",
           "description": ""
         }
@@ -1122,204 +1122,168 @@
       "tips": []
     },
     {
-      "id": "First-Attempt Full-Time Model - Sadaf Choudhary & Naomi Satam",
-      "title": "Routine for Sadaf Choudhary / Naomi Satam",
-      "type": "First-Attempt ",
-      "topperRef": "Sadaf Choudhary / Naomi Satam",
-      "totalStudyHours": 0,
-      "wakeUpTime": "08:00 AM",
-      "sleepTime": "10:30 PM",
-      "schedule": [
-        {
-          "time": "08:00 AM - 12:00 PM",
-          "activity": "Standard books, NCERTs, and syllabus mapping (3.5 hrs study + 30 min break)",
-          "category": "Morning Session D Dga ",
-          "description": ""
-        },
-        {
-          "time": "02:00 PM - 05:30 PM",
-          "activity": "Optional Paper 1 & 2 conceptual clarity and topic-wise PYQs",
-          "category": "Afternoon Session",
-          "description": ""
-        },
-        {
-          "time": "06:30 PM - 08:30 PM",
-          "activity": "Mains answer writing, value addition (quotes, data, case studies), toppers' copies",
-          "category": "Evening Session",
-          "description": ""
-        },
-        {
-          "time": "09:30 PM - 10:30 PM",
-          "activity": "Daily current affairs, daily mental recall, and next-day goal setting",
-          "category": "Night Session",
-          "description": ""
-        }
-      ],
-      "tips": []
-    },
-    {
-      "id": "Universal Master Topper Framework - 4 Pillars of Success",
-      "title": "Routine for Universal Framework",
-      "type": "Master Model",
-      "topperRef": "Universal Framework",
-      "totalStudyHours": 0,
-      "wakeUpTime": "",
-      "sleepTime": "",
-      "schedule": [
-        {
-          "time": "3 - 3.5 hrs (Morning)",
-          "activity": "Difficult static & core GS subjects (Polity, History, Economy)",
-          "category": "Pillar 01: Cognitive Heavy Lifting",
-          "description": ""
-        },
-        {
-          "time": "2.5 - 3 hrs (Afternoon)",
-          "activity": "Optional theories, thinkers, and core syllabus",
-          "category": "Pillar 02: Optional Mastery",
-          "description": ""
-        },
-        {
-          "time": "1.5 - 2 hrs (Evening)",
-          "activity": "PYQ solving, answer writing, flowcharts, and mock tests",
-          "category": "Pillar 03: Output & Simulation",
-          "description": ""
-        },
-        {
-          "time": "1 - 1.5 hrs (Night)",
-          "activity": "Current affairs, black-pen active recall, and planning",
-          "category": "Pillar 04: Consolidation & Review",
-          "description": ""
-        }
-      ],
-      "tips": []
-    },
-    {
-      "id": "Radf",
-      "title": "Routine for DF",
-      "type": "Master Model",
-      "topperRef": "DF",
-      "totalStudyHours": 0,
-      "wakeUpTime": "",
-      "sleepTime": "",
-      "schedule": [
-        {
-          "time": "1 - 1.5 hrs (Night)",
-          "activity": "Mains answer writing, value addition (quotes, data, case studies), toppers' copies",
-          "category": "Night Session",
-          "description": ""
-        }
-      ],
-      "tips": []
-    },
-    {
-      "id": "Full-Time Model -  Warda Khan",
-      "title": "Routine for Warda Khan",
-      "type": "First-Attempt ",
-      "topperRef": "Warda Khan",
-      "totalStudyHours": 0,
-      "wakeUpTime": "06:30 AM",
-      "sleepTime": "04:10 PM",
-      "schedule": [
-        {
-          "time": "09:30 AM - 11:30 AM",
-          "activity": "मैं एक समय पर दो विषय पढ़ा करती थी। जैसे कि, मान लीजिए अगर किसी महीने मैंने पढ़ने के लिए चुना—मान लीजिए पॉलिटी (राजव्यवस्था) और इकॉनमी (अर्थव्यवस्था)",
-          "category": "Morning Slot 1",
-          "description": ""
-        },
-        {
-          "time": "02:00 PM - 04:10 PM",
-          "activity": "2 घंटे CSAT की भी प्रैक्टिस करती, हालाँकि वह दिसंबर के बाद से शुरू हुआ था।",
-          "category": "Afternoon Session ",
-          "description": ""
-        },
-        {
-          "time": "06:30 AM - 07:00 AM",
-          "activity": "दोपहर/शाम की शिफ्ट में मैं दूसरा विषय पढ़ती थी, और रात में डिनर के बाद मैं अपना ऑप्शनल (वैकल्पिक विषय) पढ़ा करती थी।\"",
-          "category": "Evening Session",
-          "description": ""
-        }
-      ],
-      "tips": []
-    },
-    {
-      "id": "Full-Time Model -  Natasha Goyal",
-      "title": "Routine for Natasha Goyal",
-      "type": "2nd -Attempt ",
-      "topperRef": "Natasha Goyal",
+      "id": "Full-Time Preparation Model ",
+      "title": "Routine for Sadaf Choudhary",
+      "type": "First-Attempt Full-Time",
+      "topperRef": "Sadaf Choudhary",
       "totalStudyHours": 0,
       "wakeUpTime": "06:30 AM",
       "sleepTime": "11:00 PM",
       "schedule": [
         {
-          "time": "06:30 AM - 07:00 AM",
-          "activity": "6:30 से 7:00 बजे के आसपास मैं उठती हूँ",
-          "category": "GS",
+          "time": "08:00 AM – 12:00 PM",
+          "activity": "Standard books, NCERTs, and syllabus mapping (3.5 hrs focused study + 30 min break within slot)",
+          "category": "Morning Session",
           "description": ""
         },
         {
-          "time": "----",
-          "activity": "मैं देखती हूँ कि आज क्या-क्या करना है। अगर SFG टेस्ट है, तो उसका क्या टारगेट है; अगर मेन्स की तैयारी करनी है, तो उसका क्या टारगेट है।",
+          "time": "02:00 PM – 05:30 PM",
+          "activity": "Optional Paper 1 & 2 conceptual clarity and topic-wise PYQ solving",
+          "category": "Afternoon Session",
+          "description": ""
+        },
+        {
+          "time": "06:30 PM – 08:30 PM",
+          "activity": "Mains answer writing, value addition (quotes, data, case studies), and topper's answer copies review",
+          "category": "Evening Session",
+          "description": ""
+        },
+        {
+          "time": "09:30 PM – 10:30 PM",
+          "activity": "Daily current affairs review + mental recall (black-pen) + next-day goal planning",
+          "category": "Night Session",
+          "description": ""
+        },
+        {
+          "time": "09:30 AM – 11:30 AM",
+          "activity": "Two subjects studied in parallel within same month cycle (e.g., Polity + Economy) — Static GS deep reading\r\n[मैं एक समय पर दो विषय पढ़ा करती थी — जैसे पॉलिटी और इकॉनमी]",
           "category": "Morning Slot 1",
           "description": ""
         },
         {
-          "time": "01:30 PM - 03:00 PM",
-          "activity": "मैं खाना खाती थी, उसके बाद लगभग 1 घंटे का ब्रेक होता था।",
-          "category": "GS",
+          "time": "02:00 PM – 04:00 PM",
+          "activity": "CSAT practice — 2 hours daily (commenced after December)\r\n[2 घंटे CSAT की प्रैक्टिस — दिसंबर के बाद से]",
+          "category": "Afternoon Session",
           "description": ""
         },
         {
-          "time": "04:30 PM - 07:00 PM",
-          "activity": " दोबारा पढ़ाई के लिए बैठती थी।",
-          "category": "GS",
+          "time": "Evening – Night",
+          "activity": "Second subject (afternoon/evening shift) + Optional reading after dinner\r\n[शाम की शिफ्ट में दूसरा विषय + डिनर के बाद ऑप्शनल]",
+          "category": "Evening & Night Session",
           "description": ""
         },
         {
-          "time": "07:30 PM - 08:00 PM",
-          "activity": " मैं छत या बालकनी में टहलने चली जाती थी।",
-          "category": "GS",
+          "time": "06:30 AM – 07:00 AM",
+          "activity": "Wake up + review daily targets (SFG test target / Mains plan for the day)\r\n[उठना + आज क्या-क्या करना है — टारगेट देखना]",
+          "category": "Wake-Up & Daily Planning",
           "description": ""
         },
         {
-          "time": "09:00 PM - 11:00 PM",
-          "activity": "आखिरी स्लॉट होता था। बस यही मेरा रूटीन था।\"",
-          "category": "GS",
+          "time": "07:00 AM – 01:30 PM",
+          "activity": "Core morning study session — Static GS / Optional / Mains answer writing as per daily plan\r\n[सुबह की मुख्य पढ़ाई — GS / Optional / Answer Writing]",
+          "category": "Morning Session",
+          "description": ""
+        },
+        {
+          "time": "01:30 PM – 04:30 PM",
+          "activity": "Lunch + ~1 hour break for rest and recovery\r\n[खाना + लगभग 1 घंटे का ब्रेक]",
+          "category": "Lunch Break",
+          "description": ""
+        },
+        {
+          "time": "04:30 PM – 07:00 PM",
+          "activity": "Second study session — Revision, answer writing, or current affairs\r\n[दोबारा पढ़ाई — Revision / Answer Writing / Current Affairs]",
+          "category": "Afternoon Session",
+          "description": ""
+        },
+        {
+          "time": "07:30 PM – 08:00 PM",
+          "activity": "Evening walk on terrace or balcony (physical movement + mental refresh)\r\n[छत या बालकनी में टहलना — शारीरिक और मानसिक रिफ्रेश]",
+          "category": "Leisure Break",
+          "description": ""
+        },
+        {
+          "time": "09:00 PM – 11:00 PM",
+          "activity": "Final study slot — Current affairs, answer writing, or planned reading (Last block of the day)\r\n[आखिरी स्लॉट — करंट अफेयर्स / Answer Writing]",
+          "category": "Night Session",
           "description": ""
         }
       ],
       "tips": []
     },
     {
-      "id": "Ziniya Arora",
+      "id": "Discipline Model ",
       "title": "Routine for Ziniya Arora",
-      "type": "2nd -Attempt ",
+      "type": "2nd Attempt Full-Time",
       "topperRef": "Ziniya Arora",
       "totalStudyHours": 0,
       "wakeUpTime": "04:00 AM",
       "sleepTime": "01:30 PM",
       "schedule": [
         {
-          "time": "04:00 AM - 4:30 AM",
-          "activity": "\"4 बजे मैंने उठना शुरू किया था।",
-          "category": "GS",
+          "time": "04:00 AM – 04:30 AM",
+          "activity": "Wake up (early-bird discipline model — 4 AM start)\r\n[4 बजे उठना — उच्च अनुशासन मॉडल]",
+          "category": "Wake Up",
           "description": ""
         },
         {
-          "time": "07:00 AM - 08:00 AM",
-          "activity": "7 बजे तक आपने स्लॉट लगा लिया।उसके बाद आप 7 से 8 एक टेस्ट होता था मेरा  ",
-          "category": "GS",
+          "time": "04:30 AM – 07:00 AM",
+          "activity": "First study slot — Static GS, Optional reading, or morning revision\r\n[4:30 से 7 बजे का पहला अध्ययन स्लॉट]",
+          "category": "Morning Slot 1",
           "description": ""
         },
         {
-          "time": "09:00 AM - 12:00 PM",
-          "activity": "फिर वापस 9 बजे बैठे। फिर आप 9 से 12 लगातार पढ़ाई करें...",
-          "category": "GS",
+          "time": "07:00 AM – 08:00 AM",
+          "activity": "Daily test session — PYQ mini-test or mock practice\r\n[7 से 8 — रोज़ का टेस्ट स्लॉट]",
+          "category": "Test Session",
           "description": ""
         },
         {
-          "time": "12:20 PM - 01:30 PM",
-          "activity": "फिर वापस 9 बजे बैठे। फिर आप 9 से 12 लगातार पढ़ाई करें...",
-          "category": "GS",
+          "time": "09:00 AM – 12:00 PM",
+          "activity": "Continuous 3-hour deep study session — Core GS or Optional conceptual reading\r\n[9 से 12 — लगातार पढ़ाई]",
+          "category": "Morning Session",
+          "description": ""
+        },
+        {
+          "time": "12:20 PM – 01:30 PM",
+          "activity": "Revision or light reading before lunch break (cool-down transition slot)\r\n[12:20 से 1:30 — दोपहर का संक्षिप्त अध्ययन या Revision]",
+          "category": "Noon Slot",
+          "description": ""
+        }
+      ],
+      "tips": []
+    },
+    {
+      "id": "Coaching-Centre Model ",
+      "title": "Routine for Geetika Arora",
+      "type": "2nd Attempt (Coaching Centre)",
+      "topperRef": "Geetika Arora",
+      "totalStudyHours": 0,
+      "wakeUpTime": "06:00 AM",
+      "sleepTime": "09:00 AM",
+      "schedule": [
+        {
+          "time": "06:00 AM – 06:30 AM",
+          "activity": "Wake up + early morning revision before leaving for coaching centre\r\n[सुबह 6 बजे उठना और Revision करना]",
+          "category": "Morning Revision",
+          "description": ""
+        },
+        {
+          "time": "06:30 AM – 07:00 AM",
+          "activity": "Travel from PG to coaching/study centre (early departure to secure seat)\r\n[6:30 पर PG से निकलना — सीटें जल्दी भर जाती हैं]",
+          "category": "Transit",
+          "description": ""
+        },
+        {
+          "time": "07:00 AM – 08:00 AM",
+          "activity": "One additional revision round at study centre before the daily test\r\n[पहुँचकर एक और Revision — टेस्ट से पहले]",
+          "category": "Revision Slot",
+          "description": ""
+        },
+        {
+          "time": "08:00 AM – 09:00 AM",
+          "activity": "Daily mock test at coaching centre (exam-like test simulation every morning)\r\n[8 बजे टेस्ट — रोज़ की परीक्षा Practice]",
+          "category": "Test Session",
           "description": ""
         }
       ],
@@ -1328,28 +1292,46 @@
     {
       "id": "गीतिका अरोड़ा",
       "title": "Routine for गीतिका अरोड़ा",
-      "type": "2nd -Attempt ",
+      "type": "2nd -Attempt",
       "topperRef": "गीतिका अरोड़ा",
       "totalStudyHours": 0,
-      "wakeUpTime": "06:00 AM",
+      "wakeUpTime": "06:30 AM",
       "sleepTime": "08:00 AM",
       "schedule": [
         {
-          "time": "06:00 AM - 06:30 AM",
-          "activity": "सुबह 6:00 बजे उठने में, और 6:00 बजे उठने के बाद रिवाइज़ भी करना होता था",
-          "category": "GS",
-          "description": ""
-        },
-        {
           "time": "06:30 AM - 07:00 AM",
           "activity": "फिर यहाँ पे आती थी क्योंकि सीट्स भी भर जाती हैं स्टार्टिंग फ़ेज़ में, तो around 6:30 I used to leave from my PG.",
-          "category": "GS",
+          "category": "Peak Energy Slot",
           "description": ""
         },
         {
           "time": "08:00 AM - 09:0 AM",
           "activity": "I used to revise one more time. उसके बाद मैं टेस्ट देती थी 8:00 बजे तक।",
-          "category": "GS",
+          "category": "Peak Energy Slot",
+          "description": ""
+        }
+      ],
+      "tips": []
+    },
+    {
+      "id": "Working Professionals Model - Shruti Modi Style",
+      "title": "Routine for Shruti Modi",
+      "type": "Working Professional",
+      "topperRef": "Shruti Modi",
+      "totalStudyHours": 0,
+      "wakeUpTime": "05:00 PM",
+      "sleepTime": "12:30 AM",
+      "schedule": [
+        {
+          "time": "05:00 PM - 05:40 PM",
+          "activity": "leave my bank at 5:00 and by 5:30 I used to sit in my library chair.",
+          "category": "Peak Energy Slot",
+          "description": ""
+        },
+        {
+          "time": "08:00 PM - 12:30 AM",
+          "activity": "8 hours, 9 hours, 10 hours, बट कंटेंट इधर-उधर का पढ़ते रहते हैं। stick to the basic notes. I used ChatGPT too much कि कहाँ से एग्ज़ांपल्स मिलें, फ़ैक्ट्स मिलें, डेटा मिले। I think right... आंसर राइटिंग बहुत इंपॉर्टेंट है।\"",
+          "category": "Peak Energy Slot",
           "description": ""
         }
       ],
@@ -1361,19 +1343,13 @@
       "type": "2nd -Attempt ",
       "topperRef": "SHTURI MODI",
       "totalStudyHours": 0,
-      "wakeUpTime": "05:00 PM",
+      "wakeUpTime": "08:00 PM",
       "sleepTime": "12:30 AM",
       "schedule": [
         {
-          "time": "05:00 PM - 05:40 PM",
-          "activity": "leave my bank at 5:00 and by 5:30 I used to sit in my library chair.",
-          "category": "GS",
-          "description": ""
-        },
-        {
           "time": "08:00 PM - 12:30 AM",
           "activity": "8 hours, 9 hours, 10 hours, बट कंटेंट इधर-उधर का पढ़ते रहते हैं। stick to the basic notes. I used ChatGPT too much कि कहाँ से एग्ज़ांपल्स मिलें, फ़ैक्ट्स मिलें, डेटा मिले। I think right... आंसर राइटिंग बहुत इंपॉर्टेंट है।\"",
-          "category": "GS",
+          "category": "Peak Energy Slot",
           "description": ""
         }
       ],

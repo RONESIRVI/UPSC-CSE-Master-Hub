@@ -75,9 +75,9 @@ export const useFirestoreData = () => {
     });
 
     // ─── Syllabus Topics from Firebase ─────────────────────────────────────
-    const unsubSyllabus = onSnapshot(collection(db, "appData", "SYLLABUS_TOPICS", "topics"), (snapshot) => {
-      if (!snapshot.empty) {
-        const topics = snapshot.docs.map(doc => doc.data() as SyllabusTopic);
+    const unsubSyllabus = onSnapshot(doc(db, "appData", "SYLLABUS_TOPICS"), (docSnap) => {
+      if (docSnap.exists() && docSnap.data().data) {
+        const topics = docSnap.data().data as SyllabusTopic[];
         setSyllabusTopics(topics);
         triggerUpdateNotification();
         console.log(`[Firebase] Syllabus loaded: ${topics.length} topics`);

@@ -5,13 +5,13 @@ export type TopperSubTab =
   | "books"
   | "routine"
   | "notes"
+  | "copies"
   | "interviews";
 export type PrepSubTab =
   | "syllabus"
-  | "study-plan"
   | "tracker"
   | "revision"
-  | "notes"
+  | "mindmaps"
   | "pyq";
 export type AnalyticsSubTab =
   | "progress"
@@ -19,6 +19,17 @@ export type AnalyticsSubTab =
   | "weak-areas"
   | "gap-analysis"
   | "rank-benchmark";
+
+export interface ActivityMap {
+  [date: string]: { duration: number; sessions: number };
+}
+
+export interface UserProfile {
+  name: string;
+  role: string;
+  targetExam: string;
+  avatarUrl?: string;
+}
 
 export interface TopperProfile {
   id: string;
@@ -44,6 +55,16 @@ export interface TopperProfile {
   interviewScore?: number;
   mainsScore?: number;
   goldenRules: string[];
+  mainDetails?: {
+    prelimsGsMarks?: string;
+    prelimsCsatMarks?: string;
+    essayMarks?: string;
+    gs1Marks?: string;
+    gs2Marks?: string;
+    gs3Marks?: string;
+    gs4Marks?: string;
+  };
+  extraData?: Record<string, string>;
 }
 
 export interface AudioNote {
@@ -55,28 +76,12 @@ export interface AudioNote {
   durationSecs: number;
 }
 
-export interface BookItem {
+
+export interface StrategySetupItem {
   id: string;
   title: string;
-  authorOrPublication: string;
-  subject: string;
-  paper:
-    | "Prelims GS1"
-    | "CSAT"
-    | "Mains GS1"
-    | "Mains GS2"
-    | "Mains GS3"
-    | "Mains GS4"
-    | "Essay"
-    | "Optional";
-  priority:
-    | "Must Read / Core"
-    | "High Yield Reference"
-    | "Supplementary / Skim";
-  recommendedBy: string[];
-  keyChapters: string[];
-  tipsForReading: string;
-  status: "not_started" | "reading" | "completed";
+  content: string;
+  extraData?: Record<string, string>;
 }
 
 export interface RoutineSlot {
@@ -107,6 +112,7 @@ export interface TopperRoutine {
   sleepTime: string;
   schedule: RoutineSlot[];
   tips: string[];
+  extraData?: Record<string, string>;
 }
 
 export interface NoteItem {
@@ -149,18 +155,23 @@ export interface InterviewTranscript {
     analysis: string;
   }[];
   keyTakeaways: string[];
+  extraData?: Record<string, string>;
 }
 
 export interface SyllabusTopic {
   id: string;
   paper:
     | "Prelims GS1"
-    | "Prelims CSAT"
     | "Mains GS1"
     | "Mains GS2"
     | "Mains GS3"
     | "Mains GS4"
-    | "Mains Essay";
+    | "Pre Paper"
+    | "Mains Paper I"
+    | "Mains Paper II"
+    | "Mains Paper III"
+    | "Mains Paper IV"
+    | string;   // allow any future paper
   subject: string;
   module: string;
   title: string;
@@ -172,10 +183,33 @@ export interface SyllabusTopic {
     | "in_progress"
     | "revised_1"
     | "revised_2"
+    | "revised_3"
+    | "revised_4"
+    | "revised_5"
     | "mastered";
   notes?: string;
-  subtopics: string[];
+  subtopics: {
+    title: string;
+    status:
+      | "not_started"
+      | "in_progress"
+      | "revised_1"
+      | "revised_2"
+      | "revised_3"
+      | "revised_4"
+      | "revised_5"
+      | "mastered";
+  }[];
   failedMockQuestions?: number;
+  // RAS/RPSC Extra fields (from Excel)
+  priority?: string;          // e.g. "★★★★★"
+  questionEstimate?: string;  // e.g. "2-3"
+  questionType?: string;      // "MCQ" | "Descriptive"
+  source?: string;            // e.g. "RPSC Raj. GK"
+  commonPreMains?: boolean;   // true if appears in both Pre & Mains
+  examTips?: string;          // exam tip / notes from Excel
+  studyGuide?: string;        // "Kya Taiyar Karen" column
+  paperFullName?: string;     // full paper title
 }
 
 export interface StudyPlanPhase {
@@ -198,6 +232,8 @@ export interface StudySessionLog {
   subject: string;
   paper: string;
   durationMinutes: number;
+  startTime?: string;
+  endTime?: string;
   topicCovered: string;
   taskType?: "study" | "revision" | "pyq" | "notes" | "answer_writing";
   qualityRating: 1 | 2 | 3 | 4 | 5; // 5 = High focus
@@ -240,6 +276,9 @@ export interface SmartRecommendation {
   topic: string;
   reason: string;
   tags: string[];
+  taskId?: string;
+  isFuture?: boolean;
+  startTimeMinutes?: number;
 }
 
 export interface FocusTimerConfig {
@@ -308,11 +347,15 @@ export interface MockTestLog {
   id: string;
   testSeriesName: string; // e.g. "Vision IAS FLT 1", "ForumIAS SFG"
   testName?: string;
+  testType?: "Full Length" | "Topic Wise";
+  subject?: string;
+  topic?: string;
   date: string;
-  type: "Prelims GS1" | "Prelims CSAT" | "Mains GS";
+  type: "Prelims GS1" |  "Mains GS1" | "Mains GS2" | "Mains GS3" | "Mains GS4" | "CSAT" | string;
   totalMarks: number;
   marksObtained: number;
   cutoffScore: number;
+  totalQuestions?: number;
   questionsAttempted?: number;
   correctCount?: number;
   incorrectCount?: number;
@@ -361,7 +404,10 @@ export interface CutoffBenchmark {
   examStage?:
     | "Prelims (GS1 /200)"
     | "Mains (GS+Opt+Essay /1750)"
-    | "Final Selection (/2025)";
+    | "Final Selection (/2025)"
+    | "RAS Prelims (GS1 /200)"
+    | "RAS Mains (/800)"
+    | string;
   generalCutoff?: number;
   obcCutoff?: number;
   ewsCutoff?: number;
@@ -401,4 +447,13 @@ export interface QuickRevisionNote {
   tags: string[];
   importance: "🔥 High Yield" | "⭐ Important" | "📘 Standard";
   updatedAt: string;
+}
+
+export interface Mindmap {
+  id: string;
+  title: string;
+  subject: string;
+  driveUrl: string;
+  tags?: string[];
+  createdAt?: string;
 }

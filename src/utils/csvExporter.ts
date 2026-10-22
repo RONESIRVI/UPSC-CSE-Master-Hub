@@ -26,7 +26,7 @@ function escapeCsvValue(val: any): string {
  */
 export function exportStudyLogsToCsv(
   logs: StudySessionLog[],
-  filenamePrefix = "upsc_study_sessions"
+  filenamePrefix = "ras_study_sessions"
 ): boolean {
   try {
     if (!logs || logs.length === 0) {
@@ -84,7 +84,7 @@ export function exportStudyLogsToCsv(
       escapeCsvValue(`Avg Rating: ${avgRating}/5`),
       escapeCsvValue(`${avgRating}/5`),
       escapeCsvValue(
-        `Exported from UPSC Rank 1 AI Studio on ${new Date().toLocaleDateString()}`
+        `Exported from RAS Rank 1 AI Studio on ${new Date().toLocaleDateString()}`
       ),
     ].join(",");
 

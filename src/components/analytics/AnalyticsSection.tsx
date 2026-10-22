@@ -5,6 +5,7 @@ import {
   StudySessionLog,
   MockTestLog,
   WeakAreaItem,
+  UserProfile,
 } from "../../types";
 import { ProgressTab } from "./ProgressTab";
 import { PerformanceTab } from "./PerformanceTab";
@@ -26,6 +27,7 @@ import {
 } from "lucide-react";
 
 interface AnalyticsSectionProps {
+  userProfile?: UserProfile;
   activeSubTab: AnalyticsSubTab;
   setActiveSubTab: (subTab: AnalyticsSubTab) => void;
   syllabus: SyllabusTopic[];
@@ -35,10 +37,10 @@ interface AnalyticsSectionProps {
   onAddMockLog: (log: MockTestLog) => void;
   onDeleteMockLog: (id: string) => void;
   weakAreas: WeakAreaItem[];
-  onOpenExplainTopic: (topic: string) => void;
 }
 
 export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
+  userProfile,
   activeSubTab,
   setActiveSubTab,
   syllabus,
@@ -48,7 +50,6 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
   onAddMockLog,
   onDeleteMockLog,
   weakAreas,
-  onOpenExplainTopic,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [showExportModal, setShowExportModal] = useState<boolean>(false);
@@ -92,7 +93,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
     {
       key: "gap-analysis",
       label: "Effort Gap Analysis",
-      description: "UPSC weightage vs actual study hours parity analysis",
+      description: "RAS weightage vs actual study hours parity analysis",
       icon: Scale,
       badge: "Weightage vs Hours",
       color: "bg-amber-50 text-amber-600 border-amber-200",
@@ -101,7 +102,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
       key: "rank-benchmark",
       label: "Rank Benchmark & Cutoffs",
       description:
-        "Yearly Prelims & Mains UPSC official cutoffs and topper marks benchmark",
+        "Yearly Prelims & Mains RAS official cutoffs and topper marks benchmark",
       icon: Trophy,
       badge: "AIR 1 Cutoffs",
       color: "bg-purple-50 text-purple-600 border-purple-200",
@@ -278,12 +279,14 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
           syllabus={syllabus}
           sessionLogs={sessionLogs}
           studyStreak={studyStreak}
+          mockLogs={mockLogs}
           onOpenExportReport={() => setShowExportModal(true)}
         />
       )}
 
       {activeSubTab === "performance" && (
         <PerformanceTab
+          syllabus={syllabus}
           mockLogs={mockLogs}
           onAddMockLog={onAddMockLog}
           onDeleteMockLog={onDeleteMockLog}
@@ -294,7 +297,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
       {activeSubTab === "weak-areas" && (
         <WeakAreasTab
           weakAreas={weakAreas}
-          onOpenExplainTopic={onOpenExplainTopic}
+          sessionLogs={sessionLogs}
           syllabus={syllabus}
           mockLogs={mockLogs}
           onOpenExportReport={() => setShowExportModal(true)}
@@ -302,7 +305,11 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
       )}
 
       {activeSubTab === "gap-analysis" && (
-        <GapAnalysisTab onOpenExportReport={() => setShowExportModal(true)} />
+        <GapAnalysisTab
+          syllabus={syllabus}
+          sessionLogs={sessionLogs}
+          onOpenExportReport={() => setShowExportModal(true)}
+        />
       )}
 
       {activeSubTab === "rank-benchmark" && <RankBenchmarkTab />}
@@ -311,6 +318,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
       <AnalyticsExportModal
         isOpen={showExportModal}
         onClose={() => setShowExportModal(false)}
+        userProfile={userProfile}
         syllabus={syllabus}
         sessionLogs={sessionLogs}
         studyStreak={studyStreak}

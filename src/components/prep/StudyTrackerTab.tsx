@@ -41,8 +41,7 @@ import {
   Image as ImageIcon,
 } from "lucide-react";
 import { TimerConfigModal, PRESET_CONFIGS } from "./TimerConfigModal";
-import { QuickStudyLogModal } from "./QuickStudyLogModal";
-import { QuickThoughtsModal } from "./QuickThoughtsModal";
+
 import { playTimerChime } from "../../utils/audioAlert";
 import { exportStudyLogsToCsv } from "../../utils/csvExporter";
 
@@ -64,8 +63,9 @@ interface StudyTrackerTabProps {
   onSkipInterval?: () => void;
   onSetTimerPhase?: (phase: TimerPhase) => void;
   syllabus?: SyllabusTopic[];
-  onOpenAIMentorWithPrompt?: (prompt: string) => void;
+
   currentStudySession?: {
+    paper?: string;
     subject: string;
     topic: string;
     taskType: "study" | "revision" | "pyq" | "notes" | "answer_writing";
@@ -99,9 +99,9 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
   onSkipInterval,
   onSetTimerPhase,
   syllabus = [],
-  onOpenAIMentorWithPrompt,
+
   currentStudySession = {
-    subject: "Indian Polity",
+    subject: "राजस्थान का इतिहास, कला, संस्कृति, साहित्य, परम्परा एवं विरासत",
     topic: "",
     taskType: "study",
   },
@@ -197,7 +197,7 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
     }
     const success = exportStudyLogsToCsv(
       logsToExport,
-      `upsc_study_sessions_${label}`
+      `ras_study_sessions_${label}`
     );
     if (success) {
       setExportFeedback(
@@ -226,7 +226,7 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
       const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
       
       if (Capacitor.isNativePlatform()) {
-        const fileName = `upsc_study_history_${new Date().getTime()}.jpg`;
+        const fileName = `ras_study_history_${new Date().getTime()}.jpg`;
         const base64Data = dataUrl.split(",")[1];
         
         const savedFile = await Filesystem.writeFile({
@@ -244,7 +244,7 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
         setExportFeedback("Photo shared successfully!");
       } else {
         const link = document.createElement("a");
-        link.download = `upsc_study_history_${new Date().getTime()}.jpg`;
+        link.download = `ras_study_history_${new Date().getTime()}.jpg`;
         link.href = dataUrl;
         link.click();
         setExportFeedback("Photo downloaded successfully!");
@@ -310,7 +310,7 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
       topicCovered:
         currentStudySession.topic.trim() ||
         `Focus Session (${timerConfig.mode.replace("_", " ").toUpperCase()})`,
-      taskType: currentStudySession.taskType,
+      taskType: currentStudySession.taskType as "notes" | "study" | "revision" | "pyq" | "answer_writing",
       qualityRating: focusRating,
       notes: sessionNotes.trim(),
     };
@@ -349,7 +349,7 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-100 flex items-center gap-1.5 w-fit">
-                  <Clock className="w-3.5 h-3.5 text-indigo-600" /> UPSC Focus
+                  <Clock className="w-3.5 h-3.5 text-indigo-600" /> RAS Focus
                   Engine
                 </span>
 
@@ -867,20 +867,9 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
               className="w-full bg-transparent text-xs font-bold text-slate-800 outline-none cursor-pointer"
             >
               <option value="all">All Subjects ({sessionLogs.length})</option>
-              <option value="Indian Polity">Indian Polity</option>
-              <option value="Modern Indian History">
-                Modern Indian History
-              </option>
-              <option value="Indian Economy">Indian Economy</option>
-              <option value="Environment & Ecology">
-                Environment & Ecology
-              </option>
-              <option value="Physical & Indian Geography">Geography</option>
-              <option value="CSAT Paper II">CSAT Paper II</option>
-              <option value="Ethics (GS4)">Ethics (GS4)</option>
-              <option value="Optional Subject">Optional Subject</option>
-              <option value="Current Affairs">Current Affairs</option>
-              <option value="Mains Answer Writing">Mains Answer Writing</option>
+              {Array.from(new Set(syllabus.map(s => s.subject))).map(subj => (
+                <option key={subj} value={subj}>{subj}</option>
+              ))}
             </select>
           </div>
 
@@ -951,7 +940,7 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
           <div ref={historyListRef} className="p-2 bg-white rounded-lg space-y-2.5 max-h-[500px] overflow-y-auto pr-1">
             {/* Header for Image Export */}
             <div className="hidden print-header p-2 bg-indigo-50 border-b border-indigo-100 mb-4 rounded-xl">
-               <h2 className="text-sm font-bold text-indigo-900">UPSC Study Session History</h2>
+               <h2 className="text-sm font-bold text-indigo-900">RAS Study Session History</h2>
                <p className="text-xs text-indigo-700">Generated on: {new Date().toLocaleString()}</p>
             </div>
 
@@ -994,6 +983,20 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
                         ⭐ {log.qualityRating}/5
                       </span>
                     )}
+                    {log.startTime && log.endTime && (
+                      <span className="text-[11px] font-mono font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-600 border border-slate-200 hidden sm:inline-block">
+                        {(() => {
+                          const f = (t:string) => {
+                             const [h, m] = t.split(":");
+                             let hours = parseInt(h);
+                             const ampm = hours >= 12 ? "PM" : "AM";
+                             hours = hours % 12 || 12;
+                             return `${hours}:${m} ${ampm}`;
+                          };
+                          return `${f(log.startTime)} - ${f(log.endTime)}`;
+                        })()}
+                      </span>
+                    )}
                     <span className="font-mono font-extrabold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-xl border border-indigo-200 shadow-2xs">
                       {log.durationMinutes} mins
                     </span>
@@ -1026,22 +1029,6 @@ export const StudyTrackerTab: React.FC<StudyTrackerTabProps> = ({
           onClose={() => setShowConfigModal(false)}
         />
       )}
-
-      {/* Quick Study Session Log Modal */}
-      <QuickStudyLogModal
-        isOpen={showQuickLogModal}
-        onClose={() => setShowQuickLogModal(false)}
-        onAddSessionLog={onAddSessionLog}
-        syllabus={syllabus}
-      />
-
-      {/* Quick Thoughts & Doubts Scratchpad Modal */}
-      <QuickThoughtsModal
-        isOpen={showQuickThoughtsModal}
-        onClose={() => setShowQuickThoughtsModal(false)}
-        syllabus={syllabus}
-        onOpenAIMentorWithPrompt={onOpenAIMentorWithPrompt}
-      />
     </div>
   );
 };

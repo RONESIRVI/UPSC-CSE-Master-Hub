@@ -10,13 +10,15 @@ import { DailyTask } from "../../types";
 interface PersonalizedPlanProps {
   tasks: DailyTask[];
   onToggleTask: (taskId: string) => void;
-  onNavigateToTracker: () => void;
+  onNavigateToTracker: (taskId: string) => void;
+  dailyGoalHours: number;
 }
 
 export const PersonalizedPlan: React.FC<PersonalizedPlanProps> = ({
   tasks,
   onToggleTask,
   onNavigateToTracker,
+  dailyGoalHours,
 }) => {
   return (
     <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
@@ -26,7 +28,7 @@ export const PersonalizedPlan: React.FC<PersonalizedPlanProps> = ({
           Today's Daily Plan
         </h3>
         <span className="px-2 py-1 bg-indigo-50 text-indigo-600 text-[10px] font-bold uppercase rounded-md border border-indigo-100">
-          8 Hours Target
+          {dailyGoalHours} Hours Target
         </span>
       </div>
 
@@ -92,7 +94,7 @@ export const PersonalizedPlan: React.FC<PersonalizedPlanProps> = ({
 
               {!task.completed && (
                 <button
-                  onClick={onNavigateToTracker}
+                  onClick={() => onNavigateToTracker(task.id)}
                   className="px-3 py-1.5 bg-slate-900 text-white text-[10px] font-bold uppercase rounded-lg hover:bg-indigo-600 transition-colors shrink-0"
                 >
                   Start

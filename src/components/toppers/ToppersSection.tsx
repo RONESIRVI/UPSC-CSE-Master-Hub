@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { TopperSubTab, BookItem, TopperRoutine, TopperProfile } from "../../types";
+import { TopperSubTab, TopperRoutine, TopperProfile } from "../../types";
 import { TopperStrategyTab } from "./TopperStrategyTab";
-import { TopperBooksTab } from "./TopperBooksTab";
+import { TopperStrategySetupTab } from "./TopperStrategySetupTab";
 import { TopperRoutineTab } from "./TopperRoutineTab";
 import { TopperNotesTab } from "./TopperNotesTab";
+import { MindmapsGalleryTab } from "../prep/MindmapsGalleryTab";
+import { TopperCopiesTab } from "./TopperCopiesTab";
 import { TopperInterviewsTab } from "./TopperInterviewsTab";
 import {
   Trophy,
@@ -21,8 +23,7 @@ import {
 interface ToppersSectionProps {
   activeSubTab: TopperSubTab;
   setActiveSubTab: (subTab: TopperSubTab) => void;
-  books: BookItem[];
-  onToggleBookStatus: (bookId: string) => void;
+  strategies: import("../../types").StrategySetupItem[];
   onAdoptRoutine: (routine: TopperRoutine) => void;
   toppers: TopperProfile[];
   setToppers: React.Dispatch<React.SetStateAction<TopperProfile[]>>;
@@ -30,13 +31,13 @@ interface ToppersSectionProps {
   setRoutines?: React.Dispatch<React.SetStateAction<import("../../types").TopperRoutine[]>>;
   audioNotes: import("../../types").AudioNote[];
   setAudioNotes: React.Dispatch<React.SetStateAction<import("../../types").AudioNote[]>>;
+  notes?: import("../../types").NoteItem[];
 }
 
 export const ToppersSection: React.FC<ToppersSectionProps> = ({
   activeSubTab,
   setActiveSubTab,
-  books,
-  onToggleBookStatus,
+  strategies,
   onAdoptRoutine,
   toppers,
   setToppers,
@@ -44,6 +45,7 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
   setRoutines,
   audioNotes,
   setAudioNotes,
+  notes,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -58,7 +60,7 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
   }[] = [
     {
       key: "strategy",
-      label: "Strategy & Blueprints",
+      label: "Toppers प्रोफ़ाइल",
       description:
         "AIR 1 preparation roadmaps, phase breakdown & paper-wise blueprints",
       icon: Trophy,
@@ -67,10 +69,10 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
     },
     {
       key: "books",
-      label: "Booklist Matrix",
+      label: "Strategy & Blueprints",
       description: "Standard Prelims & Mains booklist recommended by toppers",
       icon: BookOpen,
-      badge: `${books.length} Books`,
+      badge: `${strategies.length} Strategies`,
       color: "bg-blue-50 text-blue-600 border-blue-200",
     },
     {
@@ -79,17 +81,25 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
       description:
         "Daily hourly study timetables of toppers (Full-time & Working)",
       icon: Clock,
-      badge: "5 Schedules",
+      badge: `${routines?.length || 0} Schedules`,
       color: "bg-indigo-50 text-indigo-600 border-indigo-200",
     },
     {
       key: "notes",
-      label: "Mindmaps & Notes",
+      label: "Mindmaps & Notes Gallery",
       description:
         "Handwritten toppers notes, micro-diagrams & GS 1-4 high-yield mindmaps",
       icon: FileText,
-      badge: "GS 1-4 Vault",
+      badge: `${notes?.length || 0} Notes`,
       color: "bg-emerald-50 text-emerald-600 border-emerald-200",
+    },
+    {
+      key: "copies",
+      label: "Topper Copies (PDFs)",
+      description: "Answer sheets & evaluated copies of Toppers directly from Drive",
+      icon: Layers,
+      badge: "PDF Gallery",
+      color: "bg-rose-50 text-rose-600 border-rose-200",
     },
     {
       key: "interviews",
@@ -255,12 +265,13 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
       <div className="pt-2">
         {activeSubTab === "strategy" && <TopperStrategyTab toppers={toppers} setToppers={setToppers} />}
         {activeSubTab === "books" && (
-          <TopperBooksTab books={books} onToggleBookStatus={onToggleBookStatus} />
+          <TopperStrategySetupTab toppers={toppers} />
         )}
         {activeSubTab === "routine" && (
           <TopperRoutineTab onAdoptRoutine={onAdoptRoutine} routines={routines} setRoutines={setRoutines} />
         )}
-        {activeSubTab === "notes" && <TopperNotesTab />}
+        {activeSubTab === "notes" && <MindmapsGalleryTab />}
+        {activeSubTab === "copies" && <TopperCopiesTab />}
         {activeSubTab === "interviews" && <TopperInterviewsTab audioNotes={audioNotes} setAudioNotes={setAudioNotes} />}
       </div>
     </div>

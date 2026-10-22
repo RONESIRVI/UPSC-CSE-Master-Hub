@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SyllabusTopic, StudySessionLog } from "../../types";
+import { SyllabusTopic, StudySessionLog, MockTestLog } from "../../types";
 import {
   BarChart3,
   CheckCircle2,
@@ -19,6 +19,7 @@ interface ProgressTabProps {
   syllabus: SyllabusTopic[];
   sessionLogs: StudySessionLog[];
   studyStreak: number;
+  mockLogs?: MockTestLog[];
   onOpenExportReport?: () => void;
 }
 
@@ -26,9 +27,22 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
   syllabus,
   sessionLogs,
   studyStreak,
+  mockLogs = [],
   onOpenExportReport,
 }) => {
   const [exportedMsg, setExportedMsg] = useState<boolean>(false);
+
+  // Compute dynamic mock confidence
+  const prelimsLogs = mockLogs.filter(m => m.type === "Prelims GS1" || (m.type as string) === "CSAT" || m.type?.includes("Prelims"));
+  const avgPrelimsScore = prelimsLogs.length > 0
+    ? prelimsLogs.reduce((acc, l) => acc + (l.marksObtained || 0), 0) / prelimsLogs.length
+    : 0;
+  
+  // A simplistic probability model (Target 100+ score = 99% probability)
+  const probability = prelimsLogs.length > 0 
+    ? Math.min(Math.round((avgPrelimsScore / 110) * 100 * 10) / 10, 99) 
+    : 0;
+
   const totalTopics = syllabus.length;
   const masteredTopics = syllabus.filter((s) => s.status === "mastered").length;
   const inProgressTopics = syllabus.filter(
@@ -60,10 +74,10 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
     }
   };
 
-  // Group by Subject
-  const subjectGroups = Array.from(new Set(syllabus.map((s) => s.subject))).map(
-    (subject) => {
-      const topics = syllabus.filter((s) => s.subject === subject);
+  // Group by Paper (previously Subject)
+  const paperGroups = Array.from(new Set(syllabus.map((s) => s.paper || "Uncategorized"))).map(
+    (paper) => {
+      const topics = syllabus.filter((s) => (s.paper || "Uncategorized") === paper);
       const mastered = topics.filter((s) => s.status === "mastered").length;
       const active = topics.filter(
         (s) => s.status !== "not_started" && s.status !== "mastered"
@@ -71,7 +85,17 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
       const pct = Math.round(
         ((mastered * 1 + active * 0.5) / topics.length) * 100
       );
-      return { subject, total: topics.length, mastered, pct };
+      
+      const subjectSet = Array.from(new Set(topics.map(t => t.subject).filter(Boolean)));
+      const subjects = subjectSet.map(sub => {
+        const subTopics = topics.filter(t => t.subject === sub);
+        const subMastered = subTopics.filter(t => t.status === "mastered").length;
+        const subActive = subTopics.filter(t => t.status !== "not_started" && t.status !== "mastered").length;
+        const subPct = Math.round(((subMastered * 1 + subActive * 0.5) / subTopics.length) * 100) || 0;
+        return { name: sub, total: subTopics.length, mastered: subMastered, pct: subPct };
+      });
+
+      return { paper, total: topics.length, mastered, pct, subjects };
     }
   );
 
@@ -86,7 +110,7 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
               Coverage & Mastery Index
             </span>
             <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
-              Deep Subject Diagnostics
+              Deep Paper Diagnostics
             </span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">
@@ -94,7 +118,7 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
           </h2>
           <p className="text-sm text-slate-600 max-w-3xl leading-relaxed mt-1">
             Real-time telemetry on your syllabus coverage, time invested, active
-            streaks, and subject-wise completion rates across Prelims and Mains.
+            streaks, and paper-wise completion rates across Prelims and Mains.
           </p>
         </div>
 
@@ -153,22 +177,22 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
           </div>
         </div>
 
-        {/* Study Hours */}
+        {/* Time Invested */}
         <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-xs font-bold text-slate-500">
-            <span>Logged Study Time</span>
+            <span>Time Invested</span>
             <Clock className="w-4 h-4 text-indigo-600" />
           </div>
           <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600">
-            {totalHoursLogged} hrs
+            {totalHoursLogged} <span className="text-lg">hrs</span>
           </div>
           <p className="text-xs text-slate-500 font-medium">
-            Across {sessionLogs.length} focused study logs
+            Across {sessionLogs.length} focused sessions
           </p>
           <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden mt-2">
             <div
-              className="h-full bg-indigo-600 rounded-full"
-              style={{ width: `75%` }}
+              className="h-full bg-indigo-500 rounded-full"
+              style={{ width: `${Math.min((totalMinutesLogged / 6000) * 100, 100)}%` }}
             />
           </div>
         </div>
@@ -176,78 +200,106 @@ export const ProgressTab: React.FC<ProgressTabProps> = ({
         {/* Active Streak */}
         <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-xs font-bold text-slate-500">
-            <span>Active Study Streak</span>
-            <Flame className="w-4 h-4 text-orange-500 fill-orange-500" />
+            <span>Active Streak</span>
+            <Flame className="w-4 h-4 text-orange-500" />
           </div>
-          <div className="text-2xl sm:text-3xl font-extrabold text-orange-600">
-            {studyStreak} Days
+          <div className="text-2xl sm:text-3xl font-extrabold text-orange-500">
+            {studyStreak} <span className="text-lg">days</span>
           </div>
           <p className="text-xs text-slate-500 font-medium">
-            Continuous daily preparation
+            Keep the momentum going!
           </p>
           <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden mt-2">
             <div
               className="h-full bg-orange-500 rounded-full"
-              style={{ width: `${Math.min(studyStreak * 5, 100)}%` }}
+              style={{ width: `${Math.min((studyStreak / 30) * 100, 100)}%` }}
             />
           </div>
         </div>
 
-        {/* UPSC Readiness Score */}
+        {/* Mock Confidence */}
         <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-xs font-bold text-slate-500">
-            <span>Readiness Index</span>
+            <span>Mock Confidence</span>
             <Target className="w-4 h-4 text-sky-600" />
           </div>
           <div className="text-2xl sm:text-3xl font-extrabold text-sky-600">
-            74.2 / 100
+            {prelimsLogs.length > 0 ? `${probability} / 100` : "N/A"}
           </div>
           <p className="text-xs text-slate-500 font-medium">
             Prelims Qualification Probability
           </p>
           <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden mt-2">
             <div
-              className="h-full bg-sky-500 rounded-full"
-              style={{ width: `74.2%` }}
+              className="h-full bg-sky-500 rounded-full transition-all duration-1000"
+              style={{ width: `${probability}%` }}
             />
           </div>
         </div>
       </div>
 
-      {/* Subject-Wise Mastery Bars */}
+      {/* Paper-Wise Mastery Bars */}
       <div className="bg-white border-2 border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
         <div className="flex items-center justify-between pb-3.5 border-b border-slate-100">
           <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
             <Layers className="w-4 h-4 text-indigo-600" />
-            <span>Subject-Wise Mastery Breakdown</span>
+            <span>Paper-Wise Mastery Breakdown</span>
           </h3>
           <span className="text-xs text-slate-500 font-medium">
-            Weighted by UPSC Question Distribution
+            Weighted by RAS Question Distribution
           </span>
         </div>
 
         <div className="space-y-4">
-          {subjectGroups.map((group, index) => (
-            <div key={index} className="space-y-1.5">
-              <div className="flex items-center justify-between text-xs font-semibold">
-                <span className="text-slate-800">{group.subject}</span>
-                <span className="font-mono text-indigo-600 font-bold">
-                  {group.pct}% ({group.mastered}/{group.total} Topics)
-                </span>
+          {paperGroups.map((group, index) => (
+            <div key={index} className="space-y-3 mb-4">
+              <div className="space-y-1.5 p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                <div className="flex items-center justify-between text-xs font-bold">
+                  <span className="text-slate-800">{group.paper}</span>
+                  <span className="font-mono text-indigo-600 font-extrabold">
+                    {group.pct}% ({group.mastered}/{group.total} Topics)
+                  </span>
+                </div>
+                <div className="w-full h-2.5 rounded-full bg-slate-200 overflow-hidden shadow-inner">
+                  <div
+                    className={`h-full rounded-full transition-all duration-500 ${
+                      group.pct >= 70
+                        ? "bg-emerald-500"
+                        : group.pct >= 40
+                        ? "bg-amber-500"
+                        : "bg-rose-500"
+                    }`}
+                    style={{ width: `${group.pct}%` }}
+                  />
+                </div>
               </div>
-
-              <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
-                <div
-                  className={`h-full rounded-full transition-all duration-500 ${
-                    group.pct >= 70
-                      ? "bg-emerald-500"
-                      : group.pct >= 40
-                      ? "bg-amber-500"
-                      : "bg-rose-500"
-                  }`}
-                  style={{ width: `${group.pct}%` }}
-                />
-              </div>
+              
+              {group.subjects.length > 0 && (
+                <div className="space-y-2.5 pl-4 border-l-2 border-indigo-100 ml-2">
+                  {group.subjects.map((sub, sIdx) => (
+                    <div key={sIdx} className="space-y-1">
+                      <div className="flex items-center justify-between text-[11px] font-semibold">
+                        <span className="text-slate-700 truncate max-w-[200px] sm:max-w-[400px]">{sub.name}</span>
+                        <span className="font-mono text-slate-500">
+                          {sub.pct}% ({sub.mastered}/{sub.total})
+                        </span>
+                      </div>
+                      <div className="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden">
+                        <div
+                          className={`h-full rounded-full transition-all duration-500 ${
+                            sub.pct >= 70
+                              ? "bg-emerald-400"
+                              : sub.pct >= 40
+                              ? "bg-amber-400"
+                              : "bg-rose-400"
+                          }`}
+                          style={{ width: `${sub.pct}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
         </div>

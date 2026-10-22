@@ -6,17 +6,20 @@ interface AudioRecorderModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (note: AudioNote) => void;
+  syllabus: any[];
 }
 
 export const AudioRecorderModal: React.FC<AudioRecorderModalProps> = ({
   isOpen,
   onClose,
   onSave,
+  syllabus,
 }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [recordingTime, setRecordingTime] = useState(0);
+  const [paper, setPaper] = useState("");
   const [subject, setSubject] = useState("");
   const [topic, setTopic] = useState("");
 
@@ -51,6 +54,7 @@ export const AudioRecorderModal: React.FC<AudioRecorderModalProps> = ({
     setIsPaused(false);
     setAudioBlob(null);
     setRecordingTime(0);
+    setPaper("");
     setSubject("");
     setTopic("");
     chunksRef.current = [];
@@ -185,24 +189,68 @@ export const AudioRecorderModal: React.FC<AudioRecorderModalProps> = ({
               
               <div className="space-y-3 pt-2">
                 <div>
-                  <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Subject</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. History, Economy"
-                    value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
+                  <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">Exam / Paper</label>
+                  <select
+                    value={paper}
+                    onChange={(e) => {
+                      setPaper(e.target.value);
+                      setSubject("");
+                      setTopic("");
+                    }}
+                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                  >
+                    <option value="">Select Exam</option>
+                    {Array.from(new Set(syllabus.map(t => t.paper).filter(Boolean))).map(p => (
+                      <option key={p as string} value={p as string}>{p as string}</option>
+                    ))}
+                  </select>
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Topic Details</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Discussion on Inflation causes"
-                    value={topic}
-                    onChange={(e) => setTopic(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
+                  <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">Subject</label>
+                  <select
+                    value={subject}
+                    onChange={(e) => {
+                      setSubject(e.target.value);
+                      setTopic("");
+                    }}
+                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                  >
+                    <option value="">Select Subject</option>
+                    {Array.from(new Set(syllabus.filter(t => !paper || t.paper === paper).map(t => t.subject).filter(Boolean))).map(s => (
+                      <option key={s as string} value={s as string}>{s as string}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block mb-1">Topic Details</label>
+                  {subject ? (
+                    <select
+                      value={topic}
+                      onChange={(e) => setTopic(e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                    >
+                      <option value="">Select Topic</option>
+                      {syllabus
+                        .filter(t => (!paper || t.paper === paper) && t.subject === subject)
+                        .flatMap(t => {
+                          const topics = [t.title];
+                          if (t.subtopics) {
+                            topics.push(...t.subtopics.map((sub: any) => typeof sub === "string" ? sub : sub.title));
+                          }
+                          return topics;
+                        })
+                        .map(title => (
+                          <option key={title} value={title}>{title}</option>
+                        ))}
+                    </select>
+                  ) : (
+                    <input
+                      type="text"
+                      disabled
+                      placeholder="Select a subject first..."
+                      className="w-full bg-slate-100 border border-slate-200 text-slate-400 text-sm rounded-xl px-3 py-2 outline-none cursor-not-allowed"
+                    />
+                  )}
                 </div>
               </div>
             </div>

@@ -24,7 +24,7 @@ export const TopperFormModal: React.FC<TopperFormModalProps> = ({
     optional: "",
     background: "",
     quote: "",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
+    avatar: "/ranker-logo.jpg",
     mainsScore: 0,
     interviewScore: 0,
     goldenRules: ["Read limited sources", "Revise multiple times"],
@@ -48,7 +48,7 @@ export const TopperFormModal: React.FC<TopperFormModalProps> = ({
         optional: "",
         background: "",
         quote: "",
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
+        avatar: "/ranker-logo.jpg",
         mainsScore: 850,
         interviewScore: 195,
         goldenRules: ["Read limited sources", "Revise multiple times"],
@@ -141,20 +141,20 @@ export const TopperFormModal: React.FC<TopperFormModalProps> = ({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Subject / Paper</label>
+                <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Subject Category</label>
                 <input
                   type="text"
                   list="topper-subject-options"
-                  placeholder="e.g., GS Paper 1, History, or Custom Plan"
+                  placeholder="e.g., GS Subject 1, History, or Custom Plan"
                   value={formData.optionalStrategy || ""}
                   onChange={(e) => setFormData({ ...formData, optionalStrategy: e.target.value })}
                   className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 <datalist id="topper-subject-options">
-                  <option value="GS Paper 1" />
-                  <option value="GS Paper 2" />
-                  <option value="GS Paper 3" />
-                  <option value="GS Paper 4" />
+                  <option value="GS Subject 1" />
+                  <option value="GS Subject 2" />
+                  <option value="GS Subject 3" />
+                  <option value="GS Subject 4" />
                   <option value="General Hindi" />
                   <option value="General English" />
                   <option value="Optional Subject" />

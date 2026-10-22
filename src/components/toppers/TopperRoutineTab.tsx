@@ -111,11 +111,6 @@ export const TopperRoutineTab: React.FC<TopperRoutineTabProps> = ({
                 </option>
               ))}
             </select>
-            {setRoutines && (
-              <button onClick={() => setIsEditorOpen(true)} className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition" title="Edit Schedule">
-                <Edit2 className="w-4 h-4" />
-              </button>
-            )}
           </div>
         </div>
 
@@ -142,12 +137,6 @@ export const TopperRoutineTab: React.FC<TopperRoutineTabProps> = ({
             <h3 className="text-2xl font-bold text-slate-900 mt-0.5">
               {selectedRoutine.title}
             </h3>
-            <p className="text-xs text-slate-500 mt-1 font-medium">
-              Practiced by:{" "}
-              <span className="text-slate-800 font-bold">
-                {selectedRoutine.topperRef}
-              </span>
-            </p>
           </div>
 
           <div className="flex items-center gap-3">
@@ -170,27 +159,38 @@ export const TopperRoutineTab: React.FC<TopperRoutineTabProps> = ({
           </div>
         </div>
 
-        {/* Wake up and sleep markers Bento Row */}
-        <div className="flex items-center justify-between bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs">
-          <div className="flex items-center gap-2 text-amber-700 font-bold">
-            <Sun className="w-4 h-4 text-amber-500" />
-            <span>
-              Wake-up Time:{" "}
-              <strong className="text-slate-900">
-                {selectedRoutine.wakeUpTime}
-              </strong>
-            </span>
+        {/* Wake up and sleep markers Cards (Conditionally Rendered) */}
+        {(selectedRoutine.wakeUpTime || selectedRoutine.sleepTime) && (
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            {selectedRoutine.wakeUpTime && (
+              <div className="flex-1 w-full bg-amber-50/50 border border-amber-200 rounded-2xl p-5 flex items-center justify-between shadow-sm hover:shadow-md transition">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-amber-100 text-amber-600 rounded-xl shadow-inner">
+                    <Sun className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <div className="text-xs uppercase font-bold text-amber-700 tracking-wider">Wake-up Time</div>
+                    <div className="text-xl font-black text-slate-800 mt-0.5">{selectedRoutine.wakeUpTime}</div>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {selectedRoutine.sleepTime && (
+              <div className="flex-1 w-full bg-indigo-50/50 border border-indigo-200 rounded-2xl p-5 flex items-center justify-between shadow-sm hover:shadow-md transition">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-indigo-100 text-indigo-600 rounded-xl shadow-inner">
+                    <Moon className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <div className="text-xs uppercase font-bold text-indigo-700 tracking-wider">Sleep Time</div>
+                    <div className="text-xl font-black text-slate-800 mt-0.5">{selectedRoutine.sleepTime}</div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-          <div className="flex items-center gap-2 text-indigo-700 font-bold">
-            <Moon className="w-4 h-4 text-indigo-600" />
-            <span>
-              Sleep Time:{" "}
-              <strong className="text-slate-900">
-                {selectedRoutine.sleepTime}
-              </strong>
-            </span>
-          </div>
-        </div>
+        )}
 
         {/* Timetable Schedule Grid */}
         <div className="space-y-3">
@@ -205,15 +205,15 @@ export const TopperRoutineTab: React.FC<TopperRoutineTabProps> = ({
                 key={index}
                 className="p-3.5 rounded-xl bg-white border border-slate-200 hover:border-indigo-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition shadow-xs"
               >
-                <div className="flex items-start sm:items-center gap-3">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 flex-1 min-w-0">
                   <span className="font-mono text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-lg border border-indigo-100 shrink-0">
                     {slot.time}
                   </span>
-                  <div>
-                    <div className="text-sm font-bold text-slate-900">
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-bold text-slate-900 break-words">
                       {slot.activity}
                     </div>
-                    <div className="text-xs text-slate-500 mt-0.5">
+                    <div className="text-xs text-slate-500 mt-0.5 break-words">
                       {slot.description}
                     </div>
                   </div>
@@ -246,6 +246,24 @@ export const TopperRoutineTab: React.FC<TopperRoutineTabProps> = ({
             ))}
           </ul>
         </div>
+
+        {/* Dynamic Extra Data */}
+        {selectedRoutine.extraData && Object.keys(selectedRoutine.extraData).length > 0 && (
+          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mt-4">
+            <div className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5 mb-3">
+              <Sparkles className="w-4 h-4 text-indigo-600" />
+              <span>Additional Info</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {Object.entries(selectedRoutine.extraData).map(([key, value]) => (
+                <div key={key} className="bg-white p-3 rounded-lg border border-slate-100">
+                  <div className="text-[10px] uppercase font-bold text-slate-400 mb-1">{key}</div>
+                  <div className="text-sm font-medium text-slate-700 whitespace-pre-wrap">{value}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
       {/* Editor Modal */}
       {isEditorOpen && (

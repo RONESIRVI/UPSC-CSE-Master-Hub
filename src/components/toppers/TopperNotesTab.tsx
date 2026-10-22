@@ -12,9 +12,15 @@ import {
   BookOpen,
 } from "lucide-react";
 
-export const TopperNotesTab: React.FC = () => {
+interface TopperNotesTabProps {
+  notes?: NoteItem[];
+}
+
+export const TopperNotesTab: React.FC<TopperNotesTabProps> = ({ notes }) => {
+  const vaultData = notes && notes.length > 0 ? notes : TOPPER_NOTES_VAULT;
+  
   const [selectedNote, setSelectedNote] = useState<NoteItem>(
-    TOPPER_NOTES_VAULT[0]
+    vaultData[0] || TOPPER_NOTES_VAULT[0]
   );
   const [filterType, setFilterType] = useState<string>("All");
 
@@ -25,7 +31,7 @@ export const TopperNotesTab: React.FC = () => {
     "Diagram / Mindmap",
   ];
 
-  const filteredNotes = TOPPER_NOTES_VAULT.filter((n) => {
+  const filteredNotes = vaultData.filter((n) => {
     if (filterType === "All") return true;
     return n.type === filterType;
   });
@@ -122,9 +128,10 @@ export const TopperNotesTab: React.FC = () => {
         </div>
 
         {/* Right Side: Visual Note Inspector Bento Card */}
-        <div className="lg:col-span-2 bg-white border-2 border-slate-200 rounded-2xl p-6 shadow-sm space-y-6">
-          {/* Header */}
-          <div className="flex items-start justify-between gap-4 pb-4 border-b border-slate-100">
+        {selectedNote ? (
+          <div className="lg:col-span-2 bg-white border-2 border-slate-200 rounded-2xl p-6 shadow-sm space-y-6">
+            {/* Header */}
+            <div className="flex items-start justify-between gap-4 pb-4 border-b border-slate-100">
             <div>
               <div className="flex items-center gap-2">
                 <span className="px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-100">
@@ -287,7 +294,12 @@ export const TopperNotesTab: React.FC = () => {
               ))}
             </div>
           </div>
-        </div>
+          </div>
+        ) : (
+          <div className="lg:col-span-2 bg-slate-50 border-2 border-slate-200 rounded-2xl p-6 flex flex-col items-center justify-center text-slate-500 italic">
+            No notes available to preview.
+          </div>
+        )}
       </div>
     </div>
   );

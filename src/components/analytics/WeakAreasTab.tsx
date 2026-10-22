@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { WeakAreaItem, SyllabusTopic, MockTestLog } from "../../types";
+import { WeakAreaItem, SyllabusTopic, MockTestLog, StudySessionLog } from "../../types";
 import {
   AlertTriangle,
   CheckCircle2,
@@ -24,7 +24,7 @@ import {
 
 interface WeakAreasTabProps {
   weakAreas: WeakAreaItem[];
-  onOpenExplainTopic: (topic: string) => void;
+  sessionLogs?: StudySessionLog[];
   syllabus?: SyllabusTopic[];
   mockLogs?: MockTestLog[];
   onOpenExportReport?: () => void;
@@ -32,13 +32,13 @@ interface WeakAreasTabProps {
 
 export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
   weakAreas,
-  onOpenExplainTopic,
+  sessionLogs = [],
   syllabus = [],
   mockLogs = [],
   onOpenExportReport,
 }) => {
   const [selectedPaper, setSelectedPaper] = useState<string>("All");
-  const [selectedIntensity, setSelectedIntensity] = useState<string>("All");
+  const [selectedSubject, setSelectedSubject] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [viewMode, setViewMode] = useState<"heatmap" | "cards">("heatmap");
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(
@@ -110,17 +110,16 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
         failedCount,
         item.accuracyInMocks || 50
       );
-      const matchIntensity =
-        selectedIntensity === "All" ||
-        intensity.level.startsWith(selectedIntensity);
+      const matchSubject =
+        selectedSubject === "All" || item.subject === selectedSubject;
       const matchQuery =
         !searchQuery.trim() ||
         item.topic.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.subject.toLowerCase().includes(searchQuery.toLowerCase());
 
-      return matchPaper && matchIntensity && matchQuery;
+      return matchPaper && matchSubject && matchQuery;
     });
-  }, [weakAreas, selectedPaper, selectedIntensity, searchQuery]);
+  }, [weakAreas, selectedPaper, selectedSubject, searchQuery]);
 
   // Aggregate metrics
   const totalFailedQuestions = useMemo(() => {
@@ -179,33 +178,6 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
             </p>
           </div>
 
-          {/* Quick Metrics Bar */}
-          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 shrink-0">
-            <div className="bg-rose-50/80 border border-rose-200 rounded-2xl p-3 text-center min-w-[100px] shadow-2xs">
-              <span className="text-[10px] font-bold text-rose-700 uppercase tracking-wider block">
-                Failed MCQs
-              </span>
-              <span className="text-xl font-mono font-extrabold text-rose-700">
-                {totalFailedQuestions}
-              </span>
-            </div>
-            <div className="bg-amber-50/80 border border-amber-200 rounded-2xl p-3 text-center min-w-[100px] shadow-2xs">
-              <span className="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">
-                Marks Bleed
-              </span>
-              <span className="text-xl font-mono font-extrabold text-amber-700">
-                -{totalMarksLoss.toFixed(1)}
-              </span>
-            </div>
-            <div className="bg-indigo-50/80 border border-indigo-200 rounded-2xl p-3 text-center min-w-[100px] shadow-2xs">
-              <span className="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">
-                Critical Nodes
-              </span>
-              <span className="text-xl font-mono font-extrabold text-indigo-700">
-                {criticalCount}
-              </span>
-            </div>
-          </div>
         </div>
 
         {/* Heatmap Intensity Legend */}
@@ -259,21 +231,23 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
             className="bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none font-bold cursor-pointer"
           >
             <option value="All">All Papers</option>
-            <option value="Prelims GS1">Prelims GS1</option>
-            <option value="Prelims CSAT">Prelims CSAT</option>
-            <option value="Mains GS4">Mains GS4</option>
+            <option value="Prelims GS1">Prelims (GK & GS)</option>
+            <option value="Mains GS1">Mains Paper I</option>
+            <option value="Mains GS2">Mains Paper II</option>
+            <option value="Mains GS3">Mains Paper III</option>
+            <option value="Mains GS4">Mains Paper IV (Hindi/Eng)</option>
           </select>
 
-          {/* Intensity filter */}
+          {/* Subject filter */}
           <select
-            value={selectedIntensity}
-            onChange={(e) => setSelectedIntensity(e.target.value)}
-            className="bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none font-bold cursor-pointer"
+            value={selectedSubject}
+            onChange={(e) => setSelectedSubject(e.target.value)}
+            className="bg-slate-50 border border-slate-200 text-slate-900 text-xs rounded-xl px-3 py-2 outline-none font-bold cursor-pointer max-w-[200px] truncate"
           >
-            <option value="All">All Intensities</option>
-            <option value="Critical">Critical (6+ Failed)</option>
-            <option value="Moderate">Moderate (4-5 Failed)</option>
-            <option value="Mild">Mild (2-3 Failed)</option>
+            <option value="All">All Subjects</option>
+            {Array.from(new Set(weakAreas.filter(w => selectedPaper === "All" || w.paper === selectedPaper).map(w => w.subject).filter(Boolean))).map(s => (
+               <option key={s} value={s}>{s}</option>
+            ))}
           </select>
 
           {/* View Mode Toggle */}
@@ -486,16 +460,58 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                   </div>
                 </div>
 
+                {/* Revision Insights AI Scolding */}
+                {(() => {
+                  const revisionTime = sessionLogs
+                    .filter((log) => log.topicCovered === selectedTopic.topic && log.taskType === "revision")
+                    .reduce((sum, log) => sum + log.durationMinutes, 0);
+                  const accuracy = selectedTopic.accuracyInMocks || 50;
+                  
+                  if (accuracy < 70 && revisionTime < 60) {
+                    return (
+                      <div className="space-y-1.5 text-xs mt-3">
+                        <span className="font-bold text-rose-700 flex items-center gap-1.5">
+                          <AlertTriangle className="w-3.5 h-3.5" /> Warning: Lack of Revision
+                        </span>
+                        <div className="p-3 bg-rose-50 rounded-xl border border-rose-200 text-rose-800 leading-relaxed font-bold shadow-sm">
+                          भाई, आपने हाल ही में इस विषय का टेस्ट दिया है, लेकिन आपका परिणाम संतोषजनक नहीं रहा (Accuracy: {accuracy}%)। 
+                          आपने इस टॉपिक का ठीक से रिवीजन भी नहीं किया है (रिवीजन रिकॉर्ड: सिर्फ़ {revisionTime} मिनट)। इसी वजह से यह विषय कमज़ोर है, इसे सेटअप करें!
+                        </div>
+                      </div>
+                    );
+                  }
+                  return null;
+                })()}
+
                 {/* Targeted Action Plan */}
                 <div className="space-y-1.5 text-xs">
                   <span className="font-bold text-slate-900 flex items-center gap-1.5">
                     <Target className="w-3.5 h-3.5 text-indigo-600" />{" "}
                     Prescribed Action Plan:
                   </span>
-                  <div className="p-3 bg-indigo-50/60 rounded-xl border border-indigo-200 text-slate-700 leading-relaxed font-medium">
+                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-slate-700 leading-relaxed font-medium">
                     {selectedTopic.recommendedAction}
                   </div>
                 </div>
+
+                {/* Excel Study Guide Injection */}
+                {(() => {
+                  const syllabusMatch = syllabus.find(s => s.title === selectedTopic.topic || s.id === selectedTopic.topic);
+                  if (syllabusMatch?.studyGuide) {
+                    return (
+                      <div className="space-y-1.5 text-xs mt-3">
+                        <span className="font-bold text-indigo-800 flex items-center gap-1.5">
+                          <BookOpen className="w-3.5 h-3.5 text-indigo-600" /> 
+                          मार्क बढ़ाने के लिए क्या तैयार करें (Excel Guide):
+                        </span>
+                        <div className="p-3 bg-indigo-50 rounded-xl border border-indigo-200 text-indigo-900 leading-relaxed font-bold shadow-sm">
+                          {syllabusMatch.studyGuide}
+                        </div>
+                      </div>
+                    );
+                  }
+                  return null;
+                })()}
 
                 {/* Priority Book & PYQs */}
                 <div className="space-y-2 text-xs">
@@ -517,16 +533,7 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                   </div>
                 </div>
 
-                {/* AI Clarity Action Button */}
-                <div className="pt-2">
-                  <button
-                    onClick={() => onOpenExplainTopic(selectedTopic.topic)}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-sm transition cursor-pointer active:scale-98"
-                  >
-                    <Sparkles className="w-4 h-4" />
-                    <span>Ask AI Mentor to Explain This Topic</span>
-                  </button>
-                </div>
+
               </div>
             ) : (
               <div className="p-8 text-center bg-white border-2 border-slate-200 rounded-3xl text-slate-500 text-xs">
@@ -608,6 +615,29 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                     </div>
                   </div>
 
+                  {/* Revision Insights AI Scolding */}
+                  {(() => {
+                    const revisionTime = sessionLogs
+                      .filter((log) => log.topicCovered === item.topic && log.taskType === "revision")
+                      .reduce((sum, log) => sum + log.durationMinutes, 0);
+                    const accuracy = item.accuracyInMocks || 50;
+                    
+                    if (accuracy < 70 && revisionTime < 60) {
+                      return (
+                        <div className="space-y-1.5 text-xs mt-3">
+                          <span className="font-bold text-rose-700 flex items-center gap-1.5">
+                            <AlertTriangle className="w-3.5 h-3.5" /> Warning: Lack of Revision
+                          </span>
+                          <div className="p-3 bg-rose-50 rounded-xl border border-rose-200 text-rose-800 leading-relaxed font-bold shadow-sm">
+                            भाई, आपने हाल ही में इस विषय का टेस्ट दिया है, लेकिन आपका परिणाम संतोषजनक नहीं रहा (Accuracy: {accuracy}%)। 
+                            आपने इस टॉपिक का ठीक से रिवीजन भी नहीं किया है (रिवीजन रिकॉर्ड: सिर्फ़ {revisionTime} मिनट)। इसी वजह से यह विषय कमज़ोर है, इसे सेटअप करें!
+                          </div>
+                        </div>
+                      );
+                    }
+                    return null;
+                  })()}
+
                   {/* Recommended Action & Books */}
                   <div className="space-y-2 text-xs text-slate-700">
                     <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 font-medium">
@@ -628,16 +658,7 @@ export const WeakAreasTab: React.FC<WeakAreasTabProps> = ({
                   </div>
                 </div>
 
-                {/* AI Remedy Button */}
-                <div className="pt-3 border-t border-slate-100 flex justify-end">
-                  <button
-                    onClick={() => onOpenExplainTopic(item.topic)}
-                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-bold transition cursor-pointer"
-                  >
-                    <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
-                    <span>AI Concept Clarity on "{item.topic}"</span>
-                  </button>
-                </div>
+
               </div>
             );
           })}

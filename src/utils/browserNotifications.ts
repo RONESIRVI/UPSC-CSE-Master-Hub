@@ -10,7 +10,7 @@ let titleBlinkInterval: any = null;
 let originalDocumentTitle =
   typeof document !== "undefined"
     ? document.title
-    : "UPSC AI Preparation Suite";
+    : "RAS AI Preparation Suite";
 
 /**
  * Checks if browser Native Notifications are supported
@@ -50,7 +50,7 @@ export function startTitleAlert(alertMessage: string) {
   // Stop existing blinker
   stopTitleAlert();
 
-  originalDocumentTitle = document.title || "UPSC AI Preparation Suite";
+  originalDocumentTitle = document.title || "RAS AI Preparation Suite";
   let isAlert = true;
 
   titleBlinkInterval = setInterval(() => {
@@ -93,14 +93,14 @@ export function triggerTimerEndNotification(options: {
 }) {
   const { phase, cycle = 1, topic, playSound = true } = options;
 
-  let title = "🎯 UPSC Focus Session Completed!";
+  let title = "🎯 RAS Focus Session Completed!";
   let body = topic
     ? `Great job! You've finished your focus block on "${topic}". Time for a well-deserved break.`
     : "Great discipline! Focus session finished. Take a rest to consolidate your memory.";
 
   if (phase === "short_break") {
     title = "☕ Short Break Ended";
-    body = `Cycle ${cycle} is starting! Ready to resume your UPSC study block?`;
+    body = `Cycle ${cycle} is starting! Ready to resume your RAS study block?`;
   } else if (phase === "long_break") {
     title = "⚡ Long Rest Concluded";
     body =

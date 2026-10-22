@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PYQQuestion } from "../../types";
+import { PYQQuestion, SyllabusTopic } from "../../types";
 import { PYQ_DATABASE } from "../../data/pyqData";
 import {
   HelpCircle,
@@ -18,18 +18,20 @@ import {
 
 interface PYQTabProps {
   pyqs?: PYQQuestion[];
-  onOpenAIEvaluator: (question: string) => void;
+
   onAddPYQ?: (pyq: PYQQuestion) => void;
   onDeletePYQ?: (id: string) => void;
   onResetDefaultPYQs?: () => void;
+  syllabus: SyllabusTopic[];
 }
 
 export const PYQTab: React.FC<PYQTabProps> = ({
   pyqs = PYQ_DATABASE,
-  onOpenAIEvaluator,
+
   onAddPYQ,
   onDeletePYQ,
   onResetDefaultPYQs,
+  syllabus,
 }) => {
   const [selectedType, setSelectedType] = useState<"All" | "Prelims" | "Mains">(
     "All"
@@ -46,7 +48,7 @@ export const PYQTab: React.FC<PYQTabProps> = ({
   const [formType, setFormType] = useState<"Prelims" | "Mains">("Prelims");
   const [formYear, setFormYear] = useState<number>(2024);
   const [formPaper, setFormPaper] = useState("Prelims GS1");
-  const [formSubject, setFormSubject] = useState("Indian Polity & Governance");
+  const [formSubject, setFormSubject] = useState("राजस्थान का इतिहास, कला, संस्कृति, साहित्य, परम्परा एवं विरासत");
   const [formTopic, setFormTopic] = useState("");
   const [formQuestionText, setFormQuestionText] = useState("");
   const [formOptA, setFormOptA] = useState("");
@@ -116,13 +118,13 @@ export const PYQTab: React.FC<PYQTabProps> = ({
               { label: "C", text: formOptC.trim() || "Option C" },
               { label: "D", text: formOptD.trim() || "Option D" },
             ],
-            correctOption: formCorrectOpt,
+            correctOption: formCorrectOpt as "A" | "B" | "C" | "D",
             explanation:
               formExplanation.trim() || "Refer to standard reference sources.",
             eliminationTechnique: formElimination.trim() || undefined,
           }
         : {
-            marks: formMarks || 10,
+            marks: (formMarks || 10) as 10 | 15 | 20 | 125 | 250,
             modelAnswerOutline:
               formModelOutline.trim() ||
               "Introduction -> Key Body Points -> Conclusion",
@@ -152,7 +154,7 @@ export const PYQTab: React.FC<PYQTabProps> = ({
           <div>
             <div className="flex flex-wrap items-center gap-2">
               <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-100 flex items-center gap-1.5">
-                <HelpCircle className="w-3.5 h-3.5 text-indigo-600" /> UPSC Exam
+                <HelpCircle className="w-3.5 h-3.5 text-indigo-600" /> RAS Exam
                 Vault
               </span>
               <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
@@ -163,9 +165,8 @@ export const PYQTab: React.FC<PYQTabProps> = ({
               Previous Year Questions (PYQs) & Model Keys
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed mt-1">
-              Test your conceptual elimination techniques on genuine UPSC
-              Prelims questions and dissect high-scoring Mains model structures
-              with AI-assisted answer evaluation.
+              Test your conceptual elimination techniques on genuine RAS
+              Prelims questions and dissect high-scoring Mains model structures.
             </p>
           </div>
 
@@ -184,14 +185,14 @@ export const PYQTab: React.FC<PYQTabProps> = ({
                 onClick={() => {
                   if (
                     confirm(
-                      "Restore standard UPSC PYQ database? Custom questions will be reset."
+                      "Restore standard RAS PYQ database? Custom questions will be reset."
                     )
                   ) {
                     onResetDefaultPYQs();
                   }
                 }}
                 className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition cursor-pointer"
-                title="Restore Standard Official UPSC Questions"
+                title="Restore Standard Official RAS Questions"
               >
                 <RotateCcw className="w-3.5 h-3.5 shrink-0" />
                 <span>Restore Standard PYQs</span>
@@ -290,7 +291,7 @@ export const PYQTab: React.FC<PYQTabProps> = ({
                 <div className="flex flex-wrap items-center justify-between gap-2 pb-3.5 border-b border-slate-100">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-extrabold text-xs border border-indigo-100">
-                      UPSC {pyq.type} {pyq.year}
+                      RAS {pyq.type} {pyq.year}
                     </span>
                     <span className="text-xs font-semibold text-slate-600">
                       {pyq.subject}
@@ -410,7 +411,7 @@ export const PYQTab: React.FC<PYQTabProps> = ({
                         {pyq.explanation && (
                           <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed font-medium">
                             <strong className="text-indigo-950 block mb-1 font-bold">
-                              Official UPSC Explanation & Concept:
+                              Official RAS Explanation & Concept:
                             </strong>
                             {pyq.explanation}
                           </div>
@@ -447,19 +448,10 @@ export const PYQTab: React.FC<PYQTabProps> = ({
                       </div>
                     )}
 
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-slate-100">
+                    <div className="pt-2 border-t border-slate-100">
                       <span className="text-xs text-slate-500 font-medium">
-                        Practice writing a 150/250-word answer on paper, then
-                        evaluate with AI.
+                        Practice writing a 150/250-word answer on paper.
                       </span>
-
-                      <button
-                        onClick={() => onOpenAIEvaluator(pyq.questionText)}
-                        className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-sm transition cursor-pointer"
-                      >
-                        <Sparkles className="w-4 h-4 fill-white" />
-                        <span>AI Answer Evaluator</span>
-                      </button>
                     </div>
                   </div>
                 )}
@@ -520,21 +512,24 @@ export const PYQTab: React.FC<PYQTabProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Paper
+                    Paper / Exam
                   </label>
-                  <select
+                  <input
+                    type="text"
+                    list="pyq-paper-options"
                     value={formPaper}
-                    onChange={(e) => setFormPaper(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-bold"
-                  >
-                    <option value="Prelims GS1">Prelims GS1</option>
-                    <option value="Prelims CSAT">Prelims CSAT</option>
-                    <option value="Mains GS1">Mains GS1</option>
-                    <option value="Mains GS2">Mains GS2</option>
-                    <option value="Mains GS3">Mains GS3</option>
-                    <option value="Mains GS4">Mains GS4</option>
-                    <option value="Mains Essay">Mains Essay</option>
-                  </select>
+                    onChange={(e) => {
+                      setFormPaper(e.target.value);
+                      setFormSubject("");
+                    }}
+                    placeholder="Type or select a paper..."
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-bold focus:ring-2 focus:ring-indigo-500"
+                  />
+                  <datalist id="pyq-paper-options">
+                    {Array.from(new Set(syllabus.map((t) => t.paper).filter(Boolean))).map((p) => (
+                      <option key={p} value={p} />
+                    ))}
+                  </datalist>
                 </div>
 
                 <div>
@@ -543,11 +538,24 @@ export const PYQTab: React.FC<PYQTabProps> = ({
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. Indian Polity, Economy"
+                    list="pyq-subject-options"
                     value={formSubject}
                     onChange={(e) => setFormSubject(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-medium"
+                    placeholder="e.g. Polity, History, Economy, Optional"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none font-medium focus:ring-2 focus:ring-indigo-500"
                   />
+                  <datalist id="pyq-subject-options">
+                    {Array.from(
+                      new Set(
+                        syllabus
+                          .filter((t) => !formPaper || t.paper === formPaper)
+                          .map((t) => t.subject)
+                          .filter(Boolean)
+                      )
+                    ).map((s) => (
+                      <option key={s} value={s} />
+                    ))}
+                  </datalist>
                 </div>
               </div>
 

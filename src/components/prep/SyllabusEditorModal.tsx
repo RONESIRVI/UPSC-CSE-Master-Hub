@@ -54,6 +54,7 @@ export const SyllabusEditorModal: React.FC<SyllabusEditorModalProps> = ({
           {editingTopic ? (
             <SyllabusForm 
               initialData={editingTopic} 
+              syllabus={syllabus}
               onSave={handleSave} 
               onCancel={() => setEditingTopic(null)} 
             />
@@ -62,11 +63,11 @@ export const SyllabusEditorModal: React.FC<SyllabusEditorModalProps> = ({
               <button
                 onClick={() => setEditingTopic({
                   id: `topic-${Date.now()}`,
-                  paper: "Prelims",
+                  paper: "Prelims GS1",
                   subject: "",
                   module: "",
                   title: "",
-                  yield: "Medium Yield",
+                  yield: "⭐ Medium Yield",
                   weightagePercentage: 5,
                   pyqFrequencyLast5Years: 0,
                   status: "not_started",
@@ -112,7 +113,12 @@ export const SyllabusEditorModal: React.FC<SyllabusEditorModalProps> = ({
   );
 };
 
-const SyllabusForm: React.FC<{ initialData: SyllabusTopic, onSave: (data: SyllabusTopic) => void, onCancel: () => void }> = ({ initialData, onSave, onCancel }) => {
+const SyllabusForm: React.FC<{
+  initialData: SyllabusTopic;
+  syllabus: SyllabusTopic[];
+  onSave: (data: SyllabusTopic) => void;
+  onCancel: () => void;
+}> = ({ initialData, syllabus, onSave, onCancel }) => {
   const [formData, setFormData] = useState<SyllabusTopic>(initialData);
 
   const handleChange = (field: keyof SyllabusTopic, value: any) => {
@@ -120,7 +126,14 @@ const SyllabusForm: React.FC<{ initialData: SyllabusTopic, onSave: (data: Syllab
   };
 
   const handleSubtopicsChange = (val: string) => {
-    setFormData(prev => ({ ...prev, subtopics: val.split('\n').filter(s => s.trim()) }));
+    const titles = val.split('\n').filter(s => s.trim());
+    setFormData(prev => ({
+      ...prev,
+      subtopics: titles.map(title => {
+        const existing = (prev.subtopics || []).find(st => (typeof st === 'string' ? st : st.title) === title);
+        return typeof existing === 'object' && existing !== null ? existing : { title, status: "not_started" as const };
+      })
+    }));
   };
 
   return (
@@ -131,19 +144,20 @@ const SyllabusForm: React.FC<{ initialData: SyllabusTopic, onSave: (data: Syllab
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div>
-          <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Paper (RAS)</label>
-          <select 
+          <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Paper / Exam</label>
+          <input 
+            type="text" 
+            list="paper-options"
             value={formData.paper} 
             onChange={e => handleChange('paper', e.target.value)} 
-            className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
-          >
-            <option value="Prelims (सामान्य ज्ञान और सामान्य विज्ञान)">प्रारंभिक (सामान्य ज्ञान और सामान्य विज्ञान)</option>
-            <option value="Paper I (सामान्य अध्ययन- I)">मुख्य Paper I (सामान्य अध्ययन- I)</option>
-            <option value="Paper II (सामान्य अध्ययन- II)">मुख्य Paper II (सामान्य अध्ययन- II)</option>
-            <option value="Paper III (सामान्य अध्ययन- III)">मुख्य Paper III (सामान्य अध्ययन- III)</option>
-            <option value="Paper IV (सामान्य हिंदी एवं सामान्य अंग्रेजी)">मुख्य Paper IV (सामान्य हिंदी एवं सामान्य अंग्रेजी)</option>
-            <option value="Interview (साक्षात्कार)">Interview (साक्षात्कार)</option>
-          </select>
+            placeholder="Type or select a paper..."
+            className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500" 
+          />
+          <datalist id="paper-options">
+            {Array.from(new Set(syllabus.map(t => t.paper).filter(Boolean))).map(p => (
+              <option key={p} value={p} />
+            ))}
+          </datalist>
         </div>
         <div>
           <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Subject</label>
@@ -156,17 +170,9 @@ const SyllabusForm: React.FC<{ initialData: SyllabusTopic, onSave: (data: Syllab
             className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500" 
           />
           <datalist id="subject-options">
-            <option value="History, Art & Culture" />
-            <option value="Economy" />
-            <option value="Sociology, Management & Accounting" />
-            <option value="Ethics" />
-            <option value="Science & Technology" />
-            <option value="Earth Science (Geography)" />
-            <option value="Polity & IR" />
-            <option value="Public Administration" />
-            <option value="Sports & Yoga, Behavior, Law" />
-            <option value="General Hindi" />
-            <option value="General English" />
+            {Array.from(new Set(syllabus.filter(t => !formData.paper || t.paper === formData.paper).map(t => t.subject).filter(Boolean))).map(s => (
+              <option key={s} value={s} />
+            ))}
           </datalist>
         </div>
         <div>
@@ -183,7 +189,7 @@ const SyllabusForm: React.FC<{ initialData: SyllabusTopic, onSave: (data: Syllab
         <label className="text-xs font-bold text-slate-600 uppercase block mb-1">Subtopics (One per line)</label>
         <textarea 
           rows={4}
-          value={formData.subtopics.join('\n')} 
+          value={(formData.subtopics || []).map(st => typeof st === 'string' ? st : st.title).join('\n')} 
           onChange={e => handleSubtopicsChange(e.target.value)} 
           className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500" 
         />

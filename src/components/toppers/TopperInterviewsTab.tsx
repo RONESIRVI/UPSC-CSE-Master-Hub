@@ -34,7 +34,7 @@ export const TopperInterviewsTab: React.FC<TopperInterviewsTabProps> = ({ audioN
           <div>
             <div className="flex items-center gap-2">
               <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-100 flex items-center gap-1.5">
-                <Users className="w-3.5 h-3.5 text-emerald-600" /> UPSC
+                <Users className="w-3.5 h-3.5 text-emerald-600" /> RAS
                 Personality Test Vault
               </span>
               <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
@@ -45,7 +45,7 @@ export const TopperInterviewsTab: React.FC<TopperInterviewsTabProps> = ({ audioN
               Real Interview Transcripts & DAF Grilling Analysis
             </h2>
             <p className="text-sm text-slate-600 max-w-3xl leading-relaxed mt-1">
-              Read authentic UPSC interview board transcripts, psychological
+              Read authentic RAS interview board transcripts, psychological
               composure techniques, situational reaction questions, and DAF
               (Detailed Application Form) defense strategies.
             </p>
@@ -238,6 +238,24 @@ export const TopperInterviewsTab: React.FC<TopperInterviewsTabProps> = ({ audioN
             ))}
           </div>
         </div>
+
+        {/* Dynamic Extra Data */}
+        {selectedTranscript.extraData && Object.keys(selectedTranscript.extraData).length > 0 && (
+          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mt-4">
+            <div className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5 mb-3">
+              <Sparkles className="w-4 h-4 text-indigo-600" />
+              <span>Additional Info</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {Object.entries(selectedTranscript.extraData).map(([key, value]) => (
+                <div key={key} className="bg-white p-3 rounded-lg border border-slate-100">
+                  <div className="text-[10px] uppercase font-bold text-slate-400 mb-1">{key}</div>
+                  <div className="text-sm font-medium text-slate-700 whitespace-pre-wrap">{value}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

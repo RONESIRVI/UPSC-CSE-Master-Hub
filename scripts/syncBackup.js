@@ -6,6 +6,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const projectRoot = path.join(__dirname, '..');
 
+if (process.platform !== 'win32') {
+  console.log('Not on Windows, skipping offline backup sync.');
+  process.exit(0);
+}
+
 console.log('Syncing backup to R:\\UPSC CONQUEST...');
 
 // Using robocopy to mirror the directory, excluding node_modules and .git

@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import {
   TOPPERS_PROFILES,
-  TOPPER_BOOKS,
+  STRATEGY_SETUP,
   TOPPER_NOTES_VAULT,
 } from "../data/toppersData";
 import { DEFAULT_SYLLABUS } from "../data/syllabusData";
@@ -33,50 +33,49 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
 
   const results = useMemo(() => {
     if (!searchQuery.trim())
-      return { toppers: [], books: [], syllabus: [], pyqs: [], notes: [] };
+      return { toppers: [], strategies: [], syllabus: [], pyqs: [], notes: [] };
     const q = searchQuery.toLowerCase();
 
     const toppers = TOPPERS_PROFILES.filter(
       (t) =>
-        t.name.toLowerCase().includes(q) ||
-        t.optional.toLowerCase().includes(q) ||
-        t.keyStrategy.toLowerCase().includes(q)
+        (t.name || "").toLowerCase().includes(q) ||
+        (t.optional || "").toLowerCase().includes(q) ||
+        (t.keyStrategy || "").toLowerCase().includes(q)
     ).slice(0, 3);
 
-    const books = TOPPER_BOOKS.filter(
-      (b) =>
-        b.title.toLowerCase().includes(q) ||
-        b.subject.toLowerCase().includes(q) ||
-        b.authorOrPublication.toLowerCase().includes(q)
+    const strategies = STRATEGY_SETUP.filter(
+      (s) =>
+        (s.title || "").toLowerCase().includes(q) ||
+        (s.content || "").toLowerCase().includes(q)
     ).slice(0, 3);
 
     const syllabus = DEFAULT_SYLLABUS.filter(
       (s) =>
-        s.title.toLowerCase().includes(q) ||
-        s.subject.toLowerCase().includes(q) ||
-        s.subtopics.some((sub) => sub.toLowerCase().includes(q))
+        (s.title || "").toLowerCase().includes(q) ||
+        (s.subject || "").toLowerCase().includes(q) ||
+        (s.subtopics || []).some((sub) => (sub.title || "").toLowerCase().includes(q))
     ).slice(0, 4);
 
     const pyqs = PYQ_DATABASE.filter(
       (p) =>
-        p.questionText.toLowerCase().includes(q) ||
-        p.topic.toLowerCase().includes(q) ||
-        p.subject.toLowerCase().includes(q)
+        (p.questionText || "").toLowerCase().includes(q) ||
+        (p.topic || "").toLowerCase().includes(q) ||
+        (p.subject || "").toLowerCase().includes(q)
     ).slice(0, 3);
 
     const notes = TOPPER_NOTES_VAULT.filter(
       (n) =>
-        n.title.toLowerCase().includes(q) ||
-        n.subject.toLowerCase().includes(q) ||
-        n.summary.toLowerCase().includes(q)
+        (n.title || "").toLowerCase().includes(q) ||
+        (n.subject || "").toLowerCase().includes(q) ||
+        (n.summary || "").toLowerCase().includes(q)
     ).slice(0, 3);
 
-    return { toppers, books, syllabus, pyqs, notes };
+    return { toppers, strategies, syllabus, pyqs, notes };
   }, [searchQuery]);
 
   const totalResults =
     results.toppers.length +
-    results.books.length +
+    results.strategies.length +
     results.syllabus.length +
     results.pyqs.length +
     results.notes.length;
@@ -120,7 +119,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
             <div className="py-8 text-center text-slate-500 space-y-2">
               <Sparkles className="w-8 h-8 mx-auto text-indigo-500 mb-2" />
               <p className="text-sm font-semibold text-slate-700">
-                Type any keyword to search across the entire UPSC Master Hub.
+                Type any keyword to search across the entire CSE PREP.
               </p>
               <p className="text-xs text-slate-500">
                 Popular: "Polity", "Laxmikanth", "Aditya Srivastava",
@@ -174,16 +173,16 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                 </div>
               )}
 
-              {/* Books Results */}
-              {results.books.length > 0 && (
+              {/* Strategies Results */}
+              {results.strategies.length > 0 && (
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-sky-700 uppercase tracking-wider">
                     <BookOpen className="w-3.5 h-3.5" />
-                    <span>Recommended Books ({results.books.length})</span>
+                    <span>Master Strategies ({results.strategies.length})</span>
                   </div>
-                  {results.books.map((b) => (
+                  {results.strategies.map((s) => (
                     <button
-                      key={b.id}
+                      key={s.id}
                       onClick={() => {
                         onNavigate("toppers", "books");
                         onClose();
@@ -192,13 +191,10 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                     >
                       <div>
                         <div className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                          <span>{b.title}</span>
-                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-sky-100 text-sky-800 font-bold">
-                            {b.subject}
-                          </span>
+                          <span>{s.title}</span>
                         </div>
                         <p className="text-xs text-slate-600 line-clamp-1 mt-0.5 font-medium">
-                          {b.authorOrPublication}
+                          {s.content}
                         </p>
                       </div>
                       <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-sky-600 transition transform group-hover:translate-x-1" />
@@ -313,7 +309,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
         {/* Footer info */}
         <div className="px-4 py-2.5 bg-slate-50 border-t border-slate-200 text-[11px] text-slate-500 flex justify-between items-center font-medium">
           <span>Navigate using tabs or click any card</span>
-          <span>UPSC CSE Complete Database</span>
+          <span>CSE PREP Complete Database</span>
         </div>
       </div>
     </div>

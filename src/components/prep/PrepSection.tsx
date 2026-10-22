@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import {
   PrepSubTab,
   SyllabusTopic,
@@ -10,16 +10,16 @@ import {
 import { SyllabusTab } from "./SyllabusTab";
 import { StudyPlanTab } from "./StudyPlanTab";
 import { SpacedRevisionTab } from "./SpacedRevisionTab";
-import { RevisionNotesTab } from "./RevisionNotesTab";
 import { PYQTab } from "./PYQTab";
-import { QuickStudyLogModal } from "./QuickStudyLogModal";
-import { QuickThoughtsModal } from "./QuickThoughtsModal";
+
+
 import {
   BookOpen,
   Flag,
   RotateCcw,
   HelpCircle,
   StickyNote,
+  Image as ImageIcon,
   ChevronDown,
   Check,
   Sparkles,
@@ -27,6 +27,8 @@ import {
   Plus,
   Lightbulb,
   Edit2,
+  Clock,
+  Play,
 } from "lucide-react";
 import { SyllabusEditorModal } from "./SyllabusEditorModal";
 
@@ -39,13 +41,16 @@ interface PrepSectionProps {
     topicId: string,
     nextStatus: SyllabusTopic["status"]
   ) => void;
-  onOpenTopicAI: (topic: SyllabusTopic) => void;
+  onUpdateMicroTopicStatus?: (
+    topicId: string,
+    subtopicIndex: number,
+    nextStatus: SyllabusTopic["status"]
+  ) => void;
   onAddTopic?: (topic: SyllabusTopic) => void;
   onDeleteTopic?: (topicId: string) => void;
   onResetDefaultSyllabus?: () => void;
   phases: StudyPlanPhase[];
   onToggleMilestone: (phaseId: string, milestoneId: string) => void;
-  onOpenAIStrategy: () => void;
   onAddMilestone?: (phaseId: string, title: string, targetDate: string) => void;
   onDeleteMilestone?: (phaseId: string, milestoneId: string) => void;
   onResetDefaultStudyPlan?: () => void;
@@ -62,7 +67,9 @@ interface PrepSectionProps {
   onAddPYQ?: (pyq: PYQQuestion) => void;
   onDeletePYQ?: (id: string) => void;
   onResetDefaultPYQs?: () => void;
-  onOpenAIEvaluator: (question: string) => void;
+  currentStudySession?: any;
+  setCurrentStudySession?: React.Dispatch<React.SetStateAction<any>>;
+  onStartTimer?: () => void;
 }
 
 export const PrepSection: React.FC<PrepSectionProps> = ({
@@ -71,13 +78,12 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
   syllabus,
   setSyllabus,
   onUpdateTopicStatus,
-  onOpenTopicAI,
+  onUpdateMicroTopicStatus,
   onAddTopic,
   onDeleteTopic,
   onResetDefaultSyllabus,
   phases,
   onToggleMilestone,
-  onOpenAIStrategy,
   onAddMilestone,
   onDeleteMilestone,
   onResetDefaultStudyPlan,
@@ -94,12 +100,52 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
   onAddPYQ,
   onDeletePYQ,
   onResetDefaultPYQs,
-  onOpenAIEvaluator,
+  currentStudySession,
+  setCurrentStudySession,
+  onStartTimer,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
-  const [showQuickLogModal, setShowQuickLogModal] = useState<boolean>(false);
-  const [showQuickThoughtsModal, setShowQuickThoughtsModal] =
-    useState<boolean>(false);
+
+  const [modalPaper, setModalPaper] = useState("");
+  const [modalSubject, setModalSubject] = useState("");
+  const [modalTopic, setModalTopic] = useState("");
+  const [modalSubtopic, setModalSubtopic] = useState("");
+
+  const subjects = useMemo(() => {
+    return Array.from(new Set(syllabus.map((t) => t.subject).filter(Boolean)));
+  }, [syllabus]);
+
+  const topicsForSubject = useMemo(() => {
+    if (!modalSubject) return [];
+    return syllabus.filter((t) => t.subject === modalSubject);
+  }, [syllabus, modalSubject]);
+
+  const subtopicsForTopic = useMemo(() => {
+    if (!modalTopic) return [];
+    const topicObj = syllabus.find(
+      (t) => t.subject === modalSubject && (t.title === modalTopic || t.id === modalTopic)
+    );
+    if (!topicObj || !topicObj.subtopics) return [];
+    return topicObj.subtopics.map((sub: any) =>
+      typeof sub === "string" ? sub : sub.title
+    );
+  }, [syllabus, modalSubject, modalTopic]);
+
+  const handleStartSession = () => {
+    if (!modalSubject) return;
+    if (setCurrentStudySession) {
+      setCurrentStudySession({
+        subject: modalSubject,
+        topic: modalTopic,
+        subtopic: modalSubtopic,
+      });
+    }
+    if (onStartTimer) {
+      onStartTimer();
+    }
+  };
+
+
   const [isSyllabusEditorOpen, setIsSyllabusEditorOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -120,22 +166,6 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
       color: "bg-blue-50 text-blue-600 border-blue-200",
     },
     {
-      key: "notes",
-      label: "Quick Revision Notes",
-      description: "Local high-yield fact cards & key points binder",
-      icon: StickyNote,
-      badge: "Binder",
-      color: "bg-amber-50 text-amber-600 border-amber-200",
-    },
-    {
-      key: "study-plan",
-      label: "Study Plan & Milestones",
-      description: "Phase-wise roadmap & strategic timeline",
-      icon: Flag,
-      badge: "4 Phases",
-      color: "bg-indigo-50 text-indigo-600 border-indigo-200",
-    },
-    {
       key: "revision",
       label: "Spaced Repetition Queue",
       description: "Active recall flashcards on 1-3-7-15-30 cycles",
@@ -143,14 +173,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
       badge: `${revisionQueue.length} Due`,
       color: "bg-teal-50 text-teal-600 border-teal-200",
     },
-    {
-      key: "pyq",
-      label: "PYQs & Model Keys",
-      description: "Past year Prelims MCQs & Mains model answers",
-      icon: HelpCircle,
-      badge: "Exam Vault",
-      color: "bg-purple-50 text-purple-600 border-purple-200",
-    },
+
   ];
 
   const currentOption =
@@ -248,25 +271,8 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
-            <button
-              id="prep-header-quick-jot-btn"
-              type="button"
-              onClick={() => setShowQuickThoughtsModal(true)}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-xs font-bold transition shadow-2xs cursor-pointer"
-            >
-              <Lightbulb className="w-4 h-4 text-amber-600 shrink-0" />
-              <span className="hidden sm:inline">Jot Thought</span>
-            </button>
 
-            {activeSubTab === "syllabus" && setSyllabus && (
-              <button
-                onClick={() => setIsSyllabusEditorOpen(true)}
-                className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-bold text-xs transition border border-indigo-200 shadow-sm"
-              >
-                <Edit2 className="w-4 h-4" />
-                <span>Edit</span>
-              </button>
-            )}
+
           </div>
         </div>
       </div>
@@ -275,28 +281,14 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
         <SyllabusTab
           syllabus={syllabus}
           onUpdateTopicStatus={onUpdateTopicStatus}
-          onOpenTopicAI={onOpenTopicAI}
+          onUpdateMicroTopicStatus={onUpdateMicroTopicStatus}
           onAddTopic={onAddTopic}
           onDeleteTopic={onDeleteTopic}
           onResetDefaultSyllabus={onResetDefaultSyllabus}
-          onNavigateToNotes={() => setActiveSubTab("notes")}
+          onNavigateToNotes={() => {}}
         />
       )}
 
-      {activeSubTab === "notes" && (
-        <RevisionNotesTab syllabus={syllabus} onOpenTopicAI={onOpenTopicAI} />
-      )}
-
-      {activeSubTab === "study-plan" && (
-        <StudyPlanTab
-          phases={phases}
-          onToggleMilestone={onToggleMilestone}
-          onOpenAIStrategy={onOpenAIStrategy}
-          onAddMilestone={onAddMilestone}
-          onDeleteMilestone={onDeleteMilestone}
-          onResetDefaultStudyPlan={onResetDefaultStudyPlan}
-        />
-      )}
 
       {activeSubTab === "revision" && (
         <SpacedRevisionTab
@@ -305,18 +297,11 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
           onAddRevisionItem={onAddRevisionItem}
           onDeleteRevisionItem={onDeleteRevisionItem}
           onResetDefaultRevisionQueue={onResetDefaultRevisionQueue}
+          syllabus={syllabus}
         />
       )}
 
-      {activeSubTab === "pyq" && (
-        <PYQTab
-          pyqs={pyqs}
-          onOpenAIEvaluator={onOpenAIEvaluator}
-          onAddPYQ={onAddPYQ}
-          onDeletePYQ={onDeletePYQ}
-          onResetDefaultPYQs={onResetDefaultPYQs}
-        />
-      )}
+
 
       {setSyllabus && (
         <SyllabusEditorModal
@@ -327,54 +312,131 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
         />
       )}
 
-      <div className="fixed bottom-20 lg:bottom-6 right-4 sm:right-6 z-40 flex items-center gap-2 sm:gap-2.5 animate-in slide-in-from-bottom-5 duration-300">
-        <button
-          id="fab-quick-thought-btn"
-          type="button"
-          onClick={() => setShowQuickThoughtsModal(true)}
-          className="group flex items-center gap-2 px-3.5 py-2.5 sm:px-4 sm:py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-white font-extrabold text-xs sm:text-sm shadow-xl shadow-amber-500/25 border-2 border-amber-300/40 transition-all cursor-pointer hover:shadow-2xl"
-          title="Jot down a fleeting thought or doubt as a Markdown revision item"
-        >
-          <div className="p-1 rounded-lg bg-amber-600/80 group-hover:scale-110 transition">
-            <Lightbulb className="w-4 h-4 text-white stroke-[2.5]" />
+      {currentStudySession?.triggerTimerStart && (
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+            <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-indigo-50/50">
+              <div className="flex items-center gap-2">
+                <Clock className="w-5 h-5 text-indigo-600" />
+                <h3 className="font-bold text-slate-800 tracking-tight">Select Session Topic</h3>
+              </div>
+              <button 
+                onClick={() => setCurrentStudySession && setCurrentStudySession({...currentStudySession, triggerTimerStart: false})}
+                className="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-full transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="p-5 overflow-y-auto space-y-4">
+              <p className="text-sm font-medium text-slate-500 mb-2">
+                Configure your active study session context.
+              </p>
+              
+              <div className="space-y-4">
+                {/* Exam/Paper Dropdown */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Exam / Paper</label>
+                  <select 
+                    value={modalPaper || currentStudySession?.paper || ""}
+                    onChange={(e) => {
+                      setModalPaper(e.target.value);
+                      setModalSubject("");
+                      setModalTopic("");
+                      setModalSubtopic("");
+                    }}
+                    className="w-full bg-slate-50 border border-slate-200 text-slate-700 rounded-xl p-3 font-medium outline-none focus:border-indigo-500 transition-colors"
+                  >
+                    <option value="">Select Exam</option>
+                    {Array.from(new Set(syllabus.map(s => s.paper).filter(Boolean))).map(p => (
+                      <option key={p} value={p}>{p}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Subject Dropdown */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Subject</label>
+                  <select 
+                    value={modalSubject || currentStudySession?.subject || ""}
+                    onChange={(e) => {
+                      setModalSubject(e.target.value);
+                      setModalTopic("");
+                      setModalSubtopic("");
+                    }}
+                    className="w-full bg-slate-50 border border-slate-200 text-slate-700 rounded-xl p-3 font-medium outline-none focus:border-indigo-500 transition-colors"
+                  >
+                    <option value="">Select Subject</option>
+                    {Array.from(new Set(syllabus.filter(s => !(modalPaper || currentStudySession?.paper) || s.paper === (modalPaper || currentStudySession?.paper)).map(s => s.subject).filter(Boolean))).map(subj => (
+                      <option key={subj} value={subj}>{subj}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Topic Dropdown */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Topic</label>
+                  <select 
+                    value={modalTopic || currentStudySession?.topic || ""}
+                    onChange={(e) => {
+                      setModalTopic(e.target.value);
+                      setModalSubtopic("");
+                    }}
+                    disabled={!(modalSubject || currentStudySession?.subject)}
+                    className="w-full bg-slate-50 border border-slate-200 text-slate-700 rounded-xl p-3 font-medium outline-none focus:border-indigo-500 transition-colors disabled:opacity-50"
+                  >
+                    <option value="">Select Topic</option>
+                    {syllabus.filter(s => (!(modalPaper || currentStudySession?.paper) || s.paper === (modalPaper || currentStudySession?.paper)) && s.subject === (modalSubject || currentStudySession?.subject)).map(topic => (
+                      <option key={topic.id} value={topic.title}>{topic.title}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Sub-topic Dropdown */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Sub-topic</label>
+                  <select 
+                    value={modalSubtopic}
+                    onChange={(e) => setModalSubtopic(e.target.value)}
+                    disabled={!(modalTopic || currentStudySession?.topic)}
+                    className="w-full bg-slate-50 border border-slate-200 text-slate-700 rounded-xl p-3 font-medium outline-none focus:border-indigo-500 transition-colors disabled:opacity-50"
+                  >
+                    <option value="">Select Sub-topic (Optional)</option>
+                    {syllabus.find(s => s.title === (modalTopic || currentStudySession?.topic))?.subtopics.map(sub => (
+                      <option key={sub.title} value={sub.title}>{sub.title}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="pt-2">
+                <button
+                  onClick={() => {
+                    const finalPaper = modalPaper || currentStudySession?.paper || "";
+                    const finalSubject = modalSubject || currentStudySession?.subject || "";
+                    const finalTopic = modalTopic || currentStudySession?.topic || "";
+                    if (setCurrentStudySession && currentStudySession) {
+                      setCurrentStudySession({
+                        ...currentStudySession, 
+                        paper: finalPaper,
+                        subject: finalSubject,
+                        topic: modalSubtopic ? `${finalTopic} - ${modalSubtopic}` : finalTopic,
+                        triggerTimerStart: false
+                      });
+                    }
+                    if (onStartTimer) onStartTimer();
+                  }}
+                  disabled={!(modalSubject || currentStudySession?.subject)}
+                  className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed active:scale-95 text-white rounded-xl font-black uppercase tracking-wider text-sm shadow-lg shadow-indigo-500/30 transition-all flex items-center justify-center gap-2"
+                >
+                  <Play className="w-4 h-4 fill-white" />
+                  Start Session
+                </button>
+              </div>
+            </div>
           </div>
-          <span className="tracking-wide hidden sm:inline">Jot Thought</span>
-          <span className="sm:hidden text-xs">Note</span>
-        </button>
+        </div>
+      )}
 
-        {/* FAB 2: Quick Study Session Log */}
-        <button
-          id="fab-quick-log-btn"
-          type="button"
-          onClick={() => setShowQuickLogModal(true)}
-          className="group flex items-center gap-2 px-3.5 py-2.5 sm:px-5 sm:py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-extrabold text-xs sm:text-sm shadow-xl shadow-indigo-600/30 border-2 border-indigo-400/40 transition-all cursor-pointer hover:shadow-2xl"
-          title="Quickly log a study session from any tab without losing your view"
-        >
-          <div className="p-1 rounded-lg bg-indigo-500/80 group-hover:scale-110 transition">
-            <Plus className="w-4 h-4 text-white stroke-[3]" />
-          </div>
-          <span className="tracking-wide">Quick Log</span>
-          <span className="hidden sm:inline-flex items-center justify-center text-[10px] px-1.5 py-0.5 rounded-md bg-indigo-700/80 text-indigo-100 font-mono font-bold">
-            +Study
-          </span>
-        </button>
-      </div>
-
-      {/* Quick Study Log Mini-Modal */}
-      <QuickStudyLogModal
-        isOpen={showQuickLogModal}
-        onClose={() => setShowQuickLogModal(false)}
-        onAddSessionLog={onAddSessionLog}
-        syllabus={syllabus}
-      />
-
-      {/* Quick Fleeting Thoughts & Doubts Scratchpad Mini-Modal */}
-      <QuickThoughtsModal
-        isOpen={showQuickThoughtsModal}
-        onClose={() => setShowQuickThoughtsModal(false)}
-        syllabus={syllabus}
-        onAddToSpacedRevision={onAddRevisionItem}
-      />
     </div>
   );
 };

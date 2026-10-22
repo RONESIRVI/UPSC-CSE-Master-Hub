@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SyllabusTopic,
   StudySessionLog,
   MockTestLog,
   WeakAreaItem,
+  UserProfile,
 } from "../../types";
 import {
   GAP_ANALYSIS_METRICS,
   HISTORICAL_CUTOFFS,
+  DEFAULT_WEAK_AREAS,
 } from "../../data/analyticsDefaults";
 import {
   exportAnalyticsDocument,
@@ -37,6 +39,7 @@ import {
 interface AnalyticsExportModalProps {
   isOpen: boolean;
   onClose: () => void;
+  userProfile?: UserProfile;
   syllabus: SyllabusTopic[];
   sessionLogs: StudySessionLog[];
   studyStreak: number;
@@ -47,6 +50,7 @@ interface AnalyticsExportModalProps {
 export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
   isOpen,
   onClose,
+  userProfile,
   syllabus,
   sessionLogs,
   studyStreak,
@@ -54,8 +58,13 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
   weakAreas,
 }) => {
   const [format, setFormat] = useState<"pdf" | "png">("pdf");
-  const [aspirantName, setAspirantName] = useState<string>("UPSC CSE Aspirant");
-  const [targetExam, setTargetExam] = useState<string>("UPSC CSE 2026");
+  const [aspirantName, setAspirantName] = useState<string>(userProfile?.name || "RAS CSE Aspirant");
+  const [targetExam, setTargetExam] = useState<string>(userProfile?.targetExam || "RAS CSE 2026");
+
+  useEffect(() => {
+    if (userProfile?.name) setAspirantName(userProfile.name);
+    if (userProfile?.targetExam) setTargetExam(userProfile.targetExam);
+  }, [userProfile]);
 
   // Section inclusion flags (Heatmap and Gap Analysis prominent)
   const [includeHeatmap, setIncludeHeatmap] = useState<boolean>(true);
@@ -103,12 +112,12 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
   const totalMocks = mockLogs.length;
   const avgMockScore =
     totalMocks > 0
-      ? (mockLogs.reduce((acc, m) => acc + m.score, 0) / totalMocks).toFixed(1)
+      ? (mockLogs.reduce((acc, m) => acc + m.marksObtained, 0) / totalMocks).toFixed(1)
       : "0.0";
   const avgNegativeMarks =
     totalMocks > 0
       ? (
-          mockLogs.reduce((acc, m) => acc + m.negativeMarks, 0) / totalMocks
+          mockLogs.reduce((acc, m) => acc + ((m.incorrectCount || 0) * 0.66), 0) / totalMocks
         ).toFixed(1)
       : "0.0";
 
@@ -230,7 +239,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                 </span>
               </div>
               <h3 className="text-lg font-bold text-slate-900 mt-0.5">
-                Export Performance &amp; Progress Report
+                Export Performance & Progress Report
               </h3>
             </div>
           </div>
@@ -288,7 +297,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                       PDF Document Report
                     </div>
                     <div className="text-[10px] text-slate-500">
-                      Multi-page print-ready official report with headers &amp;
+                      Multi-page print-ready official report with headers &
                       charts
                     </div>
                   </div>
@@ -317,40 +326,11 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                       PNG High-Res Image
                     </div>
                     <div className="text-[10px] text-slate-500">
-                      High-dpi visual canvas snapshot for quick sharing &amp;
+                      High-dpi visual canvas snapshot for quick sharing &
                       mobile view
                     </div>
                   </div>
                 </button>
-              </div>
-            </div>
-
-            {/* Aspirant & Exam Info */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-1">
-                  Aspirant Name / Candidate Tag
-                </label>
-                <input
-                  type="text"
-                  value={aspirantName}
-                  onChange={(e) => setAspirantName(e.target.value)}
-                  placeholder="e.g. UPSC CSE Aspirant"
-                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs font-bold rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
-
-              <div>
-                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-1">
-                  Target Examination &amp; Year
-                </label>
-                <input
-                  type="text"
-                  value={targetExam}
-                  onChange={(e) => setTargetExam(e.target.value)}
-                  placeholder="e.g. UPSC CSE 2026"
-                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs font-bold rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-indigo-500"
-                />
               </div>
             </div>
 
@@ -401,7 +381,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                       <span>Effort Gap vs Weightage Parity</span>
                     </div>
                     <p className="text-[10px] text-slate-500 mt-0.5">
-                      Time invested % vs UPSC syllabus weightage return on
+                      Time invested % vs RAS syllabus weightage return on
                       investment deficit.
                     </p>
                   </div>
@@ -418,7 +398,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                   <div>
                     <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
                       <TrendingUp className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>Syllabus Coverage &amp; Mastery %</span>
+                      <span>Syllabus Coverage & Mastery %</span>
                     </div>
                     <p className="text-[10px] text-slate-500 mt-0.5">
                       Subject-wise progress bars, study streak stats, and total
@@ -438,7 +418,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                   <div>
                     <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
                       <BarChart2 className="w-3.5 h-3.5 text-blue-600" />
-                      <span>Mock Tests &amp; Negative Marks</span>
+                      <span>Mock Tests & Negative Marks</span>
                     </div>
                     <p className="text-[10px] text-slate-500 mt-0.5">
                       Accuracy trends, test logs table, and negative marking
@@ -524,14 +504,14 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-extrabold uppercase tracking-widest text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded border border-indigo-200">
-                    UPSC CSE AI Telemetry Report
+                    RAS CSE AI Telemetry Report
                   </span>
                   <span className="text-xs font-bold text-slate-400 font-mono">
                     {targetExam}
                   </span>
                 </div>
                 <h1 className="text-2xl font-black text-slate-900 mt-2 tracking-tight">
-                  Performance Gap &amp; Progress Analytics Blueprint
+                  Performance Gap & Progress Analytics Blueprint
                 </h1>
                 <p className="text-xs text-slate-500 mt-0.5">
                   Generated for Candidate:{" "}
@@ -599,7 +579,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                   -{avgNegativeMarks} pts
                 </div>
                 <div className="text-[10px] text-slate-500">
-                  UPSC 1/3 penalty rate
+                  RAS 1/3 penalty rate
                 </div>
               </div>
             </div>
@@ -636,7 +616,12 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-3">
+                {weakAreas.length === 0 ? (
+                  <div className="p-8 text-center bg-slate-50 rounded-xl border border-slate-200 border-dashed">
+                    <p className="text-slate-500 text-xs font-medium">No weak areas identified yet. Take a mock test to generate your failure heatmap.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-3 gap-3">
                   {weakAreas.map((item) => {
                     const failedCount =
                       item.failedQuestionsCount ||
@@ -690,11 +675,12 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                       </div>
                     );
                   })}
-                </div>
+                  </div>
+                )}
               </div>
             )}
 
-            {/* MODULE 2: EFFORT GAP ANALYSIS (Time Allocated vs UPSC Weightage) */}
+            {/* MODULE 2: EFFORT GAP ANALYSIS (Time Allocated vs RAS Weightage) */}
             {includeGapAnalysis && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between pb-2 border-b border-slate-200">
@@ -703,7 +689,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                       02
                     </span>
                     <h2 className="text-base font-bold text-slate-900">
-                      Effort Gap Analysis &amp; Exam Return-On-Investment
+                      Effort Gap Analysis & Exam Return-On-Investment
                       Deficit
                     </h2>
                   </div>
@@ -712,8 +698,13 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                   </span>
                 </div>
 
-                <div className="space-y-3">
-                  {GAP_ANALYSIS_METRICS.map((gap, i) => (
+                {sessionLogs.length === 0 ? (
+                  <div className="p-8 text-center bg-slate-50 rounded-xl border border-slate-200 border-dashed">
+                    <p className="text-slate-500 text-xs font-medium">Insufficient study data. Log study sessions to unlock Effort Gap vs Exam Weightage parity analysis.</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {GAP_ANALYSIS_METRICS.map((gap, i) => (
                     <div
                       key={i}
                       className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2"
@@ -757,7 +748,7 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
 
                         <div>
                           <div className="flex justify-between text-slate-600 mb-0.5">
-                            <span>UPSC Marks Weightage:</span>
+                            <span>RAS Marks Weightage:</span>
                             <span className="font-mono font-bold text-indigo-700">
                               {gap.idealWeightagePercent}%
                             </span>
@@ -777,9 +768,10 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                         <strong>Topper Recommendation:</strong>{" "}
                         {gap.recommendation}
                       </div>
-                    </div>
-                  ))}
-                </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 
@@ -797,9 +789,13 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                {totalHoursLogged === "0.0" && masteredTopics === 0 ? (
+                  <div className="p-8 text-center bg-slate-50 rounded-xl border border-slate-200 border-dashed">
+                    <p className="text-slate-500 text-xs font-medium">No syllabus progress tracked yet. Start marking topics as in progress or mastered.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 gap-3">
                   {Array.from(new Set(syllabus.map((s) => s.subject)))
-                    .slice(0, 6)
                     .map((subject, idx) => {
                       const topics = syllabus.filter(
                         (s) => s.subject === subject
@@ -841,12 +837,13 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                         </div>
                       );
                     })}
-                </div>
+                  </div>
+                )}
               </div>
             )}
 
             {/* MODULE 4: MOCK TEST PERFORMANCE LOGS */}
-            {includeMocks && mockLogs.length > 0 && (
+            {includeMocks && (
               <div className="space-y-3">
                 <div className="flex items-center justify-between pb-2 border-b border-slate-200">
                   <div className="flex items-center gap-2">
@@ -859,7 +856,12 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                   </div>
                 </div>
 
-                <table className="w-full text-left text-xs border-collapse">
+                {mockLogs.length === 0 ? (
+                  <div className="p-8 text-center bg-slate-50 rounded-xl border border-slate-200 border-dashed">
+                    <p className="text-slate-500 text-xs font-medium">No mock tests attempted yet. Record your mock test scores to see accuracy and penalty deductions.</p>
+                  </div>
+                ) : (
+                  <table className="w-full text-left text-xs border-collapse">
                   <thead>
                     <tr className="border-b border-slate-200 text-[10px] uppercase font-bold text-slate-400 bg-slate-50">
                       <th className="p-2">Date</th>
@@ -880,26 +882,27 @@ export const AnalyticsExportModal: React.FC<AnalyticsExportModalProps> = ({
                         <td className="p-2 font-bold text-slate-900">
                           {m.testName}
                         </td>
-                        <td className="p-2">{m.paper}</td>
+                        <td className="p-2">{m.type}</td>
                         <td className="p-2 font-mono font-bold text-indigo-700">
-                          {m.score}/{m.totalMarks}
+                          {m.marksObtained}/{m.totalMarks}
                         </td>
                         <td className="p-2 font-mono font-bold text-emerald-700">
-                          {m.accuracy}%
+                          {m.accuracyRate}%
                         </td>
                         <td className="p-2 font-mono font-bold text-rose-600">
-                          -{m.negativeMarks} pts
+                          -{((m.incorrectCount || 0) * 0.66).toFixed(1)} pts
                         </td>
                       </tr>
                     ))}
-                  </tbody>
-                </table>
+                    </tbody>
+                  </table>
+                )}
               </div>
             )}
 
             {/* Report Footer */}
             <div className="pt-6 border-t border-slate-200 flex items-center justify-between text-[10px] text-slate-400 font-mono">
-              <div>UPSC CSE Master Hub • Official Telemetry Engine</div>
+              <div>RAS CSE Master Hub • Official Telemetry Engine</div>
               <div>
                 Strict Confidential • Personal Aspirant Diagnostic Report
               </div>

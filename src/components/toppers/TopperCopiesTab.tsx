@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { FileText, RefreshCw, FolderTree, AlertCircle, X, Maximize2, Folder, ChevronRight, CornerUpLeft } from "lucide-react";
+import { createPortal } from "react-dom";
+import { FileText, RefreshCw, FolderTree, AlertCircle, X, Maximize2, Folder, ChevronRight, CornerUpLeft, ExternalLink } from "lucide-react";
 
 // The hardcoded Live Link for PDFs
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbytEMFu6Fgw_rJZ0mmJMAXkPyj3m7MwQ-bBS_RsxDNLBsLb23zt0rW3xZq9JaqtSfYJ/exec";
@@ -25,10 +26,22 @@ export const TopperCopiesTab: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   
   const [selectedPdfId, setSelectedPdfId] = useState<string | null>(null);
+  const [selectedPdfName, setSelectedPdfName] = useState<string>("");
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  // Handle ESC key to close PDF viewer modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && selectedPdfId) {
+        setSelectedPdfId(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedPdfId]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -211,7 +224,10 @@ export const TopperCopiesTab: React.FC = () => {
                       {currentFolder.files.map(file => (
                         <button
                           key={file.id}
-                          onClick={() => setSelectedPdfId(file.id)}
+                          onClick={() => {
+                            setSelectedPdfId(file.id);
+                            setSelectedPdfName(file.name.replace(/\.[^/.]+$/, ""));
+                          }}
                           className="flex flex-col items-center gap-3 p-4 bg-white border border-slate-200 hover:border-rose-300 hover:shadow-lg rounded-2xl transition-all group cursor-pointer text-center relative"
                         >
                           <div className="w-12 h-12 bg-rose-50 text-rose-500 rounded-xl flex items-center justify-center group-hover:scale-110 group-hover:bg-rose-500 group-hover:text-white transition-all duration-300 shrink-0">
@@ -235,26 +251,52 @@ export const TopperCopiesTab: React.FC = () => {
         </div>
       )}
 
-      {/* Full Screen PDF Lightbox */}
-      {selectedPdfId && (
-        <div className="fixed inset-0 z-[200] bg-slate-900/95 backdrop-blur-md flex flex-col animate-in fade-in duration-200">
-          <div className="flex justify-end p-4">
-            <button 
-              onClick={() => setSelectedPdfId(null)}
-              className="text-white/50 bg-black/20 hover:bg-black/40 hover:text-white px-4 py-2 rounded-xl backdrop-blur-md transition-all cursor-pointer font-bold flex items-center gap-2"
-            >
-              <X className="w-5 h-5" /> Close PDF
-            </button>
+      {/* Full Screen PDF Lightbox rendered via Portal directly to body to avoid being trapped in containers */}
+      {selectedPdfId && typeof document !== "undefined" && createPortal(
+        <div className="fixed inset-0 z-[99999] bg-slate-950/98 backdrop-blur-md flex flex-col w-screen h-screen animate-in fade-in duration-200 safe-top safe-bottom">
+          {/* Top Modal Header */}
+          <div className="flex items-center justify-between px-4 py-3 bg-slate-900/90 border-b border-slate-800 shrink-0">
+            <div className="flex items-center gap-2.5 min-w-0 pr-3">
+              <div className="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0">
+                <FileText className="w-4 h-4" />
+              </div>
+              <span className="text-white text-sm font-bold truncate">
+                {selectedPdfName || "Topper Copy PDF"}
+              </span>
+            </div>
+            
+            <div className="flex items-center gap-2 shrink-0">
+              <a
+                href={`https://drive.google.com/file/d/${selectedPdfId}/view`}
+                target="_blank"
+                rel="noreferrer"
+                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all border border-slate-700 cursor-pointer"
+                title="Open directly in Google Drive / New Tab"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>Open in Drive</span>
+              </a>
+              <button 
+                onClick={() => setSelectedPdfId(null)}
+                className="text-white bg-rose-600 hover:bg-rose-700 px-3.5 py-1.5 rounded-xl transition-all cursor-pointer font-bold text-xs flex items-center gap-1.5 shadow-md"
+              >
+                <X className="w-4 h-4" />
+                <span>Close PDF</span>
+              </button>
+            </div>
           </div>
-          <div className="flex-1 w-full max-w-6xl mx-auto p-4 md:p-8 pt-0">
+
+          {/* PDF Viewer Frame */}
+          <div className="flex-1 w-full p-2 sm:p-4 bg-slate-950">
             <iframe 
               src={getPdfEmbedUrl(selectedPdfId)}
-              className="w-full h-full rounded-2xl shadow-2xl bg-white"
+              className="w-full h-full rounded-xl sm:rounded-2xl shadow-2xl bg-white border-0"
               allow="autoplay"
               title="PDF Viewer"
             ></iframe>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

@@ -191,8 +191,8 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
 
             {/* Dropdown Popover Menu */}
             {dropdownOpen && (
-              <div className="absolute top-full left-0 right-0 mt-2 z-50 bg-white rounded-2xl border-2 border-slate-200 shadow-2xl p-2 space-y-1 animate-in fade-in slide-in-from-top-2 duration-150">
-                <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100 flex items-center justify-between">
+              <div className="absolute top-full left-0 right-0 mt-2 z-50 bg-white rounded-2xl border-2 border-slate-200 shadow-2xl p-2 space-y-1 animate-in fade-in slide-in-from-top-2 duration-150 max-h-[65vh] sm:max-h-[460px] overflow-y-auto">
+                <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100 flex items-center justify-between sticky top-0 bg-white z-10">
                   <span>Analytics Modules ({subTabOptions.length})</span>
                   <span className="text-[9px] font-mono text-indigo-600 font-bold">
                     Deep Telemetry

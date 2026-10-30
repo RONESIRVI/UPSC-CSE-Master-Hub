@@ -1047,7 +1047,7 @@ export default function App() {
           />
 
           {/* Core Content Canvas */}
-          <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 pb-24 lg:pb-8 overflow-hidden">
+          <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 pb-24 lg:pb-8 overflow-x-clip">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}

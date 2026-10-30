@@ -236,7 +236,7 @@ export const PrepSection: React.FC<PrepSectionProps> = ({
             </button>
 
             {dropdownOpen && (
-              <div className="absolute top-full left-0 right-0 mt-2 z-50 bg-white rounded-2xl border-2 border-slate-200 shadow-2xl p-2 space-y-1 animate-in fade-in slide-in-from-top-2 duration-150">
+              <div className="absolute top-full left-0 right-0 mt-2 z-50 bg-white rounded-2xl border-2 border-slate-200 shadow-2xl p-2 space-y-1 animate-in fade-in slide-in-from-top-2 duration-150 max-h-[65vh] sm:max-h-[460px] overflow-y-auto">
                 {subTabOptions.map((option) => {
                   const Icon = option.icon;
                   const isSelected = activeSubTab === option.key;

@@ -192,8 +192,8 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
 
             {/* Dropdown Popover Menu */}
             {dropdownOpen && (
-              <div className="absolute top-full left-0 right-0 mt-2 z-50 bg-white rounded-2xl border-2 border-slate-200 shadow-2xl p-2 space-y-1 animate-in fade-in slide-in-from-top-2 duration-150">
-                <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100 flex items-center justify-between">
+              <div className="absolute top-full left-0 right-0 mt-2 z-50 bg-white rounded-2xl border-2 border-slate-200 shadow-2xl p-2 space-y-1 animate-in fade-in slide-in-from-top-2 duration-150 max-h-[65vh] sm:max-h-[460px] overflow-y-auto">
+                <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100 flex items-center justify-between sticky top-0 bg-white z-10">
                   <span>
                     Toppers' Vault Blueprints ({subTabOptions.length})
                   </span>
@@ -258,6 +258,39 @@ export const ToppersSection: React.FC<ToppersSectionProps> = ({
               <span>Verified AIR 1-50 Blueprints</span>
             </span>
           </div>
+        </div>
+
+        {/* Fast Pill Switcher: Displays all 6 resources side-by-side with horizontal scroll */}
+        <div className="pt-2.5 border-t border-slate-100 flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth">
+          {subTabOptions.map((opt) => {
+            const Icon = opt.icon;
+            const isSelected = activeSubTab === opt.key;
+            return (
+              <button
+                key={opt.key}
+                id={`toppers-pill-${opt.key}`}
+                type="button"
+                onClick={() => setActiveSubTab(opt.key)}
+                className={`flex items-center gap-2 px-3 sm:px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer shrink-0 border ${
+                  isSelected
+                    ? "bg-indigo-600 text-white border-indigo-600 shadow-xs"
+                    : "bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200 hover:text-slate-900"
+                }`}
+              >
+                <Icon className={`w-3.5 h-3.5 shrink-0 ${isSelected ? "text-white" : "text-slate-500"}`} />
+                <span>{opt.label}</span>
+                <span
+                  className={`text-[10px] font-mono px-1.5 py-0.5 rounded font-bold ${
+                    isSelected
+                      ? "bg-indigo-700/60 text-indigo-100 border border-indigo-500/50"
+                      : "bg-slate-200/70 text-slate-600 border border-slate-300/60"
+                  }`}
+                >
+                  {opt.badge}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
 

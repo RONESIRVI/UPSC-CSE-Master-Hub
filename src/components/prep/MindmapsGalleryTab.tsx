@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Image as ImageIcon, ExternalLink, RefreshCw, FolderTree, AlertCircle, X, ZoomIn } from "lucide-react";
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJXLIrt0DGiu8FGfmulRyvJPWK6agcu0TPeCII0Ee9d64stYjpNbiqsji-ESf3NgWg/exec";
@@ -188,26 +189,31 @@ export const MindmapsGalleryTab: React.FC = () => {
         )
       )}
 
-      {/* Full Screen Lightbox */}
-      {selectedImageId && (
+      {/* Full Screen Lightbox rendered via Portal directly to body */}
+      {selectedImageId && typeof document !== "undefined" && createPortal(
         <div 
-          className="fixed inset-0 z-[200] bg-slate-900/95 backdrop-blur-md flex items-center justify-center p-4 cursor-zoom-out animate-in fade-in duration-200"
+          className="fixed inset-0 z-[99999] bg-slate-950/98 backdrop-blur-md flex items-center justify-center p-4 cursor-zoom-out animate-in fade-in duration-200 w-screen h-screen safe-top safe-bottom"
           onClick={() => setSelectedImageId(null)}
         >
           <img 
             src={getDirectImageUrl(selectedImageId)} 
             alt="Expanded view" 
-            className="max-w-full max-h-[95vh] object-contain rounded-xl shadow-2xl"
+            className="max-w-full max-h-[92vh] object-contain rounded-xl shadow-2xl"
           />
-          <div className="absolute top-4 right-4 text-white/50 bg-black/20 hover:bg-black/40 hover:text-white p-2 rounded-full backdrop-blur-md transition-all cursor-pointer">
-            <X className="w-6 h-6" />
-          </div>
+          <button
+            onClick={() => setSelectedImageId(null)}
+            className="absolute top-4 right-4 text-white bg-slate-800/80 hover:bg-rose-600 hover:text-white px-3.5 py-1.5 rounded-xl backdrop-blur-md transition-all cursor-pointer font-bold text-xs flex items-center gap-1.5 shadow-lg border border-white/10"
+          >
+            <X className="w-4 h-4" />
+            <span>Close</span>
+          </button>
           <div className="absolute bottom-6 flex justify-center w-full pointer-events-none">
-            <div className="bg-black/40 backdrop-blur-md text-white/90 text-[10px] font-bold px-4 py-2 rounded-full tracking-widest uppercase shadow-xl">
+            <div className="bg-black/60 backdrop-blur-md text-white/90 text-[10px] font-bold px-4 py-2 rounded-full tracking-widest uppercase shadow-xl border border-white/10">
               Click anywhere to close
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

@@ -75,12 +75,6 @@ export const MindmapsGalleryTab: React.FC = () => {
             <ImageIcon className="w-6 h-6 text-indigo-600" />
             Mindmaps Gallery
           </h2>
-          <div className="flex items-center gap-2 mt-1.5">
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">
-              Live Sync Active
-            </p>
-          </div>
         </div>
         
         <div className="flex items-center gap-2 w-full md:w-auto">

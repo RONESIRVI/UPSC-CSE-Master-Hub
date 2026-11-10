@@ -108,7 +108,7 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
             className="w-full py-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-black text-sm uppercase tracking-widest rounded-2xl shadow-[0_0_20px_rgba(99,102,241,0.4)] transition-all flex items-center justify-center gap-2 group cursor-pointer"
             onClick={onComplete}
           >
-            Ready to Launch
+            Ready for Prep
             <Sparkles className="w-4 h-4 group-hover:rotate-12 transition-transform" />
           </motion.button>
         )}
